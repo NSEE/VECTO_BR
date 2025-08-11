@@ -271,17 +271,21 @@ public class MRF_ReportResultTests
 			resultEntry.ZEV_FuelConsumption_AuxHtr = 1.SI<Kilogram>();
 			resultEntry.ZEV_CO2 = resultEntry.ZEV_FuelConsumption_AuxHtr * resultEntry.AuxHeaterFuel.CO2PerFuelWeight;
 			if (ovc) {
-                //resultEntries.Clear();
-				var run2 = ReportResultTestUtils.GetMockRunData(vehicleCategory, jobType, true, exempted, OvcHevMode.ChargeSustaining, fuels);
-				run2.InputData = ReportResultTestUtils.GetMockInputData(amdm);
-                var res2 = ReportResultTestUtils.GetResultEntry(run2);
-				res2.SetResultData(run2, modData, 1);
-				resultEntries.Add(res2);
-				res2.FuelData.Add(fcfuel);
-				res2.CorrectedFinalFuelConsumption[FuelType.H2FC] = new FuelCellFuelConsumptionCorrection(fcfuel, 0.SI<KilogramPerWattSecond>(), 1.SI<Kilogram>(), 0.SI<Kilogram>(), modData.Duration, modData.Distance);
-				res2.AuxHeaterFuel = FuelData.Diesel;
-				res2.ZEV_FuelConsumption_AuxHtr = 1.SI<Kilogram>();
-				res2.ZEV_CO2 = res2.ZEV_FuelConsumption_AuxHtr * res2.AuxHeaterFuel.CO2PerFuelWeight;
+                // FCHV vehicles are only simulated in CS Mode and the results are re-used for CD
+				runData.OVCMode = OvcHevMode.ChargeSustaining;
+				resultEntry.OVCMode = OvcHevMode.ChargeSustaining;
+				
+				//            //resultEntries.Clear();
+				//var run2 = ReportResultTestUtils.GetMockRunData(vehicleCategory, jobType, true, exempted, OvcHevMode.ChargeSustaining, fuels);
+				//run2.InputData = ReportResultTestUtils.GetMockInputData(amdm);
+				//            var res2 = ReportResultTestUtils.GetResultEntry(run2);
+				//res2.SetResultData(run2, modData, 1);
+				//resultEntries.Add(res2);
+				//res2.FuelData.Add(fcfuel);
+				//res2.CorrectedFinalFuelConsumption[FuelType.H2FC] = new FuelCellFuelConsumptionCorrection(fcfuel, 0.SI<KilogramPerWattSecond>(), 1.SI<Kilogram>(), 0.SI<Kilogram>(), modData.Duration, modData.Distance);
+				//res2.AuxHeaterFuel = FuelData.Diesel;
+				//res2.ZEV_FuelConsumption_AuxHtr = 1.SI<Kilogram>();
+				//res2.ZEV_CO2 = res2.ZEV_FuelConsumption_AuxHtr * res2.AuxHeaterFuel.CO2PerFuelWeight;
 			}
 		}
 
