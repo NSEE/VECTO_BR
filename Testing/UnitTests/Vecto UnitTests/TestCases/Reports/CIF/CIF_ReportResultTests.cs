@@ -148,9 +148,9 @@ public class CIF_ReportResultTests
 			resultEntry.FuelData.Add(fcfuel);
 			resultEntry.CorrectedFinalFuelConsumption[FuelType.H2FC] = new FuelCellFuelConsumptionCorrection(fcfuel, 0.SI<KilogramPerWattSecond>(), 1.SI<Kilogram>(), 0.SI<Kilogram>(), modData.Duration, modData.Distance);
 			if (ovc) {
-                resultEntries.Clear();
 				var run2 = ReportResultTestUtils.GetMockRunData(vehicleCategory, jobType, true, exempted, OvcHevMode.ChargeSustaining, fuels);
 				run2.InputData = ReportResultTestUtils.GetMockInputData(amdm);
+				run2.Iteration = 1;
                 var res2 = ReportResultTestUtils.GetResultEntry(run2);
 				res2.SetResultData(run2, modData, 1);
 				resultEntries.Add(res2);
@@ -217,7 +217,7 @@ public class CIF_ReportResultTests
         TestCase(VectoSimulationJobType.BatteryElectricVehicle, 3, true, false, true, TestName = "CIF_ReportResult_WritingResults_3Amd: CompletedBus PEV SUCCESS"),
         TestCase(VectoSimulationJobType.BatteryElectricVehicle, 3, true, false, false, TestName = "CIF_ReportResult_WritingResults_3Amd: CompletedBus PEV ERROR"),
 
-        TestCase(VectoSimulationJobType.FCHV, 3, true, false, true, FuelType.H2FC, TestName = "CIF_ReportResult_WritingResults_3Amd: CompletedBus FCHV OVC SUCCESS"),
+        TestCase(VectoSimulationJobType.FCHV, 3, true, false, true, TestName = "CIF_ReportResult_WritingResults_3Amd: CompletedBus FCHV OVC SUCCESS"),
         TestCase(VectoSimulationJobType.FCHV, 3, false, false, true, FuelType.H2FC, FuelType.DieselCI, TestName = "CIF_ReportResult_WritingResults_3Amd: CompletedBus FCHV non-OVC SUCCESS"),
 
         TestCase(VectoSimulationJobType.ParallelHybridVehicle, 3, true, true, true, TestName = "CIF_ReportResult_WritingResults_3Amd: CompletedBus HEV exempted"),
@@ -225,7 +225,10 @@ public class CIF_ReportResultTests
     public void TestReportResult_WritingResults_CompletedBus(VectoSimulationJobType jobType, int amdm, bool ovc, bool exempted, bool success, params FuelType[] fuels)
     {
         var vehicleCategory = VehicleCategory.HeavyBusCompletedVehicle;
-        var ovcmode = ovc ? OvcHevMode.ChargeDepleting : OvcHevMode.NotApplicable;
+        var ovcmode = ovc 
+            ? (jobType.IsFCHV() ? OvcHevMode.ChargeSustaining : OvcHevMode.ChargeDepleting) 
+            : OvcHevMode.NotApplicable;
+
         var runData = ReportResultTestUtils.GetMockRunData(vehicleCategory, jobType, ovc, exempted, ovcmode, fuels);
 		runData.InputData = ReportResultTestUtils.GetMockInputData(amdm);
         var modData = ReportResultTestUtils.GetMockModData(success ? VectoRun.Status.Success : VectoRun.Status.Aborted, fuels);
@@ -261,21 +264,22 @@ public class CIF_ReportResultTests
 			resultEntry.AuxHeaterFuel = FuelData.Diesel;
 			resultEntry.ZEV_FuelConsumption_AuxHtr = 1.SI<Kilogram>();
 			resultEntry.ZEV_CO2 = resultEntry.ZEV_FuelConsumption_AuxHtr * resultEntry.AuxHeaterFuel.CO2PerFuelWeight;
+            resultEntry.HydrogenRange = 1000.SI<Meter>();
+            resultEntry.ZeroCO2EmissionsRange = 1000.SI<Meter>();
 			if (ovc) {
-				// FCHV vehicles are only simulated in CS Mode and the results are re-used for CD
-				runData.OVCMode = OvcHevMode.ChargeSustaining;
-				resultEntry.OVCMode = OvcHevMode.ChargeSustaining;
-
-                //var run2 = ReportResultTestUtils.GetMockRunData(vehicleCategory, jobType, true, exempted, OvcHevMode.ChargeSustaining, fuels);
-                //run2.InputData = ReportResultTestUtils.GetMockInputData(amdm);
-                //var res2 = ReportResultTestUtils.GetResultEntry(run2);
-                //res2.SetResultData(run2, modData, 1);
-                //resultEntries.Add(res2);
-                //res2.FuelData.Add(fcfuel);
-                //res2.CorrectedFinalFuelConsumption[FuelType.H2FC] = new FuelCellFuelConsumptionCorrection(fcfuel, 0.SI<KilogramPerWattSecond>(), 1.SI<Kilogram>(), 0.SI<Kilogram>(), modData.Duration, modData.Distance);
-                //res2.AuxHeaterFuel = FuelData.Diesel;
-                //res2.ZEV_FuelConsumption_AuxHtr = 1.SI<Kilogram>();
-                //res2.ZEV_CO2 = res2.ZEV_FuelConsumption_AuxHtr * res2.AuxHeaterFuel.CO2PerFuelWeight;
+				var run2 = ReportResultTestUtils.GetMockRunData(vehicleCategory, jobType, true, exempted, OvcHevMode.ChargeSustaining, fuels);
+				run2.InputData = ReportResultTestUtils.GetMockInputData(amdm);
+				run2.Iteration = 1;
+				var res2 = ReportResultTestUtils.GetResultEntry(run2);
+				res2.SetResultData(run2, modData, 1);
+				resultEntries.Add(res2);
+				res2.FuelData.Add(fcfuel);
+				res2.CorrectedFinalFuelConsumption[FuelType.H2FC] = new FuelCellFuelConsumptionCorrection(fcfuel, 0.SI<KilogramPerWattSecond>(), 1.SI<Kilogram>(), 0.SI<Kilogram>(), modData.Duration, modData.Distance);
+				res2.AuxHeaterFuel = FuelData.Diesel;
+				res2.ZEV_FuelConsumption_AuxHtr = 1.SI<Kilogram>();
+				res2.ZEV_CO2 = res2.ZEV_FuelConsumption_AuxHtr * res2.AuxHeaterFuel.CO2PerFuelWeight;
+                res2.HydrogenRange = 1000.SI<Meter>();
+                res2.ZeroCO2EmissionsRange = 1000.SI<Meter>();
             }
 		}
 

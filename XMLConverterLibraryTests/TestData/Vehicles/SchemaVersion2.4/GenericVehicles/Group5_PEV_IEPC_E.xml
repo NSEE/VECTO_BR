@@ -1,128 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tns:VectoInputDeclaration
-xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-schemaVersion="2.0"
-xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0"
-xmlns:di="http://www.w3.org/2000/09/xmldsig#"
-xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob x:/VectoDeclarationJob.xsd"
-xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0"
-xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0"
-xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1"
-xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3"
-xmlns:v2.4="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4"
-xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7">
-	<v2.0:Vehicle xsi:type="v2.7:Vehicle_IEPC_F_PrimaryBusDeclarationType" id="PrimaryCoach_E2_AMT">
-		<v2.7:Manufacturer>Generic Truck Manufacturer</v2.7:Manufacturer>
-		<v2.7:ManufacturerAddress>Street, ZIP City</v2.7:ManufacturerAddress>
-		<v2.7:Model>Generic Model</v2.7:Model>
-		<v2.7:VIN>VEH-1234567890</v2.7:VIN>
-		<v2.7:Date>2017-02-15T11:00:00Z</v2.7:Date>
-		<v2.7:LegislativeCategory>M3</v2.7:LegislativeCategory>
-		<v2.7:ChassisConfiguration>Bus</v2.7:ChassisConfiguration>
-		<v2.7:AxleConfiguration>4x2</v2.7:AxleConfiguration>
-		<v2.7:Articulated>false</v2.7:Articulated>
-		<v2.7:TechnicalPermissibleMaximumLadenMass>20000</v2.7:TechnicalPermissibleMaximumLadenMass>
-		<v2.7:RetarderType>None</v2.7:RetarderType>
-		<v2.7:AngledriveType>None</v2.7:AngledriveType>
-		<v2.7:ZeroEmissionVehicle>true</v2.7:ZeroEmissionVehicle>
-		<v2.7:ArchitectureID>F-IEPC</v2.7:ArchitectureID>
-		<v2.7:ADAS xsi:type="ADAS_IEPC_Type">
+<tns:VectoInputDeclaration xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="2.0" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob V:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns:v2.4="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4">
+	<v2.0:Vehicle xsi:type="Vehicle_IEPC_HeavyLorryDeclarationType" id="Group5_IEPC_E">
+		<Manufacturer>TU Graz</Manufacturer>
+		<ManufacturerAddress>Inffeldgasse 19</ManufacturerAddress>
+		<Model>PEV Heavy Lorry IEPC</Model>
+		<VIN>1234</VIN>
+		<Date>2017-01-01T00:00:00Z</Date>
+		<LegislativeCategory>N3</LegislativeCategory>
+		<ChassisConfiguration>Tractor</ChassisConfiguration>
+		<AxleConfiguration>4x2</AxleConfiguration>
+		<CorrectedActualMass>10143</CorrectedActualMass>
+		<TechnicalPermissibleMaximumLadenMass>18000</TechnicalPermissibleMaximumLadenMass>
+		<RetarderType>None</RetarderType>
+		<AngledriveType>None</AngledriveType>
+		<PTO xsi:type="PTOType">
+			<!-- syntactically allowed, not supported by VECTO - no gearbox! -->
+			<PTOShaftsGearWheels>none</PTOShaftsGearWheels>
+			<PTOOtherElements>none</PTOOtherElements>
+		</PTO>
+		<ZeroEmissionVehicle>true</ZeroEmissionVehicle>
+		<VocationalVehicle>false</VocationalVehicle>
+		<SleeperCab>false</SleeperCab>
+		<VehicleTypeApprovalNumber>ASDF</VehicleTypeApprovalNumber>
+		<ArchitectureID>E-IEPC</ArchitectureID>
+		<ADAS xsi:type="ADAS_IEPC_Type">
 			<PredictiveCruiseControl>1,2,3</PredictiveCruiseControl>
-		</v2.7:ADAS>
-		<v2.7:Components xsi:type="v2.7:Components_IEPC_F_PrimaryBusType">
-			<v2.7:FuelCellSystem xsi:type="v2.7:FuelCellSystemDeclarationType">
-				<v2.7:FuelCellModule>
-					<v2.7:Count>1</v2.7:Count>
-					<v2.7:FuelCell>
-						<v2.7:Data xsi:type="v2.7:FuelCellDataDeclarationType" id="FuelCell">
-							<v2.7:Manufacturer>a</v2.7:Manufacturer>
-							<v2.7:Model>a</v2.7:Model>
-							<v2.7:CertificationNumber>token</v2.7:CertificationNumber>
-							<v2.7:Date>2017-01-01T00:00:00Z</v2.7:Date>
-							<v2.7:AppVersion>aaaaa</v2.7:AppVersion>
-							<v2.7:CertificationMethod>Measured</v2.7:CertificationMethod>
-							<v2.7:FCSRatedPower>100</v2.7:FCSRatedPower>
-							<v2.7:FuelCellPowerOutputConsumptionMap>
-								<v2.7:Entry powerOutput="10000.00" fuelConsumption="662.00" />
-								<v2.7:Entry powerOutput="20000.00" fuelConsumption="1001.00" />
-								<v2.7:Entry powerOutput="35000.00" fuelConsumption="1812.50" />
-								<v2.7:Entry powerOutput="50000.00" fuelConsumption="2887.50" />
-								<v2.7:Entry powerOutput="65000.00" fuelConsumption="4069.70" />
-								<v2.7:Entry powerOutput="85000.00" fuelConsumption="5672.00" />
-								<v2.7:Entry powerOutput="100000.00" fuelConsumption="7150.00" />
-							</v2.7:FuelCellPowerOutputConsumptionMap>
-						</v2.7:Data>
-						<v2.7:Signature>
-							<di:Reference URI="#BAT-asdf">
-								<di:Transforms>
-									<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
-									<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
-								</di:Transforms>
-								<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
-								<di:DigestValue>22QLOYTZK+bUIolzdEzc3Ut0wPIOXEBdWv72ST0Zbyw=</di:DigestValue>
-							</di:Reference>
-						</v2.7:Signature>
-					</v2.7:FuelCell>
-					<v2.7:MinPower>10000</v2.7:MinPower>
-					<v2.7:MaxPower>100000</v2.7:MaxPower>
-				</v2.7:FuelCellModule>
-			</v2.7:FuelCellSystem>
-			<v2.7:ElectricEnergyStorage>
-				<!-- todo amogoda: replace by correct namespace and include type in v2.7 -->
-				<Battery>
-					<StringID>0</StringID>
-					<REESS>
-						<v2.4:Data id="BAT-asdf" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xsi:type="BatterySystemDataType">
-							<Manufacturer>a</Manufacturer>
-							<Model>a</Model>
-							<CertificationNumber>token</CertificationNumber>
-							<Date>2017-01-01T00:00:00Z</Date>
-							<AppVersion>aaaaa</AppVersion>
-							<CertificationMethod>Measured</CertificationMethod>
-							<BatteryType>HPBS</BatteryType>
-							<RatedCapacity>631.15</RatedCapacity>
-							<ConnectorsSubsystemsIncluded>true</ConnectorsSubsystemsIncluded>
-							<JunctionboxIncluded>true</JunctionboxIncluded>
-							<TestingTemperature>20</TestingTemperature>
-							<OCV>
-								<Entry SoC='0' OCV='718.42'/>
-								<Entry SoC='10' OCV='746.84'/>
-								<Entry SoC='20' OCV='763.14'/>
-								<Entry SoC='30' OCV='771.85'/>
-								<Entry SoC='40' OCV='776.26'/>
-								<Entry SoC='50' OCV='778.61'/>
-								<Entry SoC='60' OCV='780.43'/>
-								<Entry SoC='70' OCV='782.70'/>
-								<Entry SoC='80' OCV='786.19'/>
-								<Entry SoC='90' OCV='791.68'/>
-								<Entry SoC='100' OCV='800.21'/>
-							</OCV>
-							<InternalResistance>
-								<Entry SoC='0' R_2='5.00' R_10='5.00' R_20='5.00'/>
-								<Entry SoC='100' R_2='5.00' R_10='5.00' R_20='5.00'/>
-							</InternalResistance>
-							<CurrentLimits>
-								<Entry SoC="0" maxChargingCurrent="1620.00" maxDischargingCurrent="1620.00"/>
-								<Entry SoC="100" maxChargingCurrent="1620.00" maxDischargingCurrent="1620.00"/>
-							</CurrentLimits>
-						</v2.4:Data>
-						<Signature>
-							<di:Reference URI="#BAT-asdf">
-								<di:Transforms>
-									<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
-									<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
-								</di:Transforms>
-								<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
-								<di:DigestValue>22QLOYTZK+bUIolzdEzc3Ut0wPIOXEBdWv72ST0Zbyw=</di:DigestValue>
-							</di:Reference>
-						</Signature>
-					</REESS>
-					<SOCmin>8</SOCmin>
-					<SOCmax>92</SOCmax>
-				</Battery>
-			</v2.7:ElectricEnergyStorage>
-			<v2.7:IEPC>
+		</ADAS>
+		<Components xsi:type="Components_IEPC_LorryType">
+			<IEPC>
 				<v2.3:Data xsi:type="v2.3:IEPCMeasuredDataDeclarationType" id="iepc">
 					<v2.3:Manufacturer>IEPC</v2.3:Manufacturer>
 					<v2.3:Model>IEPC_Model</v2.3:Model>
@@ -5845,8 +5750,61 @@ xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7">
 						<di:DigestValue/>
 					</di:Reference>
 				</v2.3:Signature>
-			</v2.7:IEPC>
-			<v2.7:Axlegear>
+			</IEPC>
+			<ElectricEnergyStorage>
+				<Battery>
+					<StringID>0</StringID>
+					<REESS>
+						<v2.4:Data id="BAT-asdf" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xsi:type="BatterySystemDataType">
+							<Manufacturer>a</Manufacturer>
+							<Model>a</Model>
+							<CertificationNumber>token</CertificationNumber>
+							<Date>2017-01-01T00:00:00Z</Date>
+							<AppVersion>aaaaa</AppVersion>
+							<CertificationMethod>Measured</CertificationMethod>
+							<BatteryType>HPBS</BatteryType>
+							<RatedCapacity>1555.50</RatedCapacity>
+							<ConnectorsSubsystemsIncluded>true</ConnectorsSubsystemsIncluded>
+							<JunctionboxIncluded>true</JunctionboxIncluded>
+							<TestingTemperature>20</TestingTemperature>
+							<OCV>
+								<Entry SoC='0' OCV='718.42'/>
+								<Entry SoC='10' OCV='746.84'/>
+								<Entry SoC='20' OCV='763.14'/>
+								<Entry SoC='30' OCV='771.85'/>
+								<Entry SoC='40' OCV='776.26'/>
+								<Entry SoC='50' OCV='778.61'/>
+								<Entry SoC='60' OCV='780.43'/>
+								<Entry SoC='70' OCV='782.70'/>
+								<Entry SoC='80' OCV='786.19'/>
+								<Entry SoC='90' OCV='791.68'/>
+								<Entry SoC='100' OCV='800.21'/>
+							</OCV>
+							<InternalResistance>
+								<Entry SoC='0' R_2='40.00' R_10='40.00' R_20='40.00'/>
+								<Entry SoC='100' R_2='40.00' R_10='40.00' R_20='40.00'/>
+							</InternalResistance>
+							<CurrentLimits>
+								<Entry SoC='0' maxChargingCurrent='1500.00' maxDischargingCurrent='1500.00'/>
+								<Entry SoC='100' maxChargingCurrent='1500.00' maxDischargingCurrent='1500.00'/>
+							</CurrentLimits>
+						</v2.4:Data>
+						<Signature>
+							<di:Reference URI="#BAT-asdf">
+								<di:Transforms>
+									<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+									<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+								</di:Transforms>
+								<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+								<di:DigestValue>22QLOYTZK+bUIolzdEzc3Ut0wPIOXEBdWv72ST0Zbyw=</di:DigestValue>
+							</di:Reference>
+						</Signature>
+					</REESS>
+					<SOCmin>8</SOCmin>
+					<SOCmax>92</SOCmax>
+				</Battery>
+			</ElectricEnergyStorage>
+			<Axlegear>
 				<v2.0:Data id="AXL-EC3ohnoh" xsi:type="v2.0:AxlegearDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
 					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
 					<Model>Generic 40t Long Haul Truck AxleGear</Model>
@@ -5879,8 +5837,8 @@ xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7">
 						<di:DigestValue>Ux2vo+s07pGr9XCbvNs/YbJcFaZClORRGXpP6Eyeze8=</di:DigestValue>
 					</di:Reference>
 				</v2.0:Signature>
-			</v2.7:Axlegear>
-			<v2.7:AxleWheels>
+			</Axlegear>
+			<AxleWheels>
 				<v2.0:Data xsi:type="v2.0:AxleWheelsDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
 					<Axles>
 						<Axle axleNumber="1" xsi:type="AxleDataDeclarationType">
@@ -5894,9 +5852,9 @@ xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7">
 									<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
 									<Date>2017-01-11T14:00:00Z</Date>
 									<AppVersion>Tyre Generation App 1.0</AppVersion>
-									<Dimension>275/70 R22.5</Dimension>
-									<RRCDeclared>0.0050</RRCDeclared>
-									<FzISO>31300</FzISO>
+									<Dimension>315/70 R22.5</Dimension>
+									<RRCDeclared>0.0034</RRCDeclared>
+									<FzISO>33350</FzISO>
 								</Data>
 								<Signature>
 									<di:Reference URI="#WHL-5432198760-315-70-R22.5">
@@ -5921,9 +5879,9 @@ xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7">
 									<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
 									<Date>2017-01-11T14:00:00Z</Date>
 									<AppVersion>Tyre Generation App 1.0</AppVersion>
-									<Dimension>275/70 R22.5</Dimension>
-									<RRCDeclared>0.0056</RRCDeclared>
-									<FzISO>31300</FzISO>
+									<Dimension>315/70 R22.5</Dimension>
+									<RRCDeclared>0.0040</RRCDeclared>
+									<FzISO>33350</FzISO>
 								</Data>
 								<Signature>
 									<di:Reference URI="#WHL-5432198760-315-70-R22.5">
@@ -5939,22 +5897,46 @@ xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7">
 						</Axle>
 					</Axles>
 				</v2.0:Data>
-			</v2.7:AxleWheels>
-			<v2.7:Auxiliaries>
-				<v2.7:Data xsi:type="v2.7:AUX_IEPC_PrimaryBusType">
-					<v2.7:SteeringPump>
-						<v2.7:Technology axleNumber="1">Full electric steering gear</v2.7:Technology>
-					</v2.7:SteeringPump>
-					<v2.7:PneumaticSystem>
-						<CompressorDrive>electrically</CompressorDrive>
-						<SmartRegenerationSystem>false</SmartRegenerationSystem>
-						<AirsuspensionControl>electronically</AirsuspensionControl>
-					</v2.7:PneumaticSystem>
-					<v2.7:HVAC>
-						<v2.7:AdjustableCoolantThermostat>true</v2.7:AdjustableCoolantThermostat>
-					</v2.7:HVAC>
-				</v2.7:Data>
-			</v2.7:Auxiliaries>
-		</v2.7:Components>
+			</AxleWheels>
+			<Auxiliaries>
+				<Data xsi:type="AUX_IEPC_LorryDataType">
+					<SteeringPump>
+						<Technology axleNumber="1">Electric driven pump</Technology>
+					</SteeringPump>
+					<ElectricSystem>
+						<Technology>Standard technology</Technology>
+					</ElectricSystem>
+					<PneumaticSystem>
+						<Technology>Medium Supply 2-stage + elec. driven</Technology>
+					</PneumaticSystem>
+					<HVAC>
+						<Technology>Default</Technology>
+					</HVAC>
+				</Data>
+			</Auxiliaries>
+			<AirDrag>
+				<!-- optional -->
+				<Data id="CabinX23h" xsi:type="v2.0:AirDragDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+					<Manufacturer>Generic Manufacturer</Manufacturer>
+					<Model>Generic Model</Model>
+					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+					<Date>2017-03-24T15:00:00Z</Date>
+					<AppVersion>Vecto AirDrag x.y</AppVersion>
+					<CdxA_0>4.31</CdxA_0>
+					<TransferredCdxA>4.31</TransferredCdxA>
+					<DeclaredCdxA>4.31</DeclaredCdxA>
+				</Data>
+				<v2.0:Signature>
+					<di:Reference URI="#CabinX23h">
+						<di:Transforms>
+							<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+							<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</di:Transforms>
+						<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+						<di:DigestValue>NroIsfnT7+1zYG5CTHxpclh0ZaRZvGyrfFPmWdKbFbg=</di:DigestValue>
+					</di:Reference>
+				</v2.0:Signature>
+			</AirDrag>
+		</Components>
 	</v2.0:Vehicle>
 </tns:VectoInputDeclaration>

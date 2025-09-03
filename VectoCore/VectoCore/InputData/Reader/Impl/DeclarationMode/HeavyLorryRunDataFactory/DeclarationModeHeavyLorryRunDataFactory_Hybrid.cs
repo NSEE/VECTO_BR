@@ -4,7 +4,6 @@ using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
-using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
@@ -13,8 +12,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Declaration.IterativeRunStrategies;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
-using TUGraz.VectoCore.Models.Simulation.Impl;
-using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl;
 
@@ -55,11 +53,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 						{
 							if (vehicle.OVC)
 							{
-								if (vehicle.MaxChargingPower != null && vehicle.MaxChargingPower.IsEqual(0))
-								{
-									throw new VectoException("MaxChargingPower has to be greater than 0 if OVC is selected");
-								}
-
 								yield return CreateVectoRunData(mission, loading, modeIdx, OvcHevMode.ChargeDepleting);
 								yield return CreateVectoRunData(mission, loading, modeIdx, OvcHevMode.ChargeSustaining);
 							} else {
@@ -238,11 +231,11 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 						"Vehicles with a battery dominant mode are required to have electrically powered auxiliaries");
 				}
 
-				runData.ElectricMachinesData = DataAdapter.CreateElectricMachines(
+			    CreateGearboxAndGearshiftData(runData);
+
+                runData.ElectricMachinesData = DataAdapter.CreateElectricMachines(
 					Vehicle.Components.ElectricMachines, Vehicle.ElectricMotorTorqueLimits,
 					runData.BatteryData.CalculateVoltageCenterSoc(), InputDataProvider.JobInputData.Vehicle.Components.GetGearboxType() == GearboxType.IHPC ? runData.GearboxData.GearList : null);
-				
-				CreateGearboxAndGearshiftData(runData);
 
                 runData.HybridStrategyParameters =
 					DataAdapter.CreateHybridStrategy(runData.BatteryData,
@@ -415,7 +408,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 						GearboxType.APTN,
 						Vehicle.Components.IEPC.Gears.Count
 					);
-				
+
 				runData.GearboxData = DataAdapter.CreateGearboxData(Vehicle, runData, GearboxType.APTN);
 
 			}
@@ -451,7 +444,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 
 					foreach (var loading in mission.Loadings.Where(l => MissionFilter?.Run(mission.MissionType, l.Key) ?? true))
 					{
-						var ovcMode = vehicle.OVC ? OvcHevMode.ChargeSustaining : OvcHevMode.NotApplicable;
+						var ovcMode = vehicle.OVC ? OvcHevMode.ChargeDepleting : OvcHevMode.NotApplicable;
 
 						var simulationRunData = CreateVectoRunData(mission, loading, null, ovcMode);
 						yield return simulationRunData;
@@ -466,7 +459,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 				OvcHevMode ovcMode = OvcHevMode.NotApplicable)
 			{
 				var runData = CreateCommonRunData(Vehicle, mission, loading, _segment);
-				
+
 				if (ovcMode == OvcHevMode.ChargeDepleting) {
 					runData.BatteryOnlyHybridMode = Vehicle.BatteryOnlyMode;
 				}
@@ -517,7 +510,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 					Vehicle.Components.AxleWheels.NumSteeredAxles,
 					Vehicle.VehicleType, runData.BatteryOnlyHybridMode);
 
-				if (Vehicle.BatteryOnlyMode && runData.Aux.Any(x => x.ID != Constants.Auxiliaries.IDs.Fan && x.ConnectToREESS)) {
+				if (Vehicle.BatteryOnlyMode && runData.Aux.Any(x => x.ID != Constants.Auxiliaries.IDs.Fan && !x.ConnectToREESS)) {
 					throw new VectoException(
 						"Vehicles with a battery dominant mode are required to have electrically powered auxiliaries");
 				}
@@ -530,81 +523,21 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 					? municipalPtoTransmissionData
 					: ptoTransmissionData;
 
+				/// Refer to [1] EngineeringModeVectoRunDataFactory.GetFCHV_RunData():
+				/// Comment from [1]:
+				///		In case the battery is modified after creating the rundata
+				///		(testing, do not create new battery data).
+				runData.BatteryData = new FCHVDeclarationDataAdapter(DataProvider.DataSource).CreateFuelCellPreProcessingBattery(
+					DataAdapter.CreateFuelCells(Vehicle.Components.FuelCellSystem).ConvertToEngineeringData(),
+					runData.BatteryData,
+					out var fcBatteries);
+
 				runData.OVCMode = ovcMode;
 				runData.ModFileSuffix += "_pre";
-				runData.IterativeRunStrategy = SetUpFuelCellIterativeRunStrategy(runData);
+				runData.IterativeRunStrategy = DeclarationFuelCellIterativeStrategy.SetUpFuelCellIterativeRunStrategy(runData, DataAdapter, InputDataProvider, FuelCellJobType, fcBatteries);
 				runData.BatteryData.Batteries.ForEach(t => t.Item2.ChargeDepletingBattery = true);
 
 				return runData;
-			}
-
-			// runData.IterativeRunStrategy = SetUpFuelCellIterativeRunStrategy(runData);
-			private FCHEVIterativeRunStrategy SetUpFuelCellIterativeRunStrategy(VectoRunData runData)
-			{
-				var iterativeRunStrategy = SetUpFCHEVIterativeRunStrategy();
-				var fuelCellSystemData = DataAdapter.CreateFuelCells(Vehicle.Components.FuelCellSystem).ConvertToEngineeringData();
-
-				iterativeRunStrategy.Update = (modData, iterationRunData) =>
-				{
-					var fchvDataAdapter = new FCHVDeclarationDataAdapter(DataProvider.DataSource);
-
-					/// Refer to [1] EngineeringModeVectoRunDataFactory.GetFCHV_RunData():
-					/// Comment from [1]:
-					///		In case the battery is modified after creating the rundata
-					///		(testing, do not create new battery data).
-					iterationRunData.BatteryData = fchvDataAdapter.CreateFuelCellPreProcessingBattery(
-						fuelCellSystemData,
-						iterationRunData.BatteryData,
-						out var fcBatteries);
-
-					runData.BatteryData.Batteries = runData.BatteryData.Batteries
-						.Where(b => b.Item1 != fcBatteries.Item1)
-						.ToList();
-
-					iterationRunData.JobType = FuelCellJobType;
-					iterationRunData.ModFileSuffix = string.Empty;
-					iterationRunData.FuelCellSystemData = fuelCellSystemData;
-					modData.PostProcessingCorrection = new FCHVPostProcessingCorrection()
-					{
-						FCHVElectricEnergyConsumptionSoC = FCHVPostProcessingCorrection.CalculateElectricEnergyConsumption(modData),
-					};
-
-					iterationRunData.FuelCellSystemData.FuelCellPowerMap =
-						fchvDataAdapter.CreateFuelCellPowerMap(modData, iterationRunData.FuelCellSystemData, iterationRunData.BatteryData);
-					iterationRunData.FuelCellSystemData.FuelCellShareMap =
-						fchvDataAdapter.CreateFuelCellShareMap(fuelCellSystemData);
-
-					/// Comment from [1]: In the real run we don't use a charge sustaining battery
-					runData.BatteryData.ChargeSustainingBatterySystem = false;
-					runData.ModFileSuffix += runData.Loading;
-					runData.Iteration++;
-				};
-
-				return iterativeRunStrategy;
-			}
-
-			private FCHEVIterativeRunStrategy SetUpFCHEVIterativeRunStrategy()
-			{
-				return new FCHEVIterativeRunStrategy(
-						new[]
-						{
-							// Pre-run, iteration 0.
-							new PreRunOptions()
-							{
-								WriteModAndSumData = true,
-//#if TRACE_FC
-//								WriteModAndSumData = true,
-//#else
-//								WriteModAndSumData = false
-//#endif
-							},
-
-							// Real run, iteration 1.
-							new PreRunOptions()
-							{
-								WriteModAndSumData = true
-							}
-						});
 			}
 
 			protected override bool AxleGearRequired()
@@ -747,7 +680,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 						GearboxType.APTN,
 						Vehicle.Components.IEPC.Gears.Count
 					);
-				runData.GearboxData = DataAdapter.CreateGearboxData(Vehicle, runData);
+				runData.GearboxData = DataAdapter.CreateGearboxData(Vehicle, runData, GearboxType.APTN);
 
 			}
 

@@ -14,10 +14,12 @@ using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDataFactory;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Declaration.IterativeRunStrategies;
+using TUGraz.VectoCore.Models.Declaration.VehicleOperation;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
 using TUGraz.VectoCore.OutputData;
@@ -30,7 +32,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
 	{
 		public abstract class SingleBusBase : AbstractDeclarationVectoRunDataFactory
         {
-			protected ISingleBusDeclarationDataAdapter DataAdapter { get; }
+            protected VehicleOperationLookup VehicleOperation => new VehicleOperationLookup();
+
+            protected ISingleBusDeclarationDataAdapter DataAdapter { get; }
 
 			public ISingleBusInputDataProvider SingleBusDataProvider { get; }
 
@@ -69,8 +73,10 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
                 var cycle = CycleFactory.GetDeclarationCycle(mission);
 
                 CheckSuperCap(SingleBusDataProvider.PrimaryVehicle);
-				
-				var simulationRunData = new VectoRunData {
+
+                var vehicleOperation = VehicleOperation.LookupVehicleOperation(mission.BusParameter?.BusGroup ?? _segment.VehicleClass, mission.MissionType);
+
+                var simulationRunData = new VectoRunData {
 					InputData = SingleBusDataProvider,
 					Loading = loading.Key,
 					Cycle = new DrivingCycleProxy(cycle, mission.MissionType.ToString()),
@@ -85,7 +91,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
 					InputDataHash = SingleBusDataProvider.XMLHash, // right hash?!?
 					SimulationType = SimulationType.DistanceCycle,
 					VehicleDesignSpeed = _segment.DesignSpeed,
-					MaxChargingPower = SingleBusDataProvider.PrimaryVehicle.MaxChargingPower,
+					MaxChargingPower = SingleBusDataProvider.PrimaryVehicle.MaxChargingPower ?? vehicleOperation.StationaryChargingMaxPwrInfrastructure,
 				};
 
 				return simulationRunData;
@@ -245,11 +251,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
 					foreach (var mission in _segment.Missions) {
 						foreach (var loading in mission.Loadings.Where(l => MissionFilter?.Run(mission.MissionType, l.Key) ?? true)) {
 							if (SingleBusDataProvider.PrimaryVehicle.OVC) {
-								if (SingleBusDataProvider.PrimaryVehicle.MaxChargingPower != null &&
-									SingleBusDataProvider.PrimaryVehicle.MaxChargingPower.IsEqual(0))
-								{
-									throw new VectoException("MaxChargingPower has to be greater than 0 if OVC is selected");
-								}
 								yield return CreateVectoRunData(mission, loading, modeIdx, OvcHevMode.ChargeDepleting);
 								yield return CreateVectoRunData(mission, loading, modeIdx, OvcHevMode.ChargeSustaining);
 							} else {
@@ -705,7 +706,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
                     vehicle.Length ?? mission.BusParameter.VehicleLength,
                     vehicle.Components.AxleWheels.NumSteeredAxles, vehicle.VehicleType, result.BatteryOnlyHybridMode);
 
-                if (vehicle.BatteryOnlyMode && result.Aux.Any(x => x.ID != Constants.Auxiliaries.IDs.Fan && x.ConnectToREESS))
+                if (vehicle.BatteryOnlyMode && result.Aux.Any(x => x.ID != Constants.Auxiliaries.IDs.Fan && !x.ConnectToREESS))
                 {
                     throw new VectoException(
                         "Vehicles with a battery dominant mode are required to have electrically powered auxiliaries");
@@ -722,32 +723,32 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
 				result.BusAuxiliaries = DataAdapter.CreateBusAuxiliariesData(
                     mission, SingleBusDataProvider.PrimaryVehicle, SingleBusDataProvider.CompletedVehicle, result);
 
-                result.OVCMode = ovcMode;
+				/// Refer to [1] EngineeringModeVectoRunDataFactory.GetFCHV_RunData():
+				/// Comment from [1]:
+				///		In case the battery is modified after creating the rundata
+				///		(testing, do not create new battery data).
+				result.BatteryData = new FCHVDeclarationDataAdapter(DataProvider.DataSource).CreateFuelCellPreProcessingBattery(
+					DataAdapter.CreateFuelCells(Vehicle.Components.FuelCellSystem).ConvertToEngineeringData(),
+					result.BatteryData,
+					out var fcBatteries);
+
+				result.OVCMode = ovcMode;
                 result.ModFileSuffix += "_pre";
-                result.IterativeRunStrategy = SetUpFuelCellIterativeRunStrategy(result);
+                result.IterativeRunStrategy = SetUpFuelCellIterativeRunStrategy(result, fcBatteries);
 
                 return result;
             }
 
-            private FCHEVIterativeRunStrategy SetUpFuelCellIterativeRunStrategy(VectoRunData runData)
+            private FCHEVIterativeRunStrategy SetUpFuelCellIterativeRunStrategy(VectoRunData runData, Tuple<int, BatteryData> fcBatteries)
             {
                 var vehicle = SingleBusDataProvider.PrimaryVehicle;
 
-                var iterativeRunStrategy = SetUpFCHEVIterativeRunStrategy();
+                var iterativeRunStrategy = DeclarationFuelCellIterativeStrategy.SetUpFCHEVIterativeRunStrategy();
                 var fuelCellData = DataAdapter.CreateFuelCells(vehicle.Components.FuelCellSystem).ConvertToEngineeringData();
 
                 iterativeRunStrategy.Update = (modData, iterationRunData) =>
                 {
                     var fchvDataAdapter = new FCHVDeclarationDataAdapter(DataProvider.DataSource);
-
-                    /// Refer to [1] EngineeringModeVectoRunDataFactory.GetFCHV_RunData():
-                    /// Comment from [1]:
-                    ///		In case the battery is modified after creating the rundata
-                    ///		(testing, do not create new battery data).
-                    iterationRunData.BatteryData = fchvDataAdapter.CreateFuelCellPreProcessingBattery(
-                        fuelCellData,
-                        iterationRunData.BatteryData,
-                        out var fcBatteries);
 
                     runData.BatteryData.Batteries = runData.BatteryData.Batteries
                         .Where(b => b.Item1 != fcBatteries.Item1)
@@ -756,10 +757,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
                     iterationRunData.JobType = FuelCellJobType;
                     iterationRunData.ModFileSuffix = string.Empty;
                     iterationRunData.FuelCellSystemData = fuelCellData;
-                    modData.PostProcessingCorrection = new FCHVPostProcessingCorrection()
-                    {
-                        FCHVElectricEnergyConsumptionSoC = FCHVPostProcessingCorrection.CalculateElectricEnergyConsumption(modData),
-                    };
+					modData.PostProcessingCorrection = new FCHVPostProcessingCorrection();
 
                     iterationRunData.FuelCellSystemData.FuelCellPowerMap =
                         fchvDataAdapter.CreateFuelCellPowerMap(modData, iterationRunData.FuelCellSystemData, iterationRunData.BatteryData);
@@ -772,30 +770,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
                 };
 
                 return iterativeRunStrategy;
-            }
-
-            private FCHEVIterativeRunStrategy SetUpFCHEVIterativeRunStrategy()
-            {
-                return new FCHEVIterativeRunStrategy(
-                        new[]
-                        {
-							// Pre-run, iteration 0.
-							new PreRunOptions()
-                            {
-                                WriteModAndSumData = true
-//#if TRACE_FC
-//								WriteModAndSumData = true,
-//#else
-//								WriteModAndSumData = false
-//#endif
-							},
-
-							// Real run, iteration 1.
-							new PreRunOptions()
-                            {
-                                WriteModAndSumData = true
-                            }
-                        });
             }
 
             protected override bool AxleGearRequired()
