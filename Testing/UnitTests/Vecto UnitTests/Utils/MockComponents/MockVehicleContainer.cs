@@ -62,9 +62,15 @@ namespace TUGraz.VectoCore.Tests.Utils
 
         public IElectricSystemInfo JunctionBox { get; set; }
 
+		public IWheelEnd WheelEnd { get; set; }
+
+		public ITorqueSplitter TorqueSplitter { get; set; }
+
         public IAxlegearInfo AxlegearInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => this;
 
 		public IAngledriveInfo AngledriveInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
+
+        public IRetarder Retarder(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
 
         public IList<IAxlegearInfo> AxlegearsInfo { get; set; }
 

@@ -15,8 +15,8 @@ using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-    public class ElectricPowerJunctionBox : StatefulVectoSimulationComponent<SimpleComponentState>, IUpdateable, IElectricSystem
-	{
+    public class ElectricPowerJunctionBox : StatefulVectoSimulationComponent<SimpleComponentState>, IElectricPowerJunctionBox
+    {
 		protected internal IElectricSystem _electricPower;
 		private Dictionary<ITnOutPort, Watt> _powerDemands;
 		private IElectricSystemResponse _electricPowerResponse;
@@ -91,9 +91,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			throw new NotImplementedException();
 		}
 
-        public void Connect(IElectricSystem powersupply)
+        public void Connect(IElectricSystem powerSupply)
 		{
-			_electricPower = powersupply;
+			_electricPower = powerSupply;
 		}
 
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)

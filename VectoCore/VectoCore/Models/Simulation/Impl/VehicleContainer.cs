@@ -68,6 +68,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		public virtual IGearboxControl GearboxCtl { get; protected set; }
 		public virtual IAxlegearInfo AxlegearInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => AxlegearsInfo.FirstOrDefault(x => x.AxleNumber == axleNumber);
+        public virtual IRetarder Retarder(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => Retarders.FirstOrDefault(x => x.AxleNumber == axleNumber);
         public virtual IVehicleInfo VehicleInfo { get; protected set; }
 		public virtual IBrakes Brakes { get; protected set; }
 		public virtual IWheelsInfo WheelsInfo { get; protected set; }
@@ -93,6 +94,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		public IElectricSystemInfo JunctionBox { get; protected set; }
 
+		public ITorqueSplitter TorqueSplitter { get; protected set; }
+
+		public IWheelEnd WheelEnd { get; protected set; }
+
 		public virtual bool IsTestPowertrain => false;
 
 		internal ISimulationOutPort Cycle;
@@ -114,6 +119,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		internal readonly IList<IAngledriveInfo> Angledrives = new List<IAngledriveInfo>();
 
 		internal readonly IList<IClutchInfo> Clutches = new List<IClutchInfo>();
+
+		internal readonly IList<IRetarder> Retarders = new List<IRetarder>();
 
 		private IList<IResetableVectoSimulationComponent> _resetableComponents = new List<IResetableVectoSimulationComponent>(3);
 
@@ -262,8 +269,20 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			if (component is IWHRCharger c25) {
 				WHRCharger = c25;
 			}
-			
-			_components.Add(Tuple.Create(commitPriority, component));
+            if (component is IWheelEnd c26)
+			{
+				WheelEnd = c26;
+			}
+			if (component is ITorqueSplitter c27)
+			{
+				TorqueSplitter = c27;
+			}
+			if (component is IRetarder c28)
+			{
+				Retarders.Add(c28);
+			}
+
+            _components.Add(Tuple.Create(commitPriority, component));
 			//todo mk20210617 use sorted list with inverse commitPriority (-commitPriority)
 			_components = _components.OrderBy(x => x.Item1).Reverse().ToList();
 

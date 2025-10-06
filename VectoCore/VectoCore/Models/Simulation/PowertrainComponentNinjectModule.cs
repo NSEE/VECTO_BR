@@ -504,6 +504,8 @@ namespace TUGraz.VectoCore.Models.Simulation
             Bind<IDriver>().To<Driver>().Named(namingHelper.Prefix);
             Bind<IDriverStrategy>().To<DefaultDriverStrategy>().Named(namingHelper.Prefix);
             Bind<IBrakes>().To<Brakes>().Named(namingHelper.Prefix);
+			Bind<IElectricPowerJunctionBox>().To<ElectricPowerJunctionBox>().Named(namingHelper.Prefix);
+			Bind<ITorqueSplitter>().To<TorqueSplitter>().Named(namingHelper.Prefix);
             Bind<IAxlegear>().To<AxleGear>().Named(namingHelper.Prefix);
             Bind<IAngledrive>().To<Angledrive>().Named(namingHelper.Prefix);
             Bind<IRetarder>().To<Retarder>().Named(namingHelper.Prefix);

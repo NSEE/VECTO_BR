@@ -13,13 +13,12 @@ using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class TorqueSplitter :
-		StatefulVectoSimulationComponent<SimpleComponentState>, ITnInPort, ITnOutPort, IUpdateable, IPowerTrainComponent
-	{
+	public class TorqueSplitter : StatefulVectoSimulationComponent<SimpleComponentState>, ITnInPort, ITnOutPort, ITorqueSplitter
+    {
 		protected List<ITnOutPort> _nextComponents = new List<ITnOutPort>();
-		private ElectricPowerJunctionBox _junctionBox;
+		private IElectricPowerJunctionBox _junctionBox;
 
-		public TorqueSplitter(IVehicleContainer container, ElectricPowerJunctionBox junctionBox) : 
+		public TorqueSplitter(IVehicleContainer container, IElectricPowerJunctionBox junctionBox) : 
 			base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
 		{
 			_junctionBox = junctionBox;

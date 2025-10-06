@@ -45,8 +45,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 	public interface IRetarder : IPowerTrainComponent
 	{
-
-	}
+        int AxleNumber { get; }
+    }
 
     /// <summary>
     /// Retarder component.
