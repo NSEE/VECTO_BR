@@ -46,7 +46,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 		[Inject]
 		public IDeclarationInjectFactory DeclarationFactory { protected get; set; }
 
-		
+		public XMLInputDataFactory()
+		{
+		}
+
+		internal XMLInputDataFactory(IDeclarationInjectFactory declarationFactory)
+		{
+			DeclarationFactory = declarationFactory ?? throw new ArgumentNullException(nameof(declarationFactory));
+		}
+
 		public IInputDataProvider Create(string filename)
 		{
 			using (var reader = XmlReader.Create(filename)) {
