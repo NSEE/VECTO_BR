@@ -94,7 +94,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (!dryRun) {
 				CurrentState.SetState(inTorque, angularVelocity, torque, angularVelocity);
 			}
-			return NextComponent.Request(absTime, dt, inTorque, angularVelocity, dryRun);
+			
+			var response = NextComponent.Request(absTime, dt, inTorque, angularVelocity, dryRun);
+			response.Retarder.RetarderTorqueLoss = retarderTorqueLoss; 
+
+            return response;
 		}
 
 		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
