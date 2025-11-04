@@ -199,12 +199,12 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		throw new NotImplementedException();
 	}
 
-	public IAxlegear CreateAxleGear(IVehicleContainer container, AxleGearData modelData)
+	public IAxlegear CreateAxleGear(IVehicleContainer container, AxleGearData modelData, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
 	{
 		throw new NotImplementedException();
 	}
 
-	public IAngledrive CreateAngledrive(IVehicleContainer container, AngledriveData modelData)
+	public IAngledrive CreateAngledrive(IVehicleContainer container, AngledriveData modelData, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
 	{
 		throw new NotImplementedException();
 	}
@@ -226,7 +226,7 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		throw new NotImplementedException();
 	}
 
-	public IClutchInfo CreateATClutchInfo(IVehicleContainer container)
+	public IClutchInfo CreateATClutchInfo(IVehicleContainer container, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
 	{
 		throw new NotImplementedException();
 	}
@@ -260,13 +260,13 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 	}
 
 	public IBusAuxiliariesAdapter CreateBusAuxiliariesAdapter(IVehicleContainer container, IAuxiliaryConfig auxiliaryConfig,
-		IAuxPort additionalAux = null)
+		IAuxPort additionalAux = null, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
 	{
 		throw new NotImplementedException();
 	}
 
 	public IElectricMotor CreateElectricMotor(bool isIEPC, IVehicleContainer container, ElectricMotorData data,
-		IElectricMotorControl control, PowertrainPosition position)
+		IElectricMotorControl control, PowertrainPosition position, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
 	{
 		throw new NotImplementedException();
 	}
@@ -309,12 +309,12 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		throw new NotImplementedException();
 	}
 
-	public IGearboxInfo CreateDummyGearboxInfo(bool engineOnly, IVehicleContainer container, GearshiftPosition gear = null)
+	public IGearboxInfo CreateDummyGearboxInfo(bool engineOnly, IVehicleContainer container, GearshiftPosition gear = null, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
 	{
 		throw new NotImplementedException();
 	}
 
-	public IAxlegearInfo CreateDummyAxleGearInfo(IVehicleContainer container)
+	public IAxlegearInfo CreateDummyAxleGearInfo(IVehicleContainer container, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
 	{
 		throw new NotImplementedException();
 	}
@@ -362,7 +362,7 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		throw new NotImplementedException();
 	}
 
-	public IElectricMotorControl CreateElectricMotorController(CycleType cycle, IVehicleContainer container, IElectricSystem es)
+	public IElectricMotorControl CreateElectricMotorController(CycleType cycle, IVehicleContainer container, IElectricSystem es, AxlePowertrainData axlePt = null)
 	{
 		throw new NotImplementedException();
 	}
@@ -400,6 +400,16 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
         ISumData writeSumData)
     {
         return new Mock<IExemptedVehicleContainer>().Object;
+    }
+
+    public IElectricPowerJunctionBox CreateElectricPowerJunctionBox(IVehicleContainer container)
+    {
+        throw new NotImplementedException();
+    }
+
+    public ITorqueSplitter CreateTorqueSplitter(IVehicleContainer container, IElectricPowerJunctionBox junctionBox)
+    {
+        throw new NotImplementedException();
     }
 
     #endregion

@@ -268,7 +268,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			if (data.Aux.Any(aux => aux.ID == Constants.Auxiliaries.IDs.Cond))
 			{
 				var conditioningAux = data.Aux.FirstOrDefault(aux => aux.ID == Constants.Auxiliaries.IDs.Cond);
-				var emConditioning = (data.JobType.IsFCHV() || data.JobType == VectoSimulationJobType.Multiple_FCHV) 
+				var emConditioning = data.JobType.IsFCHV() 
 					? DeclarationData.Conditioning.LookupPowerDemand(
 						data.VehicleData.VehicleClass,
 						VectoSimulationJobType.BatteryElectricVehicle,

@@ -37,6 +37,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCore.Models.Simulation.DataBus
 {
@@ -73,6 +74,8 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		IList<IClutchInfo> ClutchesInfo { get; }
 
+		IRetarder Retarder(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);	
+
 		IBrakes Brakes { get; }
 
 		IWheelsInfo WheelsInfo { get; }
@@ -90,6 +93,10 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 		IElectricSystemInfo ElectricSystemInfo { get; }
 
 		IElectricSystemInfo JunctionBox {  get; }
+
+		ITorqueSplitter TorqueSplitter { get; }
+
+		IWheelEnd WheelEnd { get; }
 
 		ITorqueConverterInfo TorqueConverterInfo { get; }
 
