@@ -205,7 +205,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
                 var averageVoltage = runData.BatteryData?.CalculateVoltageCenterSoc();
 
                 runData.AxlePowertrainsData = DataAdapter.CreateAxlePowertrainsData(
-                    InputDataProvider,
+                    Vehicle,
                     averageVoltage,
                     runData.BatteryOnlyHybridMode,
                     runData.VehicleData,
@@ -328,6 +328,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 
                 runData.IterativeRunStrategy = DeclarationFuelCellIterativeStrategy.SetUpFuelCellIterativeRunStrategy(
                     runData,
+                    InputDataProvider.JobInputData.Vehicle,
                     DataAdapter,
                     InputDataProvider,
                     runData.JobType,
@@ -864,7 +865,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 				runData.ModFileSuffix += "_pre";
 				runData.IterativeRunStrategy = DeclarationFuelCellIterativeStrategy.SetUpFuelCellIterativeRunStrategy(
 					runData,
-					DataAdapter,
+                    InputDataProvider.JobInputData.Vehicle,
+                    DataAdapter,
 					DataProvider,
 					FuelCellJobType,
 					fcBatteries);

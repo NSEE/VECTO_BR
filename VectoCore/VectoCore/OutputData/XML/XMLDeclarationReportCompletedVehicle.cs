@@ -294,7 +294,7 @@ namespace TUGraz.VectoCore.OutputData.XML
                 result.ZeroCO2EmissionsRange = range;
             }
 
-            if (generic.VectoRunData.JobType.IsBatteryElectric())
+            if (generic.VectoRunData.JobType.IsBatteryElectric() || (generic.VectoRunData.JobType == VectoSimulationJobType.Multiple_PEV))
             {
                 var elRanges = DeclarationData.CalculateElectricRangesPEVCompletedBus(batteryData: result.BatteryData,
                     result.ElectricEnergyConsumption, result.Distance);

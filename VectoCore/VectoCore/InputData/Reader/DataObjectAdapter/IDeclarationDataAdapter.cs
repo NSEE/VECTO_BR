@@ -47,7 +47,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		FuelCellSystemDeclarationData CreateFuelCells(IFuelCellSystemDeclarationInputData fuelCellSystem);
 
 		IList<AxlePowertrainData> CreateAxlePowertrainsData(
-			IDeclarationInputDataProvider input, 
+            IVehicleDeclarationInputData vehicle, 
 			Volt averageVoltage,
             bool batteryOnlyHybridMode, 
 			VehicleData vehicleData,
@@ -167,8 +167,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 		AirdragData CreateAirdragData(IVehicleDeclarationInputData completedVehicle, Mission mission, Segment segment,
 			OvcHevMode ovcMode);
-
-	}
+    }
 
 	public interface ISingleBusDeclarationDataAdapter : IDeclarationDataAdapter
 	{

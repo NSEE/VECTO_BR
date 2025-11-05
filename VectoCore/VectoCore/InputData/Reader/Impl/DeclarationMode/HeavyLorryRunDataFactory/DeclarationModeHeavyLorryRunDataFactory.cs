@@ -333,7 +333,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
                 var averageVoltage = runData.BatteryData?.CalculateVoltageCenterSoc();
 
                 runData.AxlePowertrainsData = DataAdapter.CreateAxlePowertrainsData(
-					InputDataProvider, 
+                    Vehicle, 
 					averageVoltage, 
 					runData.BatteryOnlyHybridMode,
 					runData.VehicleData, 
@@ -481,6 +481,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
                 
 				runData.IterativeRunStrategy = DeclarationFuelCellIterativeStrategy.SetUpFuelCellIterativeRunStrategy(
 					runData, 
+					InputDataProvider.JobInputData.Vehicle,
 					DataAdapter, 
 					InputDataProvider,
                     runData.JobType,
