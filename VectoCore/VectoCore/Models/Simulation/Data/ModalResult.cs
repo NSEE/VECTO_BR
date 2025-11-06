@@ -471,7 +471,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 					break;
 				case IWheels _: CreateColumns(WheelSignals); break;
 				case IBrakes _: CreateColumns(BrakeSignals); break;
-				case WheelEnd _: CreateColumns(WheelEndSignals); break;	
+				case IWheelEnd _: CreateColumns(WheelEndSignals); break;	
 				case IDriverInfo _: CreateColumns(DriverSignals); break;
 				case IVehicle _: CreateColumns(VehicleSignals); break;
 				case IElectricMotor c3 when c3.Position == PowertrainPosition.IEPC: 
