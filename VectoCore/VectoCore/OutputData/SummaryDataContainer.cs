@@ -509,7 +509,7 @@ namespace TUGraz.VectoCore.OutputData
 				case IBrakes _:
 					CreateColumns(BrakeColumns);
 					break;
-				case WheelEnd _:
+				case IWheelEnd _:
 					CreateColumns(WheelEndColumns);
 					break;
 				case IDriver _:
