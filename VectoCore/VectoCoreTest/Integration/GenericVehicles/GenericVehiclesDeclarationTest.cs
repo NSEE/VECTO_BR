@@ -37,8 +37,10 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 		private const string GROUP_9_AT     = @$"{DeclarationBasePath}ICE/Group9_RigidTruck_AT_6x2/Class_9_RigidTruck_AT_Decl.vecto";
 		private const string GROUP_9_AT_ECOROLL = @$"{DeclarationBasePath}ICE/Group9_RigidTruck_AT_6x2_EcoRoll/Class_9_RigidTruck_AT_Decl_EcoRoll.vecto";
 
-		// BUS
-		private const string PRIMARYBUS_P31_32 = @$"{DeclarationBasePath}ICE/Group P31_32_xml/primary_heavyBus_group_P31_32_Smart_ES.xml";
+		private const string GROUP_5_WHEEL_BEARINGS = $"{DeclarationBasePath}/ICE/Wheel_Bearings/Conventional_heavyLorry_AMT.xml";
+
+        // BUS
+        private const string PRIMARYBUS_P31_32 = @$"{DeclarationBasePath}ICE/Group P31_32_xml/primary_heavyBus_group_P31_32_Smart_ES.xml";
 		private const string PRIMARYBUS_P33_34 = @$"{DeclarationBasePath}ICE/Group P33_34_xml/primary_heavyBus_group_P33_34_SmartPS.xml";
 		private const string PRIMARYBUS_P35_36 = @$"{DeclarationBasePath}ICE/Group P35_36_xml/primary_heavyBus_group_P35_36_nonSmart.xml";
 		private const string PRIMARYBUS_P37_38 = @$"{DeclarationBasePath}ICE/Group P37_38_xml/primary_heavyBus_group_P37_38_SmartES_PS.xml";
@@ -115,6 +117,8 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 
 			TestCase(GROUP_9_WHR, "LongHaul", 938.0763),
 			TestCase(GROUP_9_WHR, "RegionalDelivery", 677.2773),
+
+			TestCase(GROUP_5_WHEEL_BEARINGS, "LongHaul", 2503.0173)
 
 			//TestCase(GROUP_9_AT, "LongHaul", 1136.1705),
 			//TestCase(GROUP_9_AT, "RegionalDelivery", 845.8791),
