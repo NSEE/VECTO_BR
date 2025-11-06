@@ -358,7 +358,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					: engineResponse.ElectricMotor.ElectricMotorPowerMech;
 
 				var operatingPoint = ModelData.FindOperatingPointForPowerDemand(
-					(engineResponse.Engine.DynamicFullLoadPower - engineResponse.Engine.AuxiliariesPowerDemand - emPower),
+					(engineResponse.Engine.DynamicFullLoadPower - engineResponse.Engine.AuxiliariesPowerDemand 
+					- (engineResponse.Retarder.RetarderTorqueLoss ?? 0.SI<NewtonMeter>()) * engineResponse.Engine.PowerRequest / engineResponse.Engine.TorqueOutDemand
+					- emPower),
 					DataBus.EngineInfo.EngineSpeed, outAngularVelocity, _engineInertia, dt, previousPower);
 				var maxInputSpeed = VectoMath.Min(ModelData.TorqueConverterSpeedLimit, DataBus.EngineInfo.EngineN95hSpeed);
 				if (operatingPoint.InAngularVelocity.IsGreater(maxInputSpeed)) {
