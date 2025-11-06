@@ -1053,6 +1053,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						case ResponseSpeedLimitExceeded _:
 							third = Driver.DrivingActionBrake(absTime, ds, velocityWithOverspeed, gradient);
 							debug.Add("[DMD.HRE-7] third:SpeedLimitExceeded -> Brake", third);
+
+							if (third is ResponseOverload)
+							{
+                                third = Driver.DrivingActionAccelerate(absTime, ds, velocityWithOverspeed, gradient);
+                                debug.Add("[DMD.HRE-7-1] third:Overload after Brake after Gearshift --> Accelerate", third);
+                            }
+
 							break;
 					}
 					break;
