@@ -304,7 +304,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
                 {
                     foreach (var loading in mission.Loadings.Where(l => MissionFilter?.Run(mission.MissionType, l.Key) ?? true))
                     {
-                        var ovcMode = InputDataProvider.JobInputData.Vehicle.OVC ? OvcHevMode.ChargeSustaining : OvcHevMode.NotApplicable;
+                        var ovcMode = InputDataProvider.JobInputData.Vehicle.OVC ? OvcHevMode.ChargeDepleting : OvcHevMode.NotApplicable;
 
                         yield return CreateVectoRunData(mission, loading, null, ovcMode);
                     }
