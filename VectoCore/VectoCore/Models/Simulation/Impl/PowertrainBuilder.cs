@@ -1501,31 +1501,14 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		}
 
-		//private static void ConnectFuelCellSystem(ElectricSystem es, FuelCellSystemData fcSystemData, IVehicleContainer container)
-		private static void ConnectFuelCellSystem(ElectricSystem es, VectoRunData runData, IVehicleContainer container)
+		private void ConnectFuelCellSystem(ElectricSystem es, VectoRunData runData, IVehicleContainer container)
 		{
 			if(runData.FuelCellSystemData == null)
 			{
 				return;
 			}
 
-			//if(runData.FuelCellSystemData.FuelCellPowerMap == null)
-			//{
-			//	runData.FuelCellSystemData.SetFuelCellSystemPowerMap(runData.BatteryData, container.ModalData);
-			//}
-			
-			//if (runData.FuelCellSystemData.FuelCellShareMap == null)
-			//{
-			//	runData.FuelCellSystemData.SetFuelCellSystemSharedMap();
-			//}
-
-			var id = 1;
-			var fuelCellSystem = new FuelCellSystem(runData.FuelCellSystemData, container);
-			foreach (var fuelCell in runData.FuelCellSystemData.FuelCellStrings) {
-				var fcs = new FuelCellString(fuelCell, id++, dataBus:container);
-				fuelCellSystem.AddFuelCellString(fcs);
-			}
-				
+			var fuelCellSystem = ComponentFactory.CreateFuelCellSystem(container, runData.FuelCellSystemData);
 			es.Connect(fuelCellSystem);
 		}
 		

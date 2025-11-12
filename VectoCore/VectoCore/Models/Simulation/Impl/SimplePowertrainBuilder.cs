@@ -57,9 +57,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						: BuildSimpleHybridPowertrain(data);
 				case VectoSimulationJobType.BatteryElectricVehicle:
 				case VectoSimulationJobType.IEPC_E:
+					return BuildSimplePowertrainElectric(data);
 				case VectoSimulationJobType.FCHV:
 				case VectoSimulationJobType.FCHV_IEPC:
-					return BuildSimplePowertrainElectric(data);
+					return BuildSimplePowertrainFCHV(data);
 				case VectoSimulationJobType.SerialHybridVehicle:
 					return BuildSimpleSerialHybridPowertrain(data);
 				case VectoSimulationJobType.IEPC_S:
@@ -627,7 +628,21 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 		}
 
-		protected ISimpleVehicleContainer GetVehicleContainer(VectoRunData runData)
+        public ISimpleVehicleContainer BuildSimplePowertrainFCHV(VectoRunData data)
+		{
+			var container = BuildSimplePowertrainElectric(data);
+			var es = container.ElectricSystemInfo as ElectricSystem;
+
+			if (data.FuelCellSystemData != null) {
+				var fuelCellSystem = ComponentFactory.CreateFuelCellSystem(container, data.FuelCellSystemData);
+				es.Connect(fuelCellSystem);
+			}
+
+			return container;
+		}
+
+
+        protected ISimpleVehicleContainer GetVehicleContainer(VectoRunData runData)
 		{
 			var container = ComponentFactory.CreateSimpleVehicleContainer(runData);
 			return container;

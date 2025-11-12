@@ -30,7 +30,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public IReadOnlyCollection<FuelCell> FuelCells => new ReadOnlyCollection<FuelCell>(_fuelCells);
 
 		public FuelCellString(FuelCellStringData fcData, int stringId, IVehicleContainer dataBus) : 
-			base(null, Constants.NOT_IN_AXLE_POWERTRAIN)
+			base(dataBus, Constants.NOT_IN_AXLE_POWERTRAIN)
 		{
 			_fcStringMap = fcData.MassFlowMap;
 			_stringId = stringId;
