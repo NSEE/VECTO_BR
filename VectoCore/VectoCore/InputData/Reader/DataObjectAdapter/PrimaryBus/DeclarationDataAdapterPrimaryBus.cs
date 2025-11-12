@@ -56,7 +56,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
 				return ShiftStrategyFactory.GetShiftStrategyName(gbxType, inputData.VehicleType, batteryOnlyHybrid);
 			}
 
-            public virtual IList<AxlePowertrainData> CreateAxlePowertrainsData(IDeclarationInputDataProvider input, Volt averageVoltage,
+            public virtual IList<AxlePowertrainData> CreateAxlePowertrainsData(IVehicleDeclarationInputData vehicle, Volt averageVoltage,
                 bool batteryOnlyHybridMode, VehicleData vehicleData, Mission mission)
             {
                 return null;
@@ -228,7 +228,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
             };
 
             public override IList<AxlePowertrainData> CreateAxlePowertrainsData(
-                IDeclarationInputDataProvider input,
+                IVehicleDeclarationInputData vehicle,
                 Volt averageVoltage,
                 bool batteryOnlyHybridMode,
                 VehicleData vehicleData,
@@ -236,7 +236,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
             {
                 IList<AxlePowertrainData> axlePts = new List<AxlePowertrainData>();
 
-                foreach (var axlePtData in input.JobInputData.Vehicle.Components.AxlePowertrainInputData)
+                foreach (var axlePtData in vehicle.Components.AxlePowertrainInputData)
                 {
                     ValidateIEPCData(axlePtData.IEPCInputData, axlePtData.AxleGearInputData);
 
@@ -246,7 +246,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
                         ? CreateIEPCElectricMachines(axlePtData.IEPCInputData, averageVoltage).First()
                         : ElectricMachinesDataAdapter.CreateElectricMachine(
                             axlePtData.ElectricMotor,
-                            input.JobInputData.Vehicle.ElectricMotorTorqueLimits,
+                            vehicle.ElectricMotorTorqueLimits,
                             averageVoltage,
                             axlePtData.AxleNumber);
 
@@ -369,6 +369,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
 
         public class MultipleFCHV : MultiplePEV
         {
+            protected override IVehicleDataAdapter VehicleDataAdapter { get; } = new PrimaryBusVehicleDataAdapter_FCHV();
+
             protected override IFuelCellDataAdapter FuelCellDataAdapter { get; } = new FuelCellDataAdapter();
         }
 

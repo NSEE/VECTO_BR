@@ -544,7 +544,14 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 
 				runData.OVCMode = ovcMode;
 				runData.ModFileSuffix += "_pre";
-				runData.IterativeRunStrategy = DeclarationFuelCellIterativeStrategy.SetUpFuelCellIterativeRunStrategy(runData, DataAdapter, InputDataProvider, FuelCellJobType, fcBatteries);
+				runData.IterativeRunStrategy = DeclarationFuelCellIterativeStrategy.SetUpFuelCellIterativeRunStrategy(
+					runData,
+                    InputDataProvider.JobInputData.Vehicle,
+                    DataAdapter, 
+					InputDataProvider, 
+					FuelCellJobType, 
+					fcBatteries);
+
 				runData.BatteryData.Batteries.ForEach(t => t.Item2.ChargeDepletingBattery = true);
 
 				return runData;

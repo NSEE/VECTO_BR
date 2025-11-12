@@ -79,6 +79,7 @@ namespace TUGraz.VectoCore.Tests.Integration
             TestCase($@"{DeclarationBasePath}/Multiple_SHEV_IEPC_IEPC_HeavyLorry.xml", ExecutionMode.Declaration),
 
             TestCase($@"{DeclarationBasePath}/Multiple_FCHV_F4_F4_PrimaryBus.xml", ExecutionMode.Declaration),
+            TestCase($@"{DeclarationBasePath}/Multiple_PEV_E4_E4_PrimaryBus.xml", ExecutionMode.Declaration),
         ]
         public void RunDistanceJob(string jobFile, ExecutionMode mode)
         {

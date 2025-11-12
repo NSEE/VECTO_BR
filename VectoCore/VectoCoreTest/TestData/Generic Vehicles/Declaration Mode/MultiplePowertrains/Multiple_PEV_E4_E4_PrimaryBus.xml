@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tns:VectoInputDeclaration xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="2.0" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v3.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:/VectoCore/VectoCore/Resources/XSD/VectoDeclarationJob.xsd" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns:v2.6="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6">
-	<Vehicle xsi:type="Vehicle_Multiple_FCHV_PrimaryBusDeclarationType" id="A">
+	<Vehicle xsi:type="Vehicle_Multiple_PEV_PrimaryBusDeclarationType" id="A">
 		<Manufacturer>TU Graz</Manufacturer>
 		<ManufacturerAddress>Inffeldgasse 19</ManufacturerAddress>
-		<Model>PEV Heavy Lorry E2</Model>
+		<Model>PEV PrimaryBus E4-E4</Model>
 		<VIN>123467890</VIN>
 		<Date>2017-01-01T00:00:00Z</Date>
 		<SimulationToolLicenseNumber>x</SimulationToolLicenseNumber>
@@ -17,8 +17,8 @@
 		<AngledriveType axleNumber="1">None</AngledriveType>
 		<AngledriveType axleNumber="2">None</AngledriveType>
 		<ZeroEmissionVehicle>true</ZeroEmissionVehicle>
-		<ArchitectureID>F4</ArchitectureID>
-		<ArchitectureIDPwt2>F4</ArchitectureIDPwt2>
+		<ArchitectureID>E4</ArchitectureID>
+		<ArchitectureIDPwt2>E4</ArchitectureIDPwt2>
 		<OVC>true</OVC>
 		<BatteryOnlyMode>true</BatteryOnlyMode>
 		<DynamicChargingTechnology>Wireless</DynamicChargingTechnology>
@@ -44,46 +44,7 @@
 				</VoltageLevel>
 			</ElectricMachine>
 		</ElectricMotorTorqueLimits>
-		<H2StorageUsableCapacity>80.0</H2StorageUsableCapacity>
-		<HydrogenStorageTechnology>Compressed</HydrogenStorageTechnology>
 		<Components>
-			<FuelCellSystem>
-				<FuelCellModule>
-					<Count>1</Count>
-					<FuelCell>
-						<Data xsi:type="FuelCellDataDeclarationType" id="FuelCell" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6">
-							<Manufacturer>a</Manufacturer>
-							<Model>a</Model>
-							<CertificationNumber>token</CertificationNumber>
-							<Date>2017-01-01T00:00:00Z</Date>
-							<AppVersion>aaaaa</AppVersion>
-							<CertificationMethod>Measured</CertificationMethod>
-							<FCSRatedPower>15</FCSRatedPower>
-							<FuelCellPowerOutputConsumptionMap>
-								<Entry powerOutput="10.00" fuelConsumption="662.00" />
-								<Entry powerOutput="20.00" fuelConsumption="1001.00" />
-								<Entry powerOutput="35.00" fuelConsumption="1812.50" />
-								<Entry powerOutput="50.00" fuelConsumption="2887.50" />
-								<Entry powerOutput="65.00" fuelConsumption="4069.70" />
-								<Entry powerOutput="85.00" fuelConsumption="5672.00" />
-								<Entry powerOutput="100.00" fuelConsumption="7150.00" />
-							</FuelCellPowerOutputConsumptionMap>
-						</Data>
-						<v2.6:Signature>
-							<di:Reference URI="#BAT-asdf">
-								<di:Transforms>
-									<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
-									<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
-								</di:Transforms>
-								<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
-								<di:DigestValue>22QLOYTZK+bUIolzdEzc3Ut0wPIOXEBdWv72ST0Zbyw=</di:DigestValue>
-							</di:Reference>
-						</v2.6:Signature>
-					</FuelCell>
-					<MinPower>10000</MinPower>
-					<MaxPower>100000</MaxPower>
-				</FuelCellModule>
-			</FuelCellSystem>
 			<ElectricEnergyStorage>
 				<Battery>
 					<StringID>0</StringID>
@@ -4196,7 +4157,7 @@
 				</v2.0:Data>
 			</AxleWheels>
 			<Auxiliaries>
-				<Data xsi:type="AUX_FCHV_PrimaryBusType">
+				<Data xsi:type="AUX_PEV_PrimaryBusType">
 					<SteeringPump>
 						<Technology axleNumber="1">Electric driven pump</Technology>
 					</SteeringPump>

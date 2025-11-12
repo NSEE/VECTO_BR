@@ -536,14 +536,16 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
             if (primaryVehicle.VehicleType.IsOneOf(
 				VectoSimulationJobType.BatteryElectricVehicle,
 				VectoSimulationJobType.IEPC_E,
+				VectoSimulationJobType.Multiple_PEV,
 				VectoSimulationJobType.FCHV,
-				VectoSimulationJobType.FCHV_IEPC))
+				VectoSimulationJobType.FCHV_IEPC,
+				VectoSimulationJobType.Multiple_FCHV))
 			{
 				retVal.ConnectESToREESS = true;
 			}
 			else if (primaryVehicle.VehicleType.IsOneOf(VectoSimulationJobType.ParallelHybridVehicle,
 							VectoSimulationJobType.SerialHybridVehicle, VectoSimulationJobType.IEPC_S,
-							VectoSimulationJobType.IHPC))
+							VectoSimulationJobType.IHPC, VectoSimulationJobType.Multiple_SHEV))
 			{
 				retVal.ConnectESToREESS =
 					primaryVehicle.Components.BusAuxiliaries.ElectricSupply.ESSupplyFromHEVREESS;
