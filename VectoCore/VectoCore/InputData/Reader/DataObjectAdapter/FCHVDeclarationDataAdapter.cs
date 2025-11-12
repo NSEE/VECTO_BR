@@ -75,7 +75,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			BatterySystemData batterySystemData,
 			out Tuple<int, BatteryData> fuelCellBattery)
 		{
-			Watt fcP = fuelCellSystemData.FuelCellStrings.Sum(fc => fc.MaxPower * fc.FcCount);
+			Watt fcP = fuelCellSystemData.FuelCellStrings.Sum(fc => fc.MaxPower);
 
 			return CreateFuelCellPreProcessingBattery(fcP, batterySystemData, out fuelCellBattery);
 		}
