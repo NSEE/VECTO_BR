@@ -12,6 +12,7 @@ using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCore.OutputData
 {
@@ -60,17 +61,17 @@ namespace TUGraz.VectoCore.OutputData
 		public const string TORQUECONVERTER_MANUFACTURER = "Torque converter manufacturer [-]";
 		public const string TORQUECONVERTER_MODEL = "Torque converter model [-]";
 
-		public const string RETARDER_MANUFACTURER = "Retarder manufacturer [-]";
-		public const string RETARDER_MODEL = "Retarder model [-]";
-		public const string RETARDER_TYPE = "Retarder type [-]";
+		public const string RETARDER_MANUFACTURER = "Retarder manufacturer{0} [-]";
+		public const string RETARDER_MODEL = "Retarder model{0} [-]";
+		public const string RETARDER_TYPE = "Retarder type{0} [-]";
 
 		public const string ANGLEDRIVE_MANUFACTURER = "Angledrive manufacturer [-]";
 		public const string ANGLEDRIVE_MODEL = "Angledrive model [-]";
 		public const string ANGLEDRIVE_RATIO = "Angledrive ratio [-]";
 
-		public const string AXLE_MANUFACTURER = "Axle manufacturer [-]";
-		public const string AXLE_MODEL = "Axle model [-]";
-		public const string AXLE_RATIO = "Axle gear ratio [-]";
+		public const string AXLE_MANUFACTURER = "Axle manufacturer{0} [-]";
+		public const string AXLE_MODEL = "Axle model{0} [-]";
+		public const string AXLE_RATIO = "Axle gear ratio{0} [-]";
 
 		public const string AUX_TECH_FORMAT = "Auxiliary technology {0} [-]";
 
@@ -257,13 +258,13 @@ namespace TUGraz.VectoCore.OutputData
 		public const string GEARBOX_CERTIFICATION_NUMBER = "Gearbox certification number";
 		public const string GEARBOX_CERTIFICATION_METHOD = "Gearbox certification option";
 		public const string AVERAGE_GEARBOX_EFFICIENCY = "Average gearbox efficiency [-]";
-		public const string RETARDER_CERTIFICATION_NUMBER = "Retarder certification number";
-		public const string RETARDER_CERTIFICATION_METHOD = "Retarder certification option";
+		public const string RETARDER_CERTIFICATION_NUMBER = "Retarder certification number{0}";
+		public const string RETARDER_CERTIFICATION_METHOD = "Retarder certification option{0}";
 		public const string ANGLEDRIVE_CERTIFICATION_NUMBER = "Angledrive certification number";
 		public const string ANGLEDRIVE_CERTIFICATION_METHOD = "Angledrive certification option";
 		public const string AVERAGE_ANGLEDRIVE_EFFICIENCY = "Average angledrive efficiency{0} [-]";
-		public const string AXLEGEAR_CERTIFICATION_NUMBER = "Axlegear certification number";
-		public const string AXLEGEAR_CERTIFICATION_METHOD = "Axlegear certification method";
+		public const string AXLEGEAR_CERTIFICATION_NUMBER = "Axlegear certification number{0}";
+		public const string AXLEGEAR_CERTIFICATION_METHOD = "Axlegear certification method{0}";
 		public const string AVERAGE_AXLEGEAR_EFFICIENCY = "Average axlegear efficiency{0} [-]";
 		public const string AIRDRAG_CERTIFICATION_NUMBER = "AirDrag certification number";
 		public const string AIRDRAG_CERTIFICATION_METHOD = "AirDrag certification option";
@@ -584,20 +585,6 @@ namespace TUGraz.VectoCore.OutputData
 					})
 				},
 
-				// axlegear infos
-				{ AXLE_MANUFACTURER, SumFunc((r, m) => r.AxleGearData?.Manufacturer ?? Constants.NOT_AVAILABLE) },
-				{ AXLE_MODEL, SumFunc((r, m) => r.AxleGearData?.ModelName ?? Constants.NOT_AVAILABLE) },
-				{ AXLE_RATIO, SumFunc((r, m) => (ConvertedSI)r.AxleGearData?.AxleGear.Ratio.SI<Scalar>()) }, {
-					AXLEGEAR_CERTIFICATION_METHOD,
-					SumFunc((r, m) => r.AxleGearData?.CertificationMethod.GetName() ?? Constants.NOT_AVAILABLE)
-				}, {
-					AXLEGEAR_CERTIFICATION_NUMBER,
-					SumFunc((r, m) =>
-						r.AxleGearData?.CertificationMethod == CertificationMethod.StandardValues
-							? ""
-							: r.AxleGearData?.CertificationNumber)
-				},
-
 				// axle/tyre infos
 				{
 					NUM_AXLES_DRIVEN,
@@ -674,34 +661,6 @@ namespace TUGraz.VectoCore.OutputData
 						r.AngledriveData.CertificationMethod == CertificationMethod.StandardValues
 							? ""
 							: r.AngledriveData.CertificationNumber)
-				},
-
-				// retarder
-				{ RETARDER_TYPE, SumFunc((r, m) => (r.Retarder?.Type ?? RetarderType.None).GetLabel()) }, {
-					RETARDER_MANUFACTURER,
-					SumFunc((r, m) =>
-						r.Retarder != null && r.Retarder.Type.IsDedicatedComponent()
-							? r.Retarder.Manufacturer
-							: Constants.NOT_AVAILABLE)
-				}, {
-					RETARDER_MODEL,
-					SumFunc((r, m) =>
-						r.Retarder != null && r.Retarder.Type.IsDedicatedComponent()
-							? r.Retarder.ModelName
-							: Constants.NOT_AVAILABLE)
-				}, {
-					RETARDER_CERTIFICATION_METHOD,
-					SumFunc((r, m) =>
-						r.Retarder != null && r.Retarder.Type.IsDedicatedComponent()
-							? r.Retarder?.CertificationMethod.GetName()
-							: "")
-				}, {
-					RETARDER_CERTIFICATION_NUMBER,
-					SumFunc((r, m) =>
-						r.Retarder == null || !r.Retarder.Type.IsDedicatedComponent() ||
-						r.Retarder.CertificationMethod == CertificationMethod.StandardValues
-							? ""
-							: r.Retarder.CertificationNumber)
 				},
 
 				// gearbox
@@ -1187,8 +1146,48 @@ namespace TUGraz.VectoCore.OutputData
 
 		public static readonly Dictionary<string, Tuple<ModalResultField[], WriteSumEntryAxle>> AxlegearValue = 
 			new Dictionary<string, Tuple<ModalResultField[], WriteSumEntryAxle>>() {
+			{ 
+				AXLE_MANUFACTURER, 
+				SumFunc((r, m, a) =>
+				{
+					var axlegear = r.GetAxlegearData().FirstOrDefault(x => x.Item1 == a)?.Item2;
+					return axlegear?.Manufacturer ?? Constants.NOT_AVAILABLE;
+				}) 
+			},
+            { 
+				AXLE_MODEL, 
+				SumFunc((r, m, a) =>
+                {
+                    var axlegear = r.GetAxlegearData().FirstOrDefault(x => x.Item1 == a)?.Item2;
+                    return axlegear?.ModelName ?? Constants.NOT_AVAILABLE;
+                })
+            },
+            { 
+				AXLE_RATIO, 
+				SumFunc((r, m, a) =>
+                {
+                    var axlegear = r.GetAxlegearData().FirstOrDefault(x => x.Item1 == a)?.Item2;
+                    return axlegear?.AxleGear.Ratio;
+                }) 
+			}, 
 			{
-				E_AXL_LOSS,
+                AXLEGEAR_CERTIFICATION_METHOD,
+                SumFunc((r, m, a) =>
+                {
+                    var axlegear = r.GetAxlegearData().FirstOrDefault(x => x.Item1 == a)?.Item2;
+                    return axlegear?.CertificationMethod.GetName() ?? Constants.NOT_AVAILABLE;
+                }) 
+            }, 
+			{
+                AXLEGEAR_CERTIFICATION_NUMBER,
+                SumFunc((r, m, a) =>
+                {
+                    var axlegear = r.GetAxlegearData().FirstOrDefault(x => x.Item1 == a)?.Item2;
+					return (axlegear?.CertificationMethod == CertificationMethod.StandardValues) ? "" : axlegear.CertificationNumber;
+                })
+            },
+            {
+                E_AXL_LOSS,
 				SumFunc((r, m, a) => m.WorkAxlegear(a).ConvertToKiloWattHour(), ModalResultField.P_axle_loss)
 			},
 			{
@@ -1210,8 +1209,50 @@ namespace TUGraz.VectoCore.OutputData
 			{
 				E_RET_LOSS, 
 				SumFunc((r, m, a) => m.WorkRetarder(a).ConvertToKiloWattHour(), ModalResultField.P_ret_loss)
-			}
-		};
+			},
+            {
+                RETARDER_TYPE,
+                SumFunc((r, m, a) =>
+                {
+                    var retarder = r.GetRetarderData().FirstOrDefault(x => x.Item1 == a)?.Item2;
+                    return (retarder?.Type ?? RetarderType.None).GetLabel();
+                })
+            },
+            {
+                RETARDER_MANUFACTURER,
+                SumFunc((r, m, a) =>
+                {
+                    var retarder = r.GetRetarderData().FirstOrDefault(x => x.Item1 == a)?.Item2;
+                    return ((retarder != null) && retarder.Type.IsDedicatedComponent()) ? retarder.Manufacturer : Constants.NOT_AVAILABLE;
+                })
+            },
+            {
+                RETARDER_MODEL,
+                SumFunc((r, m, a) =>
+                {
+                    var retarder = r.GetRetarderData().FirstOrDefault(x => x.Item1 == a)?.Item2;
+                    return ((retarder != null) && retarder.Type.IsDedicatedComponent()) ? retarder.ModelName : Constants.NOT_AVAILABLE;
+                })
+            },
+            {
+                RETARDER_CERTIFICATION_METHOD,
+                SumFunc((r, m, a) =>
+                {
+                    var retarder = r.GetRetarderData().FirstOrDefault(x => x.Item1 == a)?.Item2;
+                    return ((retarder != null) && retarder.Type.IsDedicatedComponent()) ? retarder.CertificationMethod.GetName() : "";
+                })
+            },
+            {
+                RETARDER_CERTIFICATION_NUMBER,
+                SumFunc((r, m, a) =>
+                {
+                    var retarder = r.GetRetarderData().FirstOrDefault(x => x.Item1 == a)?.Item2;
+                    return ((retarder == null) || !retarder.Type.IsDedicatedComponent() || (retarder.CertificationMethod == CertificationMethod.StandardValues))
+                        ? ""
+                        : retarder.CertificationNumber;
+                })
+            }
+        };
 
 		public static readonly Dictionary<string, Tuple<ModalResultField[], WriteSumEntryAxle>> AngledriveValue =
 			new Dictionary<string, Tuple<ModalResultField[], WriteSumEntryAxle>>() {
