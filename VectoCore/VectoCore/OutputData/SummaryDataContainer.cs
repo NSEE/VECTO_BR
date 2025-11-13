@@ -196,21 +196,11 @@ namespace TUGraz.VectoCore.OutputData
 			Tuple.Create(SumDataFields.TORQUECONVERTER_MODEL, typeof(string)),
 			Tuple.Create(SumDataFields.TORQUE_CONVERTER_CERTIFICATION_METHOD, typeof(string)),
 			Tuple.Create(SumDataFields.TORQUE_CONVERTER_CERTIFICATION_NUMBER, typeof(string)),
-			Tuple.Create(SumDataFields.RETARDER_MANUFACTURER, typeof(string)),
-			Tuple.Create(SumDataFields.RETARDER_MODEL, typeof(string)),
-			Tuple.Create(SumDataFields.RETARDER_TYPE, typeof(string)),
-			Tuple.Create(SumDataFields.RETARDER_CERTIFICATION_METHOD, typeof(string)),
-			Tuple.Create(SumDataFields.RETARDER_CERTIFICATION_NUMBER, typeof(string)),
 			Tuple.Create(SumDataFields.ANGLEDRIVE_MANUFACTURER, typeof(string)),
 			Tuple.Create(SumDataFields.ANGLEDRIVE_MODEL, typeof(string)),
 			Tuple.Create(SumDataFields.ANGLEDRIVE_RATIO, typeof(ConvertedSI)),
 			Tuple.Create(SumDataFields.ANGLEDRIVE_CERTIFICATION_METHOD, typeof(string)),
 			Tuple.Create(SumDataFields.ANGLEDRIVE_CERTIFICATION_NUMBER, typeof(string)),
-			Tuple.Create(SumDataFields.AXLE_MANUFACTURER, typeof(string)),
-			Tuple.Create(SumDataFields.AXLE_MODEL, typeof(string)),
-			Tuple.Create(SumDataFields.AXLE_RATIO, typeof(ConvertedSI)),
-			Tuple.Create(SumDataFields.AXLEGEAR_CERTIFICATION_METHOD, typeof(string)),
-			Tuple.Create(SumDataFields.AXLEGEAR_CERTIFICATION_NUMBER, typeof(string)),
 			Tuple.Create(string.Format(SumDataFields.AUX_TECH_FORMAT, Constants.Auxiliaries.IDs.SteeringPump),
 				typeof(string)),
 			Tuple.Create(string.Format(SumDataFields.AUX_TECH_FORMAT, Constants.Auxiliaries.IDs.Fan), typeof(string)),
@@ -313,11 +303,33 @@ namespace TUGraz.VectoCore.OutputData
 			Tuple.Create(SumDataFields.AVERAGE_AXLEGEAR_EFFICIENCY, typeof(double)),
 		};
 
-		public static readonly Tuple<string, Type>[] RetarderColumns = {
+        public static readonly Tuple<string, Type>[] AxlegearModelColumns = {
+            Tuple.Create(SumDataFields.AXLE_MANUFACTURER, typeof(string)),
+            Tuple.Create(SumDataFields.AXLE_MODEL, typeof(string)),
+            Tuple.Create(SumDataFields.AXLE_RATIO, typeof(double)),
+        };
+
+        public static readonly Tuple<string, Type>[] AxlegearCertificationColumns = {
+            Tuple.Create(SumDataFields.AXLEGEAR_CERTIFICATION_NUMBER, typeof(string)),
+            Tuple.Create(SumDataFields.AXLEGEAR_CERTIFICATION_METHOD, typeof(string)),
+        };
+
+        public static readonly Tuple<string, Type>[] RetarderColumns = {
 			Tuple.Create(SumDataFields.E_RET_LOSS, typeof(ConvertedSI)),
 		};
 
-		public static readonly Tuple<string, Type>[] WheelColumns = {
+        public static readonly Tuple<string, Type>[] RetarderModelColumns = {
+            Tuple.Create(SumDataFields.RETARDER_MANUFACTURER, typeof(string)),
+            Tuple.Create(SumDataFields.RETARDER_MODEL, typeof(string)),
+            Tuple.Create(SumDataFields.RETARDER_TYPE, typeof(string)),
+        };
+
+        public static readonly Tuple<string, Type>[] RetarderCertificationColumns = {
+            Tuple.Create(SumDataFields.RETARDER_CERTIFICATION_NUMBER, typeof(string)),
+            Tuple.Create(SumDataFields.RETARDER_CERTIFICATION_METHOD, typeof(string)),
+        };
+
+        public static readonly Tuple<string, Type>[] WheelColumns = {
 			Tuple.Create(SumDataFields.P_WHEEL, typeof(ConvertedSI)),
 			Tuple.Create(SumDataFields.P_WHEEL_POS, typeof(ConvertedSI)),
 		};
@@ -442,8 +454,12 @@ namespace TUGraz.VectoCore.OutputData
 		protected IList<string> EmColumns = new List<string>();
 		protected IList<string> GearRatioColumns = new List<string>();
 		protected IList<string> AxlegearCols = new List<string>();
-		protected IList<string> RetarderCols = new List<string>();
-		protected IList<string> AngledriveCols = new List<string>();
+        protected IList<string> AxlegearModelCols = new List<string>();
+        protected IList<string> AxlegearCertificationCols = new List<string>();
+        protected IList<string> RetarderCols = new List<string>();
+        protected IList<string> RetarderModelCols = new List<string>();
+        protected IList<string> RetarderCertificationCols = new List<string>();
+        protected IList<string> AngledriveCols = new List<string>();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SummaryDataContainer"/> class.
@@ -500,7 +516,7 @@ namespace TUGraz.VectoCore.OutputData
 				case IAxlegear _:
 					CreateAxleGearColumns(component.AxleNumber);
 					break;
-				case Retarder _:
+				case IRetarder _:
 					CreateRetarderColumns(component.AxleNumber);
 					break;
 				case IWheels _:
@@ -613,7 +629,43 @@ namespace TUGraz.VectoCore.OutputData
 					}
 				}
 			}
-		}
+
+            lock (Table)
+            {
+                var colNames = RetarderModelColumns.Select(x => string.Format(x.Item1, axleNumber.FormatAxleNumber()));
+
+                Table.Columns.AddRange(RetarderModelColumns
+                    .Select(x => Tuple.Create(string.Format(x.Item1, axleNumber.FormatAxleNumber()), x.Item2))
+                    .Where(x => !Table.Columns.Contains(x.Item1)).Select(x => new DataColumn(x.Item1, x.Item2))
+                    .ToArray());
+
+                foreach (var axColName in colNames)
+                {
+                    if (!RetarderModelCols.Contains(axColName))
+                    {
+                        RetarderModelCols.Add(axColName);
+                    }
+                }
+            }
+
+            lock (Table)
+            {
+                var colNames = RetarderCertificationColumns.Select(x => string.Format(x.Item1, axleNumber.FormatAxleNumber()));
+
+                Table.Columns.AddRange(RetarderCertificationColumns
+                    .Select(x => Tuple.Create(string.Format(x.Item1, axleNumber.FormatAxleNumber()), x.Item2))
+                    .Where(x => !Table.Columns.Contains(x.Item1)).Select(x => new DataColumn(x.Item1, x.Item2))
+                    .ToArray());
+
+                foreach (var axColName in colNames)
+                {
+                    if (!RetarderCertificationCols.Contains(axColName))
+                    {
+                        RetarderCertificationCols.Add(axColName);
+                    }
+                }
+            }
+        }
 
 		private void CreateAngledriveColumns(int axleNumber)
 		{
@@ -655,7 +707,43 @@ namespace TUGraz.VectoCore.OutputData
 					}
 				}
 			}
-		}
+
+            lock (Table)
+            {
+                var colNames = AxlegearModelColumns.Select(x => string.Format(x.Item1, axleNumber.FormatAxleNumber()));
+
+                Table.Columns.AddRange(AxlegearModelColumns
+                    .Select(x => Tuple.Create(string.Format(x.Item1, axleNumber.FormatAxleNumber()), x.Item2))
+                    .Where(x => !Table.Columns.Contains(x.Item1)).Select(x => new DataColumn(x.Item1, x.Item2))
+                    .ToArray());
+
+                foreach (var axColName in colNames)
+                {
+                    if (!AxlegearModelCols.Contains(axColName))
+                    {
+                        AxlegearModelCols.Add(axColName);
+                    }
+                }
+            }
+
+            lock (Table)
+            {
+                var colNames = AxlegearCertificationColumns.Select(x => string.Format(x.Item1, axleNumber.FormatAxleNumber()));
+
+                Table.Columns.AddRange(AxlegearCertificationColumns
+                    .Select(x => Tuple.Create(string.Format(x.Item1, axleNumber.FormatAxleNumber()), x.Item2))
+                    .Where(x => !Table.Columns.Contains(x.Item1)).Select(x => new DataColumn(x.Item1, x.Item2))
+                    .ToArray());
+
+                foreach (var axColName in colNames)
+                {
+                    if (!AxlegearCertificationCols.Contains(axColName))
+                    {
+                        AxlegearCertificationCols.Add(axColName);
+                    }
+                }
+            }
+        }
 
 		private void CreateGearTimeShareColumns(GearList gears)
 		{
@@ -771,17 +859,18 @@ namespace TUGraz.VectoCore.OutputData
 
 			cols.AddRange(new[] {
 				SumDataFields.TORQUECONVERTER_MANUFACTURER,
-				SumDataFields.TORQUECONVERTER_MODEL,
-				SumDataFields.RETARDER_MANUFACTURER,
-				SumDataFields.RETARDER_MODEL,
-				SumDataFields.RETARDER_TYPE,
+				SumDataFields.TORQUECONVERTER_MODEL
+			});
+
+			cols.AddRange(RetarderModelCols);
+
+			cols.AddRange(new[] {
 				SumDataFields.ANGLEDRIVE_MANUFACTURER,
 				SumDataFields.ANGLEDRIVE_MODEL,
 				SumDataFields.ANGLEDRIVE_RATIO,
-				SumDataFields.AXLE_MANUFACTURER,
-				SumDataFields.AXLE_MODEL,
-				SumDataFields.AXLE_RATIO
 			});
+
+			cols.AddRange(AxlegearModelCols);
 
             cols.AddRange(new[] {
                 Constants.Auxiliaries.IDs.SteeringPump, 
@@ -868,70 +957,70 @@ namespace TUGraz.VectoCore.OutputData
 
 			cols.AddRange(new[] {
 				SumDataFields.E_WHEELEND_SAVED,
-				SumDataFields.E_BRAKE, 
-				SumDataFields.E_VEHICLE_INERTIA, 
-				SumDataFields.E_WHEEL, 
+				SumDataFields.E_BRAKE,
+				SumDataFields.E_VEHICLE_INERTIA,
+				SumDataFields.E_WHEEL,
 				SumDataFields.E_AIR,
-				SumDataFields.E_ROLL, 
+				SumDataFields.E_ROLL,
 				SumDataFields.E_GRAD,
-				SumDataFields.AirConsumed, 
-				SumDataFields.AirGenerated, 
-				SumDataFields.E_PS_CompressorOff, 
+				SumDataFields.AirConsumed,
+				SumDataFields.AirGenerated,
+				SumDataFields.E_PS_CompressorOff,
 				SumDataFields.E_PS_CompressorOn,
-				SumDataFields.E_BusAux_ES_consumed, 
-				SumDataFields.E_BusAux_ES_generated, 
+				SumDataFields.E_BusAux_ES_consumed,
+				SumDataFields.E_BusAux_ES_generated,
 				SumDataFields.Delta_E_BusAux_Battery,
 				SumDataFields.E_BusAux_PS_corr,
 				SumDataFields.E_BusAux_el_PS_corr,
 				SumDataFields.E_BusAux_ES_mech_corr,
-				SumDataFields.E_BusAux_HVAC_Mech, 
+				SumDataFields.E_BusAux_HVAC_Mech,
 				SumDataFields.E_BusAux_HVAC_El,
 				SumDataFields.E_BusAux_AuxHeater,
-				SumDataFields.E_WHR_EL, 
-				SumDataFields.E_WHR_MECH, 
-				SumDataFields.E_ICE_START, 
+				SumDataFields.E_WHR_EL,
+				SumDataFields.E_WHR_MECH,
+				SumDataFields.E_ICE_START,
 				SumDataFields.E_AUX_ESS_missing,
-				SumDataFields.NUM_ICE_STARTS, 
+				SumDataFields.NUM_ICE_STARTS,
 				SumDataFields.ACC,
-				SumDataFields.ACC_POS, 
-				SumDataFields.ACC_NEG, 
-				SumDataFields.ACC_TIMESHARE, 
+				SumDataFields.ACC_POS,
+				SumDataFields.ACC_NEG,
+				SumDataFields.ACC_TIMESHARE,
 				SumDataFields.DEC_TIMESHARE,
 				SumDataFields.CRUISE_TIMESHARE,
-				SumDataFields.MAX_SPEED, 
-				SumDataFields.MAX_ACCELERATION, 
-				SumDataFields.MAX_DECELERATION, 
+				SumDataFields.MAX_SPEED,
+				SumDataFields.MAX_ACCELERATION,
+				SumDataFields.MAX_DECELERATION,
 				SumDataFields.AVG_ENGINE_SPEED,
-				SumDataFields.MAX_ENGINE_SPEED, 
-				SumDataFields.NUM_GEARSHIFTS, 
+				SumDataFields.MAX_ENGINE_SPEED,
+				SumDataFields.NUM_GEARSHIFTS,
 				SumDataFields.STOP_TIMESHARE,
-				SumDataFields.ICE_FULL_LOAD_TIME_SHARE, 
+				SumDataFields.ICE_FULL_LOAD_TIME_SHARE,
 				SumDataFields.ICE_OFF_TIME_SHARE,
-				SumDataFields.COASTING_TIME_SHARE, 
-				SumDataFields.BRAKING_TIME_SHARE, 
+				SumDataFields.COASTING_TIME_SHARE,
+				SumDataFields.BRAKING_TIME_SHARE,
 				SumDataFields.AVERAGE_POS_ACC,
 
 				SumDataFields.ENGINE_CERTIFICATION_NUMBER,
 				SumDataFields.AVERAGE_ENGINE_EFFICIENCY,
-				SumDataFields.TORQUE_CONVERTER_CERTIFICATION_METHOD, 
-				SumDataFields.TORQUE_CONVERTER_CERTIFICATION_NUMBER, 
+				SumDataFields.TORQUE_CONVERTER_CERTIFICATION_METHOD,
+				SumDataFields.TORQUE_CONVERTER_CERTIFICATION_NUMBER,
 				SumDataFields.AVERAGE_TORQUE_CONVERTER_EFFICIENCY_WITHOUT_LOCKUP,
-				SumDataFields.AVERAGE_TORQUE_CONVERTER_EFFICIENCY_WITH_LOCKUP, 
-				SumDataFields.GEARBOX_CERTIFICATION_METHOD, 
-				SumDataFields.GEARBOX_CERTIFICATION_NUMBER, 
-				SumDataFields.AVERAGE_GEARBOX_EFFICIENCY, 
-				SumDataFields.RETARDER_CERTIFICATION_METHOD,
-				SumDataFields.RETARDER_CERTIFICATION_NUMBER, 
+				SumDataFields.AVERAGE_TORQUE_CONVERTER_EFFICIENCY_WITH_LOCKUP,
+				SumDataFields.GEARBOX_CERTIFICATION_METHOD,
+				SumDataFields.GEARBOX_CERTIFICATION_NUMBER,
+				SumDataFields.AVERAGE_GEARBOX_EFFICIENCY
+			});
+
+			cols.AddRange(RetarderCertificationCols);
+
+			cols.AddRange(new[] {
 				SumDataFields.ANGLEDRIVE_CERTIFICATION_METHOD, 
 				SumDataFields.ANGLEDRIVE_CERTIFICATION_NUMBER,
 			});
 
             cols.AddRange(AngledriveCols.Where(c => c.StartsWith("Average")).ToArray());
 
-			cols.AddRange(new[] {
-				SumDataFields.AXLEGEAR_CERTIFICATION_METHOD,
-                SumDataFields.AXLEGEAR_CERTIFICATION_NUMBER,
-            });
+			cols.AddRange(AxlegearCertificationCols);
 
             cols.AddRange(AxlegearCols.Where(c => c.StartsWith("Average")).ToArray());
 
@@ -1119,18 +1208,18 @@ namespace TUGraz.VectoCore.OutputData
 
 			foreach (var retarder in runData.GetRetarderData())
 			{
-				if (!retarder.Item2.Type.IsDedicatedComponent())
-				{
-					continue;
-				}
+                if (!retarder.Item2.Type.IsDedicatedComponent())
+                {
+                    continue;
+                }
 
-				foreach (var field in SumDataFields.RetarderValue)
+                foreach (var field in SumDataFields.RetarderValue)
 				{
 					var value = field.Value.Item2(runData, modData, retarder.Item1);
 					var name = string.Format(field.Key, retarder.Item1.FormatAxleNumber());
 					row[name] = value;
 				}
-			}
+            }
 
 			foreach (var angledrive in runData.GetAngledriveData())
 			{
