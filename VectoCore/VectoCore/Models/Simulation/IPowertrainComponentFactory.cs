@@ -117,7 +117,7 @@ namespace TUGraz.VectoCore.Models.Simulation
 
         IWheelEnd CreateWheelEnd(IVehicleContainer container, WheelEndData modelData);
 
-		IFuelCell CreateFuelCellSystem(IVehicleContainer container, FuelCellSystemData modelData);
+		IFuelCellSystem CreateFuelCellSystem(IVehicleContainer container, FuelCellSystemData modelData);
 
 		IElectricMotorControl CreateElectricMotorControllerBatteryOnlyHybrid(CycleType cycle, IVehicleContainer container, IElectricSystem es);
 		
