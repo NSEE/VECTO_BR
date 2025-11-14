@@ -282,6 +282,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				Retarders.Add(c28);
 			}
 
+			if (component is IFuelCellSystem) {
+				commitPriority = -99; // make sure, fuel cell system is processed after fuel cells and fuel cell strings
+			}
+
             _components.Add(Tuple.Create(commitPriority, component));
 			//todo mk20210617 use sorted list with inverse commitPriority (-commitPriority)
 			_components = _components.OrderBy(x => x.Item1).Reverse().ToList();

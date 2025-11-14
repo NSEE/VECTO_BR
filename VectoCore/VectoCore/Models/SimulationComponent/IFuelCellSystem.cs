@@ -2,5 +2,5 @@
 
 namespace TUGraz.VectoCore.Models.SimulationComponent
 {
-	public interface IFuelCell : IFuelCellPort {}
+	public interface IFuelCellSystem : IFuelCellPort {}
 }

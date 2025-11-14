@@ -38,7 +38,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 	}
 
 
-	public class FuelCellSystem : StatefulVectoSimulationComponent<FuelCellSystem.State>, IFuelCell
+	public class FuelCellSystem : StatefulVectoSimulationComponent<FuelCellSystem.State>, IFuelCellSystem
 	{
 		private readonly IList<FuelCellString> _fuelCellStrings;
 

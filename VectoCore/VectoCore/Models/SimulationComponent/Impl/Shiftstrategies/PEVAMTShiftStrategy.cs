@@ -22,7 +22,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 	{
 		public static string Name => "AMT - EffShift (FCHV)";
 
-		public FCHVAMTShiftStrategy(IVehicleContainer container) : base(container, VectoSimulationJobType.FCHV, false) { }
+		public FCHVAMTShiftStrategy(IVehicleContainer container) : base(container, VectoSimulationJobType.FCHV, false)
+		{
+			SetupVelocityDropPreprocessor(container.SimplePowertrainBuilder);
+        }
 	}
 
 	public class ParallelHybridBatteryOnlyModeShiftStrategy : PEVAMTShiftStrategy
