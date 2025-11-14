@@ -167,7 +167,7 @@ namespace TUGraz.VectoCore.Models.Simulation
             Bind<IClutch>().To<Clutch>().Named(_realPowertrain.ClutchBatteryOnlyHybridName(VectoSimulationJobType.ParallelHybridVehicle));
 			Bind<IClutch>().To<Clutch>().Named(_realPowertrain.ClutchBatteryOnlyHybridName(VectoSimulationJobType.IHPC));
 
-			Bind<IFuelCell>().To<FuelCellSystem>().Named(_realPowertrain.Prefix);
+			Bind<IFuelCellSystem>().To<FuelCellSystem>().Named(_realPowertrain.Prefix);
 
             #endregion
 
@@ -213,7 +213,7 @@ namespace TUGraz.VectoCore.Models.Simulation
 			Bind<IElectricMotorControl>().To<SimpleElectricMotorControl>()
 				.Named(_testPowertrain.ElectricMotorControllerBatteryOnlyHybridName(CycleType.DistanceBased));
 
-			Bind<IFuelCell>().To<TestpowertrainFuelCellSystem>().Named(_testPowertrain.Prefix);
+			Bind<IFuelCellSystem>().To<TestpowertrainFuelCellSystem>().Named(_testPowertrain.Prefix);
             #endregion
 
         }
