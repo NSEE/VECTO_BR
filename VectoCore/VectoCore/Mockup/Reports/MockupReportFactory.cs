@@ -107,11 +107,12 @@ namespace TUGraz.VectoMockup.Reports
                 {
                     case VehicleCategory.HeavyBusCompletedVehicle:
                         throw new NotImplementedException();
-						return new XMLDeclarationReportCompletedVehicle(outputDataWriter, _mrfFactory, _cifFactory,
-							_vifFactory)
-                        {
-                            PrimaryVehicleReportInputData = declarationInputDataProvider.PrimaryVehicleData,
-                        };
+                        //commented-out to avoid compile-time warning
+						//return new XMLDeclarationReportCompletedVehicle(outputDataWriter, _mrfFactory, _cifFactory,
+						//	_vifFactory)
+      //                  {
+      //                      PrimaryVehicleReportInputData = declarationInputDataProvider.PrimaryVehicleData,
+      //                  };
                     case VehicleCategory.HeavyBusPrimaryVehicle:
                         return new XMLDeclarationMockupPrimaryReport(outputDataWriter, _mrfFactory, _cifFactory, _vifFactory,
 							declarationInputDataProvider.JobInputData.Vehicle.ExemptedVehicle);

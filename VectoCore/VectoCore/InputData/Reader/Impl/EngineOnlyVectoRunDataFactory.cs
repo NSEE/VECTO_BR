@@ -46,7 +46,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 {
 	public class EngineOnlyVectoRunDataFactory : EngineeringModeVectoRunDataFactory
 	{
-		public const string Name = "EngineOnlyRunDataFactory";
+		public new const string Name = "EngineOnlyRunDataFactory";
 
 
         internal EngineOnlyVectoRunDataFactory(IEngineeringInputDataProvider dataProvider, IPowertrainBuilder ptBuilder, IEngineeringDataAdapter dataAdapter) : base(dataProvider, dataAdapter) {}

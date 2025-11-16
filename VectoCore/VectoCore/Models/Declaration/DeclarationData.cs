@@ -1875,10 +1875,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 				switch (type) {
 					case BatteryType.HPBS:
 						return SOCMinHP;
-						break;
 					case BatteryType.HEBS:
 						return SOCMinHE;
-						break;
 					default:
 						throw new ArgumentOutOfRangeException(nameof(type), type, null);
 				}
@@ -1892,10 +1890,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 				{
 					case BatteryType.HPBS:
 						return SOCMaxHP;
-						break;
 					case BatteryType.HEBS:
 						return SOCMaxHE;
-						break;
 					default:
 						throw new ArgumentOutOfRangeException(nameof(type), type, null);
 				}
@@ -1973,7 +1969,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			//var D21_stationaryChargingDuringMission_AvgDurationPerEvent = vehicleOperation.StationaryChargingDuringMission_AvgDurationPerEvent;
 			//var D22_stationaryChargingDuringMission_NbrEvents = vehicleOperation.StationaryChargingDuringMission_NbrEvents;
 			var D23_realWorldFactorUsageStartSoC = vehicleOperation.RealWorldUsageFactors.StartSoCBeforeMission;
-			var D24_realWorldFactorChargeDuringMission = 0.0; // vehicleOperation.RealWorldUsageFactors.StationaryChargingDuringMission;
+			//var D24_realWorldFactorChargeDuringMission = 0.0; // vehicleOperation.RealWorldUsageFactors.StationaryChargingDuringMission;
 			var D25_shareOfDistanceWithInMotionCharging = GetShareIMCInfrastructure(cdResult.VectoRunData.InMotionChargingTechnology, vehicleOperation);
 			var D26_realWorldFactorInMotionChargingDuringMission = vehicleOperation.RealWorldUsageFactors.InMotionChargingDuringMission;
 

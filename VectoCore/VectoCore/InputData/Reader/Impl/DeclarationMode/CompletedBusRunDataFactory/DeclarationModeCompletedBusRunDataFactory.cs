@@ -28,13 +28,13 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 
             public IGenericCompletedBusDeclarationDataAdapter DataAdapterGeneric { get; }
 			public ISpecificCompletedBusDeclarationDataAdapter DataAdapterSpecific { get; }
-			protected IMultistageVIFInputData DataProvider { get; }
+			protected new IMultistageVIFInputData DataProvider { get; }
 
 			//protected IDeclarationReport Report { get; set; }
 			protected virtual IVehicleDeclarationInputData PrimaryVehicle =>
 				DataProvider.MultistageJobInputData.JobInputData.PrimaryVehicle.Vehicle;
 
-			protected virtual  IVehicleDeclarationInputData CompletedVehicle => DataProvider.MultistageJobInputData.JobInputData
+			protected new virtual  IVehicleDeclarationInputData CompletedVehicle => DataProvider.MultistageJobInputData.JobInputData
 				.ConsolidateManufacturingStage.Vehicle;
 
 			protected override IVehicleDeclarationInputData Vehicle => throw new NotImplementedException();

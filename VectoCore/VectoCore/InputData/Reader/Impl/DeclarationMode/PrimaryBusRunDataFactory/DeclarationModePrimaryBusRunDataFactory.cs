@@ -29,7 +29,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
             #region Implementation of IVectoRunDataFactory
 
             protected internal IPrimaryBusDeclarationDataAdapter DataAdapter { get; }
-			protected IDeclarationInputDataProvider DataProvider { get; }
+			protected new IDeclarationInputDataProvider DataProvider { get; }
 
 			//public IDeclarationReport Report { get; }
 

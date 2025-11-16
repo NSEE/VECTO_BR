@@ -26,8 +26,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
             protected VehicleOperationLookup VehicleOperation => new VehicleOperationLookup();
 
             public ILorryDeclarationDataAdapter DataAdapter { get; }
-			public IDeclarationInputDataProvider InputDataProvider { get; }
-			public IDeclarationReport Report { get; }
+			public new IDeclarationInputDataProvider InputDataProvider { get; }
+			public new IDeclarationReport Report { get; }
 
 			protected LorryBase(IDeclarationInputDataProvider dataProvider, IDeclarationReport report,
 				// the following parameters are injected
@@ -109,7 +109,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 			/// <summary>
 			/// Super caps are not allowed for ovc hevs or pevs
 			/// </summary>
-			protected void CheckSuperCap(IVehicleDeclarationInputData vehicle)
+			protected override void CheckSuperCap(IVehicleDeclarationInputData vehicle)
 			{
 				if (vehicle.VehicleType == VectoSimulationJobType.BatteryElectricVehicle || vehicle.OVC) {
 					if (vehicle.Components.ElectricStorage.ElectricStorageElements.Any(e =>

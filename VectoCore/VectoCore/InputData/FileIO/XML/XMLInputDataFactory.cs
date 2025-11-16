@@ -291,12 +291,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 			{
 				throw new VectoException("Failed to read Declaration job version {0}", e, versionNumber);
 			}
-
-
-
-
-
-            return null;
 		}
 
 	}

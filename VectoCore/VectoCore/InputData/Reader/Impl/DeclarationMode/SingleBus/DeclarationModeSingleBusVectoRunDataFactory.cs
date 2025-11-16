@@ -33,7 +33,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
 
 			protected virtual IVehicleDeclarationInputData PrimaryVehicle => SingleBusDataProvider.PrimaryVehicle;
 
-			protected virtual IVehicleDeclarationInputData CompletedVehicle => SingleBusDataProvider.CompletedVehicle;
+			protected new virtual IVehicleDeclarationInputData CompletedVehicle => SingleBusDataProvider.CompletedVehicle;
 
 			protected override IVehicleDeclarationInputData Vehicle => throw new NotImplementedException();
 
