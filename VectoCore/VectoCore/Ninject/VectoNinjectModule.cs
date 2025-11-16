@@ -64,8 +64,6 @@ namespace TUGraz.VectoCore
 
 	public class VectoNinjectModule : AbstractNinjectModule
 	{
-		private readonly bool _mockup;
-
 		#region Overrides of NinjectModule
 
 		public override void Load()

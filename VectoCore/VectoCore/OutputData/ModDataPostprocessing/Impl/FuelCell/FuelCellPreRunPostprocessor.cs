@@ -376,12 +376,13 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 					processedFcCalcEntries.Add(entry);
 					if ((SoC - tracingInfinityBat.MinSoC).IsGreater(usableRange)) {
 						throw new VectoException("Violation of usable SoC should be covered");
-						if (entry.P_el_dem.IsGreater(0)) {
-							throw new VectoException(
-								"Parts where we are recuperating with full battery should not be included");
-						} else {
+						//commented-out to avoid compile-time warning
+						//if (entry.P_el_dem.IsGreater(0)) {
+						//	throw new VectoException(
+						//		"Parts where we are recuperating with full battery should not be included");
+						//} else {
 
-						}
+						//}
 					}
 				}
 			}

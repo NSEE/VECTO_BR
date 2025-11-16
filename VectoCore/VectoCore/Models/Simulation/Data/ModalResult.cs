@@ -605,7 +605,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			}
 		}
 
-		public void Reset()
+		public new void Reset()
 		{
 			FuelColumns.Clear();
 			ElectricMotors.Clear();

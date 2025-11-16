@@ -20,7 +20,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 {
 	public class ParallelHybridBatteryOnlyModeShiftStrategy : PEVAMTShiftStrategy
 	{
-		public static string Name => "AMT - EffShift (P-HEV Battery only)";
+		public new static string Name => "AMT - EffShift (P-HEV Battery only)";
 
 		public ParallelHybridBatteryOnlyModeShiftStrategy(IVehicleContainer container) : base(container) { }
 

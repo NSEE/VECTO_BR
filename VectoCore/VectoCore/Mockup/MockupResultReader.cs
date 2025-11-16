@@ -31,7 +31,6 @@ namespace TUGraz.VectoMockup
 		}
 		private static class MockupResultHelper
 		{
-			private static string _convArch = "Conv";
 			private const string mockupResourcePrefix = "TUGraz.VectoCore.Mockup.MockupResults";
 			
 			
