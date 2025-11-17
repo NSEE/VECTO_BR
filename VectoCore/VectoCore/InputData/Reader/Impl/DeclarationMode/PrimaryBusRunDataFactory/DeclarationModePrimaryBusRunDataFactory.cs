@@ -1103,7 +1103,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 				runData.EngineData.FuelMode = modeIdx.Value;
 				runData.VehicleData.VehicleClass = _segment.VehicleClass;
 
-                var gearboxType = InputDataProvider.JobInputData.Vehicle.Components.GetGearboxType();
+                var gearboxType = InputDataProvider.JobInputData.Vehicle.Components.GetGearboxTypes().FirstOrDefault();
 				var gearlist = gearboxType == GearboxType.IHPC
 					? new GearList(InputDataProvider.JobInputData.Vehicle.Components.GearboxInputData.Gears
 						.Select(x => new GearshiftPosition((uint)x.Gear)).ToArray())

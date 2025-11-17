@@ -130,12 +130,6 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		throw new NotImplementedException();
 	}
 
-	public IGearbox CreateGearbox(VectoSimulationJobType jobType, CycleType cycle, GearboxType gbxType,
-		IVehicleContainer container, IShiftStrategy strategy)
-	{
-		throw new NotImplementedException();
-	}
-
 	public IClutchInfo CreateATClutchInfo(IVehicleContainer container, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
 	{
 		throw new NotImplementedException();
@@ -330,5 +324,10 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 		return new Mock<IExemptedVehicleContainer>().Object;
 	}
 
-	#endregion
+    public IGearbox CreateGearbox(VectoSimulationJobType jobType, CycleType cycle, GearboxType gbxType, IVehicleContainer container, IShiftStrategy strategy, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+    {
+        throw new NotImplementedException();
+    }
+
+    #endregion
 }

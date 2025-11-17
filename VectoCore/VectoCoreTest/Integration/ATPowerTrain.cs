@@ -133,7 +133,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
 				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new APTGearbox(container, new ATShiftStrategyOptimized(container)))
+				.AddComponent(new APTGearbox(container, new ATShiftStrategyOptimized(container), Constants.NOT_IN_AXLE_POWERTRAIN))
 				.AddComponent(engine);
 			new ATClutchInfo(container);
 

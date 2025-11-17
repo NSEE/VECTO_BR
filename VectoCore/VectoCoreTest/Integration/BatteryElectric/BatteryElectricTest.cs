@@ -1028,7 +1028,7 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 						.AddComponent(new AxleGear(container, runData.AxleGearData))
 						.AddComponent(runData.AngledriveData != null ? new Angledrive(container, runData.AngledriveData) : null)
 						.AddComponent(runData.Retarder.Type == RetarderType.TransmissionOutputRetarder ? new Retarder(container, runData.Retarder.LossMap, runData.Retarder.Ratio) : null)
-						.AddComponent(new PEVGearbox(container, new PEVAMTShiftStrategy(container)))
+						.AddComponent(new PEVGearbox(container, new PEVAMTShiftStrategy(container), Constants.NOT_IN_AXLE_POWERTRAIN))
 						.AddComponent(runData.Retarder.Type == RetarderType.TransmissionInputRetarder ? new Retarder(container, runData.Retarder.LossMap, runData.Retarder.Ratio) : null)
 						.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE2, runData.ElectricMachinesData, container, es, ctl));
 					new ATClutchInfo(container);

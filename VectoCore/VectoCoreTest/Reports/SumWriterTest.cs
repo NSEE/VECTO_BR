@@ -115,7 +115,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			modData.Data.CreateColumns(ModalResults.WheelSignals);
 			modData.AddAuxiliary("FAN");
 			sumWriter.AddAuxiliary("FAN");
-			sumWriter.CreateColumns(SummaryDataContainer.VehilceColumns);
+			sumWriter.CreateColumns(SummaryDataContainer.VehicleColumns);
 			sumWriter.CreateColumns(SummaryDataContainer.BrakeColumns);
 			sumWriter.UpdateTableColumns(rundata.EngineData);
 
@@ -215,7 +215,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			modData.Data.CreateColumns(ModalResults.WheelSignals);
 			modData.AddAuxiliary("FAN");
 			sumWriter.AddAuxiliary("FAN");
-			sumWriter.CreateColumns(SummaryDataContainer.VehilceColumns);
+			sumWriter.CreateColumns(SummaryDataContainer.VehicleColumns);
 			sumWriter.CreateColumns(SummaryDataContainer.BrakeColumns);
 			sumWriter.UpdateTableColumns(rundata.EngineData);
 

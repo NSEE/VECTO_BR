@@ -56,6 +56,7 @@ namespace TUGraz.VectoCore.Tests.Integration
             TestCase($@"{DeclarationBasePath}/Multiple_PEV_E4_E4_HeavyLorry.xml", ExecutionMode.Declaration),
             TestCase($@"{DeclarationBasePath}/Multiple_PEV_E4_IEPC_HeavyLorry.xml", ExecutionMode.Declaration),
             TestCase($@"{DeclarationBasePath}/Multiple_PEV_IEPC_IEPC_HeavyLorry.xml", ExecutionMode.Declaration),
+            TestCase($@"{DeclarationBasePath}/Multiple_PEV_IEPC_IEPC_PrimaryBus_SingleGear.xml", ExecutionMode.Declaration),
 
             TestCase($@"{DeclarationBasePath}/Multiple_FCHV_F2_F2_HeavyLorry.xml", ExecutionMode.Declaration),
             TestCase($@"{DeclarationBasePath}/Multiple_FCHV_F2_F3_HeavyLorry.xml", ExecutionMode.Declaration),

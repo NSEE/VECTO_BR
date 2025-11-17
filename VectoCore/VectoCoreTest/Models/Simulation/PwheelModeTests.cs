@@ -55,6 +55,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Ninject;
+using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Tests.Models.Simulation
 {
@@ -107,7 +108,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var cycleFile = new MemoryStream(Encoding.UTF8.GetBytes(inputData));
 			var drivingCycle = DrivingCycleDataReader.ReadFromStream(cycleFile, CycleType.PWheel, "", false);
 
-			var gearbox = new CycleGearbox(container);
+			var gearbox = new CycleGearbox(container, Constants.NOT_IN_AXLE_POWERTRAIN);
 
 			var cycle = new PWheelCycle(container, drivingCycle);
 			cycle.Connect(new MockTnOutPort());

@@ -52,7 +52,13 @@ namespace TUGraz.VectoCore.Models.Simulation
 		
 		IRetarder CreateRetarder(IVehicleContainer container, RetarderLossMap lossMap, double ratio, int axleNumber);
 
-		IGearbox CreateGearbox(VectoSimulationJobType jobType, CycleType cycle, GearboxType gbxType, IVehicleContainer container, IShiftStrategy strategy);
+		IGearbox CreateGearbox(
+			VectoSimulationJobType jobType, 
+			CycleType cycle, 
+			GearboxType gbxType, 
+			IVehicleContainer container, 
+			IShiftStrategy strategy, 
+			int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 
         IClutchInfo CreateATClutchInfo(IVehicleContainer container, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 

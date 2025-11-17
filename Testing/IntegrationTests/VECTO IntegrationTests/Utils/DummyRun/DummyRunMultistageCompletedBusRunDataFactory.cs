@@ -15,6 +15,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
 using TUGraz.VectoCore.OutputData;
+using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents;
 
 namespace TUGraz.Vecto.IntegrationTests.Utils.DummyRun;
 
@@ -128,7 +129,7 @@ internal class DummyRunMultistageCompletedBusRunDataFactory : DeclarationModeCom
 
             JobType = DataProvider.MultistageJobInputData.JobInputData.JobType
         };
-		if (PrimaryVehicle.VehicleType.IsMultiplePowertrains()) {
+        if (PrimaryVehicle.VehicleType.IsMultiplePowertrains()) {
 			simulationRunData.AxlePowertrainsData = new List<AxlePowertrainData>();
 			foreach (var axlePt in PrimaryVehicle.Components.AxlePowertrainInputData) {
 				var axlePowertrainData = new AxlePowertrainData() {
@@ -157,7 +158,12 @@ internal class DummyRunMultistageCompletedBusRunDataFactory : DeclarationModeCom
         {
             simulationRunData.BatteryData = CreateBatteryData();
         }
-		if (PrimaryVehicle.ArchitectureID.IsFuelCellVehicle()) {
+
+        simulationRunData.ElectricMachinesData = simulationRunData.JobType.IsIEPC()
+            ? DummyRunPrimaryBusRunDataFactory.CreateDummyIEPCData()
+            : DummyRunPrimaryBusRunDataFactory.CreateDummyElecticMachinesData(PrimaryVehicle.Components.ElectricMachines);
+
+        if (PrimaryVehicle.ArchitectureID.IsFuelCellVehicle()) {
 			simulationRunData.VehicleData.H2StorageUsableCapacity = PrimaryVehicle.H2StorageUsableCapacity;
 			simulationRunData.OVCMode = PrimaryVehicle.OVC ? OvcHevMode.ChargeDepleting : OvcHevMode.NotApplicable;
 			simulationRunData.VehicleData.H2StorageUsableCapacity = 30.SI<Kilogram>();
@@ -326,7 +332,11 @@ internal class DummyRunMultistageCompletedBusRunDataFactory : DeclarationModeCom
             runData.BatteryData = CreateBatteryData();
         }
 
-		if (PrimaryVehicle.ArchitectureID.IsFuelCellVehicle()) {
+        runData.ElectricMachinesData = runData.JobType.IsIEPC()
+            ? DummyRunPrimaryBusRunDataFactory.CreateDummyIEPCData()
+            : DummyRunPrimaryBusRunDataFactory.CreateDummyElecticMachinesData(PrimaryVehicle.Components.ElectricMachines);
+
+        if (PrimaryVehicle.ArchitectureID.IsFuelCellVehicle()) {
 			runData.VehicleData.H2StorageUsableCapacity = PrimaryVehicle.H2StorageUsableCapacity;
 			runData.OVCMode = PrimaryVehicle.OVC ? OvcHevMode.ChargeDepleting : OvcHevMode.NotApplicable;
 			runData.VehicleData.H2StorageUsableCapacity = 30.SI<Kilogram>();

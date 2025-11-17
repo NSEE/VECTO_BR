@@ -648,7 +648,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		{
 			var runData = container.RunData;
 			
-			return ShiftStrategyFactory.GetShiftStrategy(runData.ShiftStrategy, container);
+			return ShiftStrategyFactory.GetShiftStrategy(runData.GetShiftStrategy(), container);
 		}
 
 	}

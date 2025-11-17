@@ -1859,8 +1859,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
 			var engine = new StopStartCombustionEngine(container, runData.EngineData);
 			var gearbox = gearboxType.AutomaticTransmission()
-				? (IHybridControlledGearbox)new APTGearbox(container, ctl.ShiftStrategy)
-				: new AMTGearbox(container, ctl.ShiftStrategy);
+				? (IHybridControlledGearbox)new APTGearbox(container, ctl.ShiftStrategy, Constants.NOT_IN_AXLE_POWERTRAIN)
+				: new AMTGearbox(container, ctl.ShiftStrategy, Constants.NOT_IN_AXLE_POWERTRAIN);
 			//var hybridStrategy = new DelegateParallelHybridStrategy();
 			ctl.Gearbox = gearbox;
 
@@ -1990,7 +1990,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 				.AddComponent(runData.AngledriveData != null ? new Angledrive(container, runData.AngledriveData) : null)
 				.AddComponent(runData.Retarder.Type == RetarderType.TransmissionOutputRetarder ? new Retarder(container, 
 					runData.Retarder.LossMap, runData.Retarder.Ratio) : null)
-				.AddComponent(new AMTGearbox(container, new AMTShiftStrategyOptimized(container)))
+				.AddComponent(new AMTGearbox(container, new AMTShiftStrategyOptimized(container), Constants.NOT_IN_AXLE_POWERTRAIN))
 				.AddComponent(runData.Retarder.Type == RetarderType.TransmissionInputRetarder ? new Retarder(container, 
 					runData.Retarder.LossMap, runData.Retarder.Ratio) : null)
 				.AddComponent(new SwitchableClutch(container, runData.EngineData))

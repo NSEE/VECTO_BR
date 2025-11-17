@@ -234,7 +234,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var gearboxData = MockSimulationDataFactory.CreateGearboxDataFromFile(gbxFile, engineFile);
 			var container = VehicleContainer.CreateVehicleContainer(GetDummyRunData(gearboxData), null, null);
 			
-			var gearbox = new AMTGearbox(container, new AMTShiftStrategy(container));
+			var gearbox = new AMTGearbox(container, new AMTShiftStrategy(container), Constants.NOT_IN_AXLE_POWERTRAIN);
 			var driver = new MockDriver(container);
 			var vehicle = new MockVehicle(container) { MyVehicleSpeed = 0.KMPHtoMeterPerSecond() };
 
@@ -338,7 +338,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var gearboxData = MockSimulationDataFactory.CreateGearboxDataFromFile(gbxFile, engineFile, false);
 			var container = VehicleContainer.CreateVehicleContainer(GetDummyRunData(gearboxData), null, null);
             
-			var gearbox = new AMTGearbox(container, new AMTShiftStrategy(container));
+			var gearbox = new AMTGearbox(container, new AMTShiftStrategy(container), Constants.NOT_IN_AXLE_POWERTRAIN);
 			var driver = new MockDriver(container);
 			var vehicle = new MockVehicle(container) { MyVehicleSpeed = 0.KMPHtoMeterPerSecond() };
 
@@ -375,7 +375,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var gearboxData = MockSimulationDataFactory.CreateGearboxDataFromFile(GearboxDataFile, EngineDataFile, false);
 			var container = VehicleContainer.CreateVehicleContainer(GetDummyRunData(gearboxData), null, null);
             
-			var gearbox = new AMTGearbox(container, new AMTShiftStrategy(container));
+			var gearbox = new AMTGearbox(container, new AMTShiftStrategy(container), Constants.NOT_IN_AXLE_POWERTRAIN);
 			var driver = new MockDriver(container);
 			var vehicle = new MockVehicle(container) { MyVehicleSpeed = 0.KMPHtoMeterPerSecond() };
 
@@ -414,7 +414,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		{
 			var gearboxData = MockSimulationDataFactory.CreateGearboxDataFromFile(GearboxDataFile, EngineDataFile, false);
 			var container = VehicleContainer.CreateVehicleContainer(GetDummyRunData(gearboxData), null, null);
-            var gearbox = new AMTGearbox(container, new AMTShiftStrategy(container));
+            var gearbox = new AMTGearbox(container, new AMTShiftStrategy(container), Constants.NOT_IN_AXLE_POWERTRAIN);
 			var driver = new MockDriver(container);
 			var vehicle = new MockVehicle(container) { MyVehicleSpeed = 0.KMPHtoMeterPerSecond() };
 
@@ -447,7 +447,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		{
 			var gearboxData = MockSimulationDataFactory.CreateGearboxDataFromFile(GearboxDataFile, EngineDataFile);
 			var container = VehicleContainer.CreateVehicleContainer(GetDummyRunData(gearboxData), null, null);
-            var gearbox = new AMTGearbox(container, new AMTShiftStrategy( container));
+            var gearbox = new AMTGearbox(container, new AMTShiftStrategy( container), Constants.NOT_IN_AXLE_POWERTRAIN);
 			var vehicle = new MockVehicle(container) { MyVehicleSpeed = 0.KMPHtoMeterPerSecond() };
 			var driver = new MockDriver(container);
 
@@ -505,7 +505,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var container = VehicleContainer.CreateVehicleContainer(GetDummyRunData(gearboxData), null, null);
             //runData.VehicleData.DynamicTyreRadius = 0.3.SI<Meter>();
             container.RunData.AxleGearData.AxleGear.Ratio = 5;
-			var gearbox = new AMTGearbox(container, new AMTShiftStrategy(container));
+			var gearbox = new AMTGearbox(container, new AMTShiftStrategy(container), Constants.NOT_IN_AXLE_POWERTRAIN);
 
 			var driver = new MockDriver(container);
 			var vehicle = new MockVehicle(container) { MyVehicleSpeed = 0.KMPHtoMeterPerSecond() };
@@ -573,7 +573,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			}
 
 			var container = VehicleContainer.CreateVehicleContainer(GetDummyRunData(gearboxData), null, null);
-            var gearbox = new AMTGearbox(container, new AMTShiftStrategy(container));
+            var gearbox = new AMTGearbox(container, new AMTShiftStrategy(container), Constants.NOT_IN_AXLE_POWERTRAIN);
 			var cycleData = DrivingCycleDataReader.ReadFromStream("s,v,grad,stop\n0,0,0,10\n10,20,0,0\n20,21,0,0\n30,22,0,0\n40,23,0,0\n50,24,0,0\n60,25,0,0\n70,26,0,0\n80,27,0,0\n90,28,0,0\n100,29,0,0".ToStream(), CycleType.DistanceBased, "DummyCycle", false);
 			var cycle = new MockDrivingCycle(container, cycleData);
 			container.RunData.Cycle = cycleData ;
@@ -657,7 +657,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			};
 			var cycle = new MockDrivingCycle(container, cycleData);
 			
-			var gearbox = new AMTGearbox(container, new AMTShiftStrategy(container));
+			var gearbox = new AMTGearbox(container, new AMTShiftStrategy(container), Constants.NOT_IN_AXLE_POWERTRAIN);
 			var port = new MockTnOutPort() { EngineN95hSpeed = 2000.RPMtoRad() };
 			container.EngineInfo = port;
 			gearbox.InPort().Connect(port);

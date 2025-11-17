@@ -43,7 +43,7 @@ public class GearboxLossMapExtrapolationTests
 			.Setup(s => s.InitGear(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(),
 				It.IsAny<PerSecond>())).Returns(new GearshiftPosition(1u));
 
-		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object);
+		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
 
 		Second reqAbsTime = null;
 		Second reqDt = null;
@@ -107,7 +107,7 @@ public class GearboxLossMapExtrapolationTests
 			.Setup(s => s.InitGear(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(),
 				It.IsAny<PerSecond>())).Returns(new GearshiftPosition(1u));
 
-		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object);
+		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
 
 		Second reqAbsTime = null;
 		Second reqDt = null;
@@ -175,7 +175,7 @@ public class GearboxLossMapExtrapolationTests
 			.Setup(s => s.InitGear(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(),
 				It.IsAny<PerSecond>())).Returns(new GearshiftPosition(1u));
 
-		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object);
+		var gearbox = new AMTGearbox(container.Object, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
 
 		Second reqAbsTime = null;
 		Second reqDt = null;

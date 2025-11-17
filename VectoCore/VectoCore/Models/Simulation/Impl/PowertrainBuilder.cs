@@ -935,7 +935,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 				case PowertrainPosition.BatteryElectricE2:
                     //-->AxleGear-->(AngleDrive)-->(TransmissionOutputRetarder)-->PEVGearbox or APTNGearbox-->(TransmissionInputRetarder)-->Engine E2
-					var shiftStrategy = ShiftStrategyFactory.GetShiftStrategy(data.ShiftStrategy, container);
+					var shiftStrategy = ShiftStrategyFactory.GetShiftStrategy(data.GetShiftStrategy(), container);
 					var gearbox = ComponentFactory.CreateGearbox(data.JobType, data.Cycle.CycleType, data.GearboxData.Type, container, shiftStrategy);
 
 					powertrain
@@ -1142,7 +1142,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			em.Connect(junctionBox);
 
             var shiftstrategy = ShiftStrategyFactory.GetShiftStrategy(axlePt.ShiftStrategy, container);
-            var gearbox = ComponentFactory.CreateGearbox(data.JobType, data.Cycle.CycleType, axlePt.GearboxData.Type, container, shiftstrategy);
+            var gearbox = ComponentFactory.CreateGearbox(data.JobType, data.Cycle.CycleType, axlePt.GearboxData.Type, container, shiftstrategy, axlePt.AxleNumber);
 
             powertrain
 				.AddComponent(axlePt.AxleGearData != null ? ComponentFactory.CreateAxleGear(container, axlePt.AxleGearData, axlePt.AxleNumber) : null)
@@ -1178,8 +1178,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			em.Connect(junctionBox);
 
-			var shiftstrategy = ShiftStrategyFactory.GetShiftStrategy(axlePt.ShiftStrategy, container);
-            var gearbox = ComponentFactory.CreateGearbox(data.JobType, data.Cycle.CycleType, axlePt.GearboxData.Type, container, shiftstrategy);
+			var shiftstrategy = (axlePt.GearboxData.Gears.Count > 1) ? ShiftStrategyFactory.GetShiftStrategy(axlePt.ShiftStrategy, container) : null;
+            var gearbox = ComponentFactory.CreateGearbox(data.JobType, data.Cycle.CycleType, axlePt.GearboxData.Type, container, shiftstrategy, axlePt.AxleNumber);
 
             powertrain
 				.AddComponent(axlePt.AxleGearData != null ? ComponentFactory.CreateAxleGear(container, axlePt.AxleGearData, axlePt.AxleNumber) : null)
@@ -1454,7 +1454,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					break;
 
 				case PowertrainPosition.BatteryElectricE2:
-					var shiftStrategy = ShiftStrategyFactory.GetShiftStrategy(data.ShiftStrategy, container);
+					var shiftStrategy = ShiftStrategyFactory.GetShiftStrategy(data.GetShiftStrategy(), container);
 					var gearbox = ComponentFactory.CreateGearbox(data.JobType, data.Cycle.CycleType,
 						data.GearboxData.Type, container, shiftStrategy);
 					//-->AxleGear-->(Angledrive)-->(TransmissionOutputRetarder)-->APTNGearbox or PEVGearbox-->(TransmissionInputRetarder)-->Engine E2
@@ -1684,7 +1684,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
         {
 			var ctl = ComponentFactory.CreateElectricMotorController(data.Cycle.CycleType, container, es);
 
-			var strategy = ShiftStrategyFactory.GetShiftStrategy(data.ShiftStrategy, container);
+			var strategy = ShiftStrategyFactory.GetShiftStrategy(data.GetShiftStrategy(), container);
 
 			var gearbox = ComponentFactory.CreateGearbox(data.JobType, data.Cycle.CycleType, data.GearboxData.Type,
 				container, strategy);

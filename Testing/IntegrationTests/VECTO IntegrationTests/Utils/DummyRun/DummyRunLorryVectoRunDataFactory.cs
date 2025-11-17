@@ -212,6 +212,9 @@ public class DummyRunLorryVectoRunDataFactory : DeclarationModeHeavyLorryRunData
                 runData.BatteryData = CreateBatteryData();
             }
 
+            runData.ElectricMachinesData = runData.JobType.IsIEPC()
+                ? DummyRunPrimaryBusRunDataFactory.CreateDummyIEPCData()
+                : DummyRunPrimaryBusRunDataFactory.CreateDummyElecticMachinesData(Vehicle.Components.ElectricMachines);
         }
 
         if (!vehicle.ExemptedVehicle)

@@ -2,11 +2,13 @@
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing;
+using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.Vecto.IntegrationTests.Utils.DummyRun;
 
@@ -63,14 +65,33 @@ public class DummyRunModDataFactory : IModalDataFactory
 		modData.Setup(x => x.Distance).Returns(30000.SI<Meter>());
 		modData.Setup(x => x.GetValues<MeterPerSecond>(ModalResultField.v_act)).Returns(new[] { 0.KMPHtoMeterPerSecond(), 50.KMPHtoMeterPerSecond() });
 		modData.Setup(x => x.GetValues<MeterPerSquareSecond>(ModalResultField.acc)).Returns(new[] { -1.SI<MeterPerSquareSecond>(), 0.SI<MeterPerSquareSecond>(), 1.SI<MeterPerSquareSecond>() });
-		modData.Setup(x => x.GetValues<uint>(ModalResultField.Gear)).Returns(new[] { 0u, 2u, 0u, 3u, 0u });
 
-		var e_gbxIn = 1000.SI<WattSecond>();
-		var gbxEff = 0.98;
-		var axlEff = 0.97;
-		modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_gbx_in, It.IsNotNull<Func<SI, bool>>())).Returns(e_gbxIn);
-		modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_axle_in, It.IsNotNull<Func<SI, bool>>())).Returns(e_gbxIn * gbxEff);
-		modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_brake_in, It.IsNotNull<Func<SI, bool>>())).Returns(e_gbxIn * gbxEff * axlEff);
+        var e_gbxIn = 1000.SI<WattSecond>();
+        var e_retarderIn = 980.SI<WattSecond>();
+		var e_angleIn = 980.SI<WattSecond>();
+        var gbxEff = 0.98;
+        var axlEff = 0.97;
+
+        if (!vectoRunData.AxlePowertrainsData.Any())
+		{
+			modData.Setup(x => x.GetValues<uint>(ModalResultField.Gear, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber())).Returns(new[] { 0u, 2u, 0u, 3u, 0u });
+            modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_retarder_in, Constants.NOT_IN_AXLE_POWERTRAIN, It.IsNotNull<Func<SI, bool>>())).Returns(e_retarderIn);
+            modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_gbx_in, Constants.NOT_IN_AXLE_POWERTRAIN, It.IsNotNull<Func<SI, bool>>())).Returns(e_gbxIn);
+            modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_axle_in, Constants.NOT_IN_AXLE_POWERTRAIN, It.IsNotNull<Func<SI, bool>>())).Returns(e_gbxIn * gbxEff);
+        }
+        else
+		{
+			foreach (var axlePt in vectoRunData.AxlePowertrainsData)
+			{
+                modData.Setup(x => x.GetValues<uint>(ModalResultField.Gear, axlePt.AxleNumber.FormatAxleNumber())).Returns(new[] { 0u, 2u, 0u, 3u, 0u });
+                modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_retarder_in, axlePt.AxleNumber, It.IsNotNull<Func<SI, bool>>())).Returns(e_retarderIn);
+                modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_gbx_in, axlePt.AxleNumber, It.IsNotNull<Func<SI, bool>>())).Returns(e_gbxIn);
+                modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_axle_in, axlePt.AxleNumber, It.IsNotNull<Func<SI, bool>>())).Returns(e_gbxIn * gbxEff);
+                modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_angle_in, axlePt.AxleNumber, It.IsNotNull<Func<SI, bool>>())).Returns(e_angleIn);
+            }
+        }
+		
+        modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_brake_in, It.IsNotNull<Func<SI, bool>>())).Returns(e_gbxIn * gbxEff * axlEff);
 		modData.Setup(x => x.GetValues<SI>(ModalResultField.REESSStateOfCharge))
 			.Returns(() => new[] { 50.SI(), 50.SI() });
 		if (runStatus != VectoRun.Status.Success) {
