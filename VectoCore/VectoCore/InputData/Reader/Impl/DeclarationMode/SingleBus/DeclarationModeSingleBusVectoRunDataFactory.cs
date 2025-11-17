@@ -281,7 +281,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
 
                 runData.EngineData = DataAdapter.CreateEngineData(PrimaryVehicle, engineMode, mission);
 
-                DataAdapter.CreateREESSData(PrimaryVehicle.Components.ElectricStorage, PrimaryVehicle.VehicleType, PrimaryVehicle.OVC,
+                DataAdapter.CreateREESSData(PrimaryVehicle.Components.ElectricStorage, PrimaryVehicle.VehicleType, PrimaryVehicle.OVC, PrimaryVehicle.BatteryOnlyMode,
                     ((batteryData) => runData.BatteryData = batteryData),
                     ((sCdata => runData.SuperCapData = sCdata)));
 
@@ -487,7 +487,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
 				runData.AirdragData = DataAdapter.CreateAirdragData(CompletedVehicle, mission, _segment, ovcMode);
 				runData.EngineData =
 					DataAdapter.CreateEngineData(InputDataProvider.JobInputData.Vehicle, engineMode, mission);
-				DataAdapter.CreateREESSData(PrimaryVehicle.Components.ElectricStorage, PrimaryVehicle.VehicleType, PrimaryVehicle.OVC,
+				DataAdapter.CreateREESSData(PrimaryVehicle.Components.ElectricStorage, PrimaryVehicle.VehicleType, PrimaryVehicle.OVC, PrimaryVehicle.BatteryOnlyMode,
 					((batteryData) => runData.BatteryData = batteryData),
 					((sCdata => runData.SuperCapData = sCdata)));
 				runData.ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>();
@@ -666,6 +666,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
                     componentsElectricStorage: SingleBusDataProvider.PrimaryVehicle.Components.ElectricStorage,
                     vehicle.VehicleType,
                     vehicle.OVC,
+					vehicle.BatteryOnlyMode,
                     (bs) => result.BatteryData = bs,
                     (sc) => result.SuperCapData = sc);
 
@@ -898,7 +899,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
                 DataAdapter.CreateREESSData(
                     componentsElectricStorage: SingleBusDataProvider.PrimaryVehicle.Components.ElectricStorage,
                     vehicle.VehicleType,
-                    true,
+                    vehicle.OVC,
+					vehicle.BatteryOnlyMode,
                     (bs) => result.BatteryData = bs,
                     (sc) => result.SuperCapData = sc);
 
@@ -1085,6 +1087,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
                     vehicle.Components.ElectricStorage,
                     vehicle.VehicleType,
                     vehicle.OVC,
+					vehicle.BatteryOnlyMode,
                     (bs) => runData.BatteryData = bs,
                     (sc) => runData.SuperCapData = sc);
 

@@ -41,7 +41,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
             int axleNumber);
 
         void CreateREESSData(IElectricStorageSystemDeclarationInputData componentsElectricStorage,
-			VectoSimulationJobType jobType, bool ovc, Action<BatterySystemData> setBatteryData,
+			VectoSimulationJobType jobType, bool ovc, bool batteryOnlyMode, Action<BatterySystemData> setBatteryData,
 			Action<SuperCapData> setSuperCapData);
 
 		FuelCellSystemDeclarationData CreateFuelCells(IFuelCellSystemDeclarationInputData fuelCellSystem);

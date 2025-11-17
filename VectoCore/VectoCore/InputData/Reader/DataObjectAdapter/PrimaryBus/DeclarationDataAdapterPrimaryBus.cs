@@ -82,7 +82,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
 			}
 
 			public abstract void CreateREESSData(IElectricStorageSystemDeclarationInputData componentsElectricStorage,
-				VectoSimulationJobType jobType, bool ovc, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData);
+				VectoSimulationJobType jobType, bool ovc, bool batteryOnlyMode, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData);
 
 			// serial hybrids
 			public virtual HybridStrategyParameters CreateHybridStrategy(BatterySystemData runDataBatteryData,
@@ -347,10 +347,11 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
                 IElectricStorageSystemDeclarationInputData componentsElectricStorage,
                 VectoSimulationJobType jobType,
                 bool ovc,
+				bool batteryOnlyMode,
                 Action<BatterySystemData> setBatteryData,
                 Action<SuperCapData> setSuperCapData)
             {
-                var batteryData = ElectricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc);
+                var batteryData = ElectricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc, batteryOnlyMode);
                 var superCapData = ElectricStorageAdapter.CreateSuperCapData(componentsElectricStorage);
 
                 if (batteryData == null)
@@ -385,9 +386,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
             protected override IVehicleDataAdapter VehicleDataAdapter => new PrimaryBusVehicleDataAdapter_HEV();
 
             public override void CreateREESSData(IElectricStorageSystemDeclarationInputData componentsElectricStorage,
-                VectoSimulationJobType jobType, bool ovc, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
+                VectoSimulationJobType jobType, bool ovc, bool batteryOnlyMode, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
             {
-                var batteryData = ElectricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc);
+                var batteryData = ElectricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc, batteryOnlyMode);
                 var superCapData = ElectricStorageAdapter.CreateSuperCapData(componentsElectricStorage);
 
                 if (batteryData != null && superCapData != null)
@@ -427,7 +428,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
 			protected override IPrimaryBusAuxiliaryDataAdapter AuxDataAdapter { get; } = new PrimaryBusAuxiliaryDataAdapter();
 			
 			public override void CreateREESSData(IElectricStorageSystemDeclarationInputData componentsElectricStorage,
-				VectoSimulationJobType jobType, bool ovc, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
+				VectoSimulationJobType jobType, bool ovc, bool batteryOnlyMode, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
 			{
 				throw new NotImplementedException();
 			}
@@ -451,9 +452,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
 			protected override IPrimaryBusAuxiliaryDataAdapter AuxDataAdapter { get; } = new PrimaryBusAuxiliaryDataAdapter();
 
             public override void CreateREESSData(IElectricStorageSystemDeclarationInputData componentsElectricStorage,
-				VectoSimulationJobType jobType, bool ovc, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
+				VectoSimulationJobType jobType, bool ovc, bool batteryOnlyMode, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
 			{
-				var batteryData = _electricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc);
+				var batteryData = _electricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc, batteryOnlyMode);
 				var superCapData = _electricStorageAdapter.CreateSuperCapData(componentsElectricStorage);
 
 				if (batteryData != null) {
@@ -626,9 +627,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
 
 
 			public override void CreateREESSData(IElectricStorageSystemDeclarationInputData componentsElectricStorage,
-				VectoSimulationJobType jobType, bool ovc, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
+				VectoSimulationJobType jobType, bool ovc, bool batteryOnlyMode, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
 			{
-				var batteryData = _electricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc);
+				var batteryData = _electricStorageAdapter.CreateBatteryData(componentsElectricStorage, jobType, ovc, batteryOnlyMode);
 				var superCapData = _electricStorageAdapter.CreateSuperCapData(componentsElectricStorage);
 
 
@@ -682,7 +683,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus
 			protected override IEngineDataAdapter EngineDataAdapter => throw new NotImplementedException();
 
 			public override void CreateREESSData(IElectricStorageSystemDeclarationInputData componentsElectricStorage,
-				VectoSimulationJobType jobType, bool ovc, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
+				VectoSimulationJobType jobType, bool ovc, bool batteryOnlyMode, Action<BatterySystemData> setBatteryData, Action<SuperCapData> setSuperCapData)
 			{
 				throw new NotImplementedException();
 			}

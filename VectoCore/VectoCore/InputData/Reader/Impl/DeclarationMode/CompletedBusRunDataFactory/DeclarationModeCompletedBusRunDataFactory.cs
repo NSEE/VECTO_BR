@@ -457,7 +457,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
                 DataAdapterGeneric.CreateREESSData(
 					componentsElectricStorage: PrimaryVehicle.Components.ElectricStorage,
 					PrimaryVehicle.VehicleType,
-					true,
+					PrimaryVehicle.OVC,
+					PrimaryVehicle.BatteryOnlyMode,
 					(bs) => rd.BatteryData = bs,
 					(sc) => rd.SuperCapData = sc);
 
@@ -521,7 +522,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
                 DataAdapterGeneric.CreateREESSData(
 					componentsElectricStorage: PrimaryVehicle.Components.ElectricStorage,
 					PrimaryVehicle.VehicleType,
-					true,
+					PrimaryVehicle.OVC,
+					PrimaryVehicle.BatteryOnlyMode,
 					(bs) => rd.BatteryData = bs,
 					(sc) => rd.SuperCapData = sc);
 
@@ -710,7 +712,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
                 DataAdapterGeneric.CreateREESSData(
 					componentsElectricStorage: PrimaryVehicle.Components.ElectricStorage,
 					PrimaryVehicle.VehicleType,
-					true,
+					PrimaryVehicle.OVC, 
+					PrimaryVehicle.BatteryOnlyMode,
 					(bs) => rd.BatteryData = bs,
 					(sc) => rd.SuperCapData = sc);
 
@@ -788,7 +791,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
                 DataAdapterGeneric.CreateREESSData(
 					componentsElectricStorage: PrimaryVehicle.Components.ElectricStorage,
 					PrimaryVehicle.VehicleType,
-					true,
+					PrimaryVehicle.OVC, 
+					PrimaryVehicle.BatteryOnlyMode,
 					(bs) => rd.BatteryData = bs,
 					(sc) => rd.SuperCapData = sc);
 
@@ -973,6 +977,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
                     componentsElectricStorage: PrimaryVehicle.Components.ElectricStorage,
                     PrimaryVehicle.VehicleType,
                     PrimaryVehicle.OVC,
+					PrimaryVehicle.BatteryOnlyMode,
                     (bs) => result.BatteryData = bs,
                     (sc) => result.SuperCapData = sc);
 
@@ -1047,6 +1052,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
                     componentsElectricStorage: PrimaryVehicle.Components.ElectricStorage,
                     PrimaryVehicle.VehicleType,
                     PrimaryVehicle.OVC,
+					PrimaryVehicle.BatteryOnlyMode,
                     (bs) => result.BatteryData = bs,
                     (sc) => result.SuperCapData = sc);
 
@@ -1266,7 +1272,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				DataAdapterGeneric.CreateREESSData(
 					componentsElectricStorage: PrimaryVehicle.Components.ElectricStorage,
 					PrimaryVehicle.VehicleType,
-					true,
+					PrimaryVehicle.OVC,
+					PrimaryVehicle.BatteryOnlyMode,
 					(bs) => result.BatteryData = bs,
 					(sc) => result.SuperCapData = sc);
 
@@ -1324,7 +1331,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				DataAdapterGeneric.CreateREESSData(
 					componentsElectricStorage: PrimaryVehicle.Components.ElectricStorage,
 					PrimaryVehicle.VehicleType,
-					true,
+					PrimaryVehicle.OVC, 
+					PrimaryVehicle.BatteryOnlyMode,
 					(bs) => result.BatteryData = bs,
 					(sc) => result.SuperCapData = sc);
 
@@ -1530,6 +1538,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
                     PrimaryVehicle.Components.ElectricStorage,
                     PrimaryVehicle.VehicleType,
                     PrimaryVehicle.OVC,
+					PrimaryVehicle.BatteryOnlyMode,
                     (bs) => runData.BatteryData = bs,
                     (sc) => runData.SuperCapData = sc);
 
@@ -1576,6 +1585,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
                     PrimaryVehicle.Components.ElectricStorage,
                     PrimaryVehicle.VehicleType,
                     PrimaryVehicle.OVC,
+					PrimaryVehicle.BatteryOnlyMode,
                     (bs) => runData.BatteryData = bs,
                     (sc) => runData.SuperCapData = sc);
 

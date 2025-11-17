@@ -108,7 +108,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 
 				runData.EngineData = DataAdapter.CreateEngineData(Vehicle, engineMode, mission);
 
-				DataAdapter.CreateREESSData(Vehicle.Components.ElectricStorage, Vehicle.VehicleType, Vehicle.OVC,
+				DataAdapter.CreateREESSData(Vehicle.Components.ElectricStorage, Vehicle.VehicleType, Vehicle.OVC, Vehicle.BatteryOnlyMode,
 					((batteryData) => runData.BatteryData = batteryData),
 					((sCdata => runData.SuperCapData = sCdata)));
 
@@ -212,7 +212,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 				runData.WheelEndData = DataAdapter.CreateWheelEndData(_segment.VehicleClass, Vehicle);
 
 				runData.EngineData = DataAdapter.CreateEngineData(Vehicle, engineMode, mission);
-				DataAdapter.CreateREESSData(Vehicle.Components.ElectricStorage, Vehicle.VehicleType, Vehicle.OVC,
+				DataAdapter.CreateREESSData(Vehicle.Components.ElectricStorage, Vehicle.VehicleType, Vehicle.OVC, Vehicle.BatteryOnlyMode,
 					((batteryData) => runData.BatteryData = batteryData),
 					((sCdata => runData.SuperCapData = sCdata)));
 
@@ -482,6 +482,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 					componentsElectricStorage: Vehicle.Components.ElectricStorage,
 					Vehicle.VehicleType,
                     Vehicle.OVC,
+					Vehicle.BatteryOnlyMode,
 					(bs) => runData.BatteryData = bs,
 					(sc) => runData.SuperCapData = sc);
 

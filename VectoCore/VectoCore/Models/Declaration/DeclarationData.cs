@@ -2545,7 +2545,8 @@ namespace TUGraz.VectoCore.Models.Declaration
             var batteryData = new ElectricStorageAdapter().CreateBatteryData(
                 vehicle.Components.ElectricStorage, 
 				runData.JobType, 
-				vehicle.OVC || runData.VehicleData.OffVehicleCharging, 
+				vehicle.OVC || runData.VehicleData.OffVehicleCharging,
+				vehicle.BatteryOnlyMode,
 				deterioration);
 
             return DoCalculateElectricRangesPEV(electricEnergyConsumptionSoCCorr, distance, chargingEfficiencyBattery, batteryData);
@@ -2583,6 +2584,7 @@ namespace TUGraz.VectoCore.Models.Declaration
                 runData.InputData.JobInputData.Vehicle.Components.ElectricStorage,
                 runData.JobType,
                 runData.VehicleData.OffVehicleCharging,
+				runData.InputData.JobInputData.Vehicle.BatteryOnlyMode,
                 deterioration);
 
             return DoCalculateElectricRangesIMCPEV(modData, runData, batteryData);

@@ -199,6 +199,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
                     Vehicle.Components.ElectricStorage,
                     Vehicle.VehicleType,
                     Vehicle.OVC,
+					Vehicle.BatteryOnlyMode,
                     (bs) => runData.BatteryData = bs,
                     (sc) => runData.SuperCapData = sc);
 
@@ -590,7 +591,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 
 				runData.EngineData = DataAdapter.CreateEngineData(Vehicle, engineMode, mission);
 
-				DataAdapter.CreateREESSData(Vehicle.Components.ElectricStorage, Vehicle.VehicleType, Vehicle.OVC,
+				DataAdapter.CreateREESSData(Vehicle.Components.ElectricStorage, Vehicle.VehicleType, Vehicle.OVC, Vehicle.BatteryOnlyMode,
 					((batteryData) => runData.BatteryData = batteryData),
 					((sCdata => runData.SuperCapData = sCdata)));
 
@@ -815,6 +816,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 					componentsElectricStorage: Vehicle.Components.ElectricStorage,
 					Vehicle.VehicleType,
 					Vehicle.OVC,
+					Vehicle.BatteryOnlyMode,
 					(bs) => runData.BatteryData = bs,
 					(sc) => runData.SuperCapData = sc);
 
@@ -1078,7 +1080,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 				runData.WheelEndData = DataAdapter.CreateWheelEndData(_segment.VehicleClass, Vehicle);
 				runData.AirdragData = DataAdapter.CreateAirdragData(Vehicle, mission, _segment, ovcMode);
 				runData.EngineData = DataAdapter.CreateEngineData(InputDataProvider.JobInputData.Vehicle, engineMode, mission);
-				DataAdapter.CreateREESSData(Vehicle.Components.ElectricStorage, Vehicle.VehicleType, Vehicle.OVC,
+				DataAdapter.CreateREESSData(Vehicle.Components.ElectricStorage, Vehicle.VehicleType, Vehicle.OVC, Vehicle.BatteryOnlyMode,
 					((batteryData) => runData.BatteryData = batteryData),
 					((sCdata => runData.SuperCapData = sCdata)));
 				runData.ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>();
@@ -1283,7 +1285,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 				DataAdapter.CreateREESSData(
 					componentsElectricStorage: Vehicle.Components.ElectricStorage,
 					Vehicle.VehicleType,
-					true,
+					Vehicle.OVC,
+					Vehicle.BatteryOnlyMode,
 					(bs) => result.BatteryData = bs,
 					(sc) => result.SuperCapData = sc);
 

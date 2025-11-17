@@ -327,6 +327,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
                     Vehicle.Components.ElectricStorage,
                     Vehicle.VehicleType,
                     Vehicle.OVC,
+					Vehicle.BatteryOnlyMode,
                     (bs) => runData.BatteryData = bs,
                     (sc) => runData.SuperCapData = sc);
 
@@ -643,7 +644,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDa
 				DataAdapter.CreateREESSData(
 					componentsElectricStorage: Vehicle.Components.ElectricStorage,
 					Vehicle.VehicleType,
-					true,
+					Vehicle.OVC,
+					Vehicle.BatteryOnlyMode,
 					(bs) => result.BatteryData = bs,
 					(sc) => result.SuperCapData = sc);
 				
