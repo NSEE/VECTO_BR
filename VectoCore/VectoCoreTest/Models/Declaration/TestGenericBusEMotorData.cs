@@ -165,7 +165,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			var electricStorage = multistepBusInputData.JobInputData.PrimaryVehicle.Vehicle.Components.ElectricStorage;
 			
 			var genericBusBatteryData = new GenericBusBatteryData();
-			var batterySystemData = genericBusBatteryData.CreateBatteryData(electricStorage, VectoSimulationJobType.BatteryElectricVehicle, true);
+			var batterySystemData = genericBusBatteryData.CreateBatteryData(electricStorage, VectoSimulationJobType.BatteryElectricVehicle, true, true);
 
 			Assert.AreEqual(initialSoC, batterySystemData.InitialSoC);
 			Assert.AreEqual(2, batterySystemData.Batteries.Count);
