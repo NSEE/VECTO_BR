@@ -8,6 +8,7 @@
     <OptionStrict>On</OptionStrict>
     <OptionInfer>On</OptionInfer>
     <TargetFrameworks>net6.0</TargetFrameworks>
+    <Configurations>Debug;Release</Configurations>
      
   </PropertyGroup>
 

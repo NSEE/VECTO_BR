@@ -5,6 +5,8 @@
     <TargetFrameworks>net48;net6.0</TargetFrameworks>
 
     <OutputType>Exe</OutputType>
+
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

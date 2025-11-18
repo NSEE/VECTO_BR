@@ -29,10 +29,6 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-#if(MOCKUP)
-using System.IO;
-using System.Reflection;
-#endif
 using Ninject.Modules;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.Reader;
@@ -47,7 +43,6 @@ using TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile.VehicleInformationFile_0_1;
 
 using TUGraz.VectoCore.OutputData.XML.GroupWriter;
-using TUGraz.VectoMockup.Ninject;
 
 namespace TUGraz.VectoCore
 {
@@ -64,8 +59,6 @@ namespace TUGraz.VectoCore
 
 	public class VectoNinjectModule : AbstractNinjectModule
 	{
-		private readonly bool _mockup;
-
 		#region Overrides of NinjectModule
 
 		public override void Load()
@@ -111,10 +104,6 @@ namespace TUGraz.VectoCore
 
 			LoadModule<PostProcessingNinjectModule>();
 
-
-			#if (MOCKUP)  //TODO: add second constant for release
-				LoadModule<MockupModule>();
-			#endif
 		}
 		#endregion
 	}

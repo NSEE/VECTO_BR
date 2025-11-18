@@ -4,6 +4,7 @@
     <RootNamespace>LicenceHeader</RootNamespace>
     <AssemblyName>LicenceHeader</AssemblyName>
     <TargetFrameworks>net6.0</TargetFrameworks>
+    <Configurations>Debug;Release</Configurations>
      
   </PropertyGroup>
   <ItemGroup>

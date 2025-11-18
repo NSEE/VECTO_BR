@@ -35,9 +35,6 @@ namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 		[OneTimeSetUp]
 		public void OneTimeSetup()
 		{
-#if (MOCKUP)
-			Assert.Ignore("Tests not meaningful in mockup mode");
-#endif
 			var kernel = new StandardKernel(new VectoNinjectModule()) {
 			};
 
