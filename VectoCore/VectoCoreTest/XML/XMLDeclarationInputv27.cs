@@ -16,6 +16,7 @@ using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.Utils;
+using TUGraz.VectoCore.Ninject;
 
 namespace TUGraz.VectoCore.Tests.XML
 {

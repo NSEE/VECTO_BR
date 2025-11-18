@@ -5,6 +5,7 @@ using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile.VehicleInformationFile_0_1.ResultWriter;

@@ -37,6 +37,7 @@ using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.OutputData.XML;
 using NUnit.Framework;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.Ninject;
 
 namespace TUGraz.VectoCore.Tests.XML
 {

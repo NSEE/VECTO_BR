@@ -28,6 +28,7 @@ using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.HVAC;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;

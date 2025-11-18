@@ -1,14 +1,16 @@
-﻿using TUGraz.VectoCommon.Models;
+﻿using Ninject.Modules;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore;
 using TUGraz.VectoCore.InputData;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl;
 
 namespace TUGraz.Vecto.IntegrationTests.Utils.DummyRun;
 
-public class DummyRunNinjectModule : AbstractNinjectModule
+public class DummyRunNinjectModule : AbstractNinjectModule, INinjectModule
 {
     #region Overrides of NinjectModule
 

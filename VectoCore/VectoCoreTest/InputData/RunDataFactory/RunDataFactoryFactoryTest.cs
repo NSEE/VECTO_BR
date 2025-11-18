@@ -20,6 +20,7 @@ using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRunDataFactory;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDataFactory;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDataFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.Integration.Hybrid;
 
 namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory

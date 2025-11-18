@@ -16,6 +16,10 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Ninject;
+using TUGraz.VectoCore.Ninject.PowertrainComponents;
+using TUGraz.VectoCore.OutputData;
+using TUGraz.VectoCore.OutputData.XML.DeclarationReports.VTPReport;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 

@@ -44,6 +44,7 @@ using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDataFactory;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.Utils;
 
 namespace TUGraz.VectoCore.Tests.FileIO

@@ -8,6 +8,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Utils;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 

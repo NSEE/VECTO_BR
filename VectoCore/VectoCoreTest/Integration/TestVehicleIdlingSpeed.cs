@@ -44,6 +44,7 @@ using TUGraz.VectoCore.Utils;
 using NUnit.Framework;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 
 namespace TUGraz.VectoCore.Tests.Integration
 {

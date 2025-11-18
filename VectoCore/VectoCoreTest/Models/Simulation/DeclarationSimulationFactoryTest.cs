@@ -40,6 +40,7 @@ using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Tests.Models.Simulation

@@ -20,6 +20,7 @@ using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDataFa
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.InputData.RunDataFactory;
 using TUGraz.VectoCore.Utils.Ninject;
 
