@@ -163,6 +163,9 @@ public class HeavyLorryFullReportTests : FullReportTestsBase
     [TestCase(v27LorryPath + "Multiple_SHEV_S3_S4_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Multiple_SHEV_S3_S4_HeavyLorry)")]
     [TestCase(v27LorryPath + "Multiple_SHEV_S3_S4_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Multiple_SHEV_S3_S4_HeavyLorry_requiredOnly)")]
 
+	[TestCase(v27LorryPath + "Exempted_HeavyLorry.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Exempted_HeavyLorry)")]
+	[TestCase(v27LorryPath + "Exempted_HeavyLorry_requiredOnly.xml", TestName = "HeavyLorryFullReportSuccessTest_v27(Exempted_HeavyLorry_requiredOnly)")]
+
     public void HeavyLorryFullReportSuccessTest(string fileName)
     {
         CopyInputFile(fileName);
