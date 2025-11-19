@@ -21,7 +21,7 @@ public class DummyRunModDataFactory : IModalDataFactory
 				new [] {FuelType.H2FC }
 			: runData.EngineData?.Fuels?.Select(x => x.FuelData.FuelType).ToArray() ?? null;
 
-        var modData = GetMockModData(VectoRun.Status.Success, fuels);
+        var modData = GetMockModData(VectoRun.Status.Success, fuels, runData);
 
 		var modMock = Mock.Get(modData);
 		var runStatus = VectoRun.Status.Pending;
@@ -49,9 +49,13 @@ public class DummyRunModDataFactory : IModalDataFactory
 
 	#endregion
 
-	public IModalDataContainer GetMockModData(VectoRun.Status runStatus, FuelType[] fuelTypes, OvcHevMode ovcMode = OvcHevMode.NotApplicable)
+	public IModalDataContainer GetMockModData(VectoRun.Status runStatus, FuelType[] fuelTypes,
+		VectoRunData vectoRunData, OvcHevMode ovcMode = OvcHevMode.NotApplicable)
 	{
-		var fuels = fuelTypes == null || fuelTypes.Length == 0 ? new[] { FuelType.DieselCI } : fuelTypes;
+		var isPrimaryBusPEV =
+			vectoRunData.JobType.IsBatteryElectric() && vectoRunData.VehicleData.VehicleClass.IsPrimaryBus();
+		var fuels = isPrimaryBusPEV ? new FuelType[] { } :
+			fuelTypes == null || fuelTypes.Length == 0 ? new[] { FuelType.DieselCI } : fuelTypes;
 
 		var modData = new Mock<IModalDataContainer>();
 		modData.Setup(x => x.RunStatus).Returns(runStatus);
