@@ -15,6 +15,7 @@ using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
@@ -408,6 +409,11 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
     }
 
     public ITorqueSplitter CreateTorqueSplitter(IVehicleContainer container, IElectricPowerJunctionBox junctionBox)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IFuelCellSystem CreateFuelCellSystem(IVehicleContainer container, FuelCellSystemData modelData)
     {
         throw new NotImplementedException();
     }
