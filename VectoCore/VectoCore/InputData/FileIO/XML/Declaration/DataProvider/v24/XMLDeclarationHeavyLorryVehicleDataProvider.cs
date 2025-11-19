@@ -22,8 +22,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 			XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
 		public XMLDeclarationConventionalHeavyLorryDataProviderV24(
-			IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile)
-			: base(jobData, xmlNode, sourceFile) { }
+			IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile, bool allowDeprecated)
+			: base(jobData, xmlNode, sourceFile, allowDeprecated) { }
 
 		public override VehicleCategory VehicleCategory =>
 			VehicleCategoryHelper.Parse(GetString(XMLNames.ChassisConfiguration));
@@ -64,8 +64,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 		#endregion
 
 		public XMLDeclarationHevPxHeavyLorryDataProviderV24(
-			IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile)
-			: base(jobData, xmlNode, sourceFile) { }
+			IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile, bool allowDeprecated)
+			: base(jobData, xmlNode, sourceFile, allowDeprecated) { }
 
 		#region Overrides of XMLDeclarationVehicleDataProviderV20
 
@@ -111,8 +111,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 
 		#endregion
 
-		public XMLDeclarationHevSxHeavyLorryDataProviderV24(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile)
-			: base(jobData, xmlNode, sourceFile) { }
+		public XMLDeclarationHevSxHeavyLorryDataProviderV24(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile, bool allowDeprecated)
+			: base(jobData, xmlNode, sourceFile, allowDeprecated) { }
 
 		#region Overrides of XMLDeclarationHevPxHeavyLorryDataProviderV24
 
@@ -144,8 +144,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 
 		#endregion
 
-		public XMLDeclarationPevHeavyLorryDataProviderV24(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile)
-			: base(jobData, xmlNode, sourceFile) { }
+		public XMLDeclarationPevHeavyLorryDataProviderV24(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile, bool allowDeprecated)
+			: base(jobData, xmlNode, sourceFile, allowDeprecated) { }
 
 
 		#region Overrides of XMLDeclarationHevPxHeavyLorryDataProviderV24
@@ -159,6 +159,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 		public override CubicMeter CargoVolume => null;
 
 		public override bool OVC => true;
+
+        public override bool BatteryOnlyMode => true;
 
 		#endregion
 
@@ -178,8 +180,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 		public new const string XSD_TYPE = "Vehicle_IEPC_HeavyLorryDeclarationType";
 		public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
-		public XMLDeclarationIEPCHeavyLorryDataProviderV24(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile)
-			: base(jobData, xmlNode, sourceFile) { }
+		public XMLDeclarationIEPCHeavyLorryDataProviderV24(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile, bool allowDeprecated)
+			: base(jobData, xmlNode, sourceFile, allowDeprecated) { }
 
 
 		#region Overrides of XMLDeclarationVehicleDataProviderV10
@@ -189,6 +191,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 		public override IList<ITorqueLimitInputData> TorqueLimits => null;
 
 		public override bool OVC => true;
+
+		public override bool BatteryOnlyMode => true;
 
 		#endregion
 
@@ -212,8 +216,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24
 
 		#endregion
 
-		public XMLDeclarationHevIEPCSHeavyLorryDataProviderV24(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile)
-			: base(jobData, xmlNode, sourceFile) { }
+		public XMLDeclarationHevIEPCSHeavyLorryDataProviderV24(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile, bool allowDeprecated)
+			: base(jobData, xmlNode, sourceFile, allowDeprecated) { }
 
 		#region Overrides of XMLDeclarationVehicleDataProviderV20
 

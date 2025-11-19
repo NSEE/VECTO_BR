@@ -5,21 +5,13 @@ using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics;
-using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules.Electrics;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
-using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
-using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
-using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
-using TUGraz.VectoCore.Models.SimulationComponent.Strategies;
-using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
-using Wheels = TUGraz.VectoCore.Models.SimulationComponent.Impl.Wheels;
 
 namespace TUGraz.VectoCore.Models.Simulation.Impl
 {
@@ -65,9 +57,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						: BuildSimpleHybridPowertrain(data);
 				case VectoSimulationJobType.BatteryElectricVehicle:
 				case VectoSimulationJobType.IEPC_E:
+					return BuildSimplePowertrainElectric(data);
 				case VectoSimulationJobType.FCHV:
 				case VectoSimulationJobType.FCHV_IEPC:
-					return BuildSimplePowertrainElectric(data);
+					return BuildSimplePowertrainFCHV(data);
 				case VectoSimulationJobType.SerialHybridVehicle:
 					return BuildSimpleSerialHybridPowertrain(data);
 				case VectoSimulationJobType.IEPC_S:
@@ -121,7 +114,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					data.VehicleData.WheelsInertia))
 				.AddComponent(ComponentFactory.CreateBrakes(container))
 				.AddComponent(ComponentFactory.CreateAxleGear(container, data.AxleGearData))
-				.AddComponent(new WheelEnd(container, data.WheelEndData))
+				.AddComponent(ComponentFactory.CreateWheelEnd(container, data.WheelEndData))
 				.AddComponent(data.AngledriveData != null ? ComponentFactory.CreateAngledrive(container, data.AngledriveData) : null)
 				.AddComponent(GetRetarder(RetarderType.TransmissionOutputRetarder, data.Retarder, container))
 				.AddComponent(gearbox)
@@ -207,7 +200,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
             var powertrain = ComponentFactory.CreateVehicle(container, data.VehicleData, data.AirdragData)
 				.AddComponent(ComponentFactory.CreateWheels(container, data.VehicleData.DynamicTyreRadius, data.VehicleData.WheelsInertia))
 				.AddComponent(ctl)
-				.AddComponent(new WheelEnd(container, data.WheelEndData))
+				.AddComponent(ComponentFactory.CreateWheelEnd(container, data.WheelEndData))
 				.AddComponent(ComponentFactory.CreateBrakes(container));
 
             var pos = data.ElectricMachinesData.First(x => x.Item1 != PowertrainPosition.GEN).Item1;
@@ -292,7 +285,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				.AddComponent(ComponentFactory.CreateWheels(container, data.VehicleData.DynamicTyreRadius, data.VehicleData.WheelsInertia))
 				.AddComponent(ctl)
 				.AddComponent(ComponentFactory.CreateBrakes(container))
-				.AddComponent(new WheelEnd(container, data.WheelEndData));
+				.AddComponent(ComponentFactory.CreateWheelEnd(container, data.WheelEndData));
 
 			var gearbox = ComponentFactory.CreateGearbox(data.JobType, data.Cycle.CycleType, data.GearboxData.Type,
 				container, ctl.ShiftStrategy);
@@ -423,7 +416,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					data.VehicleData.WheelsInertia))
 				.AddComponent(ctl)
 				.AddComponent(ComponentFactory.CreateBrakes(container))
-				.AddComponent(new WheelEnd(container, data.WheelEndData))
+				.AddComponent(ComponentFactory.CreateWheelEnd(container, data.WheelEndData))
 				.AddComponent(
 					GetElectricMachine(PowertrainPosition.HybridP4, data.ElectricMachinesData, container, es, ctl))
 				.AddComponent(ComponentFactory.CreateAxleGear(container, data.AxleGearData))
@@ -635,7 +628,21 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 		}
 
-		protected ISimpleVehicleContainer GetVehicleContainer(VectoRunData runData)
+        public ISimpleVehicleContainer BuildSimplePowertrainFCHV(VectoRunData data)
+		{
+			var container = BuildSimplePowertrainElectric(data);
+			var es = container.ElectricSystemInfo as ElectricSystem;
+
+			if (data.FuelCellSystemData != null) {
+				var fuelCellSystem = ComponentFactory.CreateFuelCellSystem(container, data.FuelCellSystemData);
+				es.Connect(fuelCellSystem);
+			}
+
+			return container;
+		}
+
+
+        protected ISimpleVehicleContainer GetVehicleContainer(VectoRunData runData)
 		{
 			var container = ComponentFactory.CreateSimpleVehicleContainer(runData);
 			return container;

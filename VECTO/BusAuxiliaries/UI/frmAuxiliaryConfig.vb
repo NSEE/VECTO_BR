@@ -58,7 +58,7 @@ Public Class frmAuxiliaryConfig
 
 
         If Not ValidateAuxFileName(fileName) Then
-            Me.DialogResult = System.Windows.Forms.DialogResult.Abort
+            Me.DialogResult = DialogResult.Abort
             Me.Close()
         End If
 
@@ -80,7 +80,7 @@ Public Class frmAuxiliaryConfig
         Catch ex As Exception
 
             MessageBox.Show("The filename you supplied {0} was invalid or could not be found ", fileName)
-            Me.DialogResult = System.Windows.Forms.DialogResult.Abort
+            Me.DialogResult = DialogResult.Abort
             Me.Close()
 
         End Try
@@ -904,7 +904,7 @@ Public Class frmAuxiliaryConfig
                         txtAlternatorMapPath.Text =
                             If(suppliedAALTPath.Contains(aauxPath), suppliedAALTPath.Replace(aauxPath, ""), suppliedAALTPath)
                     Else
-                        txtAlternatorMapPath.Text = path.GetFileName(suppliedAALTPath)
+                        txtAlternatorMapPath.Text = Path.GetFileName(suppliedAALTPath)
                     End If
                 Else
                     Return
@@ -1063,7 +1063,7 @@ Public Class frmAuxiliaryConfig
                         txtSSMFilePath.Text =
                             If(suppliedSSMPath.Contains(aauxPath), suppliedSSMPath.Replace(aauxPath, ""), suppliedSSMPath)
                     Else
-                        txtSSMFilePath.Text = path.GetFileName(suppliedSSMPath)
+                        txtSSMFilePath.Text = Path.GetFileName(suppliedSSMPath)
                     End If
                 Else
                     Return

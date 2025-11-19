@@ -33,9 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Threading;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -254,7 +252,7 @@ namespace TUGraz.VectoCore.Utils
 					return x2.SI<T>();
 				}
 
-				for (var count = 2; count < 30; count++, iterationCount++) {
+				for (var count = 2; count < 35; count++, iterationCount++) {
 					var y2 = getYValue(result).Value();
 					debug.Add($"[SA.IS-2-{iterationCount}]", new { x = x2, y = y2, delta = criterion(result), result });
 

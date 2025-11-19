@@ -1,21 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Xml.Linq;
 using Ninject.Extensions.Factory;
-using Ninject.Modules;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
 using TUGraz.VectoCore.Ninject;
-using TUGraz.VectoCore.Utils;
 using TUGraz.VectoCore.Utils.Ninject;
-using VECTO3GUI2020.Model.Multistage;
-using VECTO3GUI2020.ViewModel.Implementation.Common;
-using VECTO3GUI2020.ViewModel.Interfaces.Common;
-using VECTO3GUI2020.ViewModel.Interfaces.Document;
-using VECTO3GUI2020.ViewModel.Interfaces.JobEdit.Vehicle;
 using VECTO3GUI2020.ViewModel.MultiStage.Implementation;
-using VECTO3GUI2020.ViewModel.MultiStage.Interfaces;
 
 namespace VECTO3GUI2020.Ninject.Factories
 {
@@ -53,6 +43,7 @@ namespace VECTO3GUI2020.Ninject.Factories
 			AddBinding<IMultistageAuxiliariesViewModel, MultistageAuxiliariesViewModel_xEV>(CompletedBusArchitecture.HEV);
 			AddBinding<IMultistageAuxiliariesViewModel, MultistageAuxiliariesViewModel_xEV>(CompletedBusArchitecture.PEV);
 			AddBinding<IMultistageAuxiliariesViewModel, MultistageAuxiliariesViewModel_xEV>(CompletedBusArchitecture.IEPC);
+			AddBinding<IMultistageAuxiliariesViewModel, MultistageAuxiliariesViewModel_xEV>(CompletedBusArchitecture.FCHV);
 		}
 
 		[DebuggerStepThrough]

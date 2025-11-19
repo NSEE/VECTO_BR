@@ -29,7 +29,6 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-using System.Collections.Generic;
 using System.Xml;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
@@ -168,17 +167,17 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 			string version, IXMLDeclarationInputData inputData, XmlNode baseNode, bool allowDeprecated);
 
 		IXMLDeclarationPrimaryVehicleBusInputDataReader CreatePrimaryVehicleBusInputReader(
-			string version, IXMLPrimaryVehicleBusInputData inputData, XmlNode baseNode);
+			string version, IXMLPrimaryVehicleBusInputData inputData, XmlNode baseNode, bool allowDeprecated);
 
 		IXMLDeclarationMultistageVehicleInputDataReader CreateMultistageInputReader(string version,
-			IXMLMultistageInputDataProvider inputData, XmlNode baseNode);
+			IXMLMultistageInputDataProvider inputData, XmlNode baseNode, bool allowDeprecated);
 
 
 		IXMLJobDataReader CreateJobReader(
 			string version, IXMLDeclarationJobInputData jobData, XmlNode jobNode, bool allowDeprecated);
 		
 		IXMLMultistageJobReader CreateMultistageJobReader(
-			string version, IXMLDeclarationMultistageJobInputData inputData, XmlNode baseNode);
+			string version, IXMLDeclarationMultistageJobInputData inputData, XmlNode baseNode, bool allowDeprecated);
 
 		IXMLJobDataReader CreatePrimaryVehicleJobReader(
 			string version, IXMLPrimaryVehicleBusJobInputData busJobData, XmlNode jobNode);
@@ -203,7 +202,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 
 		IXMLResultsInputData CreateResultsInputDataReader(string version, XmlNode resultsNode);
 
-		IXMLMultistageReader CreateMultistageDataReader(string version, IXMLMultistageEntryInputDataProvider multistageData, XmlNode node);
+		IXMLMultistageReader CreateMultistageDataReader(string version, IXMLMultistageEntryInputDataProvider multistageData, XmlNode node, bool allowDeprecated);
 
 		IXMLFuelCellDeclarationInputData CreateFuelCellInputData(string version, XmlNode componentNode, string sourceFile);
 

@@ -194,7 +194,6 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 
 	}
 
-	// todo amogoda: m13. consider removing if Non OVC PEV makes no sense. USe HEV non-OVC instead?
 	public class LorryPEVNonOVCSummaryWriter : LorryPEVSummaryWriter
 	{
 		public LorryPEVNonOVCSummaryWriter(ICIFResultsWriterFactory factory, XNamespace ns) : base(factory, ns) { }
@@ -263,14 +262,14 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 		#endregion
 	}
 
-	public class BusFCHVNonOVCSummaryWriter : LorrySummaryWriterBase
-	{
+	public class BusFCHVNonOVCSummaryWriter : BusSummaryWriterBase
+    {
 		public BusFCHVNonOVCSummaryWriter(ICIFResultsWriterFactory factory, XNamespace ns) : base(factory, ns) { }
 
 		#region Overrides of CifSummaryWriterBase
 
 		public override string ResultSummaryXMLType => "ResultSummaryFCHVType";
-		protected override IFuelConsumptionWriter FuelConsumptionWriter => _factory.GetFuelConsumptionLorry(_factory, TNS);
+		protected override IFuelConsumptionWriter FuelConsumptionWriter => _factory.GetFuelConsumptionBus(_factory, TNS);
 		protected override IElectricEnergyConsumptionWriter ElectricEnergyConsumptionWriter => null;
 		protected override ICO2Writer CO2Writer => _factory.GetCO2SummaryResultBus(_factory, TNS);
 		protected override IElectricRangeWriter ElectricRangeWriter => null;

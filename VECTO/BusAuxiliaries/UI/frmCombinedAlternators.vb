@@ -265,7 +265,7 @@ Public Class frmCombinedAlternators
     End Function
 
     'Other events
-    Private Sub groupBoxUserInput_Paint(sender As Object, e As System.Windows.Forms.PaintEventArgs) _
+    Private Sub groupBoxUserInput_Paint(sender As Object, e As PaintEventArgs) _
         Handles grpTable2000PRM.Paint, grpTable6000PRM.Paint, grpTable4000PRM.Paint
 
 
@@ -316,7 +316,7 @@ Public Class frmCombinedAlternators
                         'If combinedAlt.DeleteAlternator(alternatorName, feedback, True) Then
                         '    BindGrid()
                         'Else
-                            MessageBox.Show(feedback)
+                        MessageBox.Show(feedback)
 
                         'End If
 

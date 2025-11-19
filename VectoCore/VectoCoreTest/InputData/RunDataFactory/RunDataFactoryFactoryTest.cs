@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.XPath;
 using Moq;
 using Ninject;
 using NUnit.Framework;
@@ -21,7 +15,6 @@ using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRunData
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.HeavyLorryRunDataFactory;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDataFactory;
 using TUGraz.VectoCore.Ninject;
-using TUGraz.VectoCore.Tests.Integration.Hybrid;
 
 namespace TUGraz.VectoCore.Tests.InputData.RunDataFactory
 {

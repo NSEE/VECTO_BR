@@ -29,13 +29,9 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-using System;
 using System.Diagnostics;
-using System.Linq;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
-using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 {
@@ -59,6 +55,7 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 			ElectricMotor = new ElectricMotorResponse();
 			//ElectricSystem = new
 			TorqueConverter = new TorqueConverterResponse();
+			Retarder = new RetarderResponse();
 			HybridController = new HybridControllerResponse();
 		}
 
@@ -80,6 +77,7 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 			ElectricMotor = subResponse.ElectricMotor;
 			ElectricSystem = subResponse.ElectricSystem;
 			TorqueConverter = subResponse.TorqueConverter;
+			Retarder = subResponse.Retarder;
 			HybridController = subResponse.HybridController;
 		}
 
@@ -97,7 +95,9 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 
 		public TorqueConverterResponse TorqueConverter { get; }
 
-		public AxlegearResponse Axlegear { get; }
+        public RetarderResponse Retarder { get; }
+
+        public AxlegearResponse Axlegear { get; }
 
 		public AngledriveResponse Angledrive { get; }
 		public WheelsResponse Wheels { get; }
@@ -238,5 +238,11 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 		public ResponseEngineSpeedTooHigh(object source) : base(source) { }
 
 		public PerSecond DeltaEngineSpeed { get; set; }
+	}
+
+	[DebuggerDisplay("ElectricSystemNotReady")]
+	internal class ResponseElectricSystemNotReady : AbstractResponse
+	{
+		public ResponseElectricSystemNotReady(object source) : base(source) { }
 	}
 }

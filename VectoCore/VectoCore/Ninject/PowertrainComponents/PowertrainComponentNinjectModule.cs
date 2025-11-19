@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using Ninject.Extensions.Factory;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics;
 using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules.Electrics;
-using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
@@ -19,7 +17,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Batter
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Strategies;
-using TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Utils.Ninject;
 
 namespace TUGraz.VectoCore.Ninject.PowertrainComponents
@@ -164,9 +162,13 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 				PowertrainPosition.HybridP2));
 			Bind<IGearbox>().To<PEVGearbox>().Named(_realPowertrain.GearboxNameBatteryOnlyHybrid(
 				VectoSimulationJobType.IHPC, CycleType.DistanceBased, GearboxType.IHPC, PowertrainPosition.IHPC));
+			Bind<IGearbox>().To<PEVGearbox>().Named(_realPowertrain.GearboxNameBatteryOnlyHybrid(
+				VectoSimulationJobType.IHPC, CycleType.DistanceBased, GearboxType.IHPC, PowertrainPosition.HybridP2));
 
-			Bind<IClutch>().To<Clutch>().Named(_realPowertrain.ClutchBatteryOnlyHybridName(VectoSimulationJobType.ParallelHybridVehicle));
+            Bind<IClutch>().To<Clutch>().Named(_realPowertrain.ClutchBatteryOnlyHybridName(VectoSimulationJobType.ParallelHybridVehicle));
 			Bind<IClutch>().To<Clutch>().Named(_realPowertrain.ClutchBatteryOnlyHybridName(VectoSimulationJobType.IHPC));
+
+			Bind<IFuelCellSystem>().To<FuelCellSystem>().Named(_realPowertrain.Prefix);
 
             #endregion
 
@@ -211,6 +213,8 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 
 			Bind<IElectricMotorControl>().To<SimpleElectricMotorControl>()
 				.Named(_testPowertrain.ElectricMotorControllerBatteryOnlyHybridName(CycleType.DistanceBased));
+
+			Bind<IFuelCellSystem>().To<TestpowertrainFuelCellSystem>().Named(_testPowertrain.Prefix);
             #endregion
 
         }
@@ -505,6 +509,8 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
             Bind<IDriver>().To<Driver>().Named(namingHelper.Prefix);
             Bind<IDriverStrategy>().To<DefaultDriverStrategy>().Named(namingHelper.Prefix);
             Bind<IBrakes>().To<Brakes>().Named(namingHelper.Prefix);
+			Bind<IElectricPowerJunctionBox>().To<ElectricPowerJunctionBox>().Named(namingHelper.Prefix);
+			Bind<ITorqueSplitter>().To<TorqueSplitter>().Named(namingHelper.Prefix);
             Bind<IAxlegear>().To<AxleGear>().Named(namingHelper.Prefix);
             Bind<IAngledrive>().To<Angledrive>().Named(namingHelper.Prefix);
             Bind<IRetarder>().To<Retarder>().Named(namingHelper.Prefix);
@@ -613,7 +619,7 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 		}
 	}
 
-	public class ComponentBindingNameHelper
+	public class ComponentBindingNameHelper : NinjectBindingNameHelperBase
 	{
 		private readonly string _prefix;
 
@@ -689,40 +695,6 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 
 		public string IEPCName(bool singleSpeed) => $"{_prefix}_IEPC_{singleSpeed}";
 
-        // -----
-
-        protected string CheckArguments<T1>(object[] arguments, Func<T1, string> func, [CallerMemberName] string callerName = "")
-		{
-			if (arguments.Length == 1 && arguments[0] is T1 p1) {
-				return func(p1);
-			}
-			throw new ArgumentException($"exactly one argument expected for {callerName}: {typeof(T1).Name}");
-		}
-
-		protected string CheckArguments<T1, T2>(object[] arguments, Func<T1, T2, string> func, [CallerMemberName] string callerName = "")
-		{
-			if (arguments.Length == 2 && arguments[0] is T1 p1 && arguments[1] is T2 p2) {
-				return func(p1, p2);
-			}
-			throw new ArgumentException($"exactly two arguments expected for {callerName}: {typeof(T1).Name}, {typeof(T2).Name}");
-		}
-
-		protected string CheckArguments<T1, T2, T3>(object[] arguments, Func<T1, T2, T3, string> func, [CallerMemberName] string callerName = "")
-		{
-			if (arguments.Length == 3 && arguments[0] is T1 p1 && arguments[1] is T2 p2 && arguments[2] is T3 p3) {
-				return func(p1, p2, p3);
-			}
-			throw new ArgumentException($"exactly three arguments expected for {callerName}: {typeof(T1).Name}, {typeof(T2).Name}, {typeof(T3).Name}");
-		}
-
-		protected string CheckArguments<T1, T2, T3, T4>(object[] arguments, Func<T1, T2, T3, T4, string> func, [CallerMemberName] string callerName = "")
-		{
-			if (arguments.Length == 4 && arguments[0] is T1 p1 && arguments[1] is T2 p2 && arguments[2] is T3 p3 && arguments[3] is T4 p4) {
-				return func(p1, p2, p3, p4);
-			}
-			throw new ArgumentException($"exactly four arguments expected for {callerName}: {typeof(T1).Name}, {typeof(T2).Name}, {typeof(T3).Name} {typeof(T4).Name}");
-		}
-
+       
     }
-
 }

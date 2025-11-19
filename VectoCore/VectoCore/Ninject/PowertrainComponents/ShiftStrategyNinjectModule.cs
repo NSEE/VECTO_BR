@@ -26,11 +26,17 @@ namespace TUGraz.VectoCore.Ninject.PowertrainComponents
 
             Bind<IShiftStrategy>().To<PEVAMTShiftStrategy>().Named(PEVAMTShiftStrategy.Name);
 			Bind<IShiftPolygonCalculator>().To<PEVAMTShiftStrategyPolygonCreator>().Named(PEVAMTShiftStrategy.Name);
+
+			Bind<IShiftStrategy>().To<FCHVAMTShiftStrategy>().Named(FCHVAMTShiftStrategy.Name);
+			Bind<IShiftPolygonCalculator>().To<PEVAMTShiftStrategyPolygonCreator>().Named(FCHVAMTShiftStrategy.Name);
 			
 			Bind<IShiftStrategy>().To<APTNShiftStrategy>().Named(APTNShiftStrategy.Name);
 			Bind<IShiftPolygonCalculator>().To<PEVAMTShiftStrategyPolygonCreator>().Named(APTNShiftStrategy.Name);
 
-			Bind<IShiftStrategy>().To<ParallelHybridBatteryOnlyModeShiftStrategy>()
+			Bind<IShiftStrategy>().To<FCHVAPTNShiftStrategy>().Named(FCHVAPTNShiftStrategy.Name);
+			Bind<IShiftPolygonCalculator>().To<PEVAMTShiftStrategyPolygonCreator>().Named(FCHVAPTNShiftStrategy.Name);
+
+            Bind<IShiftStrategy>().To<ParallelHybridBatteryOnlyModeShiftStrategy>()
 				.Named(ParallelHybridBatteryOnlyModeShiftStrategy.Name);
 			Bind<IShiftPolygonCalculator>().To<PEVAMTShiftStrategyPolygonCreator>()
 				.Named(ParallelHybridBatteryOnlyModeShiftStrategy.Name);

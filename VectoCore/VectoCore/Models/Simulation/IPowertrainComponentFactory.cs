@@ -2,18 +2,17 @@
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents.Interfaces;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules.Electrics;
-using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
-using TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox;
 using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Models.Simulation
@@ -43,15 +42,19 @@ namespace TUGraz.VectoCore.Models.Simulation
 
 		IBrakes CreateBrakes(IVehicleContainer container);
 
-		IAxlegear CreateAxleGear(IVehicleContainer container, AxleGearData modelData);
+        IElectricPowerJunctionBox CreateElectricPowerJunctionBox(IVehicleContainer container);
 
-		IAngledrive CreateAngledrive(IVehicleContainer container, AngledriveData modelData);
+		ITorqueSplitter CreateTorqueSplitter(IVehicleContainer container, IElectricPowerJunctionBox junctionBox);
+
+        IAxlegear CreateAxleGear(IVehicleContainer container, AxleGearData modelData, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
+
+		IAngledrive CreateAngledrive(IVehicleContainer container, AngledriveData modelData, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 		
-		IRetarder CreateRetarder(IVehicleContainer container, RetarderLossMap lossMap, double ratio);
+		IRetarder CreateRetarder(IVehicleContainer container, RetarderLossMap lossMap, double ratio, int axleNumber);
 
 		IGearbox CreateGearbox(VectoSimulationJobType jobType, CycleType cycle, GearboxType gbxType, IVehicleContainer container, IShiftStrategy strategy);
 
-        IClutchInfo CreateATClutchInfo(IVehicleContainer container);
+        IClutchInfo CreateATClutchInfo(IVehicleContainer container, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 
         IClutch CreateClutch(VectoSimulationJobType jobType, IVehicleContainer container,
 			CombustionEngineData engineData);
@@ -65,10 +68,20 @@ namespace TUGraz.VectoCore.Models.Simulation
 
 		ISimpleBattery CreateSimpleBattery(bool smartAlternator, IVehicleContainer container, WattSecond capacity, double storageEfficiency);
 
-		IBusAuxiliariesAdapter CreateBusAuxiliariesAdapter(IVehicleContainer container, IAuxiliaryConfig auxiliaryConfig, IAuxPort additionalAux = null);
+		IBusAuxiliariesAdapter CreateBusAuxiliariesAdapter(
+			IVehicleContainer container, 
+			IAuxiliaryConfig auxiliaryConfig, 
+			IAuxPort additionalAux = null,
+            int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 		
 		
-		IElectricMotor CreateElectricMotor(bool isIEPC, IVehicleContainer container, ElectricMotorData data, IElectricMotorControl control, PowertrainPosition position);
+		IElectricMotor CreateElectricMotor(
+			bool isIEPC, 
+			IVehicleContainer container, 
+			ElectricMotorData data, 
+			IElectricMotorControl control, 
+			PowertrainPosition position,
+			int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 		
 		IElectricChargerPort CreateGensetChargerAdapter(IElectricMotor motor);
 
@@ -77,9 +90,9 @@ namespace TUGraz.VectoCore.Models.Simulation
 		IElectricEnergyStorage CreateREESS(REESSType reessType, IVehicleContainer container, SuperCapData modelData);
 		IElectricEnergyStorage CreateREESS(REESSType reessType, IVehicleContainer container, BatterySystemData batterySystemData);
 
-		IGearboxInfo CreateDummyGearboxInfo(bool engineOnly, IVehicleContainer container, GearshiftPosition gear = null);
+		IGearboxInfo CreateDummyGearboxInfo(bool engineOnly, IVehicleContainer container, GearshiftPosition gear = null, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 		
-		IAxlegearInfo CreateDummyAxleGearInfo(IVehicleContainer container);
+		IAxlegearInfo CreateDummyAxleGearInfo(IVehicleContainer container, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 
 		IEngineInfo CreateDummyEngineInfo(IVehicleContainer container);
 
@@ -100,10 +113,11 @@ namespace TUGraz.VectoCore.Models.Simulation
 		ISerialHybridController CreateSerialHybridController(CycleType cycleType,
 			IVehicleContainer container, IHybridControlStrategy strategy, IElectricSystem es);
 
-		IElectricMotorControl CreateElectricMotorController(CycleType cycle, IVehicleContainer container, IElectricSystem es);
+		IElectricMotorControl CreateElectricMotorController(CycleType cycle, IVehicleContainer container, IElectricSystem es, AxlePowertrainData axlePt = null);
 
-		IWheelEnd CreateWheelEnd(IVehicleContainer container, WheelEndData modelData);
+        IWheelEnd CreateWheelEnd(IVehicleContainer container, WheelEndData modelData);
 
+		IFuelCellSystem CreateFuelCellSystem(IVehicleContainer container, FuelCellSystemData modelData);
 
 		IElectricMotorControl CreateElectricMotorControllerBatteryOnlyHybrid(CycleType cycle, IVehicleContainer container, IElectricSystem es);
 		

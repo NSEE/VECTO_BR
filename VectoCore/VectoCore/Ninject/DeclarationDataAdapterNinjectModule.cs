@@ -79,6 +79,15 @@ namespace TUGraz.VectoCore.Ninject
 			Bind<ILorryDeclarationDataAdapter>().To<DeclarationDataAdapterHeavyLorry.Exempted>()
 				.WhenInjectedExactlyInto<DeclarationModeHeavyLorryRunDataFactory.Exempted>();
 
+			Bind<ILorryDeclarationDataAdapter>().To<DeclarationDataAdapterHeavyLorry.MultipleFCHVLorryDataAdapter>()
+				.WhenInjectedExactlyInto<DeclarationModeHeavyLorryRunDataFactory.MultipleFCHV>();
+
+			Bind<ILorryDeclarationDataAdapter>().To<DeclarationDataAdapterHeavyLorry.MultiplePEVLorryDataAdapter>()
+				.WhenInjectedExactlyInto<DeclarationModeHeavyLorryRunDataFactory.MultiplePEV>();
+
+			Bind<ILorryDeclarationDataAdapter>().To<DeclarationDataAdapterHeavyLorry.MultipleSHEVLorryDataAdapter>()
+				.WhenInjectedExactlyInto<DeclarationModeHeavyLorryRunDataFactory.MultipleSHEV>();
+
 			Bind<ILorryDeclarationDataAdapter>().To<DeclarationDataAdapterHeavyLorry.Conventional>()
 				.WhenInjectedExactlyInto<DeclarationVTPModeVectoRunDataFactoryLorries>();
             #endregion HeavyLorry
@@ -141,7 +150,16 @@ namespace TUGraz.VectoCore.Ninject
 			Bind<IPrimaryBusDeclarationDataAdapter>().To<DeclarationDataAdapterPrimaryBus.PEV_E_IEPC>()
 				.WhenInjectedExactlyInto<DeclarationModePrimaryBusRunDataFactory.PEV_E_IEPC>();
 
-			Bind<IPrimaryBusDeclarationDataAdapter>().To<DeclarationDataAdapterPrimaryBus.Exempted>()
+			Bind<IPrimaryBusDeclarationDataAdapter>().To<DeclarationDataAdapterPrimaryBus.MultiplePEV>()
+				.WhenInjectedExactlyInto<DeclarationModePrimaryBusRunDataFactory.MultiplePEV>();
+
+            Bind<IPrimaryBusDeclarationDataAdapter>().To<DeclarationDataAdapterPrimaryBus.MultipleFCHV>()
+                .WhenInjectedExactlyInto<DeclarationModePrimaryBusRunDataFactory.MultipleFCHV>();
+
+            Bind<IPrimaryBusDeclarationDataAdapter>().To<DeclarationDataAdapterPrimaryBus.MultipleSHEV>()
+                .WhenInjectedExactlyInto<DeclarationModePrimaryBusRunDataFactory.MultipleSHEV>();
+
+            Bind<IPrimaryBusDeclarationDataAdapter>().To<DeclarationDataAdapterPrimaryBus.Exempted>()
 				.WhenInjectedExactlyInto<DeclarationModePrimaryBusRunDataFactory.Exempted>();
 
 			Bind<IPrimaryBusDeclarationDataAdapter>().To<DeclarationDataAdapterPrimaryBus.Conventional>()
@@ -225,6 +243,17 @@ namespace TUGraz.VectoCore.Ninject
                 .To<DeclarationDeclarationDataAdapterGenericCompletedBusDeclaration.FCHV_IEPC>()
                 .WhenInjectedExactlyInto<DeclarationModeCompletedBusRunDataFactory.FCHV_IEPC>();
 
+			Bind<IGenericCompletedBusDeclarationDataAdapter>()
+				.To<DeclarationDeclarationDataAdapterGenericCompletedBusDeclaration.MultiplePEV>()
+				.WhenInjectedExactlyInto<DeclarationModeCompletedBusRunDataFactory.MultiplePEV>();
+
+            Bind<IGenericCompletedBusDeclarationDataAdapter>()
+                .To<DeclarationDeclarationDataAdapterGenericCompletedBusDeclaration.MultipleFCHV>()
+                .WhenInjectedExactlyInto<DeclarationModeCompletedBusRunDataFactory.MultipleFCHV>();
+
+            Bind<IGenericCompletedBusDeclarationDataAdapter>()
+                .To<DeclarationDeclarationDataAdapterGenericCompletedBusDeclaration.MultipleSHEV>()
+                .WhenInjectedExactlyInto<DeclarationModeCompletedBusRunDataFactory.MultipleSHEV>();
 
             Bind<IGenericCompletedBusDeclarationDataAdapter>()
 				.To<DeclarationDeclarationDataAdapterGenericCompletedBusDeclaration.Exempted>()
@@ -309,6 +338,18 @@ namespace TUGraz.VectoCore.Ninject
                 .WhenInjectedExactlyInto<DeclarationModeCompletedBusRunDataFactory.FCHV_IEPC>();
 
             Bind<ISpecificCompletedBusDeclarationDataAdapter>()
+                .To<DeclarationDataAdapterSpecificCompletedBus.MultiplePEV>()
+                .WhenInjectedExactlyInto<DeclarationModeCompletedBusRunDataFactory.MultiplePEV>();
+
+            Bind<ISpecificCompletedBusDeclarationDataAdapter>()
+                .To<DeclarationDataAdapterSpecificCompletedBus.MultipleFCHV>()
+                .WhenInjectedExactlyInto<DeclarationModeCompletedBusRunDataFactory.MultipleFCHV>();
+
+            Bind<ISpecificCompletedBusDeclarationDataAdapter>()
+                .To<DeclarationDataAdapterSpecificCompletedBus.MultipleSHEV>()
+                .WhenInjectedExactlyInto<DeclarationModeCompletedBusRunDataFactory.MultipleSHEV>();
+
+            Bind<ISpecificCompletedBusDeclarationDataAdapter>()
 				.To<DeclarationDataAdapterSpecificCompletedBus.Exempted>()
 				.WhenInjectedExactlyInto<DeclarationModeCompletedBusRunDataFactory.Exempted>();
 			#endregion
@@ -370,6 +411,15 @@ namespace TUGraz.VectoCore.Ninject
 
             Bind<ISingleBusDeclarationDataAdapter>().To<DeclarationDataAdapterSingleBus.FCHV_IEPC>()
                 .WhenInjectedExactlyInto<DeclarationModeSingleBusRunDataFactory.FCHV_IEPC>();
+
+            Bind<ISingleBusDeclarationDataAdapter>().To<DeclarationDataAdapterSingleBus.MultiplePEV>()
+                .WhenInjectedExactlyInto<DeclarationModeSingleBusRunDataFactory.MultiplePEV>();
+
+            Bind<ISingleBusDeclarationDataAdapter>().To<DeclarationDataAdapterSingleBus.MultipleFCHV>()
+                .WhenInjectedExactlyInto<DeclarationModeSingleBusRunDataFactory.MultipleFCHV>();
+
+            Bind<ISingleBusDeclarationDataAdapter>().To<DeclarationDataAdapterSingleBus.MultipleSHEV>()
+                .WhenInjectedExactlyInto<DeclarationModeSingleBusRunDataFactory.MultipleSHEV>();
 
             Bind<ISingleBusDeclarationDataAdapter>().To<DeclarationDataAdapterSingleBus.Exempted>()
 				.WhenInjectedExactlyInto<DeclarationModeSingleBusRunDataFactory.Exempted>();

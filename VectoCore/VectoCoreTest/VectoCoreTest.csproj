@@ -3,7 +3,7 @@
     <RootNamespace>TUGraz.VectoCore.Tests</RootNamespace>
     <AssemblyName>VectoCoreTest</AssemblyName>
     <TargetFrameworks>net8.0</TargetFrameworks>
-     
+
 	<!--uncomment to add windows forms an enable plotting of diagrams in some testcases-->
 	<!--<DefineConstants>$(DefineConstants);TRACE</DefineConstants>-->
 	<!--<UseWindowsForms>true</UseWindowsForms>-->
@@ -26,9 +26,6 @@
     <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Ninject" Version="3.3.6" />
-    <PackageReference Include="NLog" Version="4.7.13" />
     <PackageReference Include="ScottPlot" Version="4.1.68" />
   </ItemGroup>
 
@@ -145,9 +142,6 @@
     <None Update="TestData\Integration\IMC\PrimaryCoach_P2_HEV_AMT_OVC.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\Integration\IMC\PrimaryCoach_S2_Base_AMT.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\HEV-S_heavyLorry_S3_ovc.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -171,6 +165,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="TestData\Integration\DeclarationMode\2nd_AmendmDeclMode\PrimaryBus\S-HEV\" />
     <Folder Include="TestData\Integration\IMC\" />
     <Folder Include="TestData\XML\XMLVIFBusReport\" />
   </ItemGroup>

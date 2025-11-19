@@ -1,11 +1,8 @@
-﻿using System.Windows;
-using Ninject.Modules;
-using TUGraz.VectoCore;
+﻿using TUGraz.VectoCore;
 using TUGraz.VectoCore.Ninject;
 using VECTO3GUI2020.Helper;
 using VECTO3GUI2020.Model.Implementation;
 using VECTO3GUI2020.Model.Interfaces;
-using VECTO3GUI2020.ViewModel;
 using VECTO3GUI2020.ViewModel.Implementation;
 using VECTO3GUI2020.ViewModel.Interfaces;
 

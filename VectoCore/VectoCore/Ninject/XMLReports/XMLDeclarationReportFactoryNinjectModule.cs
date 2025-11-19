@@ -1,9 +1,4 @@
-﻿using System.Linq;
-using Ninject.Extensions.Factory;
-using TUGraz.VectoCore.OutputData.XML;
-using TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile;
-using TUGraz.VectoCore.Utils.Ninject;
-
+﻿using TUGraz.VectoCore.OutputData.XML;
 namespace TUGraz.VectoCore.Ninject.XMLReports
 {
 	public class XMLDeclarationReportFactoryNinjectModule : AbstractNinjectModule

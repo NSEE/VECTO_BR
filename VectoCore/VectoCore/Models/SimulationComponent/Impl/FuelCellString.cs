@@ -7,6 +7,7 @@ using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents;
 using TUGraz.VectoCore.OutputData;
+using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
@@ -28,8 +29,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public IReadOnlyCollection<FuelCell> FuelCells => new ReadOnlyCollection<FuelCell>(_fuelCells);
 
-		public FuelCellString(FuelCellStringData fcData, int stringId, IVehicleContainer dataBus) : base(null)
-		{
+		public FuelCellString(FuelCellStringData fcData, int stringId, IVehicleContainer dataBus) : 
+			base(null, Constants.NOT_IN_AXLE_POWERTRAIN) //provide null here, when registering the component the Id is accessed but is not set in the base constructor
+        {
 			_fcStringMap = fcData.MassFlowMap;
 			_stringId = stringId;
 
@@ -39,6 +41,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				_fuelCells.Add(fc);
 			}
 
+			DataBus = dataBus;
 			dataBus.AddComponent(this);
 		}
 
