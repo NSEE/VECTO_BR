@@ -128,7 +128,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents
 
 	public class FuelCellStringData
 	{
-		private const double kgPerSecondConvertionFactor = 3.6E6;
 		private readonly int _count;
 		private readonly FuelCellData _fcData;
 

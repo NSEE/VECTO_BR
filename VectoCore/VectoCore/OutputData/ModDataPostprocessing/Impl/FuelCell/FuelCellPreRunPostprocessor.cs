@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation.Data;
@@ -30,7 +31,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
         FuelCellPreRunPostprocessor.SearchResult[] RejectedSearchResults { get; }
     }
 
-    public partial class FuelCellPreRunPostprocessor : IFuelCellPreRunInfo
+    public partial class FuelCellPreRunPostprocessor : LoggingObject, IFuelCellPreRunInfo
     {
 		public string WriterBasePath { get; set; }
 
@@ -191,8 +192,14 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 				SearchAlgorithm.BinarySearch(0.SI<Meter>(), maxWindowSize,
 					evaluateFunction:
 					distance => {
-						CalculateFuelCellPowerDemandForWindowSize(distance, fcData, batData, out var result);
-						return result;
+						try {
+							CalculateFuelCellPowerDemandForWindowSize(distance, fcData, batData, out var result);
+							return result;
+						} catch (Exception ex) {
+							Log.Warn(ex, $"Failed to calculate fuel cell power for distance ${distance}");
+						}
+
+						return new SearchResult(false, batData.InitialSoC, distance, Array.Empty<FCCalcEntry>(), "error during calculation");
 					},
 					acceptFunction:
 					(distance, result) => {
@@ -249,7 +256,13 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 			}
 
             var maxWindowSize = fcData.MaxWindowSize ?? TotalDistance;
-            return CalculateFuelCellPowerDemandForWindowSize(maxWindowSize, fcData, batData, out result);
+			try {
+				return CalculateFuelCellPowerDemandForWindowSize(maxWindowSize, fcData, batData, out result);
+			} catch (Exception e) {
+				Log.Warn(e, "Failed to calculate fuel cell power with full distance");
+			}
+
+			return false;
 		}
 
 		public bool TryShiftInitialSoC(double batMinSoc, double batMaxSoc, double initSoc, double minSocTrace,
@@ -453,6 +466,9 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 
 			var weights = new List<double>(maxInc.Length);
 			var totalIncPotential = maxInc.Sum();
+			if (totalIncPotential < -deltaEnergyBatInt) {
+				throw new VectoException($"Delta Energy Battery cannot be compensated by Fuel Cell! DeltaBat: {(-deltaEnergyBatInt).ConvertToKiloWattHour()}, FuelCell Incr. potential: {totalIncPotential.ConvertToKiloWattHour()}");
+			}
 			for (var i = 0; i < maxInc.Length; i++) {
 				var weight = maxInc[i] / totalIncPotential;
 				weights.Add(weight);
@@ -496,7 +512,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 		{
 			var tmpBatSystem = new BatterySystem(null, batData);
 			var first = fcCalcEntries.First();
-            Debug.Assert(first.WindowSize == maxWindowSize);
+            System.Diagnostics.Debug.Assert(first.WindowSize == maxWindowSize);
             //When window size equals TotalDistance, P_FC_raw == average P_el_dem
             var energy_safety_margin = first.P_FC_raw * 10.SI<Second>();
 			var dSocSafety =
@@ -516,7 +532,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 			tmpBatSystem = new BatterySystem(null, batData);
 			tmpBatSystem.Initialize(batData.InitialSoC);
 
-			Debug.Assert(tmpBatSystem.MinSoC.IsEqual(minSocSafe) && tmpBatSystem.MaxSoC.IsEqual(maxSocSafe), "Invalid Soc limits");
+			System.Diagnostics.Debug.Assert(tmpBatSystem.MinSoC.IsEqual(minSocSafe) && tmpBatSystem.MaxSoC.IsEqual(maxSocSafe), "Invalid Soc limits");
 			return batData;
 		}
 
@@ -641,7 +657,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 			Second totalDuration)
 		{
 			List<FCCalcEntry> rv = new List<FCCalcEntry>();
-			Debug.Assert(minFcPower < maxFcPower, "min power must be smaller than max power");
+			System.Diagnostics.Debug.Assert(minFcPower < maxFcPower, "min power must be smaller than max power");
 			if (windowSize.IsGreater(totalDistance))
 			{
 				throw new VectoException("Window size must not exceed cycle distance!");

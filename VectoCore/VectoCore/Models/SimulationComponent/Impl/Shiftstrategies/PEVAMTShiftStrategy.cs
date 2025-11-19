@@ -18,13 +18,23 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 {
+	public class FCHVAMTShiftStrategy : PEVAMTShiftStrategy
+	{
+		public static string Name => "AMT - EffShift (FCHV)";
+
+		public FCHVAMTShiftStrategy(IVehicleContainer container) : base(container, VectoSimulationJobType.FCHV, false)
+		{
+			SetupVelocityDropPreprocessor(container.SimplePowertrainBuilder);
+        }
+	}
+
 	public class ParallelHybridBatteryOnlyModeShiftStrategy : PEVAMTShiftStrategy
 	{
 		public new static string Name => "AMT - EffShift (P-HEV Battery only)";
 
-		public ParallelHybridBatteryOnlyModeShiftStrategy(IVehicleContainer container) : base(container) { }
+		public ParallelHybridBatteryOnlyModeShiftStrategy(IVehicleContainer container) : base(container, VectoSimulationJobType.BatteryElectricVehicle, false) { }
 
-		protected ParallelHybridBatteryOnlyModeShiftStrategy(IVehicleContainer dataBus, bool dummy) : base(dataBus, dummy) { }
+		//protected ParallelHybridBatteryOnlyModeShiftStrategy(IVehicleContainer dataBus, bool dummy) : base(dataBus, VectoSimulationJobType.BatteryElectricVehicle, dummy) { }
 
 		protected override PowertrainPosition GetEMPos(IVehicleContainer dataBus)
 		{
@@ -63,10 +73,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		protected bool DriveOffStandstill { get; set; }
 
 		protected ITestPowertrain TestPowertrain;
+		protected readonly VectoSimulationJobType _jobtype;
 
 		public VelocityRollingLookup VelocityDropData { get; } = new VelocityRollingLookup();
 		
-		public PEVAMTShiftStrategy(IVehicleContainer container) : this(container, false)
+		public PEVAMTShiftStrategy(IVehicleContainer container) : this(container, VectoSimulationJobType.BatteryElectricVehicle, false)
 		{
 			if (container.RunData.VehicleData == null)
 			{
@@ -78,7 +89,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		}
 
 		// this constructor is called by derived classes and the public constructor. performs common initialization
-		protected PEVAMTShiftStrategy(IVehicleContainer dataBus, bool dummy)
+		protected PEVAMTShiftStrategy(IVehicleContainer dataBus, VectoSimulationJobType jobType, bool dummy)
 		{
 			DataBus = dataBus;
 			var runData = dataBus.RunData;
@@ -117,7 +128,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 
             // create testcontainer
 			var powertrainBuilder = dataBus.SimplePowertrainBuilder;
-			TestPowertrain = powertrainBuilder.CreateTestPowertrain(DataBus, true, VectoSimulationJobType.BatteryElectricVehicle);
+			_jobtype = jobType;
+			TestPowertrain = powertrainBuilder.CreateTestPowertrain(DataBus, true, jobType);
 
 			foreach (var motor in TestPowertrain.ElectricMotors.Values) {
 				if (motor.Control is ITestPowertrainElectricMotorControl emCtl) {

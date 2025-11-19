@@ -10,6 +10,7 @@ using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
@@ -116,6 +117,7 @@ namespace TUGraz.VectoCore.Models.Simulation
 
         IWheelEnd CreateWheelEnd(IVehicleContainer container, WheelEndData modelData);
 
+		IFuelCellSystem CreateFuelCellSystem(IVehicleContainer container, FuelCellSystemData modelData);
 
 		IElectricMotorControl CreateElectricMotorControllerBatteryOnlyHybrid(CycleType cycle, IVehicleContainer container, IElectricSystem es);
 		

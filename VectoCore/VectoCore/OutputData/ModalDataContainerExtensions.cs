@@ -504,7 +504,7 @@ namespace TUGraz.VectoCore.OutputData
 		/// <summary>
 		/// The following logic applies:
 		/// - shifting from gear A to gear B counts as gearshift (with or without traction interruption)
-		/// - shifting from gear A to neutral couts as gearshift if the vehicle stopped
+		/// - shifting from gear A to neutral counts as gearshift if the vehicle stopped
 		/// </summary>
 		/// <param name="data"></param>
 		/// <returns></returns>
