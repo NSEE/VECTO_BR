@@ -362,7 +362,12 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 				if (data.HasAxlegear) {
 					var eAxlIn = data.TimeIntegral<WattSecond>(ModalResultField.P_axle_in, Constants.NOT_IN_AXLE_POWERTRAIN, x => x > 0);
-					var eAxlOut = data.TimeIntegral<WattSecond>(ModalResultField.P_brake_in, x => x > 0);
+					var eAxlOutSignal = ModalResultField.P_brake_in.GetName();
+					if (runData.JobType == VectoSimulationJobType.ParallelHybridVehicle &&
+						runData.ElectricMachinesData.Any(x => x.Item1 == PowertrainPosition.HybridP4)) {
+						eAxlOutSignal = data.GetColumnName(PowertrainPosition.HybridP4, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResultField.P_EM_in_);
+					}
+					var eAxlOut = data.TimeIntegral<WattSecond>(eAxlOutSignal, x => x > 0);
 					AverageAxlegearEfficiency = eAxlOut == null || eAxlIn == null || eAxlIn.IsEqual(0) ? double.NaN : eAxlOut / eAxlIn;
 				} else {
 					AverageAxlegearEfficiency = double.NaN;
