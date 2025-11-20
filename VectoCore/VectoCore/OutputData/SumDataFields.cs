@@ -1197,8 +1197,13 @@ namespace TUGraz.VectoCore.OutputData
 						return null;
 					}
 
-					var eAxlIn = m.TimeIntegral<WattSecond>(ModalResultField.P_axle_in, a, x => x > 0);
-					var eAxlOut = m.TimeIntegral<WattSecond>(ModalResultField.P_brake_in, x => x > 0);
+					var eAxlOutSignal = ModalResultField.P_brake_in.GetName();
+					if (r.JobType == VectoSimulationJobType.ParallelHybridVehicle &&
+						r.ElectricMachinesData.Any(x => x.Item1 == PowertrainPosition.HybridP4)) {
+						eAxlOutSignal = m.GetColumnName(PowertrainPosition.HybridP4, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResultField.P_EM_in_);
+					}
+                    var eAxlIn = m.TimeIntegral<WattSecond>(ModalResultField.P_axle_in, a, x => x > 0);
+					var eAxlOut = m.TimeIntegral<WattSecond>(eAxlOutSignal, x => x > 0);
 					return (eAxlOut == null) ? double.NaN : (eAxlIn.IsEqual(0, 1e-9) ? 0 : (eAxlOut / eAxlIn).Value());
 				}, ModalResultField.P_axle_in, ModalResultField.P_brake_in)
 			},
