@@ -69,13 +69,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 		}
 
 
-
-#if MOCKUP
-		public string Version => "[MOCKUP] VECTO Multistep " + VectoSimulationCore.VersionNumber + " (For Testing and Feedback)";
-#else
 		public string Version => "VECTO Multistep " + VectoSimulationCore.VersionNumber;
-
-#endif
 
 		#endregion
 

@@ -57,6 +57,7 @@ using TUGraz.VectoHashing;
 using TUGraz.VectoHashing.Impl;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using Castle.Core.Internal;
+using TUGraz.VectoCore.Ninject;
 
 namespace TUGraz.VectoCore.InputData.FileIO.JSON
 {

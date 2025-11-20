@@ -2,6 +2,7 @@
   <PropertyGroup>
     <Title>Vehicle Energy Consumption Calculation TOol: VectoCommon</Title>
     <Description>Provides Vecto models and utils.</Description>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup>
     <RootNamespace>TUGraz.VectoCommon</RootNamespace>

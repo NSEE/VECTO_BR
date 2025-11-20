@@ -8,6 +8,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Utils;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
@@ -26,9 +27,13 @@ public class FullReportTestsBase
     protected bool WRITE_REPORTS_TO_OUTPUT { get; set; }
 
 
-    protected const string BasePath = @"TestData/XML/v2.4/MockupJobData/";
+    protected const string BasePath = "TestData/XML/v2.4/MockupJobData/";
 
-	protected void SetupNinject()
+	protected const string v27LorryPath = "TestData/XML/v2.7/Lorries/";
+	protected const string v27PrimaryBusPath = "TestData/XML/v2.7/PrimaryBuses/";
+	protected const string v27CompleteBusPath = "TestData/XML/v2.7/CompletedBuses/";
+
+    protected void SetupNinject()
 	{
 		_vectoKernel = new StandardKernel(
 			new VectoNinjectModule(),

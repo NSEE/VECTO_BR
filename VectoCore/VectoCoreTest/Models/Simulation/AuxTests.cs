@@ -52,6 +52,7 @@ using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using DummyDriverInfo = TUGraz.VectoCore.Tests.Utils.DummyDriverInfo;
 using MockDrivingCycle = TUGraz.VectoCore.Tests.Utils.MockDrivingCycle;
 

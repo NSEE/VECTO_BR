@@ -291,7 +291,8 @@ namespace TUGraz.VectoCore.OutputData.XML
                     {
                         ZEV_FuelConsumption_AuxHtr = fc.FC_AUXHTR_KM * Distance;
                         AuxHeaterFuel = fc.Fuel;
-                    }
+						ZEV_CO2 = ZEV_FuelConsumption_AuxHtr * AuxHeaterFuel.CO2PerFuelWeight;
+					}
 				}
 
 				if ((runData.JobType.GetPowertrainArchitectureType() == VectoSimulationJobTypeHelper.Hybrid) 
@@ -320,8 +321,8 @@ namespace TUGraz.VectoCore.OutputData.XML
                     {
                         ZEV_FuelConsumption_AuxHtr = fc.FC_AUXHTR_KM * Distance;
                         AuxHeaterFuel = fc.Fuel;
-                        ZEV_CO2 = ZEV_FuelConsumption_AuxHtr * AuxHeaterFuel.CO2PerFuelWeight;
-                    }
+						ZEV_CO2 = ZEV_FuelConsumption_AuxHtr * AuxHeaterFuel.CO2PerFuelWeight;
+					}
                 }
 
 				if (runData.JobType.IsFCHV() || (runData.JobType == VectoSimulationJobType.Multiple_FCHV))
@@ -344,7 +345,8 @@ namespace TUGraz.VectoCore.OutputData.XML
                     {
                         ZEV_FuelConsumption_AuxHtr = fc.FC_AUXHTR_KM * Distance;
                         AuxHeaterFuel = fc.Fuel;
-                    }
+						ZEV_CO2 = ZEV_FuelConsumption_AuxHtr * AuxHeaterFuel.CO2PerFuelWeight;
+					}
                 }
 
                 if (data.HasGearbox && !runData.JobType.IsOneOf(VectoSimulationJobType.IEPC_E, VectoSimulationJobType.IEPC_S, VectoSimulationJobType.FCHV_IEPC)) {

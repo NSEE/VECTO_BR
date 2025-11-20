@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using Ninject;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.SimulationComponent;
+using TUGraz.VectoCore.Ninject;
 
 namespace TUGraz.VectoCore.Tests.Integration
 {

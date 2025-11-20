@@ -50,6 +50,7 @@ Imports TUGraz.VectoCore.InputData.FileIO.XML
 Imports TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 Imports TUGraz.VectoCore.Models.Simulation
 Imports TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
+Imports TUGraz.VectoCore.Ninject
 Imports TUGraz.VectoCore.OutputData
 Imports TUGraz.VectoCore.OutputData.FileIO
 Imports TUGraz.VectoCore.Utils
@@ -358,10 +359,6 @@ Public Class MainForm
         Else
             Text = "VECTO" & VectoSimulationCore.BranchSuffix & " " & COREvers
         End If
-
-#If MOCKUP Then
-        Text += " [MOCKUP]"
-#End If
 
         If Cfg.DeclMode Then
             _lastModeName = "Declaration"
