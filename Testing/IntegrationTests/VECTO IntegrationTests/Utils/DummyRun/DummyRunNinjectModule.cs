@@ -4,7 +4,9 @@ using TUGraz.VectoCore;
 using TUGraz.VectoCore.InputData;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Ninject;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl;
 
@@ -29,3 +31,4 @@ public class DummyRunNinjectModule : AbstractNinjectModule, INinjectModule
 
     #endregion
 }
+    
