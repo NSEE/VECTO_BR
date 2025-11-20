@@ -26,8 +26,8 @@
 		<SleeperCab>false</SleeperCab>
 		<VehicleTypeApprovalNumber>ASDF</VehicleTypeApprovalNumber>
 		<ArchitectureID>P2</ArchitectureID>
-		<OVC>true</OVC>
-		<BatteryOnlyMode>true</BatteryOnlyMode>
+		<OVC>false</OVC>
+		<BatteryOnlyMode>false</BatteryOnlyMode>
 		<DynamicChargingTechnology>None</DynamicChargingTechnology>
 		<ADAS>
 			<EngineStopStart>true</EngineStopStart>
