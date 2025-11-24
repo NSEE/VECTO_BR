@@ -350,16 +350,21 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			}
 
 			var responseCurrent = RequestDryRunWithGear(absTime, dt, outTorque, outAngularVelocity, currentGear);
-			var fcCurrent = GetFCRating(responseCurrent);
+			return SelectEffshiftGear(currentGear, responseCurrent, results);
+		}
 
-			var minFc = results.MaxBy(x => x.Item2);
-
-			var ratingFactor = outTorque < 0
-				? 1 / _shiftStrategyParameters.RatingFactorCurrentGear
-				: _shiftStrategyParameters.RatingFactorCurrentGear;
-
-			if (minFc.Item2.IsGreater(fcCurrent * ratingFactor)) {
-				return minFc.Item1;
+		private GearshiftPosition SelectEffshiftGear(GearshiftPosition currentGear, ResponseDryRun responseCurrent, List<Tuple<GearshiftPosition, double>> results)
+		{
+			var ecCurrent = GetECRating(responseCurrent);
+			var minEc = results.MaxBy(x => x.Item2); 
+			
+			var ratingFactor = ecCurrent < 0
+				? 1 / _shiftStrategyParameters.RatingFactorCurrentGear // --> ratingFactor > 1, leads to a more negative ecCurrentRated
+				: _shiftStrategyParameters.RatingFactorCurrentGear; // --> ratingFactory < 1
+			ratingFactor = 1;
+			var ecCurrentRated = ratingFactor * ecCurrent;
+			if (minEc.Item2.IsGreater(ecCurrentRated)) {
+				return minEc.Item1;
 			}
 
 			return currentGear;
@@ -533,7 +538,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 					continue;
 				}
 
-				var fcNext = GetFCRating(response);
+				var fcNext = GetECRating(response);
 				results.Add(Tuple.Create(tryNextGear, fcNext));
 			}
 
@@ -542,17 +547,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			}
 
 			var responseCurrent = RequestDryRunWithGear(absTime, dt, outTorque, outAngularVelocity, currentGear);
-			var fcCurrent = GetFCRating(responseCurrent);
-			var minFc = results.MinBy(x => x.Item2);
-			var ratingFactor = outTorque < 0
-				? 1 / _shiftStrategyParameters.RatingFactorCurrentGear
-				: _shiftStrategyParameters.RatingFactorCurrentGear;
-
-			if (minFc.Item2.IsGreater(fcCurrent * ratingFactor)) {
-				return minFc.Item1;
-			}
-
-			return currentGear;
+			return SelectEffshiftGear(currentGear, responseCurrent, results);
 		}
 
 
