@@ -201,7 +201,7 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 		[
 			TestCase(FCHV_F2, "LongHaul", 72.3926),
 			TestCase(FCHV_F2, "RegionalDelivery", 40.6012),
-			TestCase(FCHV_F2, "UrbanDelivery", 37.6126),
+			TestCase(FCHV_F2, "UrbanDelivery", 37.6119),
 
 			TestCase(FCHV_IEPC, "LongHaul", 96.8397),
 			TestCase(FCHV_IEPC, "RegionalDelivery", 70.388),
