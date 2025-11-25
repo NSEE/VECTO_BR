@@ -355,12 +355,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 
 		private GearshiftPosition SelectEffshiftGear(GearshiftPosition currentGear, ResponseDryRun responseCurrent, List<Tuple<GearshiftPosition, double>> results, double ecCurrent)
 		{
-			var minEc = results.MinBy(x => x.Item2); 
+			//Negative for propelling, positive for recuperation -> select maximum (less negative for propelling)
+			var minEc = results.MaxBy(x => x.Item2); 
 			
 			var ratingFactor = ecCurrent < 0
 				? 1 / _shiftStrategyParameters.RatingFactorCurrentGear // --> ratingFactor > 1, leads to a more negative ecCurrentRated
 				: _shiftStrategyParameters.RatingFactorCurrentGear; // --> ratingFactory < 1
-			ratingFactor = 1;
+
 			var ecCurrentRated = ratingFactor * ecCurrent;
 			if (minEc.Item2.IsGreater(ecCurrentRated)) {
 				return minEc.Item1;
