@@ -260,7 +260,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 			-500,
 			200,
 			4,
-			2, 
+			3, 
 			40, TestName = "APTNShiftStrategy EarlyDownshift")]
 		public void EarlyDownshift(double init_outTorque_Nm, double init_outSpeed_rpm, double outTorque_Nm,
 			double outSpeed_rpm, int currentGear, int expectedGear, int speedKmh=1)
