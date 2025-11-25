@@ -340,7 +340,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 					continue;
 				}
 
-				var fcNext = GetFCRating(response);
+				var fcNext = GetECRating(response);
 				results.Add(Tuple.Create(tryNextGear, fcNext));
 
 			}
@@ -350,13 +350,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			}
 
 			var responseCurrent = RequestDryRunWithGear(absTime, dt, outTorque, outAngularVelocity, currentGear);
-			return SelectEffshiftGear(currentGear, responseCurrent, results);
+			return SelectEffshiftGear(currentGear, responseCurrent, results, GetECRating(responseCurrent));
 		}
 
-		private GearshiftPosition SelectEffshiftGear(GearshiftPosition currentGear, ResponseDryRun responseCurrent, List<Tuple<GearshiftPosition, double>> results)
+		private GearshiftPosition SelectEffshiftGear(GearshiftPosition currentGear, ResponseDryRun responseCurrent, List<Tuple<GearshiftPosition, double>> results, double ecCurrent)
 		{
-			var ecCurrent = GetECRating(responseCurrent);
-			var minEc = results.MaxBy(x => x.Item2); 
+			var minEc = results.MinBy(x => x.Item2); 
 			
 			var ratingFactor = ecCurrent < 0
 				? 1 / _shiftStrategyParameters.RatingFactorCurrentGear // --> ratingFactor > 1, leads to a more negative ecCurrentRated
@@ -547,11 +546,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			}
 
 			var responseCurrent = RequestDryRunWithGear(absTime, dt, outTorque, outAngularVelocity, currentGear);
-			return SelectEffshiftGear(currentGear, responseCurrent, results);
+			return SelectEffshiftGear(currentGear, responseCurrent, results, GetECRating(responseCurrent));
 		}
 
-
-		protected double GetFCRating(ResponseDryRun response)//PerSecond engineSpeed, NewtonMeter tqCurrent)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="response"></param>
+		/// <returns>Electrical Power of the Electric Machine (Negative for propelling, positive for recuperation)</returns>
+		protected double GetECRating(ResponseDryRun response)
 		{
 			var currentGear = response.Gearbox.Gear;
 			if (currentGear.Gear == 0)
