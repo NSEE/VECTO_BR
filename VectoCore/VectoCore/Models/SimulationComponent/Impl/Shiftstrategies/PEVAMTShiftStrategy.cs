@@ -201,7 +201,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 					SpeedTooHighForEngine(_nextGear, inAngularVelocity / GearboxModelData.Gears[gear.Gear].Ratio)) {
 				_nextGear = GearList.Successor(_nextGear);
 			}
-			if (_nextGear != gear) {
+			if (!_nextGear.Equals(gear)) {
 				return true;
 			}
 			if (DriveOffStandstill) {
@@ -215,13 +215,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			}
 
 			_nextGear = CheckDownshift(absTime, dt, outTorque, outAngularVelocity, inTorque, inAngularVelocity, gear, response);
-			if (_nextGear != gear) {
+			if (!_nextGear.Equals(gear)) {
 				return true;
 			}
 
 			_nextGear = CheckUpshift(absTime, dt, outTorque, outAngularVelocity, inTorque, inAngularVelocity, gear, response);
 
-			return _nextGear != gear;
+			return !Equals(_nextGear, gear);
 		}
 
 		private GearshiftPosition CheckUpshift(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, NewtonMeter inTorque, PerSecond inAngularVelocity, GearshiftPosition currentGear, IResponse response)
