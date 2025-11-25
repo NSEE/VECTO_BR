@@ -1181,8 +1181,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 					return new ShiftPolygon(TransformShiftPolygonEntries(downShift), TransformShiftPolygonEntries(upShift));
 				}
 			
-				upShift.Add(new ShiftPolygon.ShiftPolygonEntry(fullLoadCurve.MaxGenerationTorque * 1.1, VectoMath.Min(emMaxSpeedDt * 0.9, gbxMaxSpeed)));
-				upShift.Add(new ShiftPolygon.ShiftPolygonEntry(fullLoadCurve.MaxDriveTorque * 1.1, VectoMath.Min(emMaxSpeedDt * 0.9, gbxMaxSpeed)));
+				upShift.Add(new ShiftPolygon.ShiftPolygonEntry(fullLoadCurve.MaxGenerationTorque * 1.1, VectoMath.Min(emMaxSpeedDt, gbxMaxSpeed) * 0.9));
+				upShift.Add(new ShiftPolygon.ShiftPolygonEntry(fullLoadCurve.MaxDriveTorque * 1.1, VectoMath.Min(emMaxSpeedDt, gbxMaxSpeed) * 0.9));
 				return new ShiftPolygon(TransformShiftPolygonEntries(downShift), TransformShiftPolygonEntries(upShift));
 			}
 
