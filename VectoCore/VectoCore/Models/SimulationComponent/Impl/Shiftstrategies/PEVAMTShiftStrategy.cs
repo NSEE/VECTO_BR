@@ -358,9 +358,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			//Negative for propelling, positive for recuperation -> select maximum (less negative for propelling)
 			var minEc = results.MaxBy(x => x.Item2); 
 			
-			var ratingFactor = ecCurrent < 0
-				? 1 / _shiftStrategyParameters.RatingFactorCurrentGear // --> ratingFactor > 1, leads to a more negative ecCurrentRated
-				: _shiftStrategyParameters.RatingFactorCurrentGear; // --> ratingFactory < 1
+			//When propelling, ecCurrent < 0, we want the an advantage for the current gear, so the rating factor should be < 1 to make the current gear less negative
+			var ratingFactor = ecCurrent < 0 //Propelling
+				? _shiftStrategyParameters.RatingFactorCurrentGear // --> ratingFactor < 0 => less negative when propelling
+				: 1 / _shiftStrategyParameters.RatingFactorCurrentGear; // --> ratingFactory > 1 => more postive when recuperating
 
 			var ecCurrentRated = ratingFactor * ecCurrent;
 			if (minEc.Item2.IsGreater(ecCurrentRated)) {
