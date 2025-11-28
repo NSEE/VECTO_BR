@@ -201,7 +201,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 					SpeedTooHighForEngine(_nextGear, inAngularVelocity / GearboxModelData.Gears[gear.Gear].Ratio)) {
 				_nextGear = GearList.Successor(_nextGear);
 			}
-			if (_nextGear != gear) {
+			if (!_nextGear.Equals(gear)) {
 				return true;
 			}
 			if (DriveOffStandstill) {
@@ -215,13 +215,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			}
 
 			_nextGear = CheckDownshift(absTime, dt, outTorque, outAngularVelocity, inTorque, inAngularVelocity, gear, response);
-			if (_nextGear != gear) {
+			if (!_nextGear.Equals(gear)) {
 				return true;
 			}
 
 			_nextGear = CheckUpshift(absTime, dt, outTorque, outAngularVelocity, inTorque, inAngularVelocity, gear, response);
 
-			return _nextGear != gear;
+			return !Equals(_nextGear, gear);
 		}
 
 		private GearshiftPosition CheckUpshift(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, NewtonMeter inTorque, PerSecond inAngularVelocity, GearshiftPosition currentGear, IResponse response)
@@ -340,7 +340,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 					continue;
 				}
 
-				var fcNext = GetFCRating(response);
+				var fcNext = GetECRating(response);
 				results.Add(Tuple.Create(tryNextGear, fcNext));
 
 			}
@@ -350,16 +350,22 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			}
 
 			var responseCurrent = RequestDryRunWithGear(absTime, dt, outTorque, outAngularVelocity, currentGear);
-			var fcCurrent = GetFCRating(responseCurrent);
+			return SelectEffshiftGear(currentGear, responseCurrent, results, GetECRating(responseCurrent));
+		}
 
-			var minFc = results.MaxBy(x => x.Item2);
+		private GearshiftPosition SelectEffshiftGear(GearshiftPosition currentGear, ResponseDryRun responseCurrent, List<Tuple<GearshiftPosition, double>> results, double ecCurrent)
+		{
+			//Negative for propelling, positive for recuperation -> select maximum (less negative for propelling)
+			var minEc = results.MaxBy(x => x.Item2); 
+			
+			//When propelling, ecCurrent < 0, we want the an advantage for the current gear, so the rating factor should be < 1 to make the current gear less negative
+			var ratingFactor = ecCurrent < 0 //Propelling
+				? _shiftStrategyParameters.RatingFactorCurrentGear // --> ratingFactor < 0 => less negative when propelling
+				: 1 / _shiftStrategyParameters.RatingFactorCurrentGear; // --> ratingFactory > 1 => more postive when recuperating
 
-			var ratingFactor = outTorque < 0
-				? 1 / _shiftStrategyParameters.RatingFactorCurrentGear
-				: _shiftStrategyParameters.RatingFactorCurrentGear;
-
-			if (minFc.Item2.IsGreater(fcCurrent * ratingFactor)) {
-				return minFc.Item1;
+			var ecCurrentRated = ratingFactor * ecCurrent;
+			if (minEc.Item2.IsGreater(ecCurrentRated)) {
+				return minEc.Item1;
 			}
 
 			return currentGear;
@@ -533,7 +539,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 					continue;
 				}
 
-				var fcNext = GetFCRating(response);
+				var fcNext = GetECRating(response);
 				results.Add(Tuple.Create(tryNextGear, fcNext));
 			}
 
@@ -542,21 +548,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			}
 
 			var responseCurrent = RequestDryRunWithGear(absTime, dt, outTorque, outAngularVelocity, currentGear);
-			var fcCurrent = GetFCRating(responseCurrent);
-			var minFc = results.MinBy(x => x.Item2);
-			var ratingFactor = outTorque < 0
-				? 1 / _shiftStrategyParameters.RatingFactorCurrentGear
-				: _shiftStrategyParameters.RatingFactorCurrentGear;
-
-			if (minFc.Item2.IsGreater(fcCurrent * ratingFactor)) {
-				return minFc.Item1;
-			}
-
-			return currentGear;
+			return SelectEffshiftGear(currentGear, responseCurrent, results, GetECRating(responseCurrent));
 		}
 
-
-		protected double GetFCRating(ResponseDryRun response)//PerSecond engineSpeed, NewtonMeter tqCurrent)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="response"></param>
+		/// <returns>Electrical Power of the Electric Machine (Negative for propelling, positive for recuperation)</returns>
+		protected double GetECRating(ResponseDryRun response)
 		{
 			var currentGear = response.Gearbox.Gear;
 			if (currentGear.Gear == 0)
