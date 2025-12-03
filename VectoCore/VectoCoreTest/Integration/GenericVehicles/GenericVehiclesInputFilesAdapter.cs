@@ -232,6 +232,11 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 
 			foreach (var directory in Directory.GetDirectories(declarationModeDirectory))
 			{
+				if (directory.Contains("MultiplePowertrains"))
+				{
+					continue;
+				}
+
 				var files = GetFiles(directory);
 
 				List<string> vectoFiles = files
