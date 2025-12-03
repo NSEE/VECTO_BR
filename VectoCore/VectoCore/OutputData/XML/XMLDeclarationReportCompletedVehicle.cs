@@ -401,10 +401,10 @@ namespace TUGraz.VectoCore.OutputData.XML
             public PerSecond EngineSpeedDrivingMin { get; set; }
             public PerSecond EngineSpeedDrivingAvg { get; set; }
             public PerSecond EngineSpeedDrivingMax { get; set; }
-            public double AverageGearboxEfficiency { get; set; }
-            public double AverageAxlegearEfficiency { get; set; }
+            public Dictionary<int, double> AverageGearboxEfficiency { get; set; } = new Dictionary<int, double>();
+            public Dictionary<int, double> AverageAxlegearEfficiency { get; set; } = new Dictionary<int, double>();
             public Scalar FullLoadPercentage { get; set; }
-            public Scalar GearshiftCount { get; set; }
+            public Dictionary<int, Scalar> GearshiftCount { get; set; }
             public Meter Distance { get; set; }
 
 

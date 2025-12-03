@@ -34,7 +34,9 @@ using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Simulation.Data
 {
@@ -183,42 +185,42 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		///     [-]	 GearData. "0" = clutch opened / neutral. "0.5" = lock-up clutch is open (AT with torque converter only, see
 		///     Gearbox)
 		/// </summary>
-		[ModalResultField(typeof(uint), caption: "Gear [-]")] Gear,
+		[ModalResultField(typeof(uint), caption: "Gear{0} [-]", perAxle: true)] Gear,
 
-		[ModalResultField(typeof(SI), caption: "n_gbx_out_avg [1/min]", outputFactor: 60 / (2 * Math.PI))] n_gbx_out_avg,
-		[ModalResultField(typeof(SI), caption: "n_gbx_in_avg [1/min]", outputFactor: 60 / (2 * Math.PI))] n_gbx_in_avg,
+		[ModalResultField(typeof(SI), caption: "n_gbx_out_avg{0} [1/min]", outputFactor: 60 / (2 * Math.PI), perAxle: true)] n_gbx_out_avg,
+		[ModalResultField(typeof(SI), caption: "n_gbx_in_avg{0} [1/min]", outputFactor: 60 / (2 * Math.PI), perAxle: true)] n_gbx_in_avg,
 
-		[ModalResultField(typeof(SI), caption: "T_gbx_out [Nm]")] T_gbx_out,
+		[ModalResultField(typeof(SI), caption: "T_gbx_out{0} [Nm]", perAxle: true)] T_gbx_out,
 
-		[ModalResultField(typeof(SI), caption: "T_gbx_in [Nm]")] T_gbx_in,
+		[ModalResultField(typeof(SI), caption: "T_gbx_in{0} [Nm]", perAxle: true)] T_gbx_in,
 
 		/// <summary>
 		///     [kW]	Gearbox losses.
 		/// </summary>
-		[ModalResultField(typeof(SI), name: "P_gbx_loss", caption: "P_gbx_loss [kW]", outputFactor: 1e-3)] P_gbx_loss,
+		[ModalResultField(typeof(SI), name: "P_gbx_loss", caption: "P_gbx_loss{0} [kW]", outputFactor: 1e-3, perAxle: true)] P_gbx_loss,
 
 
-		[ModalResultField(typeof(SI), name: "P_gbx_shift_loss", caption: "P_gbx_shift_loss [kW]", outputFactor: 1e-3)] P_gbx_shift_loss,
+		[ModalResultField(typeof(SI), name: "P_gbx_shift_loss", caption: "P_gbx_shift_loss{0} [kW]", outputFactor: 1e-3, perAxle: true)] P_gbx_shift_loss,
 
 		/// <summary>
 		///     [kW]	Losses in differential / axle transmission.
 		/// </summary>
-		[ModalResultField(typeof(SI), name: "Ploss Diff", caption: "P_axle_loss{0} [kW]", outputFactor: 1e-3)] P_axle_loss,
+		[ModalResultField(typeof(SI), name: "Ploss Diff", caption: "P_axle_loss{0} [kW]", outputFactor: 1e-3, perAxle: true)] P_axle_loss,
 
 		/// <summary>
 		///     [kW]	Losses in angle transmission.
 		/// </summary>
-		[ModalResultField(typeof(SI), name: "Ploss Angle", caption: "P_angle_loss{0} [kW]", outputFactor: 1e-3)] P_angle_loss,
+		[ModalResultField(typeof(SI), name: "Ploss Angle", caption: "P_angle_loss{0} [kW]", outputFactor: 1e-3, perAxle: true)] P_angle_loss,
 
 		/// <summary>
 		///     [kW]	Retarder losses.
 		/// </summary>
-		[ModalResultField(typeof(SI), name: "P_ret_loss", caption: "P_ret_loss{0} [kW]", outputFactor: 1e-3)] P_ret_loss,
+		[ModalResultField(typeof(SI), name: "P_ret_loss", caption: "P_ret_loss{0} [kW]", outputFactor: 1e-3, perAxle: true)] P_ret_loss,
 
 		/// <summary>
 		///     [kW]	Rotational acceleration power: Gearbox.
 		/// </summary>
-		[ModalResultField(typeof(SI), name: "P_gbx_inertia", caption: "P_gbx_inertia [kW]", outputFactor: 1e-3)] P_gbx_inertia,
+		[ModalResultField(typeof(SI), name: "P_gbx_inertia", caption: "P_gbx_inertia{0} [kW]", outputFactor: 1e-3, perAxle: true)] P_gbx_inertia,
 
 		/// <summary>
 		///     [kW]	Vehicle acceleration power.
@@ -260,13 +262,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 		[ModalResultField(typeof(SI), caption: "P_wheelEnd_in [kW]", outputFactor: 1e-3)] P_wheelEnd_in,
 
-		[ModalResultField(typeof(SI), caption: "P_axle_in{0} [kW]", outputFactor: 1e-3)] P_axle_in,
+		[ModalResultField(typeof(SI), caption: "P_axle_in{0} [kW]", outputFactor: 1e-3, perAxle: true)] P_axle_in,
 
-		[ModalResultField(typeof(SI), caption: "P_angle_in{0} [kW]", outputFactor: 1e-3)] P_angle_in,
+		[ModalResultField(typeof(SI), caption: "P_angle_in{0} [kW]", outputFactor: 1e-3, perAxle: true)] P_angle_in,
 
-		[ModalResultField(typeof(SI), caption: "P_ret_in{0} [kW]", outputFactor: 1e-3)] P_retarder_in,
+		[ModalResultField(typeof(SI), caption: "P_ret_in{0} [kW]", outputFactor: 1e-3, perAxle: true)] P_retarder_in,
 
-		[ModalResultField(typeof(SI), caption: "P_gbx_in [kW]", outputFactor: 1e-3)] P_gbx_in,
+		[ModalResultField(typeof(SI), caption: "P_gbx_in{0} [kW]", outputFactor: 1e-3, perAxle: true)] P_gbx_in,
 
 		[ModalResultField(typeof(SI), caption: "P_clutch_loss [kW]", outputFactor: 1e-3)] P_clutch_loss,
 
@@ -384,50 +386,49 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		[ModalResultField(typeof(SI), "P_WHR_mech [kW]", outputFactor: 1e-3)] P_WHR_mech_map,
 		[ModalResultField(typeof(SI), "P_WHR_mech_corr [kW]", outputFactor: 1e-3)] P_WHR_mech_corr,
 
-		[ModalResultField(typeof(SI), caption: "i_{0}{1}-em [-]")] EM_ratio_,
-		[ModalResultField(typeof(SI), caption: "n_{0}{1}-em_avg [1/min]", outputFactor: 60 / (2 * Math.PI))] n_EM_electricMotor_,
-		[ModalResultField(typeof(SI), caption: "T_{0}{1}-em [Nm]")] T_EM_electricMotor_,
-		[ModalResultField(typeof(SI), caption: "T_{0}{1}-em_map [Nm]")] T_EM_electricMotor_map_,
+		[ModalResultField(typeof(SI), caption: "i_{0}{1}-em [-]", perAxle: true)] EM_ratio_,
+		[ModalResultField(typeof(SI), caption: "n_{0}{1}-em_avg [1/min]", outputFactor: 60 / (2 * Math.PI), perAxle: true)] n_EM_electricMotor_,
+		[ModalResultField(typeof(SI), caption: "T_{0}{1}-em [Nm]", perAxle: true)] T_EM_electricMotor_,
+		[ModalResultField(typeof(SI), caption: "T_{0}{1}-em_map [Nm]", perAxle: true)] T_EM_electricMotor_map_,
 
-		[ModalResultField(typeof(SI), caption: "T_{0}{1}-em_drive_max [Nm]")] T_EM_electricMotor_drive_max_,
-		[ModalResultField(typeof(SI), caption: "T_{0}{1}-em_gen_max [Nm]")] T_EM_electricMotor_gen_max_,
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}-em_gen_max [kW]", outputFactor: 1e-3)] P_EM_electricMotor_gen_max_,
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}-em_drive_max [kW]", outputFactor: 1e-3)] P_EM_electricMotor_drive_max_,
+		[ModalResultField(typeof(SI), caption: "T_{0}{1}-em_drive_max [Nm]", perAxle: true)] T_EM_electricMotor_drive_max_,
+		[ModalResultField(typeof(SI), caption: "T_{0}{1}-em_gen_max [Nm]", perAxle: true)] T_EM_electricMotor_gen_max_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}-em_gen_max [kW]", outputFactor: 1e-3, perAxle: true)] P_EM_electricMotor_gen_max_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}-em_drive_max [kW]", outputFactor: 1e-3, perAxle: true)] P_EM_electricMotor_drive_max_,
 		
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}-em_mech [kW]", outputFactor: 1e-3)] P_EM_electricMotor_em_mech_,
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}-em_mech_map [kW]", outputFactor: 1e-3)] P_EM_electricMotor_em_mech_map_,
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}-em_el [kW]", outputFactor: 1e-3)] P_EM_electricMotor_el_,
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}-em_loss [kW]", outputFactor: 1e-3)] P_EM_electricMotorLoss_,
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}-em_inertia_loss [kW]", outputFactor: 1e-3)] P_EM_electricMotorInertiaLoss_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}-em_mech [kW]", outputFactor: 1e-3, perAxle: true)] P_EM_electricMotor_em_mech_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}-em_mech_map [kW]", outputFactor: 1e-3, perAxle: true)] P_EM_electricMotor_em_mech_map_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}-em_el [kW]", outputFactor: 1e-3, perAxle: true)] P_EM_electricMotor_el_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}-em_loss [kW]", outputFactor: 1e-3, perAxle: true)] P_EM_electricMotorLoss_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}-em_inertia_loss [kW]", outputFactor: 1e-3, perAxle: true)] P_EM_electricMotorInertiaLoss_,
 
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}_in [kW]", outputFactor: 1e-3)] P_EM_in_,
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}_out [kW]", outputFactor: 1e-3)] P_EM_out_,
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}_mech [kW]", outputFactor: 1e-3)] P_EM_mech_,
-		[ModalResultField(typeof(SI), caption: "P_E2_mech [kW]", outputFactor: 1e-3)] P_E2_mech_,
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}_loss [kW]", outputFactor: 1e-3)] P_EM_loss_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}_in [kW]", outputFactor: 1e-3, perAxle: true)] P_EM_in_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}_out [kW]", outputFactor: 1e-3, perAxle: true)] P_EM_out_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}_mech [kW]", outputFactor: 1e-3, perAxle: true)] P_EM_mech_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}_loss [kW]", outputFactor: 1e-3, perAxle: true)] P_EM_loss_,
 		
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}_transm_loss [kW]", outputFactor: 1e-3)] P_EM_TransmissionLoss_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}_transm_loss [kW]", outputFactor: 1e-3, perAxle: true)] P_EM_TransmissionLoss_,
 
-		[ModalResultField(typeof(SI), caption: "EM_OVL-{0}{1}-em [%]", outputFactor: 100)] ElectricMotor_OvlBuffer_,
+		[ModalResultField(typeof(SI), caption: "EM_OVL-{0}{1}-em [%]", outputFactor: 100, perAxle: true)] ElectricMotor_OvlBuffer_,
 
-		[ModalResultField(typeof(SI), caption: "EM_{0}{1}_off")] EM_Off_,
+		[ModalResultField(typeof(SI), caption: "EM_{0}{1}_off", perAxle: true)] EM_Off_,
 
-		[ModalResultField(typeof(SI), caption: "n_{0}{1}_int_avg [1/min]", outputFactor: 60 / (2 * Math.PI))] n_IEPC_int_,
-		[ModalResultField(typeof(SI), caption: "T_{0}{1}_int [Nm]")] T_IEPC_,
-		[ModalResultField(typeof(SI), caption: "T_{0}{1}_int_map [Nm]")] T_IEPC_map_,
-		[ModalResultField(typeof(SI), caption: "T_{0}{1}_int_drive_max [Nm]")] T_IEPC_int_drive_max_,
-		[ModalResultField(typeof(SI), caption: "T_{0}{1}_int_gen_max [Nm]")] T_IEPC_int_gen_max_,
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}_int_gen_max [kW]", outputFactor: 1e-3)] P_IEPC_int_gen_max_,
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}_int_drive_max [kW]", outputFactor: 1e-3)] P_IEPC_int_drive_max_,
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}_inertia_loss [kW]", outputFactor: 1e-3)] P_IEPC_electricMotorInertiaLoss_,
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}_int_mech_map [kW]", outputFactor: 1e-3)] P_IEPC_int_mech_map_,
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}_el [kW]", outputFactor: 1e-3)] P_IEPC_el_,
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}_out [kW]", outputFactor: 1e-3)] P_IEPC_out_,
-		[ModalResultField(typeof(SI), caption: "n_IEPC_out_avg [kW]", outputFactor: 1e-3)] n_IEPC_out_avg,
-		[ModalResultField(typeof(SI), caption: "T_IEPC_out [kW]", outputFactor: 1e-3)] T_IEPC_out,
-		[ModalResultField(typeof(SI), caption: "P_{0}{1}_loss [kW]", outputFactor: 1e-3)] P_IEPC_electricMotorLoss_,
-		[ModalResultField(typeof(SI), caption: "{0}{1}_off")] IEPC_Off_,
-		[ModalResultField(typeof(SI), caption: "{0}{1}_OVL [%]", outputFactor: 100)] IEPC_OvlBuffer_,
+		[ModalResultField(typeof(SI), caption: "n_{0}{1}_int_avg [1/min]", outputFactor: 60 / (2 * Math.PI), perAxle: true)] n_IEPC_int_,
+		[ModalResultField(typeof(SI), caption: "T_{0}{1}_int [Nm]", perAxle: true)] T_IEPC_,
+		[ModalResultField(typeof(SI), caption: "T_{0}{1}_int_map [Nm]", perAxle: true)] T_IEPC_map_,
+		[ModalResultField(typeof(SI), caption: "T_{0}{1}_int_drive_max [Nm]", perAxle: true)] T_IEPC_int_drive_max_,
+		[ModalResultField(typeof(SI), caption: "T_{0}{1}_int_gen_max [Nm]", perAxle: true)] T_IEPC_int_gen_max_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}_int_gen_max [kW]", outputFactor: 1e-3, perAxle: true)] P_IEPC_int_gen_max_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}_int_drive_max [kW]", outputFactor: 1e-3, perAxle: true)] P_IEPC_int_drive_max_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}_inertia_loss [kW]", outputFactor: 1e-3, perAxle: true)] P_IEPC_electricMotorInertiaLoss_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}_int_mech_map [kW]", outputFactor: 1e-3, perAxle: true)] P_IEPC_int_mech_map_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}_el [kW]", outputFactor: 1e-3, perAxle: true)] P_IEPC_el_,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}_out [kW]", outputFactor: 1e-3, perAxle: true)] P_IEPC_out_,
+		[ModalResultField(typeof(SI), caption: "n_IEPC_out_avg{0} [kW]", outputFactor: 1e-3, perAxle: true)] n_IEPC_out_avg,
+		[ModalResultField(typeof(SI), caption: "T_IEPC_out{0} [kW]", outputFactor: 1e-3, perAxle: true)] T_IEPC_out,
+		[ModalResultField(typeof(SI), caption: "P_{0}{1}_loss [kW]", outputFactor: 1e-3, perAxle: true)] P_IEPC_electricMotorLoss_,
+		[ModalResultField(typeof(SI), caption: "{0}{1}_off", perAxle: true)] IEPC_Off_,
+		[ModalResultField(typeof(SI), caption: "{0}{1}_OVL [%]", outputFactor: 100, perAxle: true)] IEPC_OvlBuffer_,
 
 
 
@@ -521,7 +522,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 	public class ModalResultFieldAttribute : Attribute
 	{
 		internal ModalResultFieldAttribute(Type dataType, string name = null, string caption = null, uint decimals = 4,
-			double outputFactor = 1, bool showUnit = false)
+			double outputFactor = 1, bool showUnit = false, bool perAxle = false)
 		{
 			DataType = dataType;
 			Name = name;
@@ -529,6 +530,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			Decimals = decimals;
 			OutputFactor = outputFactor;
 			ShowUnit = showUnit;
+			PerAxle = perAxle;
 		}
 
 		public bool ShowUnit { get; private set; }
@@ -537,6 +539,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		public Type DataType { get; private set; }
 		public string Name { get; private set; }
 		public string Caption { get; private set; }
+		public bool PerAxle { get; private set; }
 	}
 
 	public static class ModalResultFieldExtensionMethods
@@ -549,6 +552,17 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			return GetAttribute(field).Name ?? field.ToString();
 		}
 
+		public static bool GetPerAxle(this ModalResultField field)
+		{
+			return GetAttribute(field).PerAxle;
+        }
+
+		public static string GetColumnName(this ModalResultField field)
+		{
+			return field.GetPerAxle()
+                ? string.Format(field.GetCaption(), Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber())
+				: field.GetName();
+		}
 
 		public static string GetCaption(this ModalResultField field, string suffix = null)
 		{

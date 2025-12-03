@@ -41,6 +41,7 @@ using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
@@ -50,7 +51,6 @@ using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing;
 using TUGraz.VectoCore.Utils;
-using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.OutputData
 {
@@ -292,9 +292,9 @@ namespace TUGraz.VectoCore.OutputData
 			VectoSimulationJobType.IEPC_S,
 			VectoSimulationJobType.Multiple_SHEV);
 			
-		public bool HasGearbox => _runData.GearboxData != null;
+		public bool HasGearbox => _runData.GetGearboxData().Any();
 
-		public bool HasAxlegear => _runData.AxleGearData != null;
+		public bool HasAxlegear => _runData.GetAxlegearData().Any();
 
 		public bool HasBattery => _runData.BatteryData != null;
 
@@ -587,8 +587,6 @@ namespace TUGraz.VectoCore.OutputData
 			}
 
 			TimeIntegral<WattSecond>(ModalResultField.P_clutch_loss);
-			TimeIntegral<WattSecond>(ModalResultField.P_gbx_shift_loss);
-			TimeIntegral<WattSecond>(ModalResultField.P_gbx_loss);
 			TimeIntegral<WattSecond>(ModalResultField.P_wheel_in);
 
 			foreach (var item in _runData.GetAxlegearData())
@@ -605,6 +603,12 @@ namespace TUGraz.VectoCore.OutputData
 			{
 				TimeIntegral<WattSecond>(ModalResultField.P_angle_loss, axleNumber: item.Item1);
 			}
+
+			foreach (var item in _runData.GetGearboxData())
+			{
+                TimeIntegral<WattSecond>(ModalResultField.P_gbx_shift_loss, axleNumber: item.Item1);
+                TimeIntegral<WattSecond>(ModalResultField.P_gbx_loss, axleNumber: item.Item1);
+            }
 
 			TimeIntegral<WattSecond>(ModalResultField.P_TC_loss);
 			TimeIntegral<WattSecond>(ModalResultField.P_brake_loss);
@@ -719,9 +723,18 @@ namespace TUGraz.VectoCore.OutputData
 					ModalResultField.acc,
 					ModalResultField.grad,
 					ModalResultField.altitude,
-					ModalResultField.Highway,
-					ModalResultField.Gear,
-					ModalResultField.TC_Locked,
+					ModalResultField.Highway
+				}.Select(x => x.GetName()));
+
+            // Gear
+            foreach (var gearbox in Data.Gearboxes)
+            {
+                dataColumns.Add(string.Format(ModalResultField.Gear.GetCaption(), gearbox.FormatAxleNumber()));
+            }
+
+            dataColumns.AddRange(
+                new[] {
+                    ModalResultField.TC_Locked,
 					// ICE
 					ModalResultField.n_ice_avg,
 					ModalResultField.T_ice_fcmap,
@@ -747,19 +760,12 @@ namespace TUGraz.VectoCore.OutputData
 					ModalResultField.I_reess,
 				}.Select(x => x.GetName()));
 
-
-
-
-
 			//Fuel Cell 
 			dataColumns.AddRange(Data.FuelCellColumns);
 			dataColumns.AddRange(new [] {
 				ModalResultField.P_FCSystem,
 				ModalResultField.FC_FCSystem,
 			}.Select(x => x.GetName()));
-
-
-
 
 			// EMs
 			if (Data.ElectricMotors.Count > 0) {
@@ -770,10 +776,15 @@ namespace TUGraz.VectoCore.OutputData
 				}
 			}
 
+            // P_gbx_shift_loss
+            foreach (var gearbox in Data.Gearboxes)
+			{
+				dataColumns.Add(string.Format(ModalResultField.P_gbx_shift_loss.GetAttribute().Caption, gearbox.FormatAxleNumber()));
+            }
+
 			dataColumns.AddRange(
 				new[] {
 					// TC
-					ModalResultField.P_gbx_shift_loss,
 					ModalResultField.P_TC_loss,
 					ModalResultField.P_TC_out,
 					// clutch
@@ -783,17 +794,23 @@ namespace TUGraz.VectoCore.OutputData
 					ModalResultField.P_aux_mech,
 					ModalResultField.P_aux_el,
 					ModalResultField.P_Aux_el_HV,
-					// Gbx
-					ModalResultField.P_gbx_in,
-					ModalResultField.P_gbx_loss,
-					ModalResultField.P_gbx_inertia,
-
-					ModalResultField.n_gbx_in_avg,
-					ModalResultField.n_gbx_out_avg,
-
-					ModalResultField.T_gbx_in,
-					ModalResultField.T_gbx_out
 				}.Select(x => x.GetName()));
+
+			// Gearboxes
+			foreach (var gearbox in Data.Gearboxes)
+			{
+                var cols = new ModalResultField[7] 
+				{ 
+					ModalResultField.P_gbx_in,
+                    ModalResultField.P_gbx_loss,
+                    ModalResultField.P_gbx_inertia,
+                    ModalResultField.n_gbx_in_avg,
+                    ModalResultField.n_gbx_out_avg,
+                    ModalResultField.T_gbx_in,
+                    ModalResultField.T_gbx_out
+				};
+                dataColumns.AddRange(cols.Select(c => string.Format(c.GetAttribute().Caption, gearbox.FormatAxleNumber())));
+            }            
 
             // retarders
             foreach (var retarder in Data.Retarders)
@@ -953,6 +970,11 @@ namespace TUGraz.VectoCore.OutputData
 		{
 			return GetValues<T>(Data.Columns[key.GetName()]);
 		}
+
+		public IEnumerable<T> GetValues<T>(ModalResultField field, string arg)
+		{
+			return GetValues<T>(Data.Columns[GetColumnName(field, arg)]);
+        }
 
 		public object this[ModalResultField key]
 		{

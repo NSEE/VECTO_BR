@@ -4,6 +4,7 @@ using TUGraz.Vecto.UnitTests.Utils.MockComponents;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents;
 using TUGraz.VectoCore.Models.Connector.Ports;
@@ -55,7 +56,7 @@ public class GearboxDataTests
         shiftStrategy.Setup(s =>
                 s.InitGear(It.IsAny<Second>(), It.IsAny<Second>(), It.IsAny<NewtonMeter>(), It.IsAny<PerSecond>()))
             .Returns(new GearshiftPosition(1));
-        var gearbox = new AMTGearbox(container, shiftStrategy.Object);
+        var gearbox = new AMTGearbox(container, shiftStrategy.Object, Constants.NOT_IN_AXLE_POWERTRAIN);
 
         NewtonMeter tqRequest = null;
         PerSecond rpmRequest = null;

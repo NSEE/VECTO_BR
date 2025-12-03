@@ -728,8 +728,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 					throw new VectoException("invalid powertrain position");
 				case PowertrainPosition.BatteryElectricE2:
 					var gearbox = gearboxType.AutomaticTransmission()
-						? (IHybridControlledGearbox)new APTGearbox(container, ctl.ShiftStrategy)
-						: new AMTGearbox(container, ctl.ShiftStrategy);
+						? (IHybridControlledGearbox)new APTGearbox(container, ctl.ShiftStrategy, Constants.NOT_IN_AXLE_POWERTRAIN)
+						: new AMTGearbox(container, ctl.ShiftStrategy, Constants.NOT_IN_AXLE_POWERTRAIN);
 					powertrain = powertrain.AddComponent(new AxleGear(container, runData.AxleGearData))
 						.AddComponent(runData.AngledriveData != null ? new Angledrive(container, runData.AngledriveData) : null)
 						.AddComponent(runData.Retarder.Type == RetarderType.TransmissionOutputRetarder 

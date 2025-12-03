@@ -5,6 +5,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
+using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents;
 using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDataFactory;
 using TUGraz.VectoCore.Models.BusAuxiliaries;
@@ -16,6 +17,7 @@ using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.OutputData;
 
@@ -222,32 +224,44 @@ public class DummyRunPrimaryBusRunDataFactory : DeclarationModePrimaryBusRunData
 
                 JobType = InputDataProvider.JobInputData.JobType,
 			};
-            if (Vehicle.VehicleType.IsMultiplePowertrains()) {
+
+            if (InputDataProvider.JobInputData.Vehicle.ArchitectureID.IsBatteryElectricVehicle() ||
+                InputDataProvider.JobInputData.Vehicle.ArchitectureID.IsHybridVehicle() ||
+                InputDataProvider.JobInputData.Vehicle.ArchitectureID.IsFuelCellVehicle())
+            {
+                runData.BatteryData = CreateBatteryData();
+            }
+
+            if (Vehicle.VehicleType.IsMultiplePowertrains()) 
+            {
 				runData.AxlePowertrainsData = new List<AxlePowertrainData>();
-				foreach (var axlePt in Vehicle.Components.AxlePowertrainInputData) {
-					var axlePowertrainData = new AxlePowertrainData() {
-						AxleNumber = axlePt.AxleNumber,
-						Retarder = CreateDummyRetarder(axlePt),
-						AxleGearData = CreateDummyAxleGearData(axlePt.AxleGearInputData),
-						GearboxData = CreateDummyGearboxData(axlePt.GearboxInputData),
-						AngledriveData = CreateDummyAngleDriveData(axlePt.AngledriveInputData)
-					};
+
+				foreach (var axlePt in Vehicle.Components.AxlePowertrainInputData) 
+                {
+                    var axlePowertrainData = new AxlePowertrainData()
+                    {
+                        Architecture = axlePt.Architecture,
+                        AxleNumber = axlePt.AxleNumber,
+                        Retarder = CreateDummyRetarder(axlePt),
+                        AxleGearData = CreateDummyAxleGearData(axlePt.AxleGearInputData),
+                        GearboxData = CreateDummyGearboxData(axlePt.GearboxInputData),
+                        AngledriveData = CreateDummyAngleDriveData(axlePt.AngledriveInputData),
+                        ElectricMachineData = axlePt.Architecture.IsIEPC() ? CreateDummyIEPCData().First() : CreateDummyElecticMachineData(axlePt.ElectricMotor.Position)
+                    };
+
                     runData.AxlePowertrainsData.Add(axlePowertrainData);
 				}
-			} else {
+			} 
+            else 
+            {
 				runData.Retarder = CreateDummyRetarder(Vehicle);
 				runData.AxleGearData = CreateDummyAxleGearData(Vehicle.Components.AxleGearInputData);
 				runData.GearboxData = CreateDummyGearboxData(Vehicle.Components.GearboxInputData);
 				runData.AngledriveData = CreateDummyAngleDriveData(Vehicle.Components.AngledriveInputData);
-
+                runData.ElectricMachinesData = runData.JobType.IsIEPC()
+                    ? CreateDummyIEPCData()
+                    : CreateDummyElecticMachinesData(Vehicle.Components.ElectricMachines);
 			}
-
-            if (InputDataProvider.JobInputData.Vehicle.ArchitectureID.IsBatteryElectricVehicle() ||
-                InputDataProvider.JobInputData.Vehicle.ArchitectureID.IsHybridVehicle() ||
-				InputDataProvider.JobInputData.Vehicle.ArchitectureID.IsFuelCellVehicle())
-            {
-                runData.BatteryData = CreateBatteryData();
-            }
         }
 
         runData.InputData = InputDataProvider;
@@ -418,6 +432,55 @@ public class DummyRunPrimaryBusRunDataFactory : DeclarationModePrimaryBusRunData
         };
     }
 
+    public static IList<Tuple<PowertrainPosition, ElectricMotorData>> CreateDummyIEPCData()
+    {
+        return new List<Tuple<PowertrainPosition, ElectricMotorData>>() { CreateDummyElecticMachineData(PowertrainPosition.IEPC) } ;
+    }
+
+    public static Tuple<PowertrainPosition, ElectricMotorData> CreateDummyElecticMachineData(PowertrainPosition position)
+    {
+        return Tuple.Create(position, new ElectricMotorData()
+        {
+            Overload = new OverloadData()
+            {
+                ContinuousPowerLoss = 0.SI<Watt>(),
+                ContinuousTorque = 0.SI<NewtonMeter>(),
+                OverloadBuffer = 0.SI<Joule>()
+            },
+            OverloadRecoveryFactor = 0.9,
+            EfficiencyData = new VoltageLevelData()
+            {
+                VoltageLevels = new List<ElectricMotorVoltageLevelData>() {
+                        new ElectricMotorVoltageLevelData() {
+                            FullLoadCurve = new ElectricMotorFullLoadCurve(new[] {
+                                new ElectricMotorFullLoadCurve.FullLoadEntry() {
+                                    FullDriveTorque = 400.SI<NewtonMeter>(),
+                                    FullGenerationTorque = 400.SI<NewtonMeter>(),
+                                    MotorSpeed = 0.RPMtoRad()
+                                }
+                            }.ToList())
+                        }
+                    }
+            }
+        });
+    }
+
+    public static IList<Tuple<PowertrainPosition, ElectricMotorData>> CreateDummyElecticMachinesData(IElectricMachinesDeclarationInputData emInput)
+    {
+        var list = new List<Tuple<PowertrainPosition, ElectricMotorData>>();
+
+        if (emInput == null)
+        {
+            return list;
+        }
+
+        foreach (var entry in emInput.Entries)
+        {
+            list.Add(CreateDummyElecticMachineData(entry.Position));
+        }
+
+        return list;
+    }
 
     public static CombustionEngineData CreateDummyEngineData(IVehicleDeclarationInputData vehicleData, int? modeIdx, TankSystem? tankSystem = null)
     {

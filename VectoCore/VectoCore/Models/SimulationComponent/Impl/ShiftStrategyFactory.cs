@@ -68,10 +68,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                         case VectoSimulationJobType.BatteryElectricVehicle:
                         case VectoSimulationJobType.IEPC_E:
                         case VectoSimulationJobType.IEPC_S:
+                        case VectoSimulationJobType.Multiple_PEV:
+                        case VectoSimulationJobType.Multiple_SHEV:
                             return APTNShiftStrategy.Name;
 						case VectoSimulationJobType.FCHV:
 						case VectoSimulationJobType.FCHV_IEPC:
-							return FCHVAPTNShiftStrategy.Name;
+						case VectoSimulationJobType.Multiple_FCHV:
+                        	return FCHVAPTNShiftStrategy.Name;
                         //case VectoSimulationJobType.ConventionalVehicle when isTestPowerTrain:
                         //    return null;
                         default:

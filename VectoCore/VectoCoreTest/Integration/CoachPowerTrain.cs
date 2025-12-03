@@ -36,6 +36,7 @@ using System.Linq;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.Models.Declaration;
@@ -121,7 +122,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
 				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new AMTGearbox(container, new AMTShiftStrategy(container)))
+				.AddComponent(new AMTGearbox(container, new AMTShiftStrategy(container), Constants.NOT_IN_AXLE_POWERTRAIN))
 				.AddComponent(clutch)
 				.AddComponent(engine);
 			

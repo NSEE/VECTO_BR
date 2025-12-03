@@ -161,7 +161,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 		public IDrivingCycleData PTOCycleWhileDrive { get; internal set; }
 
-		public string ShiftStrategy => GearboxData?.ShiftStrategy;
+		public string GetShiftStrategy(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
+		{
+			var gearboxKVP = GetGearboxData().FirstOrDefault(x => x.Item1 == axleNumber);
+			return (gearboxKVP == default) ? null : gearboxKVP.Item2.ShiftStrategy;
+		}
 
 		// only used for factor method
 		public IResult PrimaryResult { get; set; }
@@ -405,6 +409,22 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 				.Select(x => new Tuple<int, RetarderData>(x.AxleNumber, x.Retarder));
 
 			return retarderData.Concat(retardersInAxlePt).ToList();
+		}
+
+		public List<Tuple<int, PTOData>> GetPTOData()
+		{
+			var ptoData = new List<Tuple<int, PTOData>>();
+
+			if (PTO != null)
+			{
+				ptoData.Add(new Tuple<int, PTOData>(Constants.NOT_IN_AXLE_POWERTRAIN, PTO));
+			}
+
+			var ptosInAxlePt = AxlePowertrainsData
+				.Where(x => x.PTO != null)
+				.Select(x => new Tuple<int, PTOData>(x.AxleNumber, x.PTO));
+
+            return ptoData.Concat(ptosInAxlePt).ToList();
 		}
 
 		private static ValidationResult CheckPowertrainLossMapsSizeConventionalPT(VectoRunData runData, GearboxData gearboxData, 

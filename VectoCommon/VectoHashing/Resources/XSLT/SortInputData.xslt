@@ -129,6 +129,36 @@
 			</xsl:for-each>
 		</xsl:element>
 	</xsl:template>
+	<xsl:template match="*[*[local-name()='GearshiftCount']]">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:apply-templates select="*[not(local-name()='GearshiftCount')]"/>
+			<xsl:for-each select="*[local-name()='GearshiftCount']">
+				<xsl:sort select="@axleNumber" data-type="number" order="ascending"/>
+				<xsl:apply-templates select="."/>
+			</xsl:for-each>
+		</xsl:copy>
+	</xsl:template>
+	<xsl:template match="*[*[local-name()='AverageGearboxEfficiency']]">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:apply-templates select="*[not(local-name()='AverageGearboxEfficiency')]"/>
+			<xsl:for-each select="*[local-name()='AverageGearboxEfficiency']">
+				<xsl:sort select="@axleNumber" data-type="number" order="ascending"/>
+				<xsl:apply-templates select="."/>
+			</xsl:for-each>
+		</xsl:copy>
+	</xsl:template>
+	<xsl:template match="*[*[local-name()='AverageAxlegearEfficiency']]">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:apply-templates select="*[not(local-name()='AverageAxlegearEfficiency')]"/>
+			<xsl:for-each select="*[local-name()='AverageAxlegearEfficiency']">
+				<xsl:sort select="@axleNumber" data-type="number" order="ascending"/>
+				<xsl:apply-templates select="."/>
+			</xsl:for-each>
+		</xsl:copy>
+	</xsl:template>
 	<xsl:template match="*[local-name()='MaxTorqueCurve']">
 		<xsl:element name="{local-name()}">
 			<xsl:apply-templates select="@*"/>

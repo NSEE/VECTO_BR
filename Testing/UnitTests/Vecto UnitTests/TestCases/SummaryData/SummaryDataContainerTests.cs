@@ -36,7 +36,7 @@ public class SummaryDataContainerTests
 
         var modData = GetModalDataContainer(rundata);
 		sumWriter.AddAuxiliary("FAN");
-        sumWriter.CreateColumns(SummaryDataContainer.VehilceColumns);
+        sumWriter.CreateColumns(SummaryDataContainer.VehicleColumns);
         sumWriter.CreateColumns(SummaryDataContainer.BrakeColumns);
         sumWriter.UpdateTableColumns(rundata.EngineData);
 
@@ -103,7 +103,7 @@ public class SummaryDataContainerTests
         var modData = GetModalDataContainer(rundata);
         
 		sumWriter.AddAuxiliary("FAN");
-        sumWriter.CreateColumns(SummaryDataContainer.VehilceColumns);
+        sumWriter.CreateColumns(SummaryDataContainer.VehicleColumns);
         sumWriter.CreateColumns(SummaryDataContainer.BrakeColumns);
         sumWriter.UpdateTableColumns(rundata.EngineData);
 
