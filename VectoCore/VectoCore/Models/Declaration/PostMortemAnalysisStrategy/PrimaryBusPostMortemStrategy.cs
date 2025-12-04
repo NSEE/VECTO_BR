@@ -7,6 +7,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Utils;
 
@@ -97,17 +98,17 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 			var vehicle = testPowertrain.Vehicle;
 			var acceleration = DeclarationData.GearboxTCU.StartAcceleration * 0.5;
 
-            foreach (var motor in testPowertrain.ElectricMotors.Values) {
+            foreach (var motor in testPowertrain.ElectricMotors) {
 				if (motor.Control is ITestPowertrainElectricMotorControl emCtl) {
 					emCtl.EmOff = false;
 				}
 			}
 
-			if (testPowertrain.Container.HasGearbox) {
-				var gbx = testPowertrain.Gearbox;
-				gbx.SetGear = testPowertrain.Container.RunData.GearboxSinglePwt.GearList.First();
-			}
-			
+			foreach (var gbx in testPowertrain.Gearboxes)
+			{
+				gbx.SetGear = testPowertrain.Container.RunData.GetGearboxData().First(x => x.Item1 == (gbx as IGearboxInfo).AxleNumber).Item2.GearList.First();
+            }
+
 			vehicle.Initialize(0.KMPHtoMeterPerSecond(), gradient);
 
 			var architecture = testPowertrain.Container.VehicleArchitecture;

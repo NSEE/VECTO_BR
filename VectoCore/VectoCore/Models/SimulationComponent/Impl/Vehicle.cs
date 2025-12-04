@@ -153,9 +153,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 								(DataBus.AxlegearsInfo.FirstOrDefault(x => x.AxleNumber == em.AxleNumber)?.Ratio ?? 1.0) *
 								(DataBus.AngledrivesInfo.FirstOrDefault(x => x.AxleNumber == em.AxleNumber)?.Ratio ?? 1.0);
 						
-						maxEMSpeed = VectoMath.Min(
-							em.MaxSpeedDt,
-							gearbox.GetGearData(gearbox.NumGears).MaxSpeed);
+						maxEMSpeed = VectoMath.Min(em.MaxSpeedDt, gearbox.GetGearData(gearbox.NumGears).MaxSpeed);
 					}
 
 					return maxEMSpeed / ratio * DataBus.WheelsInfo.DynamicTyreRadius * 0.995;

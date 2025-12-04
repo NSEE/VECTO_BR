@@ -67,7 +67,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
             ? GearboxesCtl.FirstOrDefault()
             : GearboxesCtl.FirstOrDefault(x => x.AxleNumber == axleNumber);
 
-        public virtual IAxlegearInfo AxlegearInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => AxlegearsInfo.FirstOrDefault(x => x.AxleNumber == axleNumber);
+        public virtual IAxlegearInfo AxlegearInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
+			? AxlegearsInfo.FirstOrDefault()
+			: AxlegearsInfo.FirstOrDefault(x => x.AxleNumber == axleNumber);
+
         public virtual IRetarder Retarder(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => Retarders.FirstOrDefault(x => x.AxleNumber == axleNumber);
         public virtual IVehicleInfo VehicleInfo { get; protected set; }
 		public virtual IBrakes Brakes { get; protected set; }

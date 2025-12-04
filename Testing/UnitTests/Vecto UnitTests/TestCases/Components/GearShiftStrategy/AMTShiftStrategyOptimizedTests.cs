@@ -286,7 +286,7 @@ TestCase(8, 4, 15000, 200, true),]
 		var angularVelocity = expectedN / ratios[gear];
 
 
-		testPt.Setup(t => t.Gearbox.Request(
+		testPt.Setup(t => t.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN).Request(
 			It.IsAny<Second>(),
 			It.IsAny<Second>(),
 			It.IsAny<NewtonMeter>(),
@@ -427,7 +427,7 @@ TestCase(8, 4, 15000, 200, true),]
 		simpleContainer = GetSimplePowertrain(runData, out var testGearbox);
 		testPt.Setup(t => t.Container).Returns(simpleContainer.Object);
 
-		testPt.Setup(t => t.Gearbox).Returns(testGearbox.Object);
+		testPt.Setup(t => t.GetGearbox(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(testGearbox.Object);
   //       tGbx.Setup(g => g.Initialize(It.IsAny<NewtonMeter>(), It.IsAny<PerSecond>()))
   //           .Returns((NewtonMeter t, PerSecond n) => new ResponseSuccess(this) {
   //               Engine = { PowerRequest = n * t, 
