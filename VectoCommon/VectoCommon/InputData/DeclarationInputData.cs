@@ -333,7 +333,7 @@ namespace TUGraz.VectoCommon.InputData
 			{
 				list.Add(single.Value);
 			}
-			else if (components.AxlePowertrainInputData.Any())
+			else if (components.AxlePowertrainInputData?.Any() ?? false)
 			{
 				var multi = components.AxlePowertrainInputData.Select(x => x.GearboxInputData?.Type ?? (x.IEPCInputData != null ? new GearboxType?(GearboxType.IEPC) : null));
 
