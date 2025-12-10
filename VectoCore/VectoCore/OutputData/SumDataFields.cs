@@ -493,7 +493,7 @@ namespace TUGraz.VectoCore.OutputData
                                 break;
 						}
 
-						return gbxTypes.Any() ? DeclarationData.ADASCombinations.Lookup(r.VehicleData.ADAS, gbxTypes).ID : "";
+						return (gbxTypes?.Any() ?? false) ? DeclarationData.ADASCombinations.Lookup(r.VehicleData.ADAS, gbxTypes).ID : "";
 					})
 				}, {
 					REESS_CAPACITY,

@@ -1490,6 +1490,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			{
 				Engine = ReadEngine();
 			}
+
+			if (JobType == VectoSimulationJobType.Multiple_SHEV)
+			{
+				throw new VectoException("SHEV with multiple powertrains are not yet supported.");
+			}
 		}
 
 		public override VectoSimulationJobType JobType => VehicleData.VehicleType;
