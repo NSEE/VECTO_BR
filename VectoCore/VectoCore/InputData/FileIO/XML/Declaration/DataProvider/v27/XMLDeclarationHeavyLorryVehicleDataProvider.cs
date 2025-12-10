@@ -197,9 +197,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
         public XMLDeclaration_Multiple_HeavyLorry_DataProviderV27(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile)
             : base(jobData, xmlNode, sourceFile)
         {
-#if PROHIBIT_NEW_XML
-            throw new VectoException("XML Jobs for multiple powertrain vehicles are not yet supported!");
-#endif
         }
 
         public override string PowertrainPositionPrefix => null;
@@ -290,7 +287,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
         public XMLDeclaration_Multiple_SHEV_HeavyLorry_DataProviderV27(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile)
             : base(jobData, xmlNode, sourceFile)
-        { }
+        {
+#if PROHIBIT_NEW_XML
+            throw new VectoException("XML Jobs for SHEV with multiple powertrains are not yet supported!");
+#endif
+        }
 
         public override bool HybridElectricHDV => true;
 
