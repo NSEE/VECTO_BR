@@ -367,6 +367,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		protected internal List<int> Retarders = new List<int>();
 		protected internal List<int> Angledrives = new List<int>();
         protected internal List<int> Gearboxes = new List<int>();
+        protected internal List<int> TorqueConverters = new List<int>();
 
         protected internal List<string> FuelCellStringColumns = new List<string>();
 		protected internal List<string> FuelCellColumns = new List<string>(); //contains fuel cell ids as string
@@ -440,8 +441,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 						if ((g is MeasuredSpeedHybridsCycleGearbox) && (gbType == GearboxType.IHPC))
 						{
-							CreateColumns(TorqueConverterSignals);
-						}
+                            CreateColumns(
+								TorqueConverterSignals,
+								nameFunc: (x) => string.Format(x.GetAttribute().Caption, component.AxleNumber.FormatAxleNumber()),
+								captionFunc: (x) => string.Format(x.GetAttribute().Caption, component.AxleNumber.FormatAxleNumber()));
+                        }
 					}
 					else if (((axlePt == null) && runData.JobType.IsIEPC()) || ((axlePt != null) && axlePt.Architecture.IsIEPC()))
 					{
@@ -450,7 +454,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 						if (g is BEVCycleGearbox)
 						{
                             gbSignals = GearboxSignals_AT;
-                            CreateColumns(TorqueConverterSignals);
+                            CreateColumns(
+								TorqueConverterSignals,
+								nameFunc: (x) => string.Format(x.GetAttribute().Caption, component.AxleNumber.FormatAxleNumber()),
+								captionFunc: (x) => string.Format(x.GetAttribute().Caption, component.AxleNumber.FormatAxleNumber()));
                         }
                     }
 
@@ -461,7 +468,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 						);
 
                     break;
-				case ITorqueConverter _: CreateColumns(TorqueConverterSignals);
+				case ITorqueConverter _: 
+					TorqueConverters.Add(component.AxleNumber);
+					CreateColumns(
+						TorqueConverterSignals,
+                        nameFunc: (x) => string.Format(x.GetAttribute().Caption, component.AxleNumber.FormatAxleNumber()),
+                        captionFunc: (x) => string.Format(x.GetAttribute().Caption, component.AxleNumber.FormatAxleNumber())
+                        );
 					break;
 				case IAngledrive _: 
 					Angledrives.Add(component.AxleNumber);
@@ -628,6 +641,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			Axlegears.Clear();
 			Retarders.Clear();
 			Angledrives.Clear();
+			TorqueConverters.Clear();
 		}
 	}
 }

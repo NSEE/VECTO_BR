@@ -12,6 +12,7 @@ using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCore.OutputData
@@ -58,8 +59,8 @@ namespace TUGraz.VectoCore.OutputData
 		public const string GEARBOX_MODEL = "Gearbox model{0} [-]";
 		public const string GEARBOX_TYPE = "Gearbox type{0} [-]";
 
-		public const string TORQUECONVERTER_MANUFACTURER = "Torque converter manufacturer [-]";
-		public const string TORQUECONVERTER_MODEL = "Torque converter model [-]";
+		public const string TORQUECONVERTER_MANUFACTURER = "Torque converter manufacturer{0} [-]";
+		public const string TORQUECONVERTER_MODEL = "Torque converter model{0} [-]";
 
 		public const string RETARDER_MANUFACTURER = "Retarder manufacturer{0} [-]";
 		public const string RETARDER_MODEL = "Retarder model{0} [-]";
@@ -175,7 +176,7 @@ namespace TUGraz.VectoCore.OutputData
 		public const string E_SHIFT_LOSS = "E_shift_loss{0} [kWh]";
 		public const string E_AXL_LOSS = "E_axl_loss{0} [kWh]";
 		public const string E_RET_LOSS = "E_ret_loss{0} [kWh]";
-		public const string E_TC_LOSS = "E_tc_loss [kWh]";
+		public const string E_TC_LOSS = "E_tc_loss{0} [kWh]";
 		public const string E_ANGLE_LOSS = "E_angle_loss{0} [kWh]";
 		public const string E_CLUTCH_LOSS = "E_clutch_loss [kWh]";
 		public const string E_FCMAP_POS = "E_fcmap_pos [kWh]";
@@ -246,14 +247,14 @@ namespace TUGraz.VectoCore.OutputData
 
 		public const string ENGINE_CERTIFICATION_NUMBER = "Engine certification number";
 		public const string AVERAGE_ENGINE_EFFICIENCY = "Average engine efficiency [-]";
-		public const string TORQUE_CONVERTER_CERTIFICATION_NUMBER = "TorqueConverter certification number";
-		public const string TORQUE_CONVERTER_CERTIFICATION_METHOD = "Torque converter certification option";
+		public const string TORQUE_CONVERTER_CERTIFICATION_NUMBER = "TorqueConverter certification number{0}";
+		public const string TORQUE_CONVERTER_CERTIFICATION_METHOD = "Torque converter certification option{0}";
 
 		public const string AVERAGE_TORQUE_CONVERTER_EFFICIENCY_WITH_LOCKUP =
-			"Average torque converter efficiency with lockup [-]";
+			"Average torque converter efficiency with lockup{0} [-]";
 
 		public const string AVERAGE_TORQUE_CONVERTER_EFFICIENCY_WITHOUT_LOCKUP =
-			"Average torque converter efficiency w/o lockup [-]";
+			"Average torque converter efficiency w/o lockup{0} [-]";
 
 		public const string GEARBOX_CERTIFICATION_NUMBER = "Gearbox certification number{0}";
 		public const string GEARBOX_CERTIFICATION_METHOD = "Gearbox certification option{0}";
@@ -640,24 +641,6 @@ namespace TUGraz.VectoCore.OutputData
 							: null)
 				},
 
-				// torque converter
-				{
-					TORQUECONVERTER_MANUFACTURER,
-					SumFunc((r, m) => r.GearboxData?.TorqueConverterData?.Manufacturer ?? Constants.NOT_AVAILABLE)
-				}, {
-					TORQUECONVERTER_MODEL,
-					SumFunc((r, m) => r.GearboxData?.TorqueConverterData?.ModelName ?? Constants.NOT_AVAILABLE)
-				}, {
-					TORQUE_CONVERTER_CERTIFICATION_NUMBER,
-					SumFunc((r, m) =>
-						r.GearboxData?.TorqueConverterData?.CertificationMethod == CertificationMethod.StandardValues
-							? ""
-							: r.GearboxData?.TorqueConverterData?.CertificationNumber ?? "")
-				}, {
-					TORQUE_CONVERTER_CERTIFICATION_METHOD,
-					SumFunc((r, m) => r.GearboxData?.TorqueConverterData?.CertificationMethod.GetName() ?? "")
-				},
-
 				// engine 
 				{
 					P_FCMAP_POS,
@@ -706,10 +689,7 @@ namespace TUGraz.VectoCore.OutputData
 				}, {
 					E_CLUTCH_LOSS,
 					SumFunc((r, m) => m.WorkClutch().ConvertToKiloWattHour(), ModalResultField.P_clutch_loss)
-				}, {
-					E_TC_LOSS,
-					SumFunc((r, m) => m.WorkTorqueConverter().ConvertToKiloWattHour(), ModalResultField.P_TC_loss)
-				},  
+				}, 
 				{
 					E_WHEELEND_SAVED,
 					SumFunc((r, m) => m.WorkWheelEnd().ConvertToKiloWattHour(), ModalResultField.P_wheelEnd_saving)
@@ -819,31 +799,6 @@ namespace TUGraz.VectoCore.OutputData
 						var eIcePos = m.TimeIntegral<WattSecond>(ModalResultField.P_ice_fcmap, x => x > 0);
 						return eFC.IsEqual(0, 1e-9) ? 0 : (eIcePos / eFC).Value();
 					}, ModalResultField.FCFinal, ModalResultField.P_ice_fcmap)
-				},  {
-					AVERAGE_TORQUE_CONVERTER_EFFICIENCY_WITHOUT_LOCKUP, SumFunc((r, m) => {
-						var eTcIn = m.TimeIntegral<WattSecond>(ModalResultField.P_TC_in, x => x > 0);
-						var eTcOut = m.TimeIntegral<WattSecond>(ModalResultField.P_gbx_in, Constants.NOT_IN_AXLE_POWERTRAIN, x => x > 0);
-						
-						return eTcIn.IsEqual(0, 1e-9) ? 0 : (eTcOut / eTcIn).Value();
-					}, ModalResultField.P_gbx_in, ModalResultField.P_TC_in)
-				}, {
-					AVERAGE_TORQUE_CONVERTER_EFFICIENCY_WITH_LOCKUP, SumFunc((r, m) => {
-						var tcData = m.GetValues(
-							x => new {
-								dt = x.Field<Second>(ModalResultField.simulationInterval.GetName()),
-								locked = x.Field<int>(ModalResultField.TC_Locked.GetName()),
-								P_TCin = x.Field<Watt>(ModalResultField.P_TC_in.GetName()),
-								P_TCout = x.Field<Watt>(ModalResultField.P_TC_out.GetName())
-							});
-						var eTcIn = 0.SI<WattSecond>();
-						var eTcOut = 0.SI<WattSecond>();
-						foreach (var entry in tcData.Where(x => x.locked == 0)) {
-							eTcIn += entry.dt * entry.P_TCin;
-							eTcOut += entry.dt * entry.P_TCout;
-						}
-
-						return eTcIn.IsEqual(0, 1e-9) ? 0 : (eTcOut / eTcIn).Value();
-					}, ModalResultField.P_TC_in, ModalResultField.P_TC_out, ModalResultField.TC_Locked)
 				},  
 				{
 					COASTING_TIME_SHARE,
@@ -1086,6 +1041,86 @@ namespace TUGraz.VectoCore.OutputData
 
 			};
 
+		public static readonly Dictionary<string, Tuple<ModalResultField[], WriteSumEntryAxle>> TorqueConverterValue =
+			new Dictionary<string, Tuple<ModalResultField[], WriteSumEntryAxle>>() {
+			{
+				TORQUECONVERTER_MANUFACTURER,
+				SumFunc((r, m, a) => 
+				{
+                    var gearboxKVP = r.GetGearboxData().FirstOrDefault(x => x.Item1 == a);
+                    var gearbox = (gearboxKVP == default) ? null : gearboxKVP.Item2;
+                    return gearbox?.TorqueConverterData?.Manufacturer ?? Constants.NOT_AVAILABLE; 
+				})
+			},
+			{
+				TORQUECONVERTER_MODEL,
+				SumFunc((r, m, a) => 
+				{
+                    var gearboxKVP = r.GetGearboxData().FirstOrDefault(x => x.Item1 == a);
+                    var gearbox = (gearboxKVP == default) ? null : gearboxKVP.Item2;
+                    return gearbox?.TorqueConverterData?.ModelName ?? Constants.NOT_AVAILABLE; 
+				})
+			},
+			{
+				TORQUE_CONVERTER_CERTIFICATION_NUMBER,
+				SumFunc((r, m, a) =>
+				{
+                    var gearboxKVP = r.GetGearboxData().FirstOrDefault(x => x.Item1 == a);
+                    var gearbox = (gearboxKVP == default) ? null : gearboxKVP.Item2;
+                    return (gearbox?.TorqueConverterData?.CertificationMethod == CertificationMethod.StandardValues)
+						? ""
+						: gearbox?.TorqueConverterData?.CertificationNumber ?? ""; 
+				})
+			},
+			{
+				TORQUE_CONVERTER_CERTIFICATION_METHOD,
+				SumFunc((r, m, a) => 
+				{
+                    var gearboxKVP = r.GetGearboxData().FirstOrDefault(x => x.Item1 == a);
+                    var gearbox = (gearboxKVP == default) ? null : gearboxKVP.Item2;
+                    return gearbox?.TorqueConverterData?.CertificationMethod.GetName() ?? ""; 
+				})
+			},
+            {
+                AVERAGE_TORQUE_CONVERTER_EFFICIENCY_WITHOUT_LOCKUP, 
+				SumFunc((r, m, a) => 
+				{
+                    var eTcIn = m.TimeIntegral<WattSecond>(ModalResultField.P_TC_in, a, x => x > 0);
+                    var eTcOut = m.TimeIntegral<WattSecond>(ModalResultField.P_gbx_in, a, x => x > 0);
+
+                    return eTcIn.IsEqual(0, 1e-9) ? 0 : (eTcOut / eTcIn).Value();
+                }, 
+				ModalResultField.P_gbx_in, ModalResultField.P_TC_in)
+            }, 
+			{
+                AVERAGE_TORQUE_CONVERTER_EFFICIENCY_WITH_LOCKUP, 
+				SumFunc((r, m, a) => 
+				{
+                    var tcData = m.GetValues(
+                        x => new {
+                            dt = x.Field<Second>(ModalResultField.simulationInterval.GetName()),
+                            locked = x.Field<int>(ModalResultField.TC_Locked.GetColumnName(a)),
+                            P_TCin = x.Field<Watt>(ModalResultField.P_TC_in.GetColumnName(a)),
+                            P_TCout = x.Field<Watt>(ModalResultField.P_TC_out.GetColumnName(a))
+                        });
+                    var eTcIn = 0.SI<WattSecond>();
+                    var eTcOut = 0.SI<WattSecond>();
+                    foreach (var entry in tcData.Where(x => x.locked == 0)) {
+                        eTcIn += entry.dt * entry.P_TCin;
+                        eTcOut += entry.dt * entry.P_TCout;
+                    }
+
+                    return eTcIn.IsEqual(0, 1e-9) ? 0 : (eTcOut / eTcIn).Value();
+                }, 
+				ModalResultField.P_TC_in, ModalResultField.P_TC_out, ModalResultField.TC_Locked)
+            },
+            {
+				E_TC_LOSS,
+                SumFunc((r, m, a) => m.WorkTorqueConverter(a).ConvertToKiloWattHour(), ModalResultField.P_TC_loss)
+            },
+        };
+				
+
 		public static readonly Dictionary<string, Tuple<ModalResultField[], WriteSumEntryAxle>> PTOValue =
 			new Dictionary<string, Tuple<ModalResultField[], WriteSumEntryAxle>>() {
 			{
@@ -1183,7 +1218,8 @@ namespace TUGraz.VectoCore.OutputData
                     var eGbxOut = m.TimeIntegral<WattSecond>(gbxOutSignal, a, x => x > 0);
 
                     return eGbxIn.IsEqual(0, 1e-9) ? 0 : (eGbxOut / eGbxIn).Value();
-                }, ModalResultField.P_gbx_in)
+                }, 
+				ModalResultField.P_gbx_in)
             }
         };
 
@@ -1254,7 +1290,8 @@ namespace TUGraz.VectoCore.OutputData
                     var eAxlIn = m.TimeIntegral<WattSecond>(ModalResultField.P_axle_in, a, x => x > 0);
 					var eAxlOut = m.TimeIntegral<WattSecond>(eAxlOutSignal, x => x > 0);
 					return (eAxlOut == null) ? double.NaN : (eAxlIn.IsEqual(0, 1e-9) ? 0 : (eAxlOut / eAxlIn).Value());
-				}, ModalResultField.P_axle_in, ModalResultField.P_brake_in)
+				}, 
+				ModalResultField.P_axle_in, ModalResultField.P_brake_in)
 			},
 		};
 

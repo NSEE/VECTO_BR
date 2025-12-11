@@ -73,8 +73,7 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 					ModalResultField.simulationInterval,
 					ModalResultField.simulationDistance,
 					ModalResultField.acc,
-					ModalResultField.grad,
-					ModalResultField.TC_Locked);
+					ModalResultField.grad);
 
 				start[ModalResultField.v_act.GetName()] = v_act;
 				v_act = 2 * current.Field<MeterPerSecond>(ModalResultField.v_act.GetName()) - v_act;
@@ -124,6 +123,12 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 
                     SetConstantValues(current, start, end,
                         string.Format(ModalResultField.T_gbx_out.GetCaption(), gb.FormatAxleNumber()), ModalResultField.T_gbx_out.GetDataType());
+                }
+
+				foreach (var tc in data.TorqueConverters)
+				{
+                    SetConstantValues(current, start, end,
+                        string.Format(ModalResultField.TC_Locked.GetCaption(), tc.FormatAxleNumber()), ModalResultField.TC_Locked.GetDataType());
                 }
 
 				foreach (var rt in data.Retarders)

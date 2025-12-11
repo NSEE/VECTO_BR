@@ -51,6 +51,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing;
 using TUGraz.VectoCore.Utils;
+using static TUGraz.VectoCore.Models.Declaration.DeclarationData;
 
 namespace TUGraz.VectoCore.OutputData
 {
@@ -608,10 +609,10 @@ namespace TUGraz.VectoCore.OutputData
 			{
                 TimeIntegral<WattSecond>(ModalResultField.P_gbx_shift_loss, axleNumber: item.Item1);
                 TimeIntegral<WattSecond>(ModalResultField.P_gbx_loss, axleNumber: item.Item1);
+                TimeIntegral<WattSecond>(ModalResultField.P_TC_loss, axleNumber: item.Item1);
             }
 
-			TimeIntegral<WattSecond>(ModalResultField.P_TC_loss);
-			TimeIntegral<WattSecond>(ModalResultField.P_brake_loss);
+            TimeIntegral<WattSecond>(ModalResultField.P_brake_loss);
 			TimeIntegral<WattSecond>(ModalResultField.P_wheel_inertia);
 			TimeIntegral<WattSecond>(ModalResultField.P_veh_inertia);
 			TimeIntegral<WattSecond>(ModalResultField.P_aux_mech);
@@ -726,16 +727,19 @@ namespace TUGraz.VectoCore.OutputData
 					ModalResultField.Highway
 				}.Select(x => x.GetName()));
 
-            // Gear
             foreach (var gearbox in Data.Gearboxes)
             {
                 dataColumns.Add(string.Format(ModalResultField.Gear.GetCaption(), gearbox.FormatAxleNumber()));
             }
 
+			foreach (var tc in Data.TorqueConverters)
+			{
+                dataColumns.Add(string.Format(ModalResultField.TC_Locked.GetCaption(), tc.FormatAxleNumber()));
+            }
+
             dataColumns.AddRange(
                 new[] {
-                    ModalResultField.TC_Locked,
-					// ICE
+                    // ICE
 					ModalResultField.n_ice_avg,
 					ModalResultField.T_ice_fcmap,
 					ModalResultField.T_ice_full,
@@ -776,17 +780,19 @@ namespace TUGraz.VectoCore.OutputData
 				}
 			}
 
-            // P_gbx_shift_loss
             foreach (var gearbox in Data.Gearboxes)
 			{
 				dataColumns.Add(string.Format(ModalResultField.P_gbx_shift_loss.GetAttribute().Caption, gearbox.FormatAxleNumber()));
             }
 
+			foreach (var tc in Data.TorqueConverters)
+			{
+                dataColumns.Add(string.Format(ModalResultField.P_TC_loss.GetAttribute().Caption, tc.FormatAxleNumber()));
+                dataColumns.Add(string.Format(ModalResultField.P_TC_out.GetAttribute().Caption, tc.FormatAxleNumber()));
+            }
+
 			dataColumns.AddRange(
 				new[] {
-					// TC
-					ModalResultField.P_TC_loss,
-					ModalResultField.P_TC_out,
 					// clutch
 					ModalResultField.P_clutch_loss,
 					ModalResultField.P_clutch_out,
@@ -796,7 +802,6 @@ namespace TUGraz.VectoCore.OutputData
 					ModalResultField.P_Aux_el_HV,
 				}.Select(x => x.GetName()));
 
-			// Gearboxes
 			foreach (var gearbox in Data.Gearboxes)
 			{
                 var cols = new ModalResultField[7] 
@@ -812,21 +817,18 @@ namespace TUGraz.VectoCore.OutputData
                 dataColumns.AddRange(cols.Select(c => string.Format(c.GetAttribute().Caption, gearbox.FormatAxleNumber())));
             }            
 
-            // retarders
             foreach (var retarder in Data.Retarders)
 			{
 				var cols = ModalResults.RetarderSignals;
 				dataColumns.AddRange(cols.Select(c => string.Format(c.GetAttribute().Caption, retarder.FormatAxleNumber())));
 			}
 
-			// angledrives
 			foreach (var angledrive in Data.Angledrives)
 			{
 				var cols = ModalResults.AngledriveSignals;
 				dataColumns.AddRange(cols.Select(c => string.Format(c.GetAttribute().Caption, angledrive.FormatAxleNumber())));
 			}
 
-            // axlegears
             foreach (var axlegear in Data.Axlegears)
             {
                 var cols = ModalResults.AxlegearSignals;
@@ -878,7 +880,20 @@ namespace TUGraz.VectoCore.OutputData
 					//ModalResultField.SimIntervalCurrent_,
 					//ModalResultField.SimIntervalPrev_,
 					//ModalResultField.DCDCStateCount_,
+					}.Select(x => x.GetName()));
 
+            foreach (var tc in Data.TorqueConverters)
+            {
+                dataColumns.Add(string.Format(ModalResultField.TorqueConverterSpeedRatio.GetAttribute().Caption, tc.FormatAxleNumber()));
+                dataColumns.Add(string.Format(ModalResultField.TorqueConverterTorqueRatio.GetAttribute().Caption, tc.FormatAxleNumber()));
+                dataColumns.Add(string.Format(ModalResultField.TC_TorqueOut.GetAttribute().Caption, tc.FormatAxleNumber()));
+                dataColumns.Add(string.Format(ModalResultField.TC_angularSpeedOut.GetAttribute().Caption, tc.FormatAxleNumber()));
+                dataColumns.Add(string.Format(ModalResultField.TC_TorqueIn.GetAttribute().Caption, tc.FormatAxleNumber()));
+                dataColumns.Add(string.Format(ModalResultField.TC_angularSpeedIn.GetAttribute().Caption, tc.FormatAxleNumber()));
+            }
+
+            dataColumns.AddRange(
+                new[] {
 					// TC Operating point
 					ModalResultField.TorqueConverterSpeedRatio,
 					ModalResultField.TorqueConverterTorqueRatio,

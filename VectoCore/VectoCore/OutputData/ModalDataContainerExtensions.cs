@@ -182,9 +182,9 @@ namespace TUGraz.VectoCore.OutputData
 			return data.TimeIntegral<WattSecond>(ModalResultField.P_angle_loss, axleNumber: axleNumber);
 		}
 
-		public static WattSecond WorkTorqueConverter(this IModalDataContainer data)
+		public static WattSecond WorkTorqueConverter(this IModalDataContainer data, int axleNumber)
 		{
-			return data.TimeIntegral<WattSecond>(ModalResultField.P_TC_loss);
+			return data.TimeIntegral<WattSecond>(ModalResultField.P_TC_loss, axleNumber: axleNumber);
 		}
 
 		public static WattSecond WorkWheelEnd(this IModalDataContainer data)
