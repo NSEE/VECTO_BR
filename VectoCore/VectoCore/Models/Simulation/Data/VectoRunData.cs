@@ -334,7 +334,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		public List<Tuple<int, ShiftStrategyParameters>> GetGearshiftParameters()
 		{
 			var shiftParams = new List<Tuple<int, ShiftStrategyParameters>>();
-
+			
 			if (GearshiftParameters != null)
 			{
 				shiftParams.Add(new Tuple<int, ShiftStrategyParameters>(Constants.NOT_IN_AXLE_POWERTRAIN, GearshiftParameters));

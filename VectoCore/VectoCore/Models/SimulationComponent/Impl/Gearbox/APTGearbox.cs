@@ -559,7 +559,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
                                                 DisengageGearbox && !ModelData.ATEcoRollReleaseLockupClutch
                 ? 0
                 : Gear.Gear;
-            container[ModalResultField.TC_Locked] = DataBus.VehicleInfo.VehicleStopped
+            container[ModalResultField.TC_Locked, AxleNumber.FormatAxleNumber()] = DataBus.VehicleInfo.VehicleStopped
                 ? false
                 : !(DisengageGearbox && ModelData.ATEcoRollReleaseLockupClutch) &&
                 CurrentState.Gear.TorqueConverterLocked.Value;

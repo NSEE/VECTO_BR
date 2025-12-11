@@ -190,10 +190,6 @@ namespace TUGraz.VectoCore.OutputData
 			Tuple.Create(SumDataFields.NUM_AXLES_DRIVEN, typeof(int)),
 			Tuple.Create(SumDataFields.NUM_AXLES_NON_DRIVEN, typeof(int)),
 			Tuple.Create(SumDataFields.NUM_AXLES_TRAILER, typeof(int)),
-			Tuple.Create(SumDataFields.TORQUECONVERTER_MANUFACTURER, typeof(string)),
-			Tuple.Create(SumDataFields.TORQUECONVERTER_MODEL, typeof(string)),
-			Tuple.Create(SumDataFields.TORQUE_CONVERTER_CERTIFICATION_METHOD, typeof(string)),
-			Tuple.Create(SumDataFields.TORQUE_CONVERTER_CERTIFICATION_NUMBER, typeof(string)),
 			Tuple.Create(string.Format(SumDataFields.AUX_TECH_FORMAT, Constants.Auxiliaries.IDs.SteeringPump),
 				typeof(string)),
 			Tuple.Create(string.Format(SumDataFields.AUX_TECH_FORMAT, Constants.Auxiliaries.IDs.Fan), typeof(string)),
@@ -297,7 +293,17 @@ namespace TUGraz.VectoCore.OutputData
             Tuple.Create(SumDataFields.PTO_TECHNOLOGY, typeof(string)),
         };
 
-        public static readonly Tuple<string, Type>[] TorqueConverterColumns = {
+		public static readonly Tuple<string, Type>[] TorqueConverterModelColumns = {
+            Tuple.Create(SumDataFields.TORQUECONVERTER_MANUFACTURER, typeof(string)),
+            Tuple.Create(SumDataFields.TORQUECONVERTER_MODEL, typeof(string))
+        };
+
+		public static readonly Tuple<string, Type>[] TorqueConverterCertificationColumns = {
+			Tuple.Create(SumDataFields.TORQUE_CONVERTER_CERTIFICATION_METHOD, typeof(string)),
+			Tuple.Create(SumDataFields.TORQUE_CONVERTER_CERTIFICATION_NUMBER, typeof(string))
+		};
+
+        public static readonly Tuple<string, Type>[] TorqueConverterComputedColumns = {
 			Tuple.Create(SumDataFields.E_TC_LOSS, typeof(ConvertedSI)),
 			Tuple.Create(SumDataFields.AVERAGE_TORQUE_CONVERTER_EFFICIENCY_WITHOUT_LOCKUP, typeof(double)),
 			Tuple.Create(SumDataFields.AVERAGE_TORQUE_CONVERTER_EFFICIENCY_WITH_LOCKUP, typeof(double)),
@@ -491,6 +497,9 @@ namespace TUGraz.VectoCore.OutputData
         protected IList<string> GearboxLossCols = new List<string>();
         protected IList<string> ATGearboxLossCols = new List<string>();
         protected IList<string> PTOCols = new List<string>();
+        protected IList<string> TorqueConverterModelCols = new List<string>();
+        protected IList<string> TorqueConverterCertificationCols = new List<string>();
+        protected IList<string> TorqueConverterComputedCols = new List<string>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SummaryDataContainer"/> class.
@@ -540,8 +549,10 @@ namespace TUGraz.VectoCore.OutputData
 					CreateColumns(VTPCycleColumns);
 					break;
 				case ITorqueConverter _:
-					CreateColumns(TorqueConverterColumns);
-					break;
+					CreateColumns(component.AxleNumber, TorqueConverterComputedColumns, TorqueConverterComputedCols);
+					CreateColumns(component.AxleNumber, TorqueConverterModelColumns, TorqueConverterModelCols);
+                    CreateColumns(component.AxleNumber, TorqueConverterCertificationColumns, TorqueConverterCertificationCols);
+                    break;
 				case IAngledrive _:
 					CreateAngledriveColumns(component.AxleNumber);
 					break;
@@ -832,12 +843,7 @@ namespace TUGraz.VectoCore.OutputData
 
 			cols.AddRange(GearboxModelCols);
 			cols.AddRange(GearRatioCols);
-
-			cols.AddRange(new[] {
-				SumDataFields.TORQUECONVERTER_MANUFACTURER,
-				SumDataFields.TORQUECONVERTER_MODEL
-			});
-
+			cols.AddRange(TorqueConverterModelCols);
 			cols.AddRange(RetarderModelCols);
 			cols.AddRange(AngledriveModelCols);
 			cols.AddRange(AxlegearModelCols);
@@ -918,10 +924,10 @@ namespace TUGraz.VectoCore.OutputData
 				SumDataFields.E_AUX,
 				SumDataFields.E_AUX_EL,
 				SumDataFields.E_AUX_EL_HV,
-				SumDataFields.E_CLUTCH_LOSS,
-				SumDataFields.E_TC_LOSS,
+				SumDataFields.E_CLUTCH_LOSS
 			});
 
+			cols.AddRange(TorqueConverterComputedCols.Where(c => !c.StartsWith("Average")));
             cols.AddRange(GearboxLossCols);
             cols.AddRange(ATGearboxLossCols);
 			cols.AddRange(RetarderComputedCols);
@@ -969,8 +975,8 @@ namespace TUGraz.VectoCore.OutputData
 
 			cols.AddRange(NumGearshiftCols);
 
-            cols.AddRange(new[] {
-                SumDataFields.STOP_TIMESHARE,
+			cols.AddRange(new[] {
+				SumDataFields.STOP_TIMESHARE,
 				SumDataFields.ICE_FULL_LOAD_TIME_SHARE,
 				SumDataFields.ICE_OFF_TIME_SHARE,
 				SumDataFields.COASTING_TIME_SHARE,
@@ -979,13 +985,11 @@ namespace TUGraz.VectoCore.OutputData
 
 				SumDataFields.ENGINE_CERTIFICATION_NUMBER,
 				SumDataFields.AVERAGE_ENGINE_EFFICIENCY,
-				SumDataFields.TORQUE_CONVERTER_CERTIFICATION_METHOD,
-				SumDataFields.TORQUE_CONVERTER_CERTIFICATION_NUMBER,
-				SumDataFields.AVERAGE_TORQUE_CONVERTER_EFFICIENCY_WITHOUT_LOCKUP,
-				SumDataFields.AVERAGE_TORQUE_CONVERTER_EFFICIENCY_WITH_LOCKUP,
 			});
 
-			cols.AddRange(GearboxCertificationCols);
+			cols.AddRange(TorqueConverterCertificationCols);
+			cols.AddRange(TorqueConverterComputedCols.Where(c => c.StartsWith("Average")).ToArray());
+            cols.AddRange(GearboxCertificationCols);
 			cols.AddRange(AvgGearboxEffCols);
 			cols.AddRange(RetarderCertificationCols);
 			cols.AddRange(AngledriveCertificationCols);
@@ -1276,6 +1280,16 @@ namespace TUGraz.VectoCore.OutputData
                     var name = string.Format(field.Key, gearbox.Item1.FormatAxleNumber());
                     row[name] = value;
                 }
+
+				if (gearbox.Item2.TorqueConverterData != null)
+				{
+					foreach (var field in SumDataFields.TorqueConverterValue)
+					{
+						var value = field.Value.Item2(runData, modData, gearbox.Item1);
+						var name = string.Format(field.Key, gearbox.Item1.FormatAxleNumber());
+						row[name] = value;
+					}
+				}
             }
 
 			AddResultDictionary(row);
@@ -1288,7 +1302,7 @@ namespace TUGraz.VectoCore.OutputData
 				return;
 			}
 
-			if (func.Item1 == null || func.Item1.All(x => modData.ContainsColumn(x.GetColumnName()))) {
+			if (func.Item1 == null || func.Item1.All(x => modData.ContainsColumn(x.GetColumnName(Constants.NOT_IN_AXLE_POWERTRAIN)))) {
 				var value = func.Item2(runData, modData);
 				if (value != null) {
 					row[col.ColumnName] = value;

@@ -34,7 +34,6 @@ using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Utils;
 
@@ -321,46 +320,46 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		/// <summary>
 		///		[-]  true/false  indicate whether torque converter is locked or not (only applicable for gears with TC)
 		/// </summary>
-		[ModalResultField(typeof(int), caption: "TC locked")] TC_Locked,
+		[ModalResultField(typeof(int), caption: "TC locked{0}", perAxle: true)] TC_Locked,
 
 		/// <summary>
 		///     [-]	    Torque converter speed ratio
 		/// </summary>
-		[ModalResultField(typeof(double), name: "TCnu")] TorqueConverterSpeedRatio,
+		[ModalResultField(typeof(double), caption: "TCnu{0}", perAxle: true)] TorqueConverterSpeedRatio,
 
 		/// <summary>
 		///     [-]	    Torque converter torque ratio
 		/// </summary>
-		[ModalResultField(typeof(double), name: "TCmu")] TorqueConverterTorqueRatio,
+		[ModalResultField(typeof(double), caption: "TCmu{0}", perAxle: true)] TorqueConverterTorqueRatio,
 
-		[ModalResultField(typeof(SI), "P_TC_out [kW]", outputFactor: 1e-3)] P_TC_out,
+		[ModalResultField(typeof(SI), caption: "P_TC_out{0} [kW]", outputFactor: 1e-3, perAxle: true)] P_TC_out,
 
-		[ModalResultField(typeof(SI), "P_TC_in [kW]", outputFactor: 1e-3)] P_TC_in,
+		[ModalResultField(typeof(SI), caption: "P_TC_in{0} [kW]", outputFactor: 1e-3, perAxle: true)] P_TC_in,
 
 		/// <summary>
 		///     [kW]	Power loss at the torque converter.
 		/// </summary>
-		[ModalResultField(typeof(SI), "P_TC_loss [kW]", outputFactor: 1e-3)] P_TC_loss,
+		[ModalResultField(typeof(SI), caption: "P_TC_loss{0} [kW]", outputFactor: 1e-3, perAxle: true)] P_TC_loss,
 
 		/// <summary>
 		///     [Nm]	Torque converter output torque
 		/// </summary>
-		[ModalResultField(typeof(SI), "T_TC_out [Nm]")] TC_TorqueOut,
+		[ModalResultField(typeof(SI), caption: "T_TC_out{0} [Nm]", perAxle: true)] TC_TorqueOut,
 
 		/// <summary>
 		///     [1/min]	Torque converter output speed
 		/// </summary>
-		[ModalResultField(typeof(SI), "n_TC_out [rpm]", outputFactor: 60 / (2 * Math.PI))] TC_angularSpeedOut,
+		[ModalResultField(typeof(SI), caption: "n_TC_out{0} [rpm]", outputFactor: 60 / (2 * Math.PI), perAxle: true)] TC_angularSpeedOut,
 
 		/// <summary>
 		///     [Nm]	Torque converter output torque
 		/// </summary>
-		[ModalResultField(typeof(SI), "T_TC_in [Nm]")] TC_TorqueIn,
+		[ModalResultField(typeof(SI), caption: "T_TC_in{0} [Nm]", perAxle: true)] TC_TorqueIn,
 
 		/// <summary>
 		///     [1/min]	Torque converter output speed
 		/// </summary>
-		[ModalResultField(typeof(SI), "n_TC_in [rpm]", outputFactor: 60 / (2 * Math.PI))] TC_angularSpeedIn,
+		[ModalResultField(typeof(SI), caption: "n_TC_in{0} [rpm]", outputFactor: 60 / (2 * Math.PI), perAxle: true)] TC_angularSpeedIn,
 
 		/// <summary>
 		///     [m]	Altitude
@@ -557,10 +556,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			return GetAttribute(field).PerAxle;
         }
 
-		public static string GetColumnName(this ModalResultField field)
+		public static string GetColumnName(this ModalResultField field, int axleNumber)
 		{
 			return field.GetPerAxle()
-                ? string.Format(field.GetCaption(), Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber())
+                ? string.Format(field.GetCaption(), axleNumber.FormatAxleNumber())
 				: field.GetName();
 		}
 

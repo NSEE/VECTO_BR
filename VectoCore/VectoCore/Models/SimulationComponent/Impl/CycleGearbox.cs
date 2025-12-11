@@ -454,7 +454,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			container[ModalResultField.T_gbx_in, AxleNumber.FormatAxleNumber()] = CurrentState.InTorque;
 
 			if (ModelData.Type.AutomaticTransmission()) {
-				container[ModalResultField.TC_Locked] = !CurrentState.TorqueConverterActive;
+				container[ModalResultField.TC_Locked, AxleNumber.FormatAxleNumber()] = !CurrentState.TorqueConverterActive;
 				container[ModalResultField.P_gbx_shift_loss, AxleNumber.FormatAxleNumber()] = CurrentState.PowershiftLosses == null
 					? 0.SI<Watt>()
 					: CurrentState.PowershiftLosses * avgInAngularSpeed;

@@ -85,6 +85,7 @@ namespace TUGraz.Vecto.UnitTests.Utils.MockComponents
 
 			AddColumnsWithAxlenumber(ModalResults.RetarderSignals, Constants.NOT_IN_AXLE_POWERTRAIN);
             AddColumnsWithAxlenumber(ModalResults.GearboxSignals_AT, Constants.NOT_IN_AXLE_POWERTRAIN);
+            AddColumnsWithAxlenumber(ModalResults.TorqueConverterSignals, Constants.NOT_IN_AXLE_POWERTRAIN);
         }
 
 		private void AddColumnsWithAxlenumber(ModalResultField[] signals, int axleNumber)
