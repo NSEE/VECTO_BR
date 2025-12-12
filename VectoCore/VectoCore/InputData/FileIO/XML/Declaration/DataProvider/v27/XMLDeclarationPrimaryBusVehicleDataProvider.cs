@@ -229,6 +229,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
         public XMLDeclaration_Multiple_PrimaryBus_DataProviderV27(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile)
             : base(jobData, xmlNode, sourceFile)
         {
+#if PROHIBIT_NEW_XML
             if (ArchitectureID.IsOneOf(ArchitectureID.E2, ArchitectureID.F2))
             {
                 throw new VectoException($"Architecture {ArchitectureID} is not supported yet!");
@@ -238,6 +239,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
             {
                 throw new VectoException($"Architecture {ArchitectureIDPwt2} is not supported yet!");
             }
+#endif
         }
 
         public override string PowertrainPositionPrefix => null;
