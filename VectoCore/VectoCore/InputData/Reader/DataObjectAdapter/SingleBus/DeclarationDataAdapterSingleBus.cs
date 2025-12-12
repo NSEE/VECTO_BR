@@ -467,6 +467,11 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
                 {
                     ValidateIEPCData(axlePtData.IEPCInputData, axlePtData.AxleGearInputData);
 
+                    if ((axlePtData.IEPCInputData != null) && axlePtData.IEPCInputData.Gears.Count > 1)
+                    {
+                        throw new VectoException($"Architecture {axlePtData.Architecture} with multiple gears is not supported yet!");
+                    }
+
                     var axlegearData = (axlePtData.AxleGearInputData != null) ? CreateAxleGearData(axlePtData.AxleGearInputData) : null;
 
                     var emData = (axlePtData.IEPCInputData != null)

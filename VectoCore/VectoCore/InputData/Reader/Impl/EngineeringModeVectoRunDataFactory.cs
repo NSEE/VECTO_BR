@@ -389,15 +389,12 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 
             var axlePtData = dao.CreateAxlePowertrainsData(InputDataProvider, averageVoltage, cycleProxy);
 
-            //TODO: Adjust code below instead of arbitrarily getting axlePtData[0] data
-            SetDriverPTOProperties(vehicle, driver, axlePtData[0].AxleGearData, axlePtData[0].GearboxData, axlePtData[0].AngledriveData);
+			foreach (var axlePt in axlePtData)
+			{
+                SetDriverPTOProperties(vehicle, driver, axlePt.AxleGearData, axlePt.GearboxData, axlePt.AngledriveData);
+            }
 
-            //TODO: Adjust code below instead of arbitrarily getting axlePtData[0] data
-            var hybridParameters = (engineData != null)
-				? dao.CreateHybridStrategyParameters(InputDataProvider.JobInputData, engineData, axlePtData[0].GearboxData, axlePtData[0].AxleNumber)
-				: null;
-
-			return new VectoRunData
+            return new VectoRunData
 			{
 				JobName = InputDataProvider.JobInputData.JobName,
 				JobType = InputDataProvider.JobInputData.JobType,
@@ -417,7 +414,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				ElectricAuxDemand = vehicle.Components.AuxiliaryInputData.Auxiliaries.ElectricPowerDemand,
 				InMotionCharging = vehicle.InMotionCharging.Enabled,
 				InMotionChargingTechnology = vehicle.InMotionCharging.Technology,
-				HybridStrategyParameters = hybridParameters,
+				HybridStrategyParameters = null,
 				AxlePowertrainsData = axlePtData
 			};
 		}
@@ -430,7 +427,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			AngledriveData angledriveData
             )
         {
-			if ((axlegearData == null) || (gearboxData == null))
+			if (gearboxData == null)
 			{
 				return;
 			}
@@ -441,7 +438,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			}
             
 			driver.PTODriveMinSpeed = vehicle.PTO_DriveEngineSpeed /
-                axlegearData.AxleGear.Ratio /
+                (axlegearData?.AxleGear.Ratio ?? 1.0) /
                 gearboxData.Gears[vehicle.PTO_DriveGear.Gear].Ratio /
                 (angledriveData?.Angledrive.Ratio ?? 1.0) * vehicle.DynamicTyreRadius;
 

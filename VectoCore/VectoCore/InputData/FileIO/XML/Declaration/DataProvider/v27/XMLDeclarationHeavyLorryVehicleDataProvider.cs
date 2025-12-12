@@ -192,11 +192,20 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
         public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
     }
 
-    public class XMLDeclaration_Multiple_HeavyLorry_DataProviderV27 : AbstractXMLVehicleDataProviderV27
+    public abstract class XMLDeclaration_Multiple_HeavyLorry_DataProviderV27 : AbstractXMLVehicleDataProviderV27
     {
         public XMLDeclaration_Multiple_HeavyLorry_DataProviderV27(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile)
             : base(jobData, xmlNode, sourceFile)
         {
+            if (ArchitectureID.IsOneOf(ArchitectureID.E2, ArchitectureID.F2))
+            {
+                throw new VectoException($"Architecture {ArchitectureID} is not supported yet!");
+            }
+
+            if (ArchitectureIDPwt2.IsOneOf(ArchitectureID.E2, ArchitectureID.F2))
+            {
+                throw new VectoException($"Architecture {ArchitectureIDPwt2} is not supported yet!");
+            }
         }
 
         public override string PowertrainPositionPrefix => null;
@@ -213,7 +222,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 
         public override IList<ITorqueLimitInputData> TorqueLimits => null;
 
-        public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = -1)
+        public override IPTOTransmissionInputData GetPTOTransmissionInputData(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
         {
             return PTOReader.GetPTOInputData(axleNumber);
         }
