@@ -224,11 +224,20 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v27
 		public override VectoSimulationJobType VehicleType => VectoSimulationJobType.FCHV_IEPC;
 	}
 
-    public class XMLDeclaration_Multiple_PrimaryBus_DataProviderV27 : AbstractXMLDeclarationPrimaryBusVehicleDataProviderV27
+    public abstract class XMLDeclaration_Multiple_PrimaryBus_DataProviderV27 : AbstractXMLDeclarationPrimaryBusVehicleDataProviderV27
     {
         public XMLDeclaration_Multiple_PrimaryBus_DataProviderV27(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile)
             : base(jobData, xmlNode, sourceFile)
         {
+            if (ArchitectureID.IsOneOf(ArchitectureID.E2, ArchitectureID.F2))
+            {
+                throw new VectoException($"Architecture {ArchitectureID} is not supported yet!");
+            }
+
+            if (ArchitectureIDPwt2.IsOneOf(ArchitectureID.E2, ArchitectureID.F2))
+            {
+                throw new VectoException($"Architecture {ArchitectureIDPwt2} is not supported yet!");
+            }
         }
 
         public override string PowertrainPositionPrefix => null;

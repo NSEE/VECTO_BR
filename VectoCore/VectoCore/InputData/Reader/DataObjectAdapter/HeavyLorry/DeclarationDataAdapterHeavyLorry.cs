@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Ninject.Activation.Caching;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
@@ -281,6 +282,11 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
                 foreach (var axlePtData in vehicle.Components.AxlePowertrainInputData)
                 {
                     ValidateIEPCData(axlePtData.IEPCInputData, axlePtData.AxleGearInputData);
+
+					if ((axlePtData.IEPCInputData != null) && axlePtData.IEPCInputData.Gears.Count > 1)
+					{
+                        throw new VectoException($"Architecture {axlePtData.Architecture} with multiple gears is not supported yet!");
+                    }
 
                     var axlegearData = (axlePtData.AxleGearInputData != null) ? CreateAxleGearData(axlePtData.AxleGearInputData) : null;
 
