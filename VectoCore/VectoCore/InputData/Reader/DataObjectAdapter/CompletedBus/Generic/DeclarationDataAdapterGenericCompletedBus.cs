@@ -1,4 +1,10 @@
-﻿using System;
+﻿#if CERTIFICATION_RELEASE || RELEASE_CANDIDATE
+#define PROHIBIT_NEW_XML
+#endif
+
+//#define PROHIBIT_NEW_XML
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ninject;
@@ -488,10 +494,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Gener
                 {
                     ValidateIEPCData(axlePtData.IEPCInputData, axlePtData.AxleGearInputData);
 
+#if PROHIBIT_NEW_XML
                     if ((axlePtData.IEPCInputData != null) && axlePtData.IEPCInputData.Gears.Count > 1)
                     {
                         throw new VectoException($"Architecture {axlePtData.Architecture} with multiple gears is not supported yet!");
                     }
+#endif
 
                     var axlegearData = (axlePtData.AxleGearInputData != null) ? CreateAxleGearData(axlePtData.AxleGearInputData) : null;
                     
@@ -681,7 +689,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Gener
 			{
 				throw new NotImplementedException();
 			}
-            #endregion
+			#endregion
         }
 	}
 }
