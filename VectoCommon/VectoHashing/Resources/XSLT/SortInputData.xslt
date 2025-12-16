@@ -163,6 +163,38 @@
 		</xsl:if>
 	</xsl:template>
 
+	<xsl:template match="*[local-name()='PEVArchitecture' and @axleNumber]">
+		<xsl:if test="count(preceding-sibling::*[local-name()='PEVArchitecture']) = 0">
+			<xsl:for-each select="../*[local-name()='PEVArchitecture']">
+				<xsl:sort data-type="number" select="@axleNumber" order="ascending"/>
+				<xsl:element name="{local-name()}">
+					<xsl:apply-templates select="*"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='HEVArchitecture' and @axleNumber]">
+		<xsl:if test="count(preceding-sibling::*[local-name()='HEVArchitecture']) = 0">
+			<xsl:for-each select="../*[local-name()='HEVArchitecture']">
+				<xsl:sort data-type="number" select="@axleNumber" order="ascending"/>
+				<xsl:element name="{local-name()}">
+					<xsl:apply-templates select="*"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='FCHVArchitecture' and @axleNumber]">
+		<xsl:if test="count(preceding-sibling::*[local-name()='FCHVArchitecture']) = 0">
+			<xsl:for-each select="../*[local-name()='FCHVArchitecture']">
+				<xsl:sort data-type="number" select="@axleNumber" order="ascending"/>
+				<xsl:element name="{local-name()}">
+					<xsl:apply-templates select="*"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
 	
 	<xsl:template match="*[local-name()='MaxTorqueCurve']">
 		<xsl:element name="{local-name()}">
