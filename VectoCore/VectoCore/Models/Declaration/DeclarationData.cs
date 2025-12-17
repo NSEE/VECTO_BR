@@ -363,16 +363,24 @@ namespace TUGraz.VectoCore.Models.Declaration
 				case VectoSimulationJobType.IEPC_S:
 				case VectoSimulationJobType.FCHV:
 				case VectoSimulationJobType.FCHV_IEPC:
-				case VectoSimulationJobType.Multiple_FCHV:
-				case VectoSimulationJobType.Multiple_PEV:
-				case VectoSimulationJobType.Multiple_SHEV:
 					return (vehicleData.Components?.EngineInputData?.RatedPowerDeclared ?? 0.SI<Watt>()) +
 							(vehicleData.Components?.ElectricMachines?.Entries
 								.Where(x => x.Position != PowertrainPosition.GEN)
 								.Sum(x => x.ElectricMachine.R85RatedPower * x.Count) ?? 0.SI<Watt>()) +
 							(vehicleData.Components?.IEPC?.R85RatedPower ?? 0.SI<Watt>()) +
 							(vehicleData.MaxNetPower1 ?? 0.SI<Watt>());
-				default:
+                case VectoSimulationJobType.Multiple_FCHV:
+                case VectoSimulationJobType.Multiple_PEV:
+                case VectoSimulationJobType.Multiple_SHEV:
+					return (vehicleData.Components?.EngineInputData?.RatedPowerDeclared ?? 0.SI<Watt>()) +
+						(vehicleData.Components?.AxlePowertrainInputData
+							.Where(x => x.ElectricMotor != null)
+							.Sum(x => x.ElectricMotor.ElectricMachine.R85RatedPower * x.ElectricMotor.Count) ?? 0.SI<Watt>()) +
+						(vehicleData.Components?.AxlePowertrainInputData
+							.Where(x => x.IEPCInputData != null)
+							.Sum(x => x.IEPCInputData.R85RatedPower) ?? 0.SI<Watt>()) +
+						(vehicleData.MaxNetPower1 ?? 0.SI<Watt>());
+                default:
 					throw new ArgumentOutOfRangeException();
 			}
 		}
