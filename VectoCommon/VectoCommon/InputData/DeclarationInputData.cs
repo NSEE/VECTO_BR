@@ -581,6 +581,8 @@ namespace TUGraz.VectoCommon.InputData
 		NewtonMeter WheelEndFriction { get; }
 
 		string WheelEndCertificationNumber {  get; }
+
+		int AxleNumber {  get; }
 	}
 
 	public interface ITyreDeclarationInputData : IComponentInputData

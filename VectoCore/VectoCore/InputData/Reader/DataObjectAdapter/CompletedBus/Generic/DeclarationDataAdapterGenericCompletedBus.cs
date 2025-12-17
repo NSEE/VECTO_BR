@@ -510,7 +510,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Gener
                             vehicle.ElectricMotorTorqueLimits,
                             averageVoltage,
                             axlePtData.AxleNumber);
-					
+
+                    Utils.ValidatePowertrainEMPosition(emData.Item1, axlePtData);
+
                     var angledriveData = CreateAngledriveData(axlePtData.AngledriveInputData);
 
                     var retarderData = RetarderDataAdapter.CreateRetarderData(axlePtData.RetarderInputData, axlePtData.Architecture, axlePtData.IEPCInputData);
@@ -531,6 +533,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Gener
                         ShiftStrategy = shiftStrategy
                     });
                 }
+
+                Utils.CrossValidatePowertrains(vehicle, axlePts);
 
                 return axlePts;
             }
