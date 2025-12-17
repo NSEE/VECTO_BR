@@ -84,10 +84,18 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.PrimaryBusRunDa
 				var completedGroup = VehicleClassHelper.GetClassNumber(completedVehicleSegment.VehicleClass);
 				var groupData = _primaryAndCompletedGroups.Lookup(completedGroup);
 
-				return _segment.Missions.Where(x =>
-					missionTypes.Contains(x.MissionType) &&
-					VehicleClassHelper.GetClassNumber(x.BusParameter.BusGroup) == groupData.PrimaryGroup)
-						.ToArray();
+				var matchingMissions = _segment.Missions
+					.Where(x => missionTypes.Contains(x.MissionType) && VehicleClassHelper.GetClassNumber(x.BusParameter.BusGroup) == groupData.PrimaryGroup)
+					.ToArray();
+
+				if (matchingMissions.Length == 0)
+				{
+					throw new VectoException(
+						$"Failed to find missions for a {groupData.CompletedGroup} completed vehicle (matches {groupData.PrimaryGroup} primary vehicles), " +
+						$"with an input of a {_segment.VehicleClass.ToXML()} primary vehicle.");
+				}
+
+				return matchingMissions;
 			}
 
 			protected override VectoRunData GetPowertrainConfigForReportInit()
