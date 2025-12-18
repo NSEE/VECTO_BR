@@ -275,6 +275,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
                             averageVoltage,
                             axlePtData.AxleNumber);
 
+					Utils.ValidatePowertrainEMPosition(emData.Item1, axlePtData);
+
                     var angledriveData = CreateAngledriveData(axlePtData.AngledriveInputData);
 
 					var retarderData = CreateRetarderData(axlePtData.RetarderInputData, axlePtData.Architecture, axlePtData.IEPCInputData);
@@ -300,6 +302,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry
 						ShiftStrategy = shiftStrategy
                     });
                 }
+
+				Utils.CrossValidatePowertrains(vehicle, axlePts);
 
                 return axlePts;
             }
