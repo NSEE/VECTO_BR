@@ -307,7 +307,7 @@ public class DummyRunPowertrainComponentFactory : IPowertrainComponentFactory
 	}
 
 	public IGearbox CreateGearboxBatteryOnlyHybrid(VectoSimulationJobType jobType, CycleType cycle, GearboxType gbxType,
-		PowertrainPosition emPos, IVehicleContainer container, IShiftStrategy strategy)
+		PowertrainPosition emPos, IVehicleContainer container, IShiftStrategy strategy, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN)
 	{
 		throw new NotImplementedException();
 	}
