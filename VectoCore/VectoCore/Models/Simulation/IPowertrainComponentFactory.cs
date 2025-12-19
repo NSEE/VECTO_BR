@@ -130,7 +130,7 @@ namespace TUGraz.VectoCore.Models.Simulation
 		ICombustionEngine CreateCombustionEngineBatteryOnlyHybrid(CycleType cycleType, IVehicleContainer container, CombustionEngineData modelData,
 			bool pt1Disabled = false);
 
-		IGearbox CreateGearboxBatteryOnlyHybrid(VectoSimulationJobType jobType, CycleType cycle, GearboxType gbxType, PowertrainPosition emPos, IVehicleContainer container, IShiftStrategy strategy);
+		IGearbox CreateGearboxBatteryOnlyHybrid(VectoSimulationJobType jobType, CycleType cycle, GearboxType gbxType, PowertrainPosition emPos, IVehicleContainer container, IShiftStrategy strategy, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 
 		IClutch CreateClutchBatteryOnlyHybrid(VectoSimulationJobType jobType, IVehicleContainer container,
 			CombustionEngineData engineData);
