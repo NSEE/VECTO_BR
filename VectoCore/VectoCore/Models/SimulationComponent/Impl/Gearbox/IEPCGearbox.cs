@@ -111,7 +111,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 
 		public IShiftStrategy Strategy => _impl.Strategy;
 
-		public int AxleNumber => _impl.AxleNumber;
+		public int AxleNumber => ((IGearboxInfo)_impl).AxleNumber;
 
 		#endregion
 

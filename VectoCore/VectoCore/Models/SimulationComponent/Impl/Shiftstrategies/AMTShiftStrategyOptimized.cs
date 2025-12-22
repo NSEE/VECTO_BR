@@ -78,7 +78,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 		{
 			var runData = dataBus.RunData;
 			if (!(TestPowertrain.Gearbox is IAMTGearbox)) {
-				throw new VectoException("Unknown gearboxtype: {0}", TestPowertrain.Container.GearboxCtl.GetType().FullName);
+				throw new VectoException("Unknown gearboxtype: {0}", TestPowertrain.Container.GearboxCtl().GetType().FullName);
 			}
 
 			// register pre-processors

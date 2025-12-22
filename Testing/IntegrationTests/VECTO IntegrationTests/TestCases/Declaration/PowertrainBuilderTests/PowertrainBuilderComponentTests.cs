@@ -351,9 +351,9 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                 }
 
                 if (torqueConverter != null) {
-                    Assert.IsInstanceOf(torqueConverter, container.TorqueConverterInfo);
+                    Assert.IsInstanceOf(torqueConverter, container.TorqueConverterInfo());
                 } else {
-                    Assert.IsNull(container.TorqueConverterInfo);
+                    Assert.IsNull(container.TorqueConverterInfo());
                 }
                 if (clutch != null) {
                     Assert.IsInstanceOf(clutch, container.ClutchInfo(), "Clutch");

@@ -121,7 +121,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public event Action GearShiftTriggered;
 
-		public IGearboxControl GearboxCtl => this;
+		public IGearboxControl GearboxCtl(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => this;
 
         public IList<IGearboxControl> GearboxesCtl { get; set; }
 
@@ -138,9 +138,9 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public IElectricSystemInfo ElectricSystemInfo { get; }
 
-		public ITorqueConverterInfo TorqueConverterInfo => null;
+		public ITorqueConverterInfo TorqueConverterInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
 
-		public ITorqueConverterControl TorqueConverterCtl => null;
+		public ITorqueConverterControl TorqueConverterCtl(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => null;
 
 		public IPowertainInfo PowertrainInfo => this;
 

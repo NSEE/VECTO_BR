@@ -539,7 +539,7 @@ TestCase(8, 4, 15000, 200, true),]
 
 		var gbx = GetMockTestGearbox(runData.GearboxData.Gears);
 		simplePt.Setup(s => s.GearboxInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
-		simplePt.Setup(s => s.GearboxCtl).Returns(gbx.Object);
+		simplePt.Setup(s => s.GearboxCtl(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(gbx.Object);
 		simplePt.Setup(s => s.GearboxOutPort).Returns(gbx.Object);
 		//Vehicle Info
 		var vehicleInfo = new Mock<IVehicleInfo>();

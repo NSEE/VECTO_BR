@@ -525,7 +525,7 @@ public class MTShiftStrategyTests
 		simplePt.Setup(s => s.PowertrainInfo).Returns(GetPowertrainInfo().Object);
 
 		testGearbox = GetMockTestGearbox(runData.GearboxData.Gears);
-		simplePt.Setup(s => s.GearboxCtl).Returns(testGearbox.Object);
+		simplePt.Setup(s => s.GearboxCtl(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(testGearbox.Object);
 
 
 		//Vehicle Info
