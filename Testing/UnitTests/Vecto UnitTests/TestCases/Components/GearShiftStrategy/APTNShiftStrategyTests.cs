@@ -564,7 +564,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 
 			testGbx = GetTestGearbox(simplePt.Object, em, runData.GearboxData.Gears);
 			
-			simplePt.Setup(s => s.GearboxCtl).Returns(testGbx.Object);
+			simplePt.Setup(s => s.GearboxCtl(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(testGbx.Object);
 			simplePt.Setup(s => s.GearboxInfo(Constants.NOT_IN_AXLE_POWERTRAIN)).Returns(testGbx.Object);
 			simplePt.Setup(s => s.GearboxOutPort).Returns(testGbx.Object);
 			

@@ -62,13 +62,15 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		public virtual IEngineInfo EngineInfo { get; protected internal set; }
 		public virtual IEngineControl EngineCtl { get; protected set; }
-		public virtual IGearboxInfo GearboxInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) =>
-			(axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
-				? GearboxesInfo.FirstOrDefault()
-                : GearboxesInfo.FirstOrDefault(x => x.AxleNumber == axleNumber);
+		public virtual IGearboxInfo GearboxInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
+			? GearboxesInfo.FirstOrDefault()
+            : GearboxesInfo.FirstOrDefault(x => x.AxleNumber == axleNumber);
 
-		public virtual IGearboxControl GearboxCtl { get; protected set; }
-		public virtual IAxlegearInfo AxlegearInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => AxlegearsInfo.FirstOrDefault(x => x.AxleNumber == axleNumber);
+		public virtual IGearboxControl GearboxCtl(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
+            ? GearboxesCtl.FirstOrDefault()
+            : GearboxesCtl.FirstOrDefault(x => x.AxleNumber == axleNumber);
+
+        public virtual IAxlegearInfo AxlegearInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => AxlegearsInfo.FirstOrDefault(x => x.AxleNumber == axleNumber);
         public virtual IRetarder Retarder(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => Retarders.FirstOrDefault(x => x.AxleNumber == axleNumber);
         public virtual IVehicleInfo VehicleInfo { get; protected set; }
 		public virtual IBrakes Brakes { get; protected set; }
@@ -83,11 +85,16 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		public virtual IDrivingCycleInfo DrivingCycleInfo { get; protected set; }
 
 		public IRESSInfo BatteryInfo { get; protected set; }
-		public ITorqueConverterInfo TorqueConverterInfo { get; protected set; }
 
-		public virtual ITorqueConverterControl TorqueConverterCtl { get; protected set; }
+		public ITorqueConverterInfo TorqueConverterInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
+			? TorqueConverters.FirstOrDefault()
+			: TorqueConverters.FirstOrDefault(x => x.AxleNumber == axleNumber);
 
-		public IDCDCConverter DCDCConverter { get; protected set; }
+		public virtual ITorqueConverterControl TorqueConverterCtl(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) => (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
+			? TorqueConverterControls.FirstOrDefault()
+			: TorqueConverterControls.FirstOrDefault(x => x.AxleNumber == axleNumber);
+
+        public IDCDCConverter DCDCConverter { get; protected set; }
 
 		public IWHRCharger WHRCharger { get; protected set; }
 
@@ -122,6 +129,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		internal readonly IList<IClutchInfo> Clutches = new List<IClutchInfo>();
 
 		internal readonly IList<IRetarder> Retarders = new List<IRetarder>();
+
+		internal readonly IList<ITorqueConverterInfo> TorqueConverters = new List<ITorqueConverterInfo>();
+
+		internal readonly IList<ITorqueConverterControl> TorqueConverterControls = new List<ITorqueConverterControl>();
 
 		private IList<IResetableVectoSimulationComponent> _resetableComponents = new List<IResetableVectoSimulationComponent>(3);
 
@@ -205,9 +216,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			if (component is IEngineControl c1) { EngineCtl = c1; }
 			if (component is IDriverInfo c2) { DriverInfo = c2; }
-			if (component is IGearboxControl c3) { GearboxCtl = c3; GearboxControls.Add(c3); }
-			if (component is ITorqueConverterInfo c4) { TorqueConverterInfo = c4; }
-			if (component is ITorqueConverterControl c5) { TorqueConverterCtl = c5; }
+			if (component is IGearboxControl c3) { GearboxControls.Add(c3); }
+			if (component is ITorqueConverterInfo c4) { TorqueConverters.Add(c4); }
+			if (component is ITorqueConverterControl c5) { TorqueConverterControls.Add(c5); }
 			if (component is IAxlegearInfo c6) { Axlegears.Add(c6); }
 			if (component is IAngledriveInfo c7) { Angledrives.Add(c7); }
 			if (component is IWheelsInfo c8) { WheelsInfo = c8; }

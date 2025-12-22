@@ -44,7 +44,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             RealContainer = realContainer;
 
             Vehicle = Container.VehicleInfo as ITestPowertrainVehicle;
-            Gearbox = Container.GearboxCtl as ITestPowertrainTransmission;
+            Gearbox = Container.GearboxCtl() as ITestPowertrainTransmission;
 
             HybridController = Container.HybridController as ISimpleHybridController;
             BatterySystem = container.BatteryInfo;
@@ -69,9 +69,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             }
 
             if (Gearbox != null && Gearbox.GearboxType.AutomaticTransmission() && Gearbox.GearboxType != GearboxType.APTN && Gearbox.GearboxType != GearboxType.IHPC) {
-                TorqueConverter = Container.TorqueConverterInfo as ITorqueConverter;
+                TorqueConverter = Container.TorqueConverterInfo() as ITorqueConverter;
                 if (TorqueConverter == null) {
-                    throw new VectoException("Torque converter missing for automatic transmission: {0}", Container.TorqueConverterInfo?.GetType().FullName);
+                    throw new VectoException("Torque converter missing for automatic transmission: {0}", Container.TorqueConverterInfo()?.GetType().FullName);
                 }
             }
 

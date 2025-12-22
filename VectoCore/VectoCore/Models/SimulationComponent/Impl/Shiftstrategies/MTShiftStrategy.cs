@@ -419,9 +419,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			//var testPowertrain = PowertrainBuilder.CreateTestPowertrain(bus, false);
 			//var testContainer = testPowertrain.Container;
 
-			if (TestPowertrain.Container.GearboxCtl is IMTGearbox)
+			if (TestPowertrain.Container.GearboxCtl() is IMTGearbox)
 			{
-				throw new VectoException("Unknown gearboxtype: {0}", TestPowertrain.Container.GearboxCtl.GetType().FullName);
+				throw new VectoException("Unknown gearboxtype: {0}", TestPowertrain.Container.GearboxCtl().GetType().FullName);
 			}
 
 			var maxGradient = bus.RunData.Cycle.Entries.Max(x => Math.Abs(x.RoadGradientPercent.Value())) + 1;

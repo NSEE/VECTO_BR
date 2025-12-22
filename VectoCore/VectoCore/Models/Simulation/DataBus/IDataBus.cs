@@ -56,7 +56,7 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		IList<IGearboxInfo> GearboxesInfo {  get; }
 
-		IGearboxControl GearboxCtl { get; }
+		IGearboxControl GearboxCtl(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 
 		IList<IGearboxControl> GearboxesCtl { get; }
 
@@ -98,9 +98,9 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		IWheelEnd WheelEnd { get; }
 
-		ITorqueConverterInfo TorqueConverterInfo { get; }
+		ITorqueConverterInfo TorqueConverterInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 
-		ITorqueConverterControl TorqueConverterCtl { get; }
+		ITorqueConverterControl TorqueConverterCtl(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 
 		IPowertainInfo PowertrainInfo { get; }
 

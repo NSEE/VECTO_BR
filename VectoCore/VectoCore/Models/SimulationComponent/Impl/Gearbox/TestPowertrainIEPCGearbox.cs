@@ -4,6 +4,7 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
@@ -52,7 +53,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 
 		#region Implementation of IGearboxInfo
 
-		public int AxleNumber => _impl.AxleNumber;
+		public int AxleNumber => ((IGearboxInfo)_impl).AxleNumber;
 
 		public GearboxType GearboxType => _impl.GearboxType;
 

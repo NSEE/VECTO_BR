@@ -320,14 +320,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					switch (ADAS.EcoRoll) {
 						case EcoRollType.None: break;
 						case EcoRollType.WithoutEngineStop:
-							if (DataBus.GearboxCtl != null) {
-								DataBus.GearboxCtl.DisengageGearbox = true;
+							if (DataBus.GearboxCtl() != null) {
+								DataBus.GearboxCtl().DisengageGearbox = true;
 							}
 						
 							break;
 						case EcoRollType.WithEngineStop:
-							if (DataBus.GearboxCtl != null) {
-								DataBus.GearboxCtl.DisengageGearbox = true;
+							if (DataBus.GearboxCtl() != null) {
+								DataBus.GearboxCtl().DisengageGearbox = true;
 							}
 							if (DataBus.EngineCtl != null) {
 								DataBus.EngineCtl.CombustionEngineOn = false;
@@ -340,8 +340,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				case PCCStates.OutsideSegment:
 				case PCCStates.WithinSegment:
 				case PCCStates.PCCinterrupt:
-					if (DataBus.GearboxCtl != null) {
-						DataBus.GearboxCtl.DisengageGearbox = false;
+					if (DataBus.GearboxCtl() != null) {
+						DataBus.GearboxCtl().DisengageGearbox = false;
 					}
 
 					if (DataBus.EngineCtl != null) {
@@ -545,8 +545,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			switch (EcoRollState.State) {
 				case EcoRollStates.EcoRollOn:
-					if (dBus.GearboxCtl != null) {
-						dBus.GearboxCtl.DisengageGearbox = true;
+					if (dBus.GearboxCtl() != null) {
+						dBus.GearboxCtl().DisengageGearbox = true;
 					}
 			
 					if (ADAS.EcoRoll == EcoRollType.WithEngineStop) {
@@ -554,8 +554,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					}
 					return;
 				case EcoRollStates.EcoRollOff:
-					if (dBus.GearboxCtl != null) {
-						dBus.GearboxCtl.DisengageGearbox = false;
+					if (dBus.GearboxCtl() != null) {
+						dBus.GearboxCtl().DisengageGearbox = false;
 					} 
 					
 					if (ADAS.EcoRoll == EcoRollType.WithEngineStop) {
@@ -1023,7 +1023,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					if (DriverStrategy.EcoRollState.State == EcoRollStates.EcoRollOn &&
 						DataBus.GearboxInfo().GearboxType.AutomaticTransmission() && DriverStrategy.ATEcoRollReleaseLockupClutch) {
 						DriverStrategy.EcoRollState.State = EcoRollStates.EcoRollOff;
-						DataBus.GearboxCtl.DisengageGearbox = false;
+						DataBus.GearboxCtl().DisengageGearbox = false;
 					}
 					second = Driver.DrivingActionBrake(absTime, ds, velocityWithOverspeed, gradient);
 					debug.Add("[DMD.HRE-3] SpeedLimitExceeded->Brake", second);
