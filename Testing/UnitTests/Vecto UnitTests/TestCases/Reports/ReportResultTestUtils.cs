@@ -160,7 +160,8 @@ public class ReportResultTestUtils
 
 					})
 				}
-			}
+			},
+			InputData = GetMockInputData(3)
 		};
 		if (jobType.IsBatteryElectric() || jobType.IsFCHV()) {
 			retVal.EngineData = null;
