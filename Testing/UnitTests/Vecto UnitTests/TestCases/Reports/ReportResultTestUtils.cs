@@ -161,7 +161,7 @@ public class ReportResultTestUtils
 					})
 				}
 			},
-			InputData = GetMockInputData(3)
+			InputData = GetMockInputData(3, offVehicleCharging)
 		};
 		if (jobType.IsBatteryElectric() || jobType.IsFCHV()) {
 			retVal.EngineData = null;
@@ -240,7 +240,7 @@ public class ReportResultTestUtils
 		return modData.Object;
 	}
 
-	public static IDeclarationInputDataProvider GetMockInputData(int amdm)
+	public static IDeclarationInputDataProvider GetMockInputData(int amdm, bool ovc)
 	{
 		var xmlType = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V24 + ":FOO";
 
@@ -287,6 +287,7 @@ public class ReportResultTestUtils
 		bat.Setup(b => b.ElectricStorageElements).Returns(new[] { b1.Object });
 
 		mock.Setup(i => i.JobInputData.Vehicle.Components.ElectricStorage).Returns(bat.Object);
+		mock.Setup(i => i.JobInputData.Vehicle.OVC).Returns(ovc);
 
 		return mock.Object;
 	}

@@ -2553,7 +2553,7 @@ namespace TUGraz.VectoCore.Models.Declaration
             var batteryData = new ElectricStorageAdapter().CreateBatteryData(
                 vehicle.Components.ElectricStorage, 
 				runData.JobType, 
-				vehicle.OVC || runData.VehicleData.OffVehicleCharging,
+				vehicle.OVC,
 				vehicle.BatteryOnlyMode,
 				deterioration);
 
