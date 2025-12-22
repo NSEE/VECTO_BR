@@ -40,7 +40,7 @@ public class VIF_ReportResultTests
     public void Test_VIF_ReportResultInstance(VehicleCategory vehicleCategory, VectoSimulationJobType jobType, int amdm, bool ovc,
         bool exempted, Type expectedResultWriterType)
     {
-        var resultsWriter = _reportResultsFactory.GetVIFResultsWriter(ReportResultTestUtils.GetMockInputData(amdm), vehicleCategory.GetVehicleType(), jobType, ovc, exempted);
+        var resultsWriter = _reportResultsFactory.GetVIFResultsWriter(ReportResultTestUtils.GetMockInputData(amdm, ovc), vehicleCategory.GetVehicleType(), jobType, ovc, exempted);
 
         Assert.AreEqual(expectedResultWriterType, resultsWriter.GetType());
     }
@@ -86,7 +86,7 @@ public class VIF_ReportResultTests
             resultEntries.Add(res2);
         }
 
-        var resultsWriter = _reportResultsFactory.GetVIFResultsWriter(ReportResultTestUtils.GetMockInputData(amdm),
+        var resultsWriter = _reportResultsFactory.GetVIFResultsWriter(ReportResultTestUtils.GetMockInputData(amdm, ovc),
             runData.VehicleData.VehicleCategory.GetVehicleType(),
             runData.JobType, runData.VehicleData.OffVehicleCharging, runData.Exempted);
 
