@@ -38,7 +38,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 
 		protected override PowertrainPosition GetEMPos(IVehicleContainer dataBus)
 		{
-			return dataBus.RunData.ElectricMachinesData.FirstOrDefault(x =>
+			return dataBus.RunData.ElectricMachinesSinglePwt.FirstOrDefault(x =>
 					x.Item1.IsOneOf(PowertrainPosition.HybridP2, PowertrainPosition.HybridP2_5,
 						PowertrainPosition.IHPC))
 				?.Item1 ?? PowertrainPosition.HybridPositionNotSet;
@@ -156,7 +156,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 
 			var testPowertrain = powertrainBuilder.CreateTestPowertrain(DataBus, false, VectoSimulationJobType.BatteryElectricVehicle);
 			DataBus.AddPreprocessor(
-				new VelocitySpeedGearshiftPreprocessorE2(VelocityDropData, DataBus.RunData.GearboxData.TractionInterruption, testPowertrain, -grad, grad, 2));
+				new VelocitySpeedGearshiftPreprocessorE2(VelocityDropData, DataBus.RunData.GearboxSinglePwt.TractionInterruption, testPowertrain, -grad, grad, 2));
 		}
 
 		#region Implementation of IShiftStrategy

@@ -91,7 +91,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 					RatedSpeedDeclared = 2000.RPMtoRad(),
 					Displacement = 7.SI(Unit.SI.Cubic.Dezi.Meter).Cast<CubicMeter>()
 				},
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 				Cycle = new DrivingCycleData() {
 					Name = "MockCycle",
 					CycleType = CycleType.DistanceBased

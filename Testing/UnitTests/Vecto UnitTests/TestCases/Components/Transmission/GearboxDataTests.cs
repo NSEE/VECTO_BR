@@ -50,7 +50,7 @@ public class GearboxDataTests
         // create gearbox data
         var gearboxData = new GearboxDataAdapter(null).CreateGearboxData(inputData, runData, shiftPolygonCalc.Object, gbxTypes); // MockSimulationDataFactory.CreateGearboxDataFromFile(gbxFile, engineFile);
 
-        runData.GearboxData = gearboxData;
+        runData.GearboxSinglePwt = gearboxData;
         var container = GetMockVehicleContainer(runData);
         var shiftStrategy = new Mock<IShiftStrategy>();
         shiftStrategy.Setup(s =>
@@ -178,7 +178,7 @@ public class GearboxDataTests
             {
                 DynamicTyreRadius = 0.492.SI<Meter>(),
 			},
-            AxleGearData = new AxleGearData()
+            AxleGearSinglePwt = new AxleGearData()
             {
                 AxleGear = new GearData()
                 {
@@ -186,7 +186,7 @@ public class GearboxDataTests
                 }
             },
 			EngineData = engineData,
-            GearshiftParameters = new ShiftStrategyParameters()
+            GearshiftParametersSinglePwt = new ShiftStrategyParameters()
             {
                 StartSpeed = 2.SI<MeterPerSecond>(),
                 StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration,

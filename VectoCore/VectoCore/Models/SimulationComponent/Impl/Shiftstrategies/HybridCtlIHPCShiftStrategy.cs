@@ -26,8 +26,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 				return;
 			}
 
-			var transmissionRatio = RunData.AxleGearData.AxleGear.Ratio *
-									(RunData.AngledriveData?.Angledrive.Ratio ?? 1.0) /
+			var transmissionRatio = RunData.AxleGearSinglePwt.AxleGear.Ratio *
+									(RunData.AngledriveSinglePwt?.Angledrive.Ratio ?? 1.0) /
 									RunData.VehicleData.DynamicTyreRadius;
 			var minEngineSpeed = (RunData.EngineData.FullLoadCurves[0].RatedSpeed - RunData.EngineData.IdleSpeed) *
 				Constants.SimulationSettings.ClutchClosingSpeedNorm + RunData.EngineData.IdleSpeed;

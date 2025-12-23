@@ -38,8 +38,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 
 			DesiredGearRoadsweeping = RunData.DriverData?.PTODriveRoadsweepingGear;
 
-			var transmissionRatio = RunData.AxleGearData.AxleGear.Ratio *
-									(RunData.AngledriveData?.Angledrive.Ratio ?? 1.0) /
+			var transmissionRatio = RunData.AxleGearSinglePwt.AxleGear.Ratio *
+									(RunData.AngledriveSinglePwt?.Angledrive.Ratio ?? 1.0) /
 									RunData.VehicleData.DynamicTyreRadius;
 			var minEngineSpeed = (RunData.EngineData.FullLoadCurves[0].RatedSpeed - RunData.EngineData.IdleSpeed) *
 				Constants.SimulationSettings.ClutchClosingSpeedNorm + RunData.EngineData.IdleSpeed;
@@ -89,7 +89,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 			}
 
 			dataBus.AddPreprocessor(
-				new VelocitySpeedGearshiftPreprocessor(VelocityDropData, runData.GearboxData.TractionInterruption,
+				new VelocitySpeedGearshiftPreprocessor(VelocityDropData, runData.GearboxSinglePwt.TractionInterruption,
 					TestPowertrain, -grad, grad, 2));
 		}
 

@@ -426,7 +426,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			var runData = new VectoRunData() {
 				JobName = "EM-Derating",
-				ElectricMachinesData = data
+				ElectricMachinesSinglePwt = data
 			};
 
 			var kernel = new StandardKernel(new VectoNinjectModule());

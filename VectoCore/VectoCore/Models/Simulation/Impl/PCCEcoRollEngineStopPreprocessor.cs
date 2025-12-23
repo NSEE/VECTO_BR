@@ -109,15 +109,15 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		private GearshiftPosition FindLowestGearForSpeed(MeterPerSecond speed)
 		{
 			var data = TestPowertrain.Container.RunData;
-			var ratio = (data.AxleGearData?.AxleGear.Ratio ?? 1.0 ) * (data.AngledriveData?.Angledrive.Ratio ?? 1.0) /
+			var ratio = (data.AxleGearSinglePwt?.AxleGear.Ratio ?? 1.0 ) * (data.AngledriveSinglePwt?.Angledrive.Ratio ?? 1.0) /
 						data.VehicleData.DynamicTyreRadius;
 			var possible = new List<GearshiftPosition>();
-			foreach (var gear in data.GearboxData.GearList) {
+			foreach (var gear in data.GearboxSinglePwt.GearList) {
 				if (gear.TorqueConverterLocked.HasValue && !gear.TorqueConverterLocked.Value) {
 					continue;
 				}
 
-				var n = speed * ratio * data.GearboxData.Gears[gear.Gear].Ratio;
+				var n = speed * ratio * data.GearboxSinglePwt.Gears[gear.Gear].Ratio;
 
 				possible.Add(n < (data.EngineData?.IdleSpeed ?? 0.SI<PerSecond>()) ? new GearshiftPosition(0) : gear);
 			}

@@ -305,15 +305,15 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 						}
 					}
 				},
-				AxleGearData = new AxleGearData() {
+				AxleGearSinglePwt = new AxleGearData() {
 					AxleGear = new GearData() {
 						Ratio = 2.64
 					}
 				},
-				Retarder = new RetarderData() { Type = RetarderType.None },
+				RetarderSinglePwt = new RetarderData() { Type = RetarderType.None },
 				EngineData = engineData,
-				GearboxData = gearboxData,
-				GearshiftParameters = new ShiftStrategyParameters() {
+				GearboxSinglePwt = gearboxData,
+				GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 					StartSpeed = 2.SI<MeterPerSecond>(),
 					StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration,
 					TimeBetweenGearshifts = DeclarationData.Gearbox.MinTimeBetweenGearshifts,
@@ -504,7 +504,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var gearboxData = CreateGearboxData();
 			var container = VehicleContainer.CreateVehicleContainer(GetDummyRunData(gearboxData), null, null);
             //runData.VehicleData.DynamicTyreRadius = 0.3.SI<Meter>();
-            container.RunData.AxleGearData.AxleGear.Ratio = 5;
+            container.RunData.AxleGearSinglePwt.AxleGear.Ratio = 5;
 			var gearbox = new AMTGearbox(container, new AMTShiftStrategy(container), Constants.NOT_IN_AXLE_POWERTRAIN);
 
 			var driver = new MockDriver(container);

@@ -2828,7 +2828,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 						CurbMass = 14000.SI<Kilogram>()
 					}
 				};
-				retVal.ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
+				retVal.ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
 					Tuple.Create(emPos, new ElectricMotorData() { Overload = new OverloadData() {OverloadBuffer = 0.SI<Joule>()}})
 				};
 			}

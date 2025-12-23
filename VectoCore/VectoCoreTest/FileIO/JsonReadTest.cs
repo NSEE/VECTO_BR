@@ -208,7 +208,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 						VehicleCategory = VehicleCategory.RigidTruck,
 						DynamicTyreRadius = 0.5.SI<Meter>()
 					},
-					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1} }
+					AxleGearSinglePwt = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1} }
 				});
 			Assert.AreEqual(ratios.Length, gbxData.Gears.Count);
 
@@ -250,7 +250,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 						VehicleCategory = VehicleCategory.RigidTruck,
 						DynamicTyreRadius = 0.5.SI<Meter>()
 					},
-					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+					AxleGearSinglePwt = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
 				});
 
 				//inputProvider,
@@ -299,7 +299,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 						VehicleCategory = VehicleCategory.RigidTruck,
 						DynamicTyreRadius = 0.5.SI<Meter>()
 					},
-					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+					AxleGearSinglePwt = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
 				});
 
 				//inputProvider,
@@ -347,7 +347,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 						VehicleCategory = VehicleCategory.RigidTruck,
 						DynamicTyreRadius = 0.5.SI<Meter>()
 					},
-					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+					AxleGearSinglePwt = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
 				});
 				//inputProvider,
 				//MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData/Components/AT_GBX/Engine.veng", 0),
@@ -396,7 +396,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 						VehicleCategory = VehicleCategory.HeavyBusPrimaryVehicle,
 						DynamicTyreRadius = 0.5.SI<Meter>()
 					},
-					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+					AxleGearSinglePwt = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
 				});
 				//inputProvider,
 				//MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData/Components/AT_GBX/Engine.veng", 0),
@@ -445,7 +445,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 						VehicleCategory = VehicleCategory.RigidTruck,
 						DynamicTyreRadius = 0.5.SI<Meter>()
 					},
-					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+					AxleGearSinglePwt = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
 				});
 				
 				//inputProvider,

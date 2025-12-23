@@ -99,7 +99,7 @@ public class RunDataFactoryTest
 
 		foreach (var vectoRun in runs)
 		{
-			Assert.IsTrue(vectoRun.GetContainer().RunData.GearboxData != null);
+			Assert.IsTrue(vectoRun.GetContainer().RunData.GearboxSinglePwt != null);
 		}
 
 	}
@@ -111,7 +111,7 @@ public class RunDataFactoryTest
 		}
 
 		foreach (var vectoRun in runs) {
-			Assert.IsTrue(vectoRun.GetContainer().RunData.GearboxData == null);
+			Assert.IsTrue(vectoRun.GetContainer().RunData.GearboxSinglePwt == null);
 		}
 	}
 

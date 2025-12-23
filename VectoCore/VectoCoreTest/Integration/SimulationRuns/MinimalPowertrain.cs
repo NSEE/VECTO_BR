@@ -143,10 +143,10 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				JobName = "Coach_MinimalPowertrain",
 				VehicleData = vehicleData,
 				EngineData = engineData,
-				AxleGearData = axleGearData,
+				AxleGearSinglePwt = axleGearData,
 				DriverData = driverData,
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
-				GearshiftParameters = new ShiftStrategyParameters() {
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+				GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 					StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
 					StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration
 				}
@@ -228,9 +228,9 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				SimulationType = SimulationType.DistanceCycle,
 				VehicleData = vehicleData,
 				EngineData = engineData,
-				AxleGearData = axleGearData,
+				AxleGearSinglePwt = axleGearData,
 				DriverData = driverData,
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			};
 			var modData = new ModalDataContainer(runData, fileWriter, null);
 			var container = VehicleContainer.CreateVehicleContainer(runData, modData, null);

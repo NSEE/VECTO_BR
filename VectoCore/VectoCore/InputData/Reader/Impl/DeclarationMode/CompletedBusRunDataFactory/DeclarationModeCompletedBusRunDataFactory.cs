@@ -266,10 +266,10 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
                 simulationRunData.AirdragData = DataAdapterGeneric.CreateAirdragData(PrimaryVehicle, mission, primarySegment, ovcHevMode);
                 simulationRunData.EngineData =
                     DataAdapterGeneric.CreateEngineData(PrimaryVehicle, modeIdx.Value, mission);
-                simulationRunData.ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>();
-                simulationRunData.AxleGearData =
+                simulationRunData.ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>();
+                simulationRunData.AxleGearSinglePwt =
                     DataAdapterGeneric.CreateAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
-                simulationRunData.AngledriveData =
+                simulationRunData.AngledriveSinglePwt =
                     DataAdapterGeneric.CreateAngledriveData(PrimaryVehicle.Components.AngledriveInputData);
                 simulationRunData.Aux = DataAdapterGeneric.CreateAuxiliaryData(
                     PrimaryVehicle.Components.AuxiliaryInputData, primaryBusAuxiliaries, mission.MissionType,
@@ -278,13 +278,13 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 
 				simulationRunData.EngineData.FuelMode = 0;
 				simulationRunData.VehicleData.VehicleClass = _segment.VehicleClass;
-				simulationRunData.GearboxData = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, simulationRunData);
-				var gbx = simulationRunData.GearboxData;
-				simulationRunData.GearshiftParameters =
-					DataAdapterGeneric.CreateGearshiftData((simulationRunData.AxleGearData?.AxleGear.Ratio ?? 1.0) *
-															(simulationRunData.AngledriveData?.Angledrive.Ratio ?? 1.0),
+				simulationRunData.GearboxSinglePwt = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, simulationRunData);
+				var gbx = simulationRunData.GearboxSinglePwt;
+				simulationRunData.GearshiftParametersSinglePwt =
+					DataAdapterGeneric.CreateGearshiftData((simulationRunData.AxleGearSinglePwt?.AxleGear.Ratio ?? 1.0) *
+															(simulationRunData.AngledriveSinglePwt?.Angledrive.Ratio ?? 1.0),
 						PrimaryVehicle.EngineIdleSpeed, gbx.Type, gbx.Gears.Count);
-				simulationRunData.Retarder =
+				simulationRunData.RetarderSinglePwt =
 					DataAdapterGeneric.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, simulationRunData);
 				simulationRunData.BusAuxiliaries =
 					DataAdapterGeneric.CreateBusAuxiliariesData(mission, PrimaryVehicle, CompletedVehicle, simulationRunData);
@@ -305,10 +305,10 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				simulationRunData.AirdragData = DataAdapterSpecific.CreateAirdragData(CompletedVehicle, mission, _segment, ovcMode);
 				simulationRunData.EngineData =
 					DataAdapterGeneric.CreateEngineData(PrimaryVehicle, modeIdx.Value, mission);
-				simulationRunData.ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>();
-				simulationRunData.AxleGearData =
+				simulationRunData.ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>();
+				simulationRunData.AxleGearSinglePwt =
 					DataAdapterGeneric.CreateAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
-				simulationRunData.AngledriveData =
+				simulationRunData.AngledriveSinglePwt =
 					DataAdapterGeneric.CreateAngledriveData(PrimaryVehicle.Components.AngledriveInputData);
 				simulationRunData.Aux = DataAdapterSpecific.CreateAuxiliaryData(
 					PrimaryVehicle.Components.AuxiliaryInputData,
@@ -318,7 +318,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				simulationRunData.VehicleData.VehicleClass = _segment.VehicleClass;
 
 				CreateGearboxAndGearshiftData(simulationRunData);
-				simulationRunData.Retarder =
+				simulationRunData.RetarderSinglePwt =
 					DataAdapterGeneric.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, simulationRunData);
 				simulationRunData.BusAuxiliaries =
 					DataAdapterSpecific.CreateBusAuxiliariesData(mission, PrimaryVehicle, CompletedVehicle, simulationRunData);
@@ -329,11 +329,11 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 
 			protected override void CreateGearboxAndGearshiftData(VectoRunData runData)
 			{
-				runData.GearboxData = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, runData);
-				GearboxData gbx = runData.GearboxData;
-				runData.GearshiftParameters =
-					DataAdapterGeneric.CreateGearshiftData((runData.AxleGearData?.AxleGear.Ratio ?? 1.0) *
-															(runData.AngledriveData?.Angledrive.Ratio ?? 1.0),
+				runData.GearboxSinglePwt = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, runData);
+				GearboxData gbx = runData.GearboxSinglePwt;
+				runData.GearshiftParametersSinglePwt =
+					DataAdapterGeneric.CreateGearshiftData((runData.AxleGearSinglePwt?.AxleGear.Ratio ?? 1.0) *
+															(runData.AngledriveSinglePwt?.Angledrive.Ratio ?? 1.0),
 						PrimaryVehicle.EngineIdleSpeed, gbx.Type, gbx.Gears.Count);
 
 			}
@@ -462,7 +462,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 					(bs) => rd.BatteryData = bs,
 					(sc) => rd.SuperCapData = sc);
 
-				rd.ElectricMachinesData = DataAdapterGeneric.CreateElectricMachines(PrimaryVehicle.Components.ElectricMachines,
+				rd.ElectricMachinesSinglePwt = DataAdapterGeneric.CreateElectricMachines(PrimaryVehicle.Components.ElectricMachines,
 					PrimaryVehicle.ElectricMotorTorqueLimits, rd.BatteryData.CalculateVoltageCenterSoc(), null);
 
 
@@ -470,7 +470,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				{
 					var iepcData = DataAdapterGeneric.CreateIEPCElectricMachines(PrimaryVehicle.Components.IEPC,
 						rd.BatteryData.CalculateVoltageCenterSoc());
-					iepcData.ForEach(iepc => rd.ElectricMachinesData.Add(iepc));
+					iepcData.ForEach(iepc => rd.ElectricMachinesSinglePwt.Add(iepc));
 				}
 
 				var primaryBusAuxiliaries = PrimaryVehicle.Components.BusAuxiliaries;
@@ -481,9 +481,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
                 rd.EngineData =
                     DataAdapterGeneric.CreateEngineData(PrimaryVehicle, modeIdx.Value, mission);
                 //rd.ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>();
-                rd.AxleGearData =
+                rd.AxleGearSinglePwt =
                     DataAdapterGeneric.CreateAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
-                rd.AngledriveData =
+                rd.AngledriveSinglePwt =
                     DataAdapterGeneric.CreateAngledriveData(PrimaryVehicle.Components.AngledriveInputData);
                 rd.Aux = DataAdapterGeneric.CreateAuxiliaryData(
                     PrimaryVehicle.Components.AuxiliaryInputData, primaryBusAuxiliaries, mission.MissionType,
@@ -493,7 +493,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				rd.VehicleData.VehicleClass = _segment.VehicleClass;
 
 				CreateGearboxAndGearshiftData(rd);
-				rd.Retarder =
+				rd.RetarderSinglePwt =
 					DataAdapterGeneric.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, rd);
 				rd.BusAuxiliaries =
 					DataAdapterGeneric.CreateBusAuxiliariesData(mission, PrimaryVehicle, CompletedVehicle, rd);
@@ -529,7 +529,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 
 
 
-				rd.ElectricMachinesData = DataAdapterGeneric.CreateElectricMachines(PrimaryVehicle.Components.ElectricMachines,
+				rd.ElectricMachinesSinglePwt = DataAdapterGeneric.CreateElectricMachines(PrimaryVehicle.Components.ElectricMachines,
 						PrimaryVehicle.ElectricMotorTorqueLimits, rd.BatteryData.CalculateVoltageCenterSoc(), null);
 
 
@@ -537,7 +537,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				{
 					var iepcData = DataAdapterGeneric.CreateIEPCElectricMachines(PrimaryVehicle.Components.IEPC,
 						rd.BatteryData.CalculateVoltageCenterSoc());
-					iepcData.ForEach(iepc => rd.ElectricMachinesData.Add(iepc));
+					iepcData.ForEach(iepc => rd.ElectricMachinesSinglePwt.Add(iepc));
 				}
 
 				rd.VehicleData = DataAdapterSpecific.CreateVehicleData(PrimaryVehicle,
@@ -554,9 +554,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 					rd.VehicleData.VehicleClass,
 					rd.Mission.MissionType);
 
-				rd.AxleGearData =
+				rd.AxleGearSinglePwt =
 					DataAdapterGeneric.CreateAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
-				rd.AngledriveData =
+				rd.AngledriveSinglePwt =
 					DataAdapterGeneric.CreateAngledriveData(PrimaryVehicle.Components.AngledriveInputData);
 				rd.Aux = DataAdapterSpecific.CreateAuxiliaryData(
 					PrimaryVehicle.Components.AuxiliaryInputData,
@@ -575,7 +575,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 					rd.Loading,
 					rd.VehicleData.VehicleClass,
 					rd.Mission.MissionType);
-				rd.Retarder = DataAdapterGeneric.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, rd);
+				rd.RetarderSinglePwt = DataAdapterGeneric.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, rd);
 				rd.BusAuxiliaries =
 					DataAdapterSpecific.CreateBusAuxiliariesData(mission, PrimaryVehicle, CompletedVehicle,
 						rd);
@@ -592,7 +592,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				{
 					throw new ArgumentException(nameof(PrimaryVehicle.ArchitectureID));
 				}
-				runData.GearshiftParameters = new ShiftStrategyParameters()
+				runData.GearshiftParametersSinglePwt = new ShiftStrategyParameters()
 				{
 					StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
 					StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration
@@ -621,12 +621,12 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				}
 
 				var gbxInput = PrimaryVehicle.Components.GearboxInputData;
-				runData.GearshiftParameters =
-					DataAdapterGeneric.CreateGearshiftData((runData.AxleGearData?.AxleGear.Ratio ?? 1.0) *
-															(runData.AngledriveData?.Angledrive.Ratio ?? 1.0),
+				runData.GearshiftParametersSinglePwt =
+					DataAdapterGeneric.CreateGearshiftData((runData.AxleGearSinglePwt?.AxleGear.Ratio ?? 1.0) *
+															(runData.AngledriveSinglePwt?.Angledrive.Ratio ?? 1.0),
 						null, gbxInput.Type, gbxInput.Gears.Count);
 
-				runData.GearboxData = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, runData);
+				runData.GearboxSinglePwt = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, runData);
 			}
 
 			#endregion
@@ -668,15 +668,15 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 
 			protected override void CreateGearboxAndGearshiftData(VectoRunData runData)
 			{
-				runData.GearshiftParameters =
+				runData.GearshiftParametersSinglePwt =
 					DataAdapterGeneric.CreateGearshiftData(
-						runData.AxleGearData?.AxleGear.Ratio ?? 1.0,
+						runData.AxleGearSinglePwt?.AxleGear.Ratio ?? 1.0,
 						null,
 						GearboxType.APTN,
 						PrimaryVehicle.Components.IEPC.Gears.Count
 					);
 
-				runData.GearboxData = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, runData, GearboxType.APTN);
+				runData.GearboxSinglePwt = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, runData, GearboxType.APTN);
 
 			}
 
@@ -721,7 +721,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 					? rd.BatteryData.CalculateVoltageCenterSoc()
 					: (rd.SuperCapData.MaxVoltage - rd.SuperCapData.MinVoltage) / 2.0;
 
-				rd.ElectricMachinesData = DataAdapterGeneric.CreateElectricMachines(PrimaryVehicle.Components.ElectricMachines,
+				rd.ElectricMachinesSinglePwt = DataAdapterGeneric.CreateElectricMachines(PrimaryVehicle.Components.ElectricMachines,
 					PrimaryVehicle.ElectricMotorTorqueLimits, averageVoltage, null);
 
 
@@ -734,9 +734,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				rd.EngineData =
 					DataAdapterGeneric.CreateEngineData(PrimaryVehicle, modeIdx.Value, mission);
 
-				rd.AxleGearData =
+				rd.AxleGearSinglePwt =
 					DataAdapterGeneric.CreateAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
-				rd.AngledriveData =
+				rd.AngledriveSinglePwt =
 					DataAdapterGeneric.CreateAngledriveData(PrimaryVehicle.Components.AngledriveInputData);
 				rd.Aux = DataAdapterGeneric.CreateAuxiliaryData(
 					PrimaryVehicle.Components.AuxiliaryInputData, primaryBusAuxiliaries, mission.MissionType,
@@ -745,13 +745,13 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				rd.EngineData.FuelMode = 0;
 				rd.VehicleData.VehicleClass = _segment.VehicleClass;
 
-				rd.GearshiftParameters =
-					DataAdapterGeneric.CreateGearshiftData((rd.AxleGearData?.AxleGear.Ratio ?? 1.0) *
-															(rd.AngledriveData?.Angledrive.Ratio ?? 1.0),
+				rd.GearshiftParametersSinglePwt =
+					DataAdapterGeneric.CreateGearshiftData((rd.AxleGearSinglePwt?.AxleGear.Ratio ?? 1.0) *
+															(rd.AngledriveSinglePwt?.Angledrive.Ratio ?? 1.0),
 						PrimaryVehicle.EngineIdleSpeed, PrimaryVehicle.Components.GearboxInputData.Type, PrimaryVehicle.Components.GearboxInputData.Gears.Count);
-				rd.GearboxData = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, rd);
+				rd.GearboxSinglePwt = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, rd);
 
-                rd.Retarder =
+                rd.RetarderSinglePwt =
 					DataAdapterGeneric.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, rd);
 				rd.BusAuxiliaries =
 					DataAdapterGeneric.CreateBusAuxiliariesData(mission, PrimaryVehicle, CompletedVehicle, rd);
@@ -765,9 +765,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 					GetPrimaryGroup(),//DeclarationData.PrimaryBusSegments.Lookup(GetPrimarySegment().VehicleClass, CompletedVehicle.LowEntry, CompletedVehicle.VehicleCode)
 					rd.Mission.MissionType,
 					PrimaryVehicle.BoostingLimitations,
-					rd.GearboxData,
+					rd.GearboxSinglePwt,
 					rd.EngineData,
-					rd.ElectricMachinesData,
+					rd.ElectricMachinesSinglePwt,
 					PrimaryVehicle.ArchitectureID
 				);
 				SetOvcModeProperties(ovcHevMode, rd);
@@ -800,7 +800,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 					? rd.BatteryData.CalculateVoltageCenterSoc()
 					: (rd.SuperCapData.MaxVoltage - rd.SuperCapData.MinVoltage) / 2.0;
 
-				rd.ElectricMachinesData = DataAdapterGeneric.CreateElectricMachines(PrimaryVehicle.Components.ElectricMachines,
+				rd.ElectricMachinesSinglePwt = DataAdapterGeneric.CreateElectricMachines(PrimaryVehicle.Components.ElectricMachines,
 					PrimaryVehicle.ElectricMotorTorqueLimits, averageVoltage, null);
 
 				rd.VehicleData = DataAdapterSpecific.CreateVehicleData(PrimaryVehicle,
@@ -809,9 +809,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				rd.EngineData =
 					DataAdapterGeneric.CreateEngineData(PrimaryVehicle, modeIdx.Value, mission);
 
-				rd.AxleGearData =
+				rd.AxleGearSinglePwt =
 					DataAdapterGeneric.CreateAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
-				rd.AngledriveData =
+				rd.AngledriveSinglePwt =
 					DataAdapterGeneric.CreateAngledriveData(PrimaryVehicle.Components.AngledriveInputData);
 				rd.Aux = DataAdapterSpecific.CreateAuxiliaryData(
 					PrimaryVehicle.Components.AuxiliaryInputData,
@@ -821,8 +821,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				rd.VehicleData.VehicleClass = _segment.VehicleClass;
 
 				// TODO MC 2025-07-03: no longer needed after refactoring, shift strategy does not require gearshift params
-				rd.GearshiftParameters = DataAdapterGeneric.CreateGearshiftData((rd.AxleGearData?.AxleGear.Ratio ?? 1.0) *
-					(rd.AngledriveData?.Angledrive.Ratio ?? 1.0),
+				rd.GearshiftParametersSinglePwt = DataAdapterGeneric.CreateGearshiftData((rd.AxleGearSinglePwt?.AxleGear.Ratio ?? 1.0) *
+					(rd.AngledriveSinglePwt?.Angledrive.Ratio ?? 1.0),
 					rd.EngineData.IdleSpeed, PrimaryVehicle.Components.GearboxInputData.Type,
 					PrimaryVehicle.Components.GearboxInputData.Gears.Count);
 				CreateGearboxAndGearshiftData(rd);
@@ -835,12 +835,12 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 					GetPrimaryGroup(),//DeclarationData.PrimaryBusSegments.Lookup(GetPrimarySegment().VehicleClass, CompletedVehicle.LowEntry, CompletedVehicle.VehicleCode)
 					rd.Mission.MissionType,
 					PrimaryVehicle.BoostingLimitations,
-					rd.GearboxData,
+					rd.GearboxSinglePwt,
 					rd.EngineData,
-					rd.ElectricMachinesData,
+					rd.ElectricMachinesSinglePwt,
 					PrimaryVehicle.ArchitectureID
 					);
-				rd.Retarder = DataAdapterGeneric.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, rd);
+				rd.RetarderSinglePwt = DataAdapterGeneric.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, rd);
 				rd.BusAuxiliaries =
 					DataAdapterSpecific.CreateBusAuxiliariesData(mission, PrimaryVehicle, CompletedVehicle,
 						rd);
@@ -854,11 +854,11 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 
 			protected override void CreateGearboxAndGearshiftData(VectoRunData runData)
 			{
-				runData.GearboxData = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, runData);
-				GearboxData gbx = runData.GearboxData;
-				runData.GearshiftParameters =
-					DataAdapterGeneric.CreateGearshiftData((runData.AxleGearData?.AxleGear.Ratio ?? 1.0) *
-															(runData.AngledriveData?.Angledrive.Ratio ?? 1.0),
+				runData.GearboxSinglePwt = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, runData);
+				GearboxData gbx = runData.GearboxSinglePwt;
+				runData.GearshiftParametersSinglePwt =
+					DataAdapterGeneric.CreateGearshiftData((runData.AxleGearSinglePwt?.AxleGear.Ratio ?? 1.0) *
+															(runData.AngledriveSinglePwt?.Angledrive.Ratio ?? 1.0),
 						PrimaryVehicle.EngineIdleSpeed, gbx.Type, gbx.Gears.Count);
 			}
 
@@ -983,12 +983,12 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 
                 if (PrimaryVehicle.VehicleType == VectoSimulationJobType.FCHV_IEPC)
                 {
-                    result.ElectricMachinesData = DataAdapterGeneric.CreateIEPCElectricMachines(PrimaryVehicle.Components.IEPC,
+                    result.ElectricMachinesSinglePwt = DataAdapterGeneric.CreateIEPCElectricMachines(PrimaryVehicle.Components.IEPC,
                         result.BatteryData.CalculateVoltageCenterSoc());
                 }
                 else
                 {
-                    result.ElectricMachinesData = DataAdapterGeneric.CreateElectricMachines(PrimaryVehicle.Components.ElectricMachines,
+                    result.ElectricMachinesSinglePwt = DataAdapterGeneric.CreateElectricMachines(PrimaryVehicle.Components.ElectricMachines,
                         PrimaryVehicle.ElectricMotorTorqueLimits, result.BatteryData.CalculateVoltageCenterSoc(), null);
                 }
 
@@ -998,10 +998,10 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 
 				if (AxleGearRequired() || PrimaryVehicle.Components.AxleGearInputData != null)
                 {
-                    result.AxleGearData = DataAdapterGeneric.CreateAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
+                    result.AxleGearSinglePwt = DataAdapterGeneric.CreateAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
                 }
 
-                result.AngledriveData = DataAdapterGeneric.CreateAngledriveData(PrimaryVehicle.Components.AngledriveInputData);
+                result.AngledriveSinglePwt = DataAdapterGeneric.CreateAngledriveData(PrimaryVehicle.Components.AngledriveInputData);
 
 				result.Aux = DataAdapterGeneric.CreateAuxiliaryData(PrimaryVehicle.Components.AuxiliaryInputData,
                     PrimaryVehicle.Components.BusAuxiliaries, mission.MissionType, _segment.VehicleClass,
@@ -1012,7 +1012,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 
                 CreateGearboxAndGearshiftData(result);
 
-                result.Retarder = DataAdapterGeneric.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, result);
+                result.RetarderSinglePwt = DataAdapterGeneric.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, result);
 
 				result.BusAuxiliaries = DataAdapterGeneric.CreateBusAuxiliariesData(mission, PrimaryVehicle, CompletedVehicle, result);
 
@@ -1058,12 +1058,12 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 
                 if (PrimaryVehicle.VehicleType == VectoSimulationJobType.FCHV_IEPC)
                 {
-                    result.ElectricMachinesData = DataAdapterGeneric.CreateIEPCElectricMachines(PrimaryVehicle.Components.IEPC,
+                    result.ElectricMachinesSinglePwt = DataAdapterGeneric.CreateIEPCElectricMachines(PrimaryVehicle.Components.IEPC,
                         result.BatteryData.CalculateVoltageCenterSoc());
                 }
                 else
                 {
-                    result.ElectricMachinesData = DataAdapterGeneric.CreateElectricMachines(PrimaryVehicle.Components.ElectricMachines,
+                    result.ElectricMachinesSinglePwt = DataAdapterGeneric.CreateElectricMachines(PrimaryVehicle.Components.ElectricMachines,
                         PrimaryVehicle.ElectricMotorTorqueLimits, result.BatteryData.CalculateVoltageCenterSoc(), null);
                 }
 
@@ -1073,10 +1073,10 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 
 				if (AxleGearRequired() || PrimaryVehicle.Components.AxleGearInputData != null)
                 {
-                    result.AxleGearData = DataAdapterGeneric.CreateAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
+                    result.AxleGearSinglePwt = DataAdapterGeneric.CreateAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
                 }
 
-                result.AngledriveData = DataAdapterGeneric.CreateAngledriveData(PrimaryVehicle.Components.AngledriveInputData);
+                result.AngledriveSinglePwt = DataAdapterGeneric.CreateAngledriveData(PrimaryVehicle.Components.AngledriveInputData);
 
 				result.Aux = DataAdapterSpecific.CreateAuxiliaryData(PrimaryVehicle.Components.AuxiliaryInputData,
                     PrimaryVehicle.Components.BusAuxiliaries, mission.MissionType, _segment.VehicleClass,
@@ -1087,7 +1087,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 
                 CreateGearboxAndGearshiftData(result);
 
-                result.Retarder = DataAdapterGeneric.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, result);
+                result.RetarderSinglePwt = DataAdapterGeneric.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, result);
 
 				result.BusAuxiliaries = DataAdapterSpecific.CreateBusAuxiliariesData(mission, PrimaryVehicle, CompletedVehicle, result);
 
@@ -1131,7 +1131,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
                     throw new ArgumentException();
                 }
 
-                runData.GearshiftParameters = new ShiftStrategyParameters()
+                runData.GearshiftParametersSinglePwt = new ShiftStrategyParameters()
                 {
                     StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
                     StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration
@@ -1159,14 +1159,14 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 
                 var gbxInput = PrimaryVehicle.Components.GearboxInputData;
 
-				runData.GearshiftParameters =
+				runData.GearshiftParametersSinglePwt =
                     DataAdapterGeneric.CreateGearshiftData(
-						(runData.AxleGearData?.AxleGear.Ratio ?? 1.0) * (runData.AngledriveData?.Angledrive.Ratio ?? 1.0),
+						(runData.AxleGearSinglePwt?.AxleGear.Ratio ?? 1.0) * (runData.AngledriveSinglePwt?.Angledrive.Ratio ?? 1.0),
                         null,
 						gbxInput.Type,
 						gbxInput.Gears.Count);
 
-				runData.GearboxData = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, runData);
+				runData.GearboxSinglePwt = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, runData);
 			}
 		}
 
@@ -1209,15 +1209,15 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 
             protected override void CreateGearboxAndGearshiftData(VectoRunData runData)
             {
-                runData.GearshiftParameters =
+                runData.GearshiftParametersSinglePwt =
                     DataAdapterGeneric.CreateGearshiftData(
-                        runData.AxleGearData?.AxleGear.Ratio ?? 1.0,
+                        runData.AxleGearSinglePwt?.AxleGear.Ratio ?? 1.0,
                         null,
                         GearboxType.APTN,
                         PrimaryVehicle.Components.IEPC.Gears.Count
                     );
 
-                runData.GearboxData = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, runData, GearboxType.APTN);
+                runData.GearboxSinglePwt = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, runData, GearboxType.APTN);
             }
 
             protected override bool AxleGearRequired()
@@ -1279,12 +1279,12 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 
                 if (PrimaryVehicle.VehicleType == VectoSimulationJobType.IEPC_E)
                 {
-                    result.ElectricMachinesData = DataAdapterGeneric.CreateIEPCElectricMachines(PrimaryVehicle.Components.IEPC,
+                    result.ElectricMachinesSinglePwt = DataAdapterGeneric.CreateIEPCElectricMachines(PrimaryVehicle.Components.IEPC,
                         result.BatteryData.CalculateVoltageCenterSoc());
                 }
                 else
                 {
-                    result.ElectricMachinesData = DataAdapterGeneric.CreateElectricMachines(PrimaryVehicle.Components.ElectricMachines,
+                    result.ElectricMachinesSinglePwt = DataAdapterGeneric.CreateElectricMachines(PrimaryVehicle.Components.ElectricMachines,
                         PrimaryVehicle.ElectricMotorTorqueLimits, result.BatteryData.CalculateVoltageCenterSoc(), null);
                 }
 
@@ -1296,11 +1296,11 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 					DataAdapterGeneric.CreateAirdragData(PrimaryVehicle, mission, _segment, ovcHevMode);
 				if (AxleGearRequired() || PrimaryVehicle.Components.AxleGearInputData != null)
 				{
-					result.AxleGearData =
+					result.AxleGearSinglePwt =
 						DataAdapterGeneric.CreateAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
 				}
 
-				result.AngledriveData =
+				result.AngledriveSinglePwt =
 					DataAdapterGeneric.CreateAngledriveData(PrimaryVehicle.Components.AngledriveInputData);
 				result.Aux = DataAdapterGeneric.CreateAuxiliaryData(PrimaryVehicle.Components.AuxiliaryInputData,
 					PrimaryVehicle.Components.BusAuxiliaries, mission.MissionType, _segment.VehicleClass,
@@ -1311,7 +1311,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				result.VehicleData.VehicleClass = _segment.VehicleClass;
 
 				CreateGearboxAndGearshiftData(result);
-				result.Retarder = DataAdapterGeneric.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, result);
+				result.RetarderSinglePwt = DataAdapterGeneric.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, result);
 				result.BusAuxiliaries =
 					DataAdapterGeneric.CreateBusAuxiliariesData(mission, PrimaryVehicle, CompletedVehicle,
 						result);
@@ -1337,10 +1337,10 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 					(sc) => result.SuperCapData = sc);
 
 				if (PrimaryVehicle.VehicleType == VectoSimulationJobType.IEPC_E) {
-					result.ElectricMachinesData = DataAdapterGeneric.CreateIEPCElectricMachines(PrimaryVehicle.Components.IEPC,
+					result.ElectricMachinesSinglePwt = DataAdapterGeneric.CreateIEPCElectricMachines(PrimaryVehicle.Components.IEPC,
 						result.BatteryData.CalculateVoltageCenterSoc());
 				} else {
-					result.ElectricMachinesData = DataAdapterGeneric.CreateElectricMachines(PrimaryVehicle.Components.ElectricMachines,
+					result.ElectricMachinesSinglePwt = DataAdapterGeneric.CreateElectricMachines(PrimaryVehicle.Components.ElectricMachines,
 						PrimaryVehicle.ElectricMotorTorqueLimits, result.BatteryData.CalculateVoltageCenterSoc(), null);
 				}
 
@@ -1348,11 +1348,11 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 					mission, loading);
 				result.AirdragData = DataAdapterSpecific.CreateAirdragData(CompletedVehicle, mission, _segment, ovcMode);
 				if (AxleGearRequired() || PrimaryVehicle.Components.AxleGearInputData != null) {
-					result.AxleGearData =
+					result.AxleGearSinglePwt =
 						DataAdapterGeneric.CreateAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
 				}
 
-				result.AngledriveData =
+				result.AngledriveSinglePwt =
 					DataAdapterGeneric.CreateAngledriveData(PrimaryVehicle.Components.AngledriveInputData);
 				result.Aux = DataAdapterSpecific.CreateAuxiliaryData(PrimaryVehicle.Components.AuxiliaryInputData,
 					PrimaryVehicle.Components.BusAuxiliaries, mission.MissionType, _segment.VehicleClass,
@@ -1363,7 +1363,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				result.VehicleData.VehicleClass = _segment.VehicleClass;
 
 				CreateGearboxAndGearshiftData(result);
-				result.Retarder = DataAdapterGeneric.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, result);
+				result.RetarderSinglePwt = DataAdapterGeneric.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, result);
 				result.BusAuxiliaries =
 					DataAdapterSpecific.CreateBusAuxiliariesData(mission, PrimaryVehicle, CompletedVehicle,
 						result);
@@ -1386,7 +1386,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				if (PrimaryVehicle.ArchitectureID == ArchitectureID.E2) {
 					throw new ArgumentException();
 				}
-				runData.GearshiftParameters = new ShiftStrategyParameters() {
+				runData.GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 					StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
 					StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration
 				};
@@ -1410,13 +1410,13 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 				}
 
 				var gbxInput = PrimaryVehicle.Components.GearboxInputData;
-				runData.GearshiftParameters =
-					DataAdapterGeneric.CreateGearshiftData((runData.AxleGearData?.AxleGear.Ratio ?? 1.0) *
-															(runData.AngledriveData?.Angledrive.Ratio ?? 1.0),
+				runData.GearshiftParametersSinglePwt =
+					DataAdapterGeneric.CreateGearshiftData((runData.AxleGearSinglePwt?.AxleGear.Ratio ?? 1.0) *
+															(runData.AngledriveSinglePwt?.Angledrive.Ratio ?? 1.0),
 						null, gbxInput.Type, gbxInput.Gears.Count);
 
 
-				runData.GearboxData = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, runData);
+				runData.GearboxSinglePwt = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, runData);
 
 			}
 		}
@@ -1455,15 +1455,15 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
 
 			protected override void CreateGearboxAndGearshiftData(VectoRunData runData)
 			{
-				runData.GearshiftParameters =
+				runData.GearshiftParametersSinglePwt =
 					DataAdapterGeneric.CreateGearshiftData(
-						runData.AxleGearData?.AxleGear.Ratio ?? 1.0,
+						runData.AxleGearSinglePwt?.AxleGear.Ratio ?? 1.0,
 						null,
 						GearboxType.APTN,
 						PrimaryVehicle.Components.IEPC.Gears.Count
 					);
 
-				runData.GearboxData = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, runData, GearboxType.APTN);
+				runData.GearboxSinglePwt = DataAdapterGeneric.CreateGearboxData(PrimaryVehicle, runData, GearboxType.APTN);
 			}
 
 			#endregion
@@ -1542,7 +1542,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
                     (bs) => runData.BatteryData = bs,
                     (sc) => runData.SuperCapData = sc);
 
-				runData.AxlePowertrainsData = DataAdapterGeneric.CreateAxlePowertrainsData(
+				runData.AxlePowertrains = DataAdapterGeneric.CreateAxlePowertrainsData(
                     PrimaryVehicle,
                     runData.BatteryData.CalculateVoltageCenterSoc(),
                     runData.BatteryOnlyHybridMode,
@@ -1589,7 +1589,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.CompletedBusRun
                     (bs) => runData.BatteryData = bs,
                     (sc) => runData.SuperCapData = sc);
 
-                runData.AxlePowertrainsData = DataAdapterGeneric.CreateAxlePowertrainsData(
+                runData.AxlePowertrains = DataAdapterGeneric.CreateAxlePowertrainsData(
                     PrimaryVehicle,
                     runData.BatteryData.CalculateVoltageCenterSoc(),
                     runData.BatteryOnlyHybridMode,

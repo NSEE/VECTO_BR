@@ -30,7 +30,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
         {
             var rundata = new VectoRunData() {
                 JobName = "GearshiftRun",
-                GearboxData = new GearboxData()
+                GearboxSinglePwt = new GearboxData()
             };
 			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, null, null, null) as ModalDataContainer;
 			Assert.IsNotNull(modData);
@@ -61,7 +61,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
         {
             var rundata = new VectoRunData() {
                 JobName = "GearshiftRun",
-                GearboxData = new GearboxData()
+                GearboxSinglePwt = new GearboxData()
             };
 			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, null, null, null) as ModalDataContainer;
 			Assert.IsNotNull(modData);
@@ -92,7 +92,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
         {
             var rundata = new VectoRunData() {
                 JobName = "GearshiftRun",
-                GearboxData = new GearboxData()
+                GearboxSinglePwt = new GearboxData()
             };
 			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, null, null, null) as ModalDataContainer;
 			Assert.IsNotNull(modData);
@@ -124,7 +124,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
         {
             var rundata = new VectoRunData() {
                 JobName = "GearshiftRun",
-                GearboxData = new GearboxData()
+                GearboxSinglePwt = new GearboxData()
             };
 			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, null, null, null) as ModalDataContainer;
 			Assert.IsNotNull(modData);
@@ -155,7 +155,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
         {
             var rundata = new VectoRunData() {
                 JobName = "GearshiftRun",
-                GearboxData = new GearboxData()
+                GearboxSinglePwt = new GearboxData()
             };
 			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, null, null, null) as ModalDataContainer;
 			Assert.IsNotNull(modData);
@@ -188,7 +188,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
         {
             var rundata = new VectoRunData() {
                 JobName = "GearshiftRun",
-                GearboxData = new GearboxData()
+                GearboxSinglePwt = new GearboxData()
             };
 			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, null, null, null) as ModalDataContainer;
 			Assert.IsNotNull(modData);
@@ -220,7 +220,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.ModDataPostprocessing
         {
             var rundata = new VectoRunData() {
                 JobName = "GearshiftRun",
-                GearboxData = new GearboxData()
+                GearboxSinglePwt = new GearboxData()
             };
 			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, null, null, null) as ModalDataContainer;
 			Assert.IsNotNull(modData);

@@ -423,7 +423,7 @@ public class BusAuxElectricCompressorPostProcessingTests
                     ConsumptionMap = FuelConsumptionMapReader.ReadFromStream(FuelMap.ToStream()),
                 }}.ToList(),
             },
-            ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+            ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
             BusAuxiliaries = busAux
         };
         return runData;
@@ -462,7 +462,7 @@ public class BusAuxElectricCompressorPostProcessingTests
                     ConsumptionMap = FuelConsumptionMapReader.ReadFromStream(FuelMap.ToStream()),
                 }}.ToList(),
             },
-            ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
+            ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
                     Tuple.Create(PowertrainPosition.HybridP2, emData.Object)
                 },
             BatteryData = new BatterySystemData() {
@@ -486,7 +486,7 @@ public class BusAuxElectricCompressorPostProcessingTests
             BusAuxiliaries = busAux
         };
         if (jobType == VectoSimulationJobType.SerialHybridVehicle) {
-            runData.ElectricMachinesData.Add(Tuple.Create(PowertrainPosition.GEN, emData.Object));
+            runData.ElectricMachinesSinglePwt.Add(Tuple.Create(PowertrainPosition.GEN, emData.Object));
         }
         return runData;
     }
@@ -516,7 +516,7 @@ public class BusAuxElectricCompressorPostProcessingTests
                     ConsumptionMap = FuelConsumptionMapReader.ReadFromStream(FuelMap.ToStream()),
                 }}.ToList(),
             },
-            ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
+            ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
                 Tuple.Create(PowertrainPosition.BatteryElectricE2, emData.Object),
                 Tuple.Create(PowertrainPosition.GEN, genData.Object),
             },
@@ -549,7 +549,7 @@ public class BusAuxElectricCompressorPostProcessingTests
             //		ConsumptionMap = FuelConsumptionMapReader.ReadFromStream(FuelMap.ToStream()),
             //	}}.ToList(),
             //},
-            ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
+            ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
                     Tuple.Create(PowertrainPosition.BatteryElectricE2, emData.Object),
                 },
             BusAuxiliaries = busAux,
@@ -634,18 +634,18 @@ public class BusAuxElectricCompressorPostProcessingTests
 
         if (!runData.JobType.IsOneOf(VectoSimulationJobType.ConventionalVehicle,
                 VectoSimulationJobType.EngineOnlySimulation)
-            && !runData.ElectricMachinesData.Any()) {
+            && !runData.ElectricMachinesSinglePwt.Any()) {
             throw new VectoException("hybrid vehicle requires electric machine");
         }
 
-        if (runData.ElectricMachinesData.Any(x => x.Item1 != PowertrainPosition.GEN)) {
+        if (runData.ElectricMachinesSinglePwt.Any(x => x.Item1 != PowertrainPosition.GEN)) {
             m.Setup(x => x.GetColumnName(It.IsAny<PowertrainPosition>(), It.IsAny<int>(), It.IsAny<ModalResultField>()))
                 .Returns<PowertrainPosition, int, ModalResultField>((pos, axleNumber, mrf) =>
                     string.Format(mrf.GetCaption(), pos.GetName(), axleNumber.FormatAxleNumber()));
-            var emPos = runData.ElectricMachinesData.First(x => x.Item1 != PowertrainPosition.GEN).Item1;
+            var emPos = runData.ElectricMachinesSinglePwt.First(x => x.Item1 != PowertrainPosition.GEN).Item1;
             SetupMockEMotorValues(emLoss, m, emPos, runData.OVCMode);
 
-            if (runData.ElectricMachinesData.Any(x => x.Item1 == PowertrainPosition.GEN)) {
+            if (runData.ElectricMachinesSinglePwt.Any(x => x.Item1 == PowertrainPosition.GEN)) {
                 SetupMockEMotorValues(genLoss, m, PowertrainPosition.GEN, runData.OVCMode);
             }
         }

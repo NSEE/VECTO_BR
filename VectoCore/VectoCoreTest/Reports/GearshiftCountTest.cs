@@ -48,7 +48,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 		{
 			var rundata = new VectoRunData() {
 				JobName = "GearshiftRun",
-				GearboxData = new GearboxData()
+				GearboxSinglePwt = new GearboxData()
             };
 			var modData = new ModalDataContainer(rundata, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
@@ -78,7 +78,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var rundata = new VectoRunData()
 			{
 				JobName = "GearshiftRun",
-				GearboxData = new GearboxData()
+				GearboxSinglePwt = new GearboxData()
 			};
 			var modData = new ModalDataContainer(rundata, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
@@ -108,7 +108,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var rundata = new VectoRunData()
 			{
 				JobName = "GearshiftRun",
-				GearboxData = new GearboxData()
+				GearboxSinglePwt = new GearboxData()
 			};
 			var modData = new ModalDataContainer(rundata, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
@@ -139,7 +139,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var rundata = new VectoRunData()
 			{
 				JobName = "GearshiftRun",
-				GearboxData = new GearboxData()
+				GearboxSinglePwt = new GearboxData()
 			};
 			var modData = new ModalDataContainer(rundata, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
@@ -169,7 +169,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var rundata = new VectoRunData()
 			{
 				JobName = "GearshiftRun",
-				GearboxData = new GearboxData()
+				GearboxSinglePwt = new GearboxData()
 			};
 			var modData = new ModalDataContainer(rundata, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
@@ -201,7 +201,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var rundata = new VectoRunData()
 			{
 				JobName = "GearshiftRun",
-				GearboxData = new GearboxData()
+				GearboxSinglePwt = new GearboxData()
 			};
 			var modData = new ModalDataContainer(rundata, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
@@ -232,7 +232,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var rundata = new VectoRunData()
 			{
 				JobName = "GearshiftRun",
-				GearboxData = new GearboxData()
+				GearboxSinglePwt = new GearboxData()
 			};
 			var modData = new ModalDataContainer(rundata, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);

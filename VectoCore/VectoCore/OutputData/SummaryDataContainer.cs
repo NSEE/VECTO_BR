@@ -1257,7 +1257,7 @@ namespace TUGraz.VectoCore.OutputData
                 foreach (var field in SumDataFields.GearboxPerformanceValue)
                 {
                     if ((runData.JobType.IsIEPC()
-							|| (runData.JobType.IsMultiplePowertrains() && runData.AxlePowertrainsData.First(x => x.AxleNumber == gearbox.Item1).Architecture.IsIEPC()))
+							|| (runData.JobType.IsMultiplePowertrains() && runData.AxlePowertrains.First(x => x.AxleNumber == gearbox.Item1).Architecture.IsIEPC()))
 						&&
 						(field.Key != SumDataFields.NUM_GEARSHIFTS))
                     {

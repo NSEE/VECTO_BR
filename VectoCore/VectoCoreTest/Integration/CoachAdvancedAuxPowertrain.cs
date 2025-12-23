@@ -93,17 +93,17 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var runData = new VectoRunData() {
 				JobRunId = 0,
 				JobName = modFileName,
-				AxleGearData = axleGearData,
+				AxleGearSinglePwt = axleGearData,
 				VehicleData = vehicleData,
 				AirdragData = airdragData,
-				GearboxData = gearboxData,
-				GearshiftParameters = CreateGearshiftData(),
+				GearboxSinglePwt = gearboxData,
+				GearshiftParametersSinglePwt = CreateGearshiftData(),
 				EngineData = engineData,
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 				SimulationType = SimulationType.DistanceCycle,
 				Cycle = cycleData, 
 				DriverData = driverData,
-				Retarder = new RetarderData() { Type = RetarderType.None },
+				RetarderSinglePwt = new RetarderData() { Type = RetarderType.None },
 				Aux = new List<VectoRunData.AuxData>(),
 				BusAuxiliaries = BusAuxiliaryInputData.ReadBusAuxiliaries(AdvancedAuxFile, vehicleData)
 			};

@@ -223,7 +223,7 @@ public class ATGearboxTests
 				IdleSpeed = 600.RPMtoRad(),
 				//Inertia = 5.SI<KilogramSquareMeter>()
 			},
-			GearboxData = new GearboxData() {
+			GearboxSinglePwt = new GearboxData() {
 				Type = GearboxType.ATSerial,
 				Gears = ratios.Select((ratio, i) =>
 						Tuple.Create((uint)i,
@@ -252,7 +252,7 @@ public class ATGearboxTests
 					ExecutionMode.Declaration, 1, DeclarationData.Gearbox.UpshiftMinAcceleration,
 					DeclarationData.Gearbox.UpshiftMinAcceleration)
 			},
-			GearshiftParameters = new ShiftStrategyParameters() {
+			GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 				TimeBetweenGearshifts = 1.SI<Second>(),
 				StartSpeed = 2.SI<MeterPerSecond>(),
 				StartAcceleration = 0.6.SI<MeterPerSquareSecond>(),

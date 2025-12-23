@@ -627,7 +627,7 @@ namespace TUGraz.VectoCore.OutputData
 			
 		//}
 
-		public bool HasTorqueConverter => _runData.GearboxData?.TorqueConverterData != null;
+		public bool HasTorqueConverter => _runData.GearboxSinglePwt?.TorqueConverterData != null;
 
 		public void CommitSimulationStep()
 		{

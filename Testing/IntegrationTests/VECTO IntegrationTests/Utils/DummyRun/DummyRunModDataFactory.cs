@@ -72,7 +72,7 @@ public class DummyRunModDataFactory : IModalDataFactory
         var gbxEff = 0.98;
         var axlEff = 0.97;
 
-        if (!vectoRunData.AxlePowertrainsData.Any())
+        if (!vectoRunData.AxlePowertrains.Any())
 		{
 			modData.Setup(x => x.GetValues<uint>(ModalResultField.Gear, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber())).Returns(new[] { 0u, 2u, 0u, 3u, 0u });
             modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_retarder_in, Constants.NOT_IN_AXLE_POWERTRAIN, It.IsNotNull<Func<SI, bool>>())).Returns(e_retarderIn);
@@ -81,7 +81,7 @@ public class DummyRunModDataFactory : IModalDataFactory
         }
         else
 		{
-			foreach (var axlePt in vectoRunData.AxlePowertrainsData)
+			foreach (var axlePt in vectoRunData.AxlePowertrains)
 			{
                 modData.Setup(x => x.GetValues<uint>(ModalResultField.Gear, axlePt.AxleNumber.FormatAxleNumber())).Returns(new[] { 0u, 2u, 0u, 3u, 0u });
                 modData.Setup(x => x.TimeIntegral<WattSecond>(ModalResultField.P_retarder_in, axlePt.AxleNumber, It.IsNotNull<Func<SI, bool>>())).Returns(e_retarderIn);

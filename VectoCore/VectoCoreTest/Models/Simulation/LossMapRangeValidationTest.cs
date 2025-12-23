@@ -103,9 +103,9 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			};
 
 			var runData = new VectoRunData {
-				GearboxData = gearboxData,
+				GearboxSinglePwt = gearboxData,
 				EngineData = engineData,
-				AxleGearData = axleGearData,
+				AxleGearSinglePwt = axleGearData,
 				VehicleData = vehicleData,
 				Cycle = new DrivingCycleData { Entries = new List<DrivingCycleData.DrivingCycleEntry>() }
 			};
@@ -126,7 +126,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(EngineFile, gearboxData.Gears.Count);
 			var axleGearData = CreateAxleGearData(GearboxLimited);
 
-			var runData = new VectoRunData { GearboxData = gearboxData, EngineData = engineData, AxleGearData = axleGearData };
+			var runData = new VectoRunData { GearboxSinglePwt = gearboxData, EngineData = engineData, AxleGearSinglePwt = axleGearData };
 			Assert.IsFalse(runData.IsValid());
 		}
 
@@ -156,7 +156,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 					},
 				InputData = mockVehicleInputData.Object
 			};
-			var runData = new VectoRunData { GearboxData = gearboxData, EngineData = engineData, AxleGearData = axleGearData, VehicleData = vehicleData};
+			var runData = new VectoRunData { GearboxSinglePwt = gearboxData, EngineData = engineData, AxleGearSinglePwt = axleGearData, VehicleData = vehicleData};
 			var result = VectoRunData.ValidateRunData(runData, new ValidationContext(runData));
 			Assert.IsFalse(ValidationResult.Success == result);
 		}
@@ -187,7 +187,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				InputData = mockVehicleInputData.Object
 			};
 			var runData = new VectoRunData {
-				GearboxData = gearboxData,
+				GearboxSinglePwt = gearboxData,
 				EngineData = engineData,
 				VehicleData = vehicleData,
 				Cycle = new DrivingCycleData { Entries = new List<DrivingCycleData.DrivingCycleEntry>() }
@@ -208,7 +208,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 			var runData = new VectoRunData {
 				EngineData = engineData,
-				AxleGearData = axleGearData,
+				AxleGearSinglePwt = axleGearData,
 				Cycle = new DrivingCycleData { Entries = new List<DrivingCycleData.DrivingCycleEntry>() },
 				JobType = VectoSimulationJobType.EngineOnlySimulation
 			};

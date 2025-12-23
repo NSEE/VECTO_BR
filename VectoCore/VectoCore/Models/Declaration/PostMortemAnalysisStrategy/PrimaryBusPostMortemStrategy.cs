@@ -100,7 +100,7 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 
 			if (testPowertrain.Container.HasGearbox) {
 				var gbx = testPowertrain.Gearbox;
-				gbx.SetGear = testPowertrain.Container.RunData.GearboxData.GearList.First();
+				gbx.SetGear = testPowertrain.Container.RunData.GearboxSinglePwt.GearList.First();
 			}
 			
 			vehicle.Initialize(0.KMPHtoMeterPerSecond(), gradient);

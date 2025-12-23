@@ -101,7 +101,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				EngineStopStart = false,
 				PredictiveCruiseControl = PredictiveCruiseControlType.None,
 			};
-			ATEcoRollReleaseLockupClutch = data?.GearboxData?.ATEcoRollReleaseLockupClutch ?? false;
+			ATEcoRollReleaseLockupClutch = data?.GearboxSinglePwt?.ATEcoRollReleaseLockupClutch ?? false;
 
 			EcoRollState = new EcoRoll {
 				State = EcoRollStates.EcoRollOff,

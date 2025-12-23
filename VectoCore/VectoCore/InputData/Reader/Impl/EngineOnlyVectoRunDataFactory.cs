@@ -68,7 +68,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 						ExecutionMode = ExecutionMode.Engineering,
 						SimulationType = SimulationType.EngineOnly,
 						JobType = VectoSimulationJobType.EngineOnlySimulation,
-						ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+						ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 						DriverData = CreateDummyDriverData(),
 					};
 					yield return simulationRunData;

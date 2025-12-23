@@ -670,18 +670,18 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 				JobType = VectoSimulationJobType.SerialHybridVehicle,
 				SimulationType = SimulationType.DistanceCycle,
 				DriverData = driverData,
-				AxleGearData = axleGearData,
-				GearboxData = gearboxData,
+				AxleGearSinglePwt = axleGearData,
+				GearboxSinglePwt = gearboxData,
 				VehicleData = vehicleData,
 				AirdragData = airdragData,
 				JobName = Path.GetFileNameWithoutExtension(modFileName),
 				Cycle = cycleData,
-				Retarder = retarderData,
+				RetarderSinglePwt = retarderData,
 				Aux = new List<VectoRunData.AuxData>(),
-				ElectricMachinesData = electricMotorData,
+				ElectricMachinesSinglePwt = electricMotorData,
 				EngineData = engineData,
 				BatteryData = batteryData,
-				GearshiftParameters = CreateGearshiftData(gearboxData, axleGearData.AxleGear.Ratio, engineData.IdleSpeed),
+				GearshiftParametersSinglePwt = CreateGearshiftData(gearboxData, axleGearData.AxleGear.Ratio, engineData.IdleSpeed),
 				HybridStrategyParameters = CreateHybridStrategyData(),
 				ElectricAuxDemand = pAuxEl.SI<Watt>()
 			};
@@ -730,37 +730,37 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 					var gearbox = gearboxType.AutomaticTransmission()
 						? (IHybridControlledGearbox)new APTGearbox(container, ctl.ShiftStrategy, Constants.NOT_IN_AXLE_POWERTRAIN)
 						: new AMTGearbox(container, ctl.ShiftStrategy, Constants.NOT_IN_AXLE_POWERTRAIN);
-					powertrain = powertrain.AddComponent(new AxleGear(container, runData.AxleGearData))
-						.AddComponent(runData.AngledriveData != null ? new Angledrive(container, runData.AngledriveData) : null)
-						.AddComponent(runData.Retarder.Type == RetarderType.TransmissionOutputRetarder 
-							? new Retarder(container, runData.Retarder.LossMap, runData.Retarder.Ratio) : null)
+					powertrain = powertrain.AddComponent(new AxleGear(container, runData.AxleGearSinglePwt))
+						.AddComponent(runData.AngledriveSinglePwt != null ? new Angledrive(container, runData.AngledriveSinglePwt) : null)
+						.AddComponent(runData.RetarderSinglePwt.Type == RetarderType.TransmissionOutputRetarder 
+							? new Retarder(container, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
 						.AddComponent((IGearbox)gearbox)
-						.AddComponent(runData.Retarder.Type == RetarderType.TransmissionInputRetarder 
-							? new Retarder(container, runData.Retarder.LossMap, runData.Retarder.Ratio) : null)
+						.AddComponent(runData.RetarderSinglePwt.Type == RetarderType.TransmissionInputRetarder 
+							? new Retarder(container, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
 						.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE2, 
-							runData.ElectricMachinesData, container, es, ctl));
+							runData.ElectricMachinesSinglePwt, container, es, ctl));
 					ctl.Gearbox = gearbox;
 
 					break;
 					
 				case PowertrainPosition.BatteryElectricE3:
-					powertrain = powertrain.AddComponent(new AxleGear(container, runData.AxleGearData))
-						.AddComponent(runData.Retarder.Type == RetarderType.AxlegearInputRetarder 
-							? new Retarder(container, runData.Retarder.LossMap, runData.Retarder.Ratio) : null)
+					powertrain = powertrain.AddComponent(new AxleGear(container, runData.AxleGearSinglePwt))
+						.AddComponent(runData.RetarderSinglePwt.Type == RetarderType.AxlegearInputRetarder 
+							? new Retarder(container, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
 						.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE3, 
-							runData.ElectricMachinesData, container, es, ctl));
+							runData.ElectricMachinesSinglePwt, container, es, ctl));
 					new DummyGearboxInfo(container, new GearshiftPosition(0));
 					//new MockEngineInfo(container);
 					new ATClutchInfo(container);
-					runData.GearboxData = null;
+					runData.GearboxSinglePwt = null;
 					break;
 				case PowertrainPosition.BatteryElectricE4:
 					powertrain = powertrain.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE4, 
-						runData.ElectricMachinesData, container, es, ctl));
+						runData.ElectricMachinesSinglePwt, container, es, ctl));
 					new DummyGearboxInfo(container, new GearshiftPosition(0));
 					//new MockEngineInfo(container);
 					new ATClutchInfo(container);
-					runData.GearboxData = null;
+					runData.GearboxSinglePwt = null;
 					break;
 				case PowertrainPosition.HybridP0:
 				case PowertrainPosition.HybridP1:
@@ -774,7 +774,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 					throw new ArgumentOutOfRangeException(nameof(pos), pos, null);
 			}
 
-			ctl.GenSet.AddComponent(GetElectricMachine(PowertrainPosition.GEN, runData.ElectricMachinesData, container,
+			ctl.GenSet.AddComponent(GetElectricMachine(PowertrainPosition.GEN, runData.ElectricMachinesSinglePwt, container,
 					es, ctl))
 				.AddComponent(engine, idleController);
 			//PowertrainBuilderBase.AddAuxiliaries(engine, container, runData);

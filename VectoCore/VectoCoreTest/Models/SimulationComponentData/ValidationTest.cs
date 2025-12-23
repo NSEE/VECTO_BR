@@ -302,9 +302,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
                             CrossWindCorrectionCurveReader.GetNoCorrectionCurve(5.SI<SquareMeter>()),
 							CrossWindCorrectionMode.NoCorrection)
 				},
-				GearboxData = gearboxData,
+				GearboxSinglePwt = gearboxData,
 				EngineData = engineData,
-				AxleGearData = axleGearData,
+				AxleGearSinglePwt = axleGearData,
 				ExecutionMode = ExecutionMode.Engineering,
             };
 
@@ -352,9 +352,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			var container = VehicleContainer.CreateVehicleContainer(
 				new VectoRunData {
 					JobRunId = 0,
-					GearboxData = gearboxData,
+					GearboxSinglePwt = gearboxData,
 					EngineData = engineData,
-					AxleGearData = axleGearData
+					AxleGearSinglePwt = axleGearData
 				}, null, null);
 			var data = new DistanceRun(container);
 

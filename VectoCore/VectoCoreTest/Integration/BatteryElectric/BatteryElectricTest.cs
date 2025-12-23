@@ -943,12 +943,12 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 				AirdragData = airdragData,
 				JobName = modFileName,
 				Cycle = cycleData,
-				Retarder = retarderData,
+				RetarderSinglePwt = retarderData,
 				Aux = new List<VectoRunData.AuxData>(),
-				ElectricMachinesData = electricMotorData,
+				ElectricMachinesSinglePwt = electricMotorData,
 				//EngineData = engineData,
 				BatteryData = batteryData,
-				GearshiftParameters = CreateGearshiftData(gearboxData, axleGearData.AxleGear.Ratio),
+				GearshiftParametersSinglePwt = CreateGearshiftData(gearboxData, axleGearData.AxleGear.Ratio),
 				ElectricAuxDemand = pAuxEl.SI<Watt>(),
 				ExecutionMode = ExecutionMode.Engineering,
 			};
@@ -958,12 +958,12 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 				WriteModalResults = true,
 			};
 			if (pos == PowertrainPosition.BatteryElectricE3) {
-				runData.AxleGearData = axleGearData;
+				runData.AxleGearSinglePwt = axleGearData;
 			}
 
 			if (pos == PowertrainPosition.BatteryElectricE2) {
-				runData.AxleGearData = axleGearData;
-				runData.GearboxData = gearboxData;
+				runData.AxleGearSinglePwt = axleGearData;
+				runData.GearboxSinglePwt = gearboxData;
 			}
 
 			var container = VehicleContainer.CreateVehicleContainer(runData, modData, sumData);
@@ -1001,22 +1001,22 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 				case PowertrainPosition.HybridP4:
 					throw new VectoException("testcase does not support parallel powertrain configurations");
 				case PowertrainPosition.BatteryElectricE4:
-					powertrain.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE4, runData.ElectricMachinesData, container, es, ctl));
+					powertrain.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE4, runData.ElectricMachinesSinglePwt, container, es, ctl));
 					new DummyGearboxInfo(container);
 					//new MockEngineInfo(container);
 					new ATClutchInfo(container);
 					break;
 				case PowertrainPosition.BatteryElectricE3:
 					powertrain
-						.AddComponent(new AxleGear(container, runData.AxleGearData))
-						.AddComponent(runData.Retarder.Type == RetarderType.AxlegearInputRetarder ? new Retarder(container, runData.Retarder.LossMap, runData.Retarder.Ratio) : null)
-						.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE3, runData.ElectricMachinesData, container, es, ctl));
+						.AddComponent(new AxleGear(container, runData.AxleGearSinglePwt))
+						.AddComponent(runData.RetarderSinglePwt.Type == RetarderType.AxlegearInputRetarder ? new Retarder(container, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
+						.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE3, runData.ElectricMachinesSinglePwt, container, es, ctl));
 					new DummyGearboxInfo(container);
 					//new MockEngineInfo(container);
 					new ATClutchInfo(container);
 					break;
 				case PowertrainPosition.BatteryElectricE2:
-					var strategy = new PEVAMTShiftStrategyPolygonCreator(runData.GearshiftParameters);
+					var strategy = new PEVAMTShiftStrategyPolygonCreator(runData.GearshiftParametersSinglePwt);
 
 					foreach (var entry in gearboxData.Gears) {
 						entry.Value.ShiftPolygon = strategy.ComputeDeclarationShiftPolygon(GearboxType.AMT,
@@ -1025,12 +1025,12 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 					}
 
 					powertrain
-						.AddComponent(new AxleGear(container, runData.AxleGearData))
-						.AddComponent(runData.AngledriveData != null ? new Angledrive(container, runData.AngledriveData) : null)
-						.AddComponent(runData.Retarder.Type == RetarderType.TransmissionOutputRetarder ? new Retarder(container, runData.Retarder.LossMap, runData.Retarder.Ratio) : null)
+						.AddComponent(new AxleGear(container, runData.AxleGearSinglePwt))
+						.AddComponent(runData.AngledriveSinglePwt != null ? new Angledrive(container, runData.AngledriveSinglePwt) : null)
+						.AddComponent(runData.RetarderSinglePwt.Type == RetarderType.TransmissionOutputRetarder ? new Retarder(container, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
 						.AddComponent(new PEVGearbox(container, new PEVAMTShiftStrategy(container), Constants.NOT_IN_AXLE_POWERTRAIN))
-						.AddComponent(runData.Retarder.Type == RetarderType.TransmissionInputRetarder ? new Retarder(container, runData.Retarder.LossMap, runData.Retarder.Ratio) : null)
-						.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE2, runData.ElectricMachinesData, container, es, ctl));
+						.AddComponent(runData.RetarderSinglePwt.Type == RetarderType.TransmissionInputRetarder ? new Retarder(container, runData.RetarderSinglePwt.LossMap, runData.RetarderSinglePwt.Ratio) : null)
+						.AddComponent(GetElectricMachine(PowertrainPosition.BatteryElectricE2, runData.ElectricMachinesSinglePwt, container, es, ctl));
 					new ATClutchInfo(container);
 					break;
 				//throw new VectoException("Battery Electric configuration B2 currently not supported");

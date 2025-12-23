@@ -120,7 +120,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Gener
 			public virtual GearboxData CreateGearboxData(IVehicleDeclarationInputData inputData, VectoRunData runData, GearboxType? overrideGearboxType = null)
 			{
 				var name = GetShiftStrategyName(inputData, overrideGearboxType, runData.BatteryOnlyHybridMode);
-				var retVal = GearboxDataAdapter.CreateGearboxData(inputData, runData, ShiftStrategyFactory.CreateShiftPolygonCalculator(name, runData.GearshiftParameters), supportedGearboxTypes: SupportedGearboxTypes);
+				var retVal = GearboxDataAdapter.CreateGearboxData(inputData, runData, ShiftStrategyFactory.CreateShiftPolygonCalculator(name, runData.GearshiftParametersSinglePwt), supportedGearboxTypes: SupportedGearboxTypes);
 				retVal.ShiftStrategy = name;
 				return retVal;
             }
@@ -575,8 +575,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Gener
                 var gearboxRunData = new VectoRunData()
                 {
                     VehicleData = vehicleData,
-                    AxleGearData = axlegearData,
-                    ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() { emData },
+                    AxleGearSinglePwt = axlegearData,
+                    ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() { emData },
                 };
 
                 var shiftPolygonCalculator = ShiftStrategyFactory.CreateShiftPolygonCalculator(shiftStrategyName, gearshiftParams);

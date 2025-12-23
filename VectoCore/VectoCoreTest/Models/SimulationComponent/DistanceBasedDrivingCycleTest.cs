@@ -81,7 +81,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			};
 			var cycleData = SimpleDrivingCycles.CreateCycleData(data);
 			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData() {
-				GearshiftParameters = new ShiftStrategyParameters() {
+				GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 					StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
 					StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration
 				},
@@ -171,7 +171,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var cycleData = DrivingCycleDataReader.ReadFromFile(ShortCycle, CycleType.DistanceBased, false);
 
 			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData() {
-				GearshiftParameters = new ShiftStrategyParameters() {
+				GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 					StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
 					StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration
 				}

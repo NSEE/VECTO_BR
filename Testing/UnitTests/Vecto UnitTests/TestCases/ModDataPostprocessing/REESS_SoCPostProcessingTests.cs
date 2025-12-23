@@ -45,7 +45,7 @@ public class REESS_SoCPostProcessingTests
         modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
         modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
         modData.Data.CreateColumns(ModalResults.BatterySignals);
-        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesData.First().Item1, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
+        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesSinglePwt.First().Item1, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
         //modData.AddElectricMotor(emPos);
 
         var fuel = runData.EngineData.Fuels[0];

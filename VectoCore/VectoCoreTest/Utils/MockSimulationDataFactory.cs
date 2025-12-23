@@ -84,7 +84,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 						}
 					}, new VectoRunData() {
 						EngineData = engineData,
-						AxleGearData = new AxleGearData() {
+						AxleGearSinglePwt = new AxleGearData() {
 							AxleGear = new TransmissionData() { Ratio = ((IAxleGearInputData)gearboxInput).Ratio },
 						},
 						VehicleData =
@@ -115,7 +115,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 							VehicleCategory = VehicleCategory.RigidTruck,
 							DynamicTyreRadius = 0.5.SI<Meter>()
 						},
-						AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+						AxleGearSinglePwt = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
 					});
 
 				//gearboxInput, engineData, (IGearshiftEngineeringInputData)gearboxInput,

@@ -70,8 +70,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			_lossMap = lossMap;
 			_ratio = ratio;
 			_primaryRetarder = (axleNumber == Constants.NOT_IN_AXLE_POWERTRAIN)
-				? container.RunData != null && container.RunData.Retarder.Type == RetarderType.TransmissionInputRetarder
-				: container.RunData.AxlePowertrainsData.Where(x => x.AxleNumber == axleNumber).All(x => x.Retarder.Type == RetarderType.TransmissionInputRetarder);
+				? container.RunData != null && container.RunData.RetarderSinglePwt.Type == RetarderType.TransmissionInputRetarder
+				: container.RunData.AxlePowertrains.Where(x => x.AxleNumber == axleNumber).All(x => x.Retarder.Type == RetarderType.TransmissionInputRetarder);
 		}
 
 		public IResponse Initialize(NewtonMeter torque, PerSecond angularVelocity)

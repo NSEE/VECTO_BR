@@ -1469,7 +1469,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
         {
             var runData = new VectoRunData() 
             {
-                AxlePowertrainsData = new List<AxlePowertrainData>()
+                AxlePowertrains = new List<AxlePowertrainData>()
                 {
                     CreateAxlePowertrain(powertrain1, pos1, 1),
                     CreateAxlePowertrain(powertrain2, pos2, 2)
@@ -1677,13 +1677,13 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                         },
 					}.ToList(), CrossWindCorrectionMode.DeclarationModeCorrection)
                 },
-                AxleGearData = new AxleGearData() {
+                AxleGearSinglePwt = new AxleGearData() {
                     AxleGear = new TransmissionData() {
                         Ratio = 1.0,
                         LossMap = TransmissionLossMapReader.Create(1.0, 1.0, "axlegear"),
                     }
                 },
-                GearboxData = new GearboxData() {
+                GearboxSinglePwt = new GearboxData() {
                     Type = gbxType,
                     Gears = new Dictionary<uint, GearData>() {
                         {1, new GearData() {
@@ -1697,7 +1697,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                     },
                     ShiftStrategy = _kernel.Get<IShiftStrategyFactory>().GetShiftStrategyName(gbxType, jobType, false),
                 },
-                GearshiftParameters = new ShiftStrategyParameters() {
+                GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
                     StartSpeed = 8.KMPHtoMeterPerSecond(),
                     LoadStageThresoldsDown = DeclarationData.GearboxTCU.LoadStageThresoldsDown,
                     LoadStageThresoldsUp = DeclarationData.GearboxTCU.LoadStageThresholdsUp,
@@ -1707,10 +1707,10 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                 HybridStrategyParameters = new HybridStrategyParameters() {
 
                 },
-                Retarder = new RetarderData() {
+                RetarderSinglePwt = new RetarderData() {
                     Type = RetarderType.None,
                 },
-                ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+                ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 
                 Aux = new List<VectoRunData.AuxData>(),
             };
@@ -1720,7 +1720,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                     VectoSimulationJobType.IEPC_E)) {
                 var gbxMock = new Mock<IGearboxDeclarationInputData>();
                 gbxMock.Setup(g => g.Gears).Returns(new List<ITransmissionInputData>());
-                retVal.GearboxData.InputData = gbxMock.Object;
+                retVal.GearboxSinglePwt.InputData = gbxMock.Object;
             }
 
             if (!jobType.IsBatteryElectric()) {
@@ -1759,7 +1759,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
             }
 
             if (jobType.IsOneOf(VectoSimulationJobType.ParallelHybridVehicle, VectoSimulationJobType.IHPC)) {
-                retVal.ElectricMachinesData.Add(Tuple.Create(PowertrainPosition.HybridP3, new ElectricMotorData() {
+                retVal.ElectricMachinesSinglePwt.Add(Tuple.Create(PowertrainPosition.HybridP3, new ElectricMotorData() {
                     Overload = new OverloadData() { ContinuousPowerLoss = 0.SI<Watt>(), ContinuousTorque = 0.SI<NewtonMeter>(), OverloadBuffer = 0.SI<Joule>() },
                     OverloadRecoveryFactor = 0.9,
                 }));
@@ -1779,7 +1779,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
             }
 
             if (jobType.IsOneOf(VectoSimulationJobType.SerialHybridVehicle, VectoSimulationJobType.IEPC_S)) {
-                retVal.ElectricMachinesData.Add(Tuple.Create(PowertrainPosition.GEN, new ElectricMotorData() {
+                retVal.ElectricMachinesSinglePwt.Add(Tuple.Create(PowertrainPosition.GEN, new ElectricMotorData() {
                     Overload = new OverloadData() {
                         ContinuousPowerLoss = 0.SI<Watt>(),
                         ContinuousTorque = 0.SI<NewtonMeter>(),
@@ -1805,7 +1805,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                 var pos = jobType == VectoSimulationJobType.IEPC_S || jobType == VectoSimulationJobType.IEPC_E
                     ? PowertrainPosition.IEPC
                     : PowertrainPosition.BatteryElectricE2;
-                retVal.ElectricMachinesData.Add(Tuple.Create(pos, new ElectricMotorData() {
+                retVal.ElectricMachinesSinglePwt.Add(Tuple.Create(pos, new ElectricMotorData() {
                     Overload = new OverloadData() {
                         ContinuousPowerLoss = 0.SI<Watt>(),
                         ContinuousTorque = 0.SI<NewtonMeter>(),

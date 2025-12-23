@@ -22,9 +22,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public BatteryElectricMotorController(IVehicleContainer container, IElectricSystem es, AxlePowertrainData axlePt = null)
 		{
 			DataBus = container;
-			ElectricMotorData = (axlePt == null) ? container.RunData.ElectricMachinesData.FirstOrDefault()?.Item2 : axlePt.ElectricMachineData.Item2;
+			ElectricMotorData = (axlePt == null) ? container.RunData.ElectricMachinesSinglePwt.FirstOrDefault()?.Item2 : axlePt.ElectricMachineData.Item2;
 			ElectricSystem = es;
-			GearboxModelData = (axlePt == null) ? container.RunData.GearboxData : axlePt.GearboxData;
+			GearboxModelData = (axlePt == null) ? container.RunData.GearboxSinglePwt : axlePt.GearboxData;
 			AxleNumber = (axlePt == null) ? Constants.NOT_IN_AXLE_POWERTRAIN : axlePt.AxleNumber;
 		}
 
