@@ -984,7 +984,7 @@ public class TestXMLResultsWriting
 				Fuels = fuels.Select(x => new CombustionEngineFuelData()
 					{ FuelData = DeclarationData.FuelData.Lookup(x, TankSystem.Liquefied) }).ToList(),
 			},
-			Retarder = new RetarderData() {
+			RetarderSinglePwt = new RetarderData() {
 				Type = RetarderType.None,
 			},
 			BatteryData = new BatterySystemData() {

@@ -95,7 +95,7 @@ public class VehicleAirDragLossTests
 		var container = new Mock<IVehicleContainer>();
 		var runData = new VectoRunData() {
 			ExecutionMode = ExecutionMode.Declaration,
-			ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+			ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 		};
 		var driver = new Mock<IDriverInfo>();
 		driver.Setup(d => d.DriverBehavior).Returns(DrivingBehavior.Driving);

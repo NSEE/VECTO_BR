@@ -83,7 +83,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData() {
 				VehicleData = vehicleData,
 				AirdragData = airdragData,
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			}, null, null);
 		
 		
@@ -123,7 +123,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			double expected)
 		{
 			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData() {
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			}, null, null);
 
 			var vehicleData = MockSimulationDataFactory.CreateVehicleDataFromFile(VehicleDataFileTruck);
@@ -161,7 +161,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData() {
 				VehicleData = vehicleData,
 				AirdragData = airdragData,
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			}, null, null);
 
             var vehicle = new Vehicle(container, vehicleData,airdragData);

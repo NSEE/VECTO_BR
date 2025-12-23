@@ -337,7 +337,7 @@ TestCase(8, 4, 15000, 200, true),]
 		simpleContainer.Setup(c => c.RunData).Returns(runData);
 		simpleContainer.Setup(c => c.PowertrainInfo.HasCombustionEngine).Returns(true);
 
-		gbx = GetTestGearbox(runData.GearboxData.Gears);
+		gbx = GetTestGearbox(runData.GearboxSinglePwt.Gears);
 		
 		simpleContainer.Setup(c => c.GearboxOutPort).Returns(gbx.Object);
 
@@ -574,8 +574,8 @@ TestCase(8, 4, 15000, 200, true),]
         }
 
         var runData = new VectoRunData() {
-            GearboxData = gearboxData,
-            GearshiftParameters = new ShiftStrategyParameters() {
+            GearboxSinglePwt = gearboxData,
+            GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
                 StartSpeed = 2.SI<MeterPerSecond>(),
                 TimeBetweenGearshifts = 6.SI<Second>(),
                 DownshiftAfterUpshiftDelay = 2.SI<Second>(),
@@ -583,7 +583,7 @@ TestCase(8, 4, 15000, 200, true),]
                 UpshiftMinAcceleration = 0.1.SI<MeterPerSquareSecond>()
             },
             EngineData = engineData,
-            AxleGearData = new AxleGearData() {
+            AxleGearSinglePwt = new AxleGearData() {
                 AxleGear = new TransmissionData() {
                     Ratio = 3.240355
                 }

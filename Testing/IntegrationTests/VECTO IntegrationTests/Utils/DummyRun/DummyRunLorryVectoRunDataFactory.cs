@@ -198,8 +198,8 @@ public class DummyRunLorryVectoRunDataFactory : DeclarationModeHeavyLorryRunData
                 SimulationType = SimulationType.DistanceCycle,
                 VehicleData = CreateDummyVehicleData(vehicle),
                 EngineData = CreateDummyEngineData(vehicle, modeIdx),
-                GearboxData = CreateDummyGearboxData(vehicle),
-                AxleGearData = CreateDummyAxleGearData(vehicle),
+                GearboxSinglePwt = CreateDummyGearboxData(vehicle),
+                AxleGearSinglePwt = CreateDummyAxleGearData(vehicle),
 
                 JobType = InputDataProvider.JobInputData.JobType,
 
@@ -212,7 +212,7 @@ public class DummyRunLorryVectoRunDataFactory : DeclarationModeHeavyLorryRunData
                 runData.BatteryData = CreateBatteryData();
             }
 
-            runData.ElectricMachinesData = runData.JobType.IsIEPC()
+            runData.ElectricMachinesSinglePwt = runData.JobType.IsIEPC()
                 ? DummyRunPrimaryBusRunDataFactory.CreateDummyIEPCData()
                 : DummyRunPrimaryBusRunDataFactory.CreateDummyElecticMachinesData(Vehicle.Components.ElectricMachines);
         }

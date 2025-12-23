@@ -59,7 +59,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected AbstractGearbox(IVehicleContainer container, int axleNumber) : base(container, axleNumber)
 		{
-			ModelData = container.RunData.GearboxData;
+			ModelData = container.RunData.GearboxSinglePwt;
 			LastShift = -double.MaxValue.SI<Second>();
         }
 

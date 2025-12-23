@@ -356,7 +356,7 @@ namespace TUGraz.VectoCore.OutputData.XML
                 foreach (var gb in runData.GetGearboxData())
 				{
 					if (runData.JobType.IsIEPC() 
-						|| (runData.AxlePowertrainsData.FirstOrDefault(x => x.AxleNumber == gb.Item1)?.Architecture.IsIEPC() ?? false))
+						|| (runData.AxlePowertrains.FirstOrDefault(x => x.AxleNumber == gb.Item1)?.Architecture.IsIEPC() ?? false))
                     {
 						continue;
 					}
@@ -380,7 +380,7 @@ namespace TUGraz.VectoCore.OutputData.XML
                     var eAxlOutSignal = ModalResultField.P_brake_in.GetName();
 					
 					if (runData.JobType == VectoSimulationJobType.ParallelHybridVehicle &&
-						runData.ElectricMachinesData.Any(x => x.Item1 == PowertrainPosition.HybridP4))
+						runData.ElectricMachinesSinglePwt.Any(x => x.Item1 == PowertrainPosition.HybridP4))
 					{
 						eAxlOutSignal = data.GetColumnName(PowertrainPosition.HybridP4, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResultField.P_EM_in_);
 					}

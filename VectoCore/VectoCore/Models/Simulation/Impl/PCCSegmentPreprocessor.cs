@@ -43,8 +43,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			var engineDrag = combustionEngineDrag;
 			var slopeEngineDrag = 0.0;
-			if (runData.GearboxData != null && runData.GearboxData.Type.AutomaticTransmission()) {
-				if ((runData.VehicleData.ADAS.EcoRoll != EcoRollType.None && runData.GearboxData.ATEcoRollReleaseLockupClutch) ||
+			if (runData.GearboxSinglePwt != null && runData.GearboxSinglePwt.Type.AutomaticTransmission()) {
+				if ((runData.VehicleData.ADAS.EcoRoll != EcoRollType.None && runData.GearboxSinglePwt.ATEcoRollReleaseLockupClutch) ||
 					runData.VehicleData.ADAS.EcoRoll == EcoRollType.None) {
 					slopeEngineDrag = (engineDrag / Physics.GravityAccelleration / runData.VehicleData.TotalVehicleMass).Value();
 				}

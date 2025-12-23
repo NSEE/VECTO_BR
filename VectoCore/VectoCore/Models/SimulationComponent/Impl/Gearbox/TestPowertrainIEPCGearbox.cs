@@ -27,7 +27,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Gearbox
 		protected TestPowertrainIEPCGearbox(IVehicleContainer container, IShiftStrategy strategy,
 			IIEPCGearboxFactory gbxFactory, bool dummy)
 		{
-			_impl = gbxFactory.CreateIEPCGearbox(container.RunData.GearboxData.Gears.Count == 1, container, strategy) as ITestPowertrainTransmission;
+			_impl = gbxFactory.CreateIEPCGearbox(container.RunData.GearboxSinglePwt.Gears.Count == 1, container, strategy) as ITestPowertrainTransmission;
 			if (_impl == null) {
 				throw new VectoException("Invalid implementation provided for Testpowertrain!");
 			}

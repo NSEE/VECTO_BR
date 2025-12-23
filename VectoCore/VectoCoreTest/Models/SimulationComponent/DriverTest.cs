@@ -93,8 +93,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				VehicleData = vehicleData,
 				AirdragData = airdragData,
 				EngineData = engineData,
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
-				GearboxData = new GearboxData() { Type = GearboxType.AMT },
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+				GearboxSinglePwt = new GearboxData() { Type = GearboxType.AMT },
 				ExecutionMode = ExecutionMode.Engineering,
             };
 			var modData = new ModalDataContainer(runData, fileWriter, null);
@@ -164,7 +164,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				DriverData = driverData,
 				VehicleData = vehicleData,
 				EngineData = engineData,
-				GearboxData = new GearboxData() { Type = GearboxType.AMT },
+				GearboxSinglePwt = new GearboxData() { Type = GearboxType.AMT },
 				ExecutionMode = ExecutionMode.Engineering,
 
             };
@@ -241,9 +241,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				VehicleData = vehicleData,
 				AirdragData = airdragData,
 				EngineData = engineData,
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 				DriverData = driverData,
-				GearboxData = new GearboxData() { Type = GearboxType.AMT },
+				GearboxSinglePwt = new GearboxData() { Type = GearboxType.AMT },
 				ExecutionMode = ExecutionMode.Engineering,
             };
 			var modData = new ModalDataContainer(runData, fileWriter, null);

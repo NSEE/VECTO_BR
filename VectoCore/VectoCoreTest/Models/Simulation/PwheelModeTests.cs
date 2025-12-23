@@ -83,7 +83,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		public void Pwheel_ReadCycle_Test()
 		{
 			var runData = new VectoRunData() {
-				GearboxData = new GearboxData {
+				GearboxSinglePwt = new GearboxData {
 					Gears = new Dictionary<uint, GearData> {
 						{ 1, new GearData { Ratio = 2.0 } },
 						{ 2, new GearData { Ratio = 3.5 } }
@@ -92,12 +92,12 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				VehicleData = new VehicleData {
                     DynamicTyreRadius = 0.5.SI<Meter>()
 				},
-				AxleGearData = new AxleGearData {
+				AxleGearSinglePwt = new AxleGearData {
 					AxleGear = new TransmissionData {
 						Ratio = 2.3
 					}
 				},
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			};
 
 			var container = VehicleContainer.CreateVehicleContainer(runData, null, null);
@@ -168,7 +168,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var fullLoadCurve = FullLoadCurveReader.Create(fullLoad);
 			var data = new VectoRunData {
 				Cycle = drivingCycle,
-				AxleGearData = new AxleGearData { AxleGear = new GearData { Ratio = 2.3 } },
+				AxleGearSinglePwt = new AxleGearData { AxleGear = new GearData { Ratio = 2.3 } },
 				EngineData =
 					new CombustionEngineData {
 						IdleSpeed = 560.RPMtoRad(),
@@ -181,8 +181,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 							}
 						}
 					},
-				GearboxData = new GearboxData { Gears = new Dictionary<uint, GearData> { { 2, new GearData { Ratio = 3.5 } } } },
-				Retarder = new RetarderData(),
+				GearboxSinglePwt = new GearboxData { Gears = new Dictionary<uint, GearData> { { 2, new GearData { Ratio = 3.5 } } } },
+				RetarderSinglePwt = new RetarderData(),
 				DriverData = new DriverData() {
 					EngineStopStart = new DriverData.EngineStopStartData() {
 						UtilityFactorStandstill = DeclarationData.Driver.GetEngineStopStartLorry().UtilityFactor,

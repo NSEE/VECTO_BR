@@ -205,7 +205,7 @@ public class SummaryDataContainerTests
 				RatedSpeedDeclared = 2000.RPMtoRad(),
 				Displacement = 7.SI(Unit.SI.Liter).Cast<CubicMeter>()
 			},
-			ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+			ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 			Cycle = new DrivingCycleData()
 			{
 				Name = "MockCycle",

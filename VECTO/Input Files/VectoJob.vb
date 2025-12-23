@@ -605,7 +605,7 @@ Public Class VectoJob
                     emPos =  vehicleInputData?.Components.ElectricMachines?.Entries.FirstOrDefault()?.Position
                 End If
             end if
-            result = jobData.Validate(If(Cfg.DeclMode, ExecutionMode.Declaration, ExecutionMode.Engineering), vehicleInputData.VehicleType, empos, If(jobData.GearboxData?.Type, GearboxType.NoGearbox), False)
+            result = jobData.Validate(If(Cfg.DeclMode, ExecutionMode.Declaration, ExecutionMode.Engineering), vehicleInputData.VehicleType, empos, If(jobData.GearboxSinglePwt?.Type, GearboxType.NoGearbox), False)
             If result.Any() Then
                 Return _
                     New ValidationResult("Vecto Job Configuration is invalid. ", result.Select(Function(r) r.ErrorMessage).ToList())

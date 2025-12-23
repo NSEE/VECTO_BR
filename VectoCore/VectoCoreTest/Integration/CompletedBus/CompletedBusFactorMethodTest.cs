@@ -371,8 +371,8 @@ namespace TUGraz.VectoCore.Tests.Integration.CompletedBus
 
 		private void AssertGearbox(RelatedRun relatedRun)
 		{
-			var genericGearbox = relatedRun.VectoRunDataGenericBody.GearboxData;
-			var specificGearbox = relatedRun.VectoRunDataSpezificBody.GearboxData;
+			var genericGearbox = relatedRun.VectoRunDataGenericBody.GearboxSinglePwt;
+			var specificGearbox = relatedRun.VectoRunDataSpezificBody.GearboxSinglePwt;
 
 			Assert.AreEqual(0, genericGearbox.Inertia.Value());
 			Assert.AreEqual(genericGearbox.Inertia, specificGearbox.Inertia);
@@ -423,8 +423,8 @@ namespace TUGraz.VectoCore.Tests.Integration.CompletedBus
 
 		private void AssertTorqueConverter(RelatedRun relatedRun)
 		{
-			var genericTorqueConverterData= relatedRun.VectoRunDataGenericBody.GearboxData.TorqueConverterData;
-			var specificTorqueConverterData = relatedRun.VectoRunDataSpezificBody.GearboxData.TorqueConverterData;
+			var genericTorqueConverterData= relatedRun.VectoRunDataGenericBody.GearboxSinglePwt.TorqueConverterData;
+			var specificTorqueConverterData = relatedRun.VectoRunDataSpezificBody.GearboxSinglePwt.TorqueConverterData;
 
 			Assert.AreEqual(1000.RPMtoRad(), genericTorqueConverterData.ReferenceSpeed);
 			Assert.AreEqual(genericTorqueConverterData.ReferenceSpeed, specificTorqueConverterData.ReferenceSpeed);
@@ -448,8 +448,8 @@ namespace TUGraz.VectoCore.Tests.Integration.CompletedBus
 
 		private void AssertAxlegearData(RelatedRun relatedRun)
 		{
-			var genericAxlegearData = relatedRun.VectoRunDataGenericBody.AxleGearData;
-			var specificAxlegearData = relatedRun.VectoRunDataSpezificBody.AxleGearData;
+			var genericAxlegearData = relatedRun.VectoRunDataGenericBody.AxleGearSinglePwt;
+			var specificAxlegearData = relatedRun.VectoRunDataSpezificBody.AxleGearSinglePwt;
 
 			Assert.AreEqual(6.500, genericAxlegearData.AxleGear.Ratio);
 			Assert.AreEqual(genericAxlegearData.AxleGear.Ratio, specificAxlegearData.AxleGear.Ratio);
@@ -499,8 +499,8 @@ namespace TUGraz.VectoCore.Tests.Integration.CompletedBus
 
 		private void AssertAngledriveData(RelatedRun relatedRun)
 		{
-			var genericAngledriveData = relatedRun.VectoRunDataGenericBody.AngledriveData;
-			var specificAngledriveData = relatedRun.VectoRunDataSpezificBody.AngledriveData;
+			var genericAngledriveData = relatedRun.VectoRunDataGenericBody.AngledriveSinglePwt;
+			var specificAngledriveData = relatedRun.VectoRunDataSpezificBody.AngledriveSinglePwt;
 
 			Assert.AreEqual(null, genericAngledriveData);
 			Assert.AreEqual(genericAngledriveData, specificAngledriveData);
@@ -859,8 +859,8 @@ namespace TUGraz.VectoCore.Tests.Integration.CompletedBus
 
 		private void AssertRetarder(RelatedRun relatedRun)
 		{
-			var genericRetarder = relatedRun.VectoRunDataGenericBody.Retarder;
-			var specificRetarder = relatedRun.VectoRunDataSpezificBody.Retarder;
+			var genericRetarder = relatedRun.VectoRunDataGenericBody.RetarderSinglePwt;
+			var specificRetarder = relatedRun.VectoRunDataSpezificBody.RetarderSinglePwt;
 
 			Assert.AreEqual(1, genericRetarder.Ratio);
 			Assert.AreEqual( genericRetarder.Ratio, specificRetarder.Ratio);

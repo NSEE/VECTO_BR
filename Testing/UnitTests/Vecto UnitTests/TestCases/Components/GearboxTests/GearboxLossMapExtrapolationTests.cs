@@ -32,7 +32,7 @@ public class GearboxLossMapExtrapolationTests
 		var gearboxData = CreateGearboxData();
 		var runData = new VectoRunData() {
             ExecutionMode = ExecutionMode.Declaration,
-			GearboxData = gearboxData,
+			GearboxSinglePwt = gearboxData,
 			EngineData = new CombustionEngineData()
 		};
 
@@ -96,7 +96,7 @@ public class GearboxLossMapExtrapolationTests
 		var gearboxData = CreateGearboxData();
 		var runData = new VectoRunData() {
             ExecutionMode = ExecutionMode.Engineering,
-			GearboxData = gearboxData,
+			GearboxSinglePwt = gearboxData,
 			EngineData = new CombustionEngineData()
 		};
 
@@ -164,7 +164,7 @@ public class GearboxLossMapExtrapolationTests
     {
 		var gearboxData = CreateGearboxData();
 		var runData = new VectoRunData() {
-			GearboxData = gearboxData,
+			GearboxSinglePwt = gearboxData,
 			EngineData = new CombustionEngineData()
 		};
 

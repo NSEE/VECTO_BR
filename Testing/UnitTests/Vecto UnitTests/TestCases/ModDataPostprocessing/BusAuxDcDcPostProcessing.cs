@@ -43,7 +43,7 @@ public class BusAuxDcDcPostProcessing
         modData.Data.CreateColumns(ModalResults.WheelSignals);
         modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
         modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
-        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesData.FirstOrDefault().Item1, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
+        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesSinglePwt.FirstOrDefault().Item1, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
         modData.Data.CreateColumns(ModalResults.BatterySignals);
         var fuel = runData.EngineData.Fuels[0];
 
@@ -233,7 +233,7 @@ public class BusAuxDcDcPostProcessing
         modData.Data.CreateColumns(ModalResults.WheelSignals);
         modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
         modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
-        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesData.FirstOrDefault().Item1, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
+        modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesSinglePwt.FirstOrDefault().Item1, Constants.NOT_IN_AXLE_POWERTRAIN, ModalResults.ElectricMotorSignals);
         modData.Data.CreateColumns(ModalResults.BatterySignals);
 
         var fuel = runData.EngineData.Fuels[0];

@@ -264,7 +264,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                             CrossWindCorrectionCurveReader.GetNoCorrectionCurve(6.16498344.SI<SquareMeter>()),
 							CrossWindCorrectionMode.NoCorrection),
 				},
-				AxleGearData = new AxleGearData { AxleGear = new GearData { Ratio = 2.3 } },
+				AxleGearSinglePwt = new AxleGearData { AxleGear = new GearData { Ratio = 2.3 } },
 				EngineData =
 					new CombustionEngineData {
 						IdleSpeed = 560.RPMtoRad(),
@@ -272,8 +272,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 						Inertia = 1.SI<KilogramSquareMeter>(),
 						FullLoadCurves = new Dictionary<uint, EngineFullLoadCurve>() { { 0, fullLoadCurve }, { 1, fullLoadCurve } }
 					},
-				GearboxData = new GearboxData { Gears = new Dictionary<uint, GearData> { { 1, new GearData { Ratio = 6.2 } } } },
-				Retarder = new RetarderData(),
+				GearboxSinglePwt = new GearboxData { Gears = new Dictionary<uint, GearData> { { 1, new GearData { Ratio = 6.2 } } } },
+				RetarderSinglePwt = new RetarderData(),
 				DriverData = new DriverData() {
 					EngineStopStart = new DriverData.EngineStopStartData() {
 						UtilityFactorStandstill = DeclarationData.Driver.GetEngineStopStartLorry().UtilityFactor,
@@ -281,7 +281,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 						MaxEngineOffTimespan =  DeclarationData.Driver.GetEngineStopStartLorry().MaxEngineOffTimespan
 					}
 				},
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			};
 
 			// call builder (actual test)
@@ -336,7 +336,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
                             CrossWindCorrectionCurveReader.GetNoCorrectionCurve(6.16498344.SI<SquareMeter>()),
 							CrossWindCorrectionMode.NoCorrection)
 				},
-				AxleGearData = new AxleGearData { AxleGear = new GearData { Ratio = 2.3 } },
+				AxleGearSinglePwt = new AxleGearData { AxleGear = new GearData { Ratio = 2.3 } },
 				EngineData = new CombustionEngineData {
 					IdleSpeed = 560.RPMtoRad(),
 					Inertia = 1.SI<KilogramSquareMeter>(),
@@ -348,17 +348,17 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 						{ 3, fullLoadCurve }
 					}
 				},
-				GearboxData = new GearboxData {
+				GearboxSinglePwt = new GearboxData {
 					Gears = new Dictionary<uint, GearData> {
 						{ 1, new GearData { Ratio = 6.696 } },
 						{ 2, new GearData { Ratio = 3.806 } },
 						{ 3, new GearData { Ratio = 2.289 } }
 					},
 				},
-				GearshiftParameters = new ShiftStrategyParameters() {
+				GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 					StartSpeed = 2.SI<MeterPerSecond>()
 				},
-				Retarder = new RetarderData(),
+				RetarderSinglePwt = new RetarderData(),
 				DriverData = new DriverData() {
 					EngineStopStart = new DriverData.EngineStopStartData() {
 						EngineOffStandStillActivationDelay = DeclarationData.Driver.GetEngineStopStartLorry().ActivationDelay,
@@ -366,7 +366,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 						MaxEngineOffTimespan = DeclarationData.Driver.GetEngineStopStartLorry().MaxEngineOffTimespan,
 					}
 				},
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			};
 
 			// call builder (actual test)

@@ -796,7 +796,7 @@ public class BusAuxDemandESSAlternatorTypeTests
             JobRunId = 0,
             VehicleData = vehicleData,
             EngineData = engineData,
-            ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+            ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
             SimulationType = SimulationType.DistanceCycle,
             Cycle = cycleData,
             BusAuxiliaries = CreateBusAuxData(alternatorType, vehicleData, connectEsToReess),

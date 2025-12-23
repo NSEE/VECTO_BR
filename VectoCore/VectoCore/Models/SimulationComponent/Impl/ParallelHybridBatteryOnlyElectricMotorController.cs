@@ -31,7 +31,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			//ElectricMotorData = container.RunData.ElectricMachinesData.FirstOrDefault()?.Item2;
 			//ElectricSystem = es;
 
-			ElectricMotorsOff = ModelData.ElectricMachinesData
+			ElectricMotorsOff = ModelData.ElectricMachinesSinglePwt
 				.Select(x => new KeyValuePair<PowertrainPosition, NewtonMeter>(x.Item1, null))
 				.ToDictionary(x => x.Key, x => new Tuple<PerSecond, NewtonMeter>(null, x.Value));
 
@@ -88,7 +88,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 								DataBus.DriverInfo.DrivingAction == DrivingAction.Brake;
 
 			return driverIsBraking && (DataBus.VehicleInfo.VehicleSpeed ?? 0.SI<MeterPerSecond>()).IsSmallerOrEqual(
-										ModelData.GearboxData?.DisengageWhenHaltingSpeed ?? Constants.SimulationSettings
+										ModelData.GearboxSinglePwt?.DisengageWhenHaltingSpeed ?? Constants.SimulationSettings
 											.ATGearboxDisengageWhenHaltingSpeed)
 									&& outTorque.IsSmaller(0);
 		}

@@ -202,7 +202,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 		{
 			DataBus = container;
 			ModelData = runData;
-			if (ModelData.ElectricMachinesData.Select(x => x.Item1).Where(x => x != PowertrainPosition.GEN).Distinct().Count() > 1) {
+			if (ModelData.ElectricMachinesSinglePwt.Select(x => x.Item1).Where(x => x != PowertrainPosition.GEN).Distinct().Count() > 1) {
 				throw new VectoException("More than one electric motors are currently not supported");
 			}
 			StrategyParameters = ModelData.HybridStrategyParameters;
@@ -225,7 +225,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			TestGenSet = container.SimplePowertrainBuilder.CreateTestGenset(container);
 
 			container.AddPreprocessor(new GensetPreprocessor(GenSetCharacteristics, TestGenSet, runData.EngineData,
-				runData.ElectricMachinesData.FirstOrDefault(x => x.Item1 == PowertrainPosition.GEN)?.Item2, container));
+				runData.ElectricMachinesSinglePwt.FirstOrDefault(x => x.Item1 == PowertrainPosition.GEN)?.Item2, container));
 		}
 
 
@@ -235,11 +235,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			var retVal = new HybridStrategyResponse() { MechanicalAssistPower = new Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>>() };
 
-			foreach (var em in ModelData.ElectricMachinesData) {
+			foreach (var em in ModelData.ElectricMachinesSinglePwt) {
 				retVal.MechanicalAssistPower[em.Item1] = null;
 			}
 
-			GenSetCharacteristics.ContinuousTorque = ModelData.ElectricMachinesData
+			GenSetCharacteristics.ContinuousTorque = ModelData.ElectricMachinesSinglePwt
 				.FirstOrDefault(x => x.Item1 == EmPosition)?.Item2.Overload.ContinuousTorque ?? 0.SI<NewtonMeter>();
 
 			PreviousState.AngularVelocity = outAngularVelocity;
@@ -429,7 +429,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				var avgSpeed = (em.ElectricMotorSpeed + currOutAngularVelocity) / 2;
 				var inertiaTorqueLoss = avgSpeed.IsEqual(0)
 					? 0.SI<NewtonMeter>()
-					: Formulas.InertiaPower(currOutAngularVelocity, em.ElectricMotorSpeed, ModelData.ElectricMachinesData.First(x => x.Item1 == EmPosition).Item2.Inertia, dt) / avgSpeed;
+					: Formulas.InertiaPower(currOutAngularVelocity, em.ElectricMotorSpeed, ModelData.ElectricMachinesSinglePwt.First(x => x.Item1 == EmPosition).Item2.Inertia, dt) / avgSpeed;
 				//var dragTorque = ElectricMotorData.DragCurve.Lookup()
 				return (-inertiaTorqueLoss); //.LimitTo(maxDriveTorque, maxRecuperationTorque);
 			}
@@ -439,7 +439,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				return null;
 			}
 
-			if (DataBus.DriverInfo.DrivingAction != DrivingAction.Halt && DataBus.VehicleInfo.VehicleSpeed.IsSmallerOrEqual(ModelData.GearboxData?.DisengageWhenHaltingSpeed ?? Constants.SimulationSettings.ATGearboxDisengageWhenHaltingSpeed) && emOutTorque.IsSmaller(0)) {
+			if (DataBus.DriverInfo.DrivingAction != DrivingAction.Halt && DataBus.VehicleInfo.VehicleSpeed.IsSmallerOrEqual(ModelData.GearboxSinglePwt?.DisengageWhenHaltingSpeed ?? Constants.SimulationSettings.ATGearboxDisengageWhenHaltingSpeed) && emOutTorque.IsSmaller(0)) {
 				return null;
 			}
 

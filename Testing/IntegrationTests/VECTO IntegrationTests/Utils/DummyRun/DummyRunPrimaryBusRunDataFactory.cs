@@ -234,7 +234,7 @@ public class DummyRunPrimaryBusRunDataFactory : DeclarationModePrimaryBusRunData
 
             if (Vehicle.VehicleType.IsMultiplePowertrains()) 
             {
-				runData.AxlePowertrainsData = new List<AxlePowertrainData>();
+				runData.AxlePowertrains = new List<AxlePowertrainData>();
 
 				foreach (var axlePt in Vehicle.Components.AxlePowertrainInputData) 
                 {
@@ -249,16 +249,16 @@ public class DummyRunPrimaryBusRunDataFactory : DeclarationModePrimaryBusRunData
                         ElectricMachineData = axlePt.Architecture.IsIEPC() ? CreateDummyIEPCData().First() : CreateDummyElecticMachineData(axlePt.ElectricMotor.Position)
                     };
 
-                    runData.AxlePowertrainsData.Add(axlePowertrainData);
+                    runData.AxlePowertrains.Add(axlePowertrainData);
 				}
 			} 
             else 
             {
-				runData.Retarder = CreateDummyRetarder(Vehicle);
-				runData.AxleGearData = CreateDummyAxleGearData(Vehicle.Components.AxleGearInputData);
-				runData.GearboxData = CreateDummyGearboxData(Vehicle.Components.GearboxInputData);
-				runData.AngledriveData = CreateDummyAngleDriveData(Vehicle.Components.AngledriveInputData);
-                runData.ElectricMachinesData = runData.JobType.IsIEPC()
+				runData.RetarderSinglePwt = CreateDummyRetarder(Vehicle);
+				runData.AxleGearSinglePwt = CreateDummyAxleGearData(Vehicle.Components.AxleGearInputData);
+				runData.GearboxSinglePwt = CreateDummyGearboxData(Vehicle.Components.GearboxInputData);
+				runData.AngledriveSinglePwt = CreateDummyAngleDriveData(Vehicle.Components.AngledriveInputData);
+                runData.ElectricMachinesSinglePwt = runData.JobType.IsIEPC()
                     ? CreateDummyIEPCData()
                     : CreateDummyElecticMachinesData(Vehicle.Components.ElectricMachines);
 			}

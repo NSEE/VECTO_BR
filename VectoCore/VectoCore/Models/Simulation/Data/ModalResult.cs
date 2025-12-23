@@ -431,7 +431,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 				case IGearbox g:
                     Gearboxes.Add(component.AxleNumber);
 					
-					var axlePt = runData.AxlePowertrainsData.FirstOrDefault(x => x.AxleNumber == component.AxleNumber);
+					var axlePt = runData.AxlePowertrains.FirstOrDefault(x => x.AxleNumber == component.AxleNumber);
 					ModalResultField[] gbSignals = null;
 
 					if (((axlePt == null) && !runData.JobType.IsIEPC()) || ((axlePt != null) && !axlePt.Architecture.IsIEPC()))

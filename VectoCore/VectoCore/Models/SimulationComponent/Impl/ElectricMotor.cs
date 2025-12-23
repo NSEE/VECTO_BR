@@ -95,7 +95,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (EMPosition == PowertrainPosition.HybridP2_5) {
 				TransmissionRatioPerGear = ModelData.RatioPerGear;
 				if (TransmissionRatioPerGear == null ||
-					TransmissionRatioPerGear.Length < container.RunData.GearboxData.GearList.Count()) {
+					TransmissionRatioPerGear.Length < container.RunData.GearboxSinglePwt.GearList.Count()) {
 					throw new VectoException("For powertrain configuration P2.5 a EM ratio for every gear has to be provided!");
 				}
 			}

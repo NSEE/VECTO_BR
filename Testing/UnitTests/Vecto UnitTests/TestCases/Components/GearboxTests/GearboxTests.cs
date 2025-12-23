@@ -37,7 +37,7 @@ public class GearboxTests
     {
 		var gearboxData = CreateGearboxData();
         var runData = new VectoRunData() {
-			GearboxData = gearboxData,
+			GearboxSinglePwt = gearboxData,
 			EngineData = new CombustionEngineData()
 		};
 

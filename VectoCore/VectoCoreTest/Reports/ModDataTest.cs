@@ -437,7 +437,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			}
 			var disatanceBased =
 				((VehicleContainer)(jobContainer.Runs.First().Run.GetContainer())).DrivingCycleInfo is DistanceBasedDrivingCycle;
-			var em = jobContainer.Runs.First().Run.GetContainer().RunData.ElectricMachinesData;
+			var em = jobContainer.Runs.First().Run.GetContainer().RunData.ElectricMachinesSinglePwt;
 			foreach (var modalResults in modData) {
 				if (em.Any(x => x.Item1 == PowertrainPosition.HybridP1)) {
 					AssertModDataIntegrityP1(modalResults.Item1, auxKeys, modalResults.Item2, fcMap, disatanceBased, runData);
@@ -485,11 +485,11 @@ namespace TUGraz.VectoCore.Tests.Reports
 				var eFcMapNeg = ((ConvertedSI)row[SumDataFields.E_FCMAP_NEG]);
 				var ePowertrainInertia = distanceBased ? ((ConvertedSI)row[SumDataFields.E_POWERTRAIN_INERTIA]) : new ConvertedSI(0, "");
 				var eAux = ((ConvertedSI)row[SumDataFields.E_AUX]);
-				var eClutchLoss = runData.GearboxData.Type.AutomaticTransmission() ? new ConvertedSI(0, "") : ((ConvertedSI)row[SumDataFields.E_CLUTCH_LOSS]);
+				var eClutchLoss = runData.GearboxSinglePwt.Type.AutomaticTransmission() ? new ConvertedSI(0, "") : ((ConvertedSI)row[SumDataFields.E_CLUTCH_LOSS]);
 				var eTcLoss = row.Table.Columns.Contains(SumDataFields.E_TC_LOSS) ? ((ConvertedSI)row[SumDataFields.E_TC_LOSS]) : new ConvertedSI(0, "");
 				//var eShiftLoss = ((SI)row[SummaryDataContainer.E_SHIFT_LOSS]);
 				var eGbxLoss = ((ConvertedSI)row[SumDataFields.E_GBX_LOSS]);
-				var eRetLoss = runData.Retarder.Type.IsDedicatedComponent() ? ((ConvertedSI)row[SumDataFields.E_RET_LOSS]) : new ConvertedSI(0, "");
+				var eRetLoss = runData.RetarderSinglePwt.Type.IsDedicatedComponent() ? ((ConvertedSI)row[SumDataFields.E_RET_LOSS]) : new ConvertedSI(0, "");
 				var eAngleLoss = row.Table.Columns.Contains(SumDataFields.E_ANGLE_LOSS) ? ((ConvertedSI)row[SumDataFields.E_ANGLE_LOSS]) : new ConvertedSI(0, "");
 				var eAxlLoss = ((ConvertedSI)row[SumDataFields.E_AXL_LOSS]);
 				var eBrakeLoss = distanceBased ? ((ConvertedSI)row[SumDataFields.E_BRAKE]) : new ConvertedSI(0, "");
@@ -626,7 +626,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 				var pLossRet = !row.Table.Columns.Contains(ModalResultField.P_ret_loss.GetName()) || row[ModalResultField.P_ret_loss.GetName()] is DBNull ? 0.SI<Watt>() : (Watt)row[ModalResultField.P_ret_loss.GetName()];
 				var pRetIn = !row.Table.Columns.Contains(ModalResultField.P_ret_loss.GetName()) || row[ModalResultField.P_retarder_in.GetName()] is DBNull ? pAxleIn : (Watt)row[ModalResultField.P_retarder_in.GetName()];
 				var pGbxInertia = (Watt)row[ModalResultField.P_gbx_inertia.GetName()];
-				var pShiftLoss = runData.GearboxData.Type.ManualTransmission() || row[ModalResultField.P_gbx_shift_loss.GetName()] is DBNull
+				var pShiftLoss = runData.GearboxSinglePwt.Type.ManualTransmission() || row[ModalResultField.P_gbx_shift_loss.GetName()] is DBNull
 					? 0.SI<Watt>()
 					: (Watt)row[ModalResultField.P_gbx_shift_loss.GetName()];
 				var pEngInertia = (Watt)row[ModalResultField.P_ice_inertia.GetName()];
@@ -777,7 +777,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 				var pLossRet = (Watt)row[ModalResultField.P_ret_loss.GetName()];
 				var pRetIn = (Watt)row[ModalResultField.P_retarder_in.GetName()];
 				var pGbxInertia = (Watt)row[ModalResultField.P_gbx_inertia.GetName()];
-				var pShiftLoss = runData.GearboxData.Type.ManualTransmission() || row[ModalResultField.P_gbx_shift_loss.GetName()] is DBNull
+				var pShiftLoss = runData.GearboxSinglePwt.Type.ManualTransmission() || row[ModalResultField.P_gbx_shift_loss.GetName()] is DBNull
 					? 0.SI<Watt>()
 					: (Watt)row[ModalResultField.P_gbx_shift_loss.GetName()];
 				var pEngInertia = (Watt)row[ModalResultField.P_ice_inertia.GetName()];
@@ -956,12 +956,12 @@ namespace TUGraz.VectoCore.Tests.Reports
 				var pLossGbx = (Watt)row[ModalResultField.P_gbx_loss.GetName()];
 				var pGbxIn = (Watt)row[ModalResultField.P_gbx_in.GetName()];
 				var pLossAxle = (Watt)row[ModalResultField.P_axle_loss.GetName()];
-				var pLossAngle = runData.AngledriveData?.Type != AngledriveType.SeparateAngledrive
+				var pLossAngle = runData.AngledriveSinglePwt?.Type != AngledriveType.SeparateAngledrive
 					? 0.SI<Watt>()
 					: (Watt)row[ModalResultField.P_angle_loss.GetName()];
 				var pAxleIn = (Watt)row[ModalResultField.P_axle_in.GetName()];
-				var pLossRet = runData.Retarder.Type.IsDedicatedComponent() ? (Watt)row[ModalResultField.P_ret_loss.GetName()] : 0.SI<Watt>();
-				var pRetIn = runData.Retarder.Type.IsDedicatedComponent() ? (Watt)row[ModalResultField.P_retarder_in.GetName()] : pAxleIn;
+				var pLossRet = runData.RetarderSinglePwt.Type.IsDedicatedComponent() ? (Watt)row[ModalResultField.P_ret_loss.GetName()] : 0.SI<Watt>();
+				var pRetIn = runData.RetarderSinglePwt.Type.IsDedicatedComponent() ? (Watt)row[ModalResultField.P_retarder_in.GetName()] : pAxleIn;
 				var pGbxInertia = (Watt)row[ModalResultField.P_gbx_inertia.GetName()];
 				var pShiftLoss = row[ModalResultField.P_gbx_shift_loss.GetName()] is DBNull
 					? 0.SI<Watt>()

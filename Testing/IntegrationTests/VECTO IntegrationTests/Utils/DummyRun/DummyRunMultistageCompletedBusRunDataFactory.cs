@@ -130,7 +130,7 @@ internal class DummyRunMultistageCompletedBusRunDataFactory : DeclarationModeCom
             JobType = DataProvider.MultistageJobInputData.JobInputData.JobType
         };
         if (PrimaryVehicle.VehicleType.IsMultiplePowertrains()) {
-			simulationRunData.AxlePowertrainsData = new List<AxlePowertrainData>();
+			simulationRunData.AxlePowertrains = new List<AxlePowertrainData>();
 			foreach (var axlePt in PrimaryVehicle.Components.AxlePowertrainInputData) {
 				var axlePowertrainData = new AxlePowertrainData() {
 					AxleNumber = axlePt.AxleNumber,
@@ -139,14 +139,14 @@ internal class DummyRunMultistageCompletedBusRunDataFactory : DeclarationModeCom
 					GearboxData = DummyRunPrimaryBusRunDataFactory.CreateDummyGearboxData(axlePt.GearboxInputData),
 					AngledriveData = DummyRunPrimaryBusRunDataFactory.CreateDummyAngleDriveData(axlePt.AngledriveInputData)
 				};
-				simulationRunData.AxlePowertrainsData.Add(axlePowertrainData);
+				simulationRunData.AxlePowertrains.Add(axlePowertrainData);
             }
 		} else {
-			simulationRunData.Retarder = DummyRunPrimaryBusRunDataFactory.CreateDummyRetarder(PrimaryVehicle);
-			simulationRunData.AngledriveData = DummyRunPrimaryBusRunDataFactory.CreateDummyAngleDriveData(
+			simulationRunData.RetarderSinglePwt = DummyRunPrimaryBusRunDataFactory.CreateDummyRetarder(PrimaryVehicle);
+			simulationRunData.AngledriveSinglePwt = DummyRunPrimaryBusRunDataFactory.CreateDummyAngleDriveData(
 					PrimaryVehicle.Components.AngledriveInputData);
-			simulationRunData.AxleGearData = DummyRunPrimaryBusRunDataFactory.CreateDummyAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
-			simulationRunData.GearboxData = DummyRunPrimaryBusRunDataFactory.CreateDummyGearboxData(PrimaryVehicle.Components.GearboxInputData);
+			simulationRunData.AxleGearSinglePwt = DummyRunPrimaryBusRunDataFactory.CreateDummyAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
+			simulationRunData.GearboxSinglePwt = DummyRunPrimaryBusRunDataFactory.CreateDummyGearboxData(PrimaryVehicle.Components.GearboxInputData);
 
 		}
         if (simulationRunData.EngineData != null) {
@@ -159,7 +159,7 @@ internal class DummyRunMultistageCompletedBusRunDataFactory : DeclarationModeCom
             simulationRunData.BatteryData = CreateBatteryData();
         }
 
-        simulationRunData.ElectricMachinesData = simulationRunData.JobType.IsIEPC()
+        simulationRunData.ElectricMachinesSinglePwt = simulationRunData.JobType.IsIEPC()
             ? DummyRunPrimaryBusRunDataFactory.CreateDummyIEPCData()
             : DummyRunPrimaryBusRunDataFactory.CreateDummyElecticMachinesData(PrimaryVehicle.Components.ElectricMachines);
 
@@ -313,17 +313,17 @@ internal class DummyRunMultistageCompletedBusRunDataFactory : DeclarationModeCom
             JobType = DataProvider.MultistageJobInputData.JobInputData.JobType
 		};
 		if (PrimaryVehicle.VehicleType.IsMultiplePowertrains()) {
-			runData.AxlePowertrainsData = new List<AxlePowertrainData>();
+			runData.AxlePowertrains = new List<AxlePowertrainData>();
 			foreach (var axlePt in PrimaryVehicle.Components.AxlePowertrainInputData) {
 				var axlePowertrainData = new AxlePowertrainData() {
 					GearboxData = DummyRunPrimaryBusRunDataFactory.CreateDummyGearboxData(axlePt.GearboxInputData),
 					AxleGearData = DummyRunPrimaryBusRunDataFactory.CreateDummyAxleGearData(axlePt.AxleGearInputData),
 				};
-                runData.AxlePowertrainsData.Add(axlePowertrainData);
+                runData.AxlePowertrains.Add(axlePowertrainData);
 			}
 		} else {
-			runData.GearboxData = DummyRunPrimaryBusRunDataFactory.CreateDummyGearboxData(PrimaryVehicle.Components.GearboxInputData);
-			runData.AxleGearData = DummyRunPrimaryBusRunDataFactory.CreateDummyAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
+			runData.GearboxSinglePwt = DummyRunPrimaryBusRunDataFactory.CreateDummyGearboxData(PrimaryVehicle.Components.GearboxInputData);
+			runData.AxleGearSinglePwt = DummyRunPrimaryBusRunDataFactory.CreateDummyAxleGearData(PrimaryVehicle.Components.AxleGearInputData);
 
         }
         if (PrimaryVehicle.ArchitectureID.IsBatteryElectricVehicle() ||
@@ -332,7 +332,7 @@ internal class DummyRunMultistageCompletedBusRunDataFactory : DeclarationModeCom
             runData.BatteryData = CreateBatteryData();
         }
 
-        runData.ElectricMachinesData = runData.JobType.IsIEPC()
+        runData.ElectricMachinesSinglePwt = runData.JobType.IsIEPC()
             ? DummyRunPrimaryBusRunDataFactory.CreateDummyIEPCData()
             : DummyRunPrimaryBusRunDataFactory.CreateDummyElecticMachinesData(PrimaryVehicle.Components.ElectricMachines);
 

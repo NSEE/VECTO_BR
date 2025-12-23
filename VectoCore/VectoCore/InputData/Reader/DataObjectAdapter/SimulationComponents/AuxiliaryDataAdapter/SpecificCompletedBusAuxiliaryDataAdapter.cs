@@ -31,9 +31,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			var electricUserInputs = CreateElectricsUserInputsConfig(
 				primaryVehicle, completedVehicle, mission, actuations, runData.VehicleData.VehicleClass);
 
-            var retarderType = (runData.AxlePowertrainsData?.Count() > 0)
-                ? (runData.AxlePowertrainsData.FirstOrDefault(x => x.Retarder.Type != RetarderType.None)?.Retarder.Type ?? RetarderType.None)
-                : runData.Retarder.Type;
+            var retarderType = (runData.AxlePowertrains?.Count() > 0)
+                ? (runData.AxlePowertrains.FirstOrDefault(x => x.Retarder.Type != RetarderType.None)?.Retarder.Type ?? RetarderType.None)
+                : runData.RetarderSinglePwt.Type;
 
             var pneumaticUserInputsConfig = CreatePneumaticUserInputsConfig(primaryVehicle, completedVehicle);
 			var pneumaticAuxiliariesConfig = CreatePneumaticAuxConfig(retarderType);
