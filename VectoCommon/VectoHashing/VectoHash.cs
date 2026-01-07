@@ -174,8 +174,8 @@ namespace TUGraz.VectoHashing
 			if (nodes == null || nodes.Count == 0) {
 				throw new Exception("No component found");
 			}
-			var componentId = nodes[0].Attributes[XMLNames.Component_ID_Attr].Value;
-			var hash = DoComputeHash(nodes[0], canonicalization, digestMethod);
+            var node = RemoveMonitoringData(nodes);
+            var hash = DoComputeHash(node, canonicalization, digestMethod);
 			return hash.ToXDocument().Root;
 		}
 
@@ -190,20 +190,25 @@ namespace TUGraz.VectoHashing
 			}
 			var componentId = nodes[0].Attributes[XMLNames.Component_ID_Attr].Value;
 
-			var node = nodes[0];
+			var node = RemoveMonitoringData(nodes);
 
-            // Remove MonitoringData node from Vehicle, it should not be hashed.
-            var docClone = Document.Clone();
-			var monitoringNode = docClone.SelectSingleNode("//*[local-name()='MonitoringData']");
-			if (monitoringNode != null)
-			{
-				node = monitoringNode.ParentNode;
-				node.RemoveChild(monitoringNode);
-			}
-			
-			return GetHashValueFromSig(DoComputeHash(node, canonicalization, digestMethod), componentId);
+            return GetHashValueFromSig(DoComputeHash(node, canonicalization, digestMethod), componentId);
 		}
 
+		private XmlNode RemoveMonitoringData(XmlNodeList nodes)
+		{
+            var node = nodes[0];
+
+            var docClone = Document.Clone();
+            var monitoringNode = docClone.SelectSingleNode("//*[local-name()='MonitoringData']");
+            if (monitoringNode != null)
+            {
+                node = monitoringNode.ParentNode;
+                node.RemoveChild(monitoringNode);
+            }
+			
+			return node;
+        }
 
 		public string ComputeHash(VectoComponents component, int index = 0, IEnumerable<string> canonicalization = null,
 			string digestMethod = null)
