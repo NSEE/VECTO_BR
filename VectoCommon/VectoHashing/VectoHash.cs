@@ -84,7 +84,13 @@ namespace TUGraz.VectoHashing
 		protected VectoHash(XmlDocument doc)
 		{
 			Document = doc;
-		}
+
+            XmlNodeList list = Document.SelectNodes("//comment()");
+            foreach (XmlNode node in list)
+            {
+                node.ParentNode.RemoveChild(node);
+            }
+        }
 
 
 		/// <summary>
