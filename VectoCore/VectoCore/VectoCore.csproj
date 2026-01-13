@@ -12,6 +12,8 @@
     <Configurations>Debug;Release;MockupDebug</Configurations>
 	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 	  <VersionSuffix Condition="('$(Configuration)' == 'MockupRelease') Or ('$(Configuration)' == 'MockupDebug')">Mockup</VersionSuffix>
   </PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='MockupDebug|net48|AnyCPU'">
@@ -175,6 +177,8 @@
     <Folder Include="Mockup\Simulation\SimulatorFactory\" />
   </ItemGroup>
 
-
+	<ItemGroup>
+      <None Include="README.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
 
 </Project>

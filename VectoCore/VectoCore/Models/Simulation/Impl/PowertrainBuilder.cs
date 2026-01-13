@@ -2031,13 +2031,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			var idleController = engine.IdleController;
 			ctl.Engine = engine;
-
-            if (data.BusAuxiliaries != null)
-            {
-                var aux = new HighVoltageElectricAuxiliary(container);
-                aux.AddConstant("P_aux_el", data.ElectricAuxDemand ?? 0.SI<Watt>());
-                es.Connect(aux);
-            }
                 
 			var cycle = ComponentFactory.CreateDistanceBasedDrivingCycle(container, data.Cycle);
 			var powertrain = cycle

@@ -107,7 +107,7 @@ namespace TUGraz.VectoHashing.Impl
 			bool isOldVectoSimReport = IsOldVectoSimReport(doc);
 
 			// load any HMAC algorithm so that the key is also available. the HVAC algorithm used is the one set in the Reference object below
-			var hmac = HMAC.Create("HMACSHA256"); 
+			var hmac = new HMACSHA256(); //HMAC.Create("HMACSHA256"); 
 			var signedXml = new SignedXml(doc);
 			var reference = new Reference("#" + elementId) {
 				DigestMethod = digestMethod
