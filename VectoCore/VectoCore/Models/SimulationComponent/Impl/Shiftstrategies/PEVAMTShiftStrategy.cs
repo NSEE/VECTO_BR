@@ -20,7 +20,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 {
 	public class FCHVAMTShiftStrategy : PEVAMTShiftStrategy
 	{
-		public static string Name => "AMT - EffShift (FCHV)";
+		public new static string Name => "AMT - EffShift (FCHV)";
 
 		public FCHVAMTShiftStrategy(IVehicleContainer container) : base(container, VectoSimulationJobType.FCHV, false)
 		{

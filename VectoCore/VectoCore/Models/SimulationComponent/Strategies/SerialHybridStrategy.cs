@@ -196,9 +196,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 		public VelocityRollingLookup VelocityDropData { get; }
 
-		public event Action GearShiftTriggered;
-
-		public AbstractSerialHybridStrategy(VectoRunData runData, IVehicleContainer container)
+        public AbstractSerialHybridStrategy(VectoRunData runData, IVehicleContainer container)
 		{
 			DataBus = container;
 			ModelData = runData;
