@@ -1074,7 +1074,9 @@ lbFound:
                     Continue For
                 End If
 
+#Disable Warning BC40000 ' Type or member is obsolete
                 Dim runsFactory As ISimulatorFactory = SimulatorFactory.CreateSimulatorFactory(mode, input, fileWriter)
+#Enable Warning BC40000 ' Type or member is obsolete
                 'Remove
 
                 runsFactory.WriteModalResults = Cfg.ModOut
