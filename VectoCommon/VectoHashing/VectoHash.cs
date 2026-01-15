@@ -84,12 +84,6 @@ namespace TUGraz.VectoHashing
 		protected VectoHash(XmlDocument doc)
 		{
 			Document = doc;
-
-            XmlNodeList list = Document.SelectNodes("//comment()");
-            foreach (XmlNode node in list)
-            {
-                node.ParentNode.RemoveChild(node);
-            }
         }
 
 
@@ -116,7 +110,8 @@ namespace TUGraz.VectoHashing
 		public IList<VectoComponents> GetContainigComponents()
 		{
 			var retVal = new List<VectoComponents>();
-			var rootName = Document.FirstChild.NextSibling?.LocalName ?? Document.FirstChild.LocalName;
+			var cleanDoc = Document.RemoveComments();
+			var rootName = cleanDoc.FirstChild.NextSibling?.LocalName ?? cleanDoc.FirstChild.LocalName;
 
 			// Avoid MonitoringData element in Vehicles
 			var componentsPath = "//*[local-name()='Components']";
@@ -180,15 +175,15 @@ namespace TUGraz.VectoHashing
 			if (nodes == null || nodes.Count == 0) {
 				throw new Exception("No component found");
 			}
-            var node = RemoveMonitoringData(nodes);
-            var hash = DoComputeHash(node, canonicalization, digestMethod);
+            var hash = DoComputeHash(nodes[0], canonicalization, digestMethod);
 			return hash.ToXDocument().Root;
 		}
 
 		public string ComputeHash(IEnumerable<string> canonicalization = null, string digestMethod = null)
 		{
-			var isMultiStep = (Document.ChildNodes.Count > 1) 
-				&& Document.ChildNodes[1].ChildNodes.Cast<XmlNode>().Any(x => x.LocalName == XMLNames.ManufacturingStep);
+			var cleanDoc = Document.RemoveComments();
+			var isMultiStep = (cleanDoc.ChildNodes.Count > 1) 
+				&& cleanDoc.ChildNodes[1].ChildNodes.Cast<XmlNode>().Any(x => x.LocalName == XMLNames.ManufacturingStep);
 			
 			var nodes = Document.SelectNodes(GetComponentQueryString(null, isMultiStep));
 			if (nodes == null || nodes.Count == 0) {
@@ -196,25 +191,8 @@ namespace TUGraz.VectoHashing
 			}
 			var componentId = nodes[0].Attributes[XMLNames.Component_ID_Attr].Value;
 
-			var node = RemoveMonitoringData(nodes);
-
-            return GetHashValueFromSig(DoComputeHash(node, canonicalization, digestMethod), componentId);
+			return GetHashValueFromSig(DoComputeHash(nodes[0], canonicalization, digestMethod), componentId);
 		}
-
-		private XmlNode RemoveMonitoringData(XmlNodeList nodes)
-		{
-            var node = nodes[0];
-
-            var docClone = Document.Clone();
-            var monitoringNode = docClone.SelectSingleNode("//*[local-name()='MonitoringData']");
-            if (monitoringNode != null)
-            {
-                node = monitoringNode.ParentNode;
-                node.RemoveChild(monitoringNode);
-            }
-			
-			return node;
-        }
 
 		public string ComputeHash(VectoComponents component, int index = 0, IEnumerable<string> canonicalization = null,
 			string digestMethod = null)
@@ -341,10 +319,11 @@ namespace TUGraz.VectoHashing
 
 		private VectoComponents GetComponentToHash()
 		{
-			if (Document.DocumentElement == null) {
+			var xdoc = Document.RemoveComments();
+			if (xdoc.DocumentElement == null) {
 				throw new Exception("invalid input document");
 			}
-			if (Document.DocumentElement.LocalName.Equals(XMLNames.VectoInputDeclaration)) {
+			if (xdoc.DocumentElement.LocalName.Equals(XMLNames.VectoInputDeclaration)) {
 				var components = GetContainigComponents();
 				if (components.Contains(VectoComponents.Vehicle)) {
 					throw new Exception("adding hash for Vehicle is not supported");
@@ -357,19 +336,19 @@ namespace TUGraz.VectoHashing
 				}
 				return components.First();
 			}
-			if (Document.DocumentElement.LocalName.Equals("VectoOutput")) {
+			if (xdoc.DocumentElement.LocalName.Equals("VectoOutput")) {
 				return VectoComponents.VectoManufacturerReport;
 			}
-			if (Document.DocumentElement.LocalName.Equals("VectoCustomerInformation")) {
+			if (xdoc.DocumentElement.LocalName.Equals("VectoCustomerInformation")) {
 				return VectoComponents.VectoCustomerInformation;
 			}
-			if (Document.DocumentElement.LocalName.Equals("VectoOutputPrimaryVehicle")) {
+			if (xdoc.DocumentElement.LocalName.Equals("VectoOutputPrimaryVehicle")) {
 				return VectoComponents.VectoPrimaryVehicleInformation;
 			}
-			if (Document.DocumentElement.LocalName.Equals(XMLNames.ManufacturingStep)) {
+			if (xdoc.DocumentElement.LocalName.Equals(XMLNames.ManufacturingStep)) {
 				return VectoComponents.VectoManufacturingStep;
 			}
-			throw new Exception($"{Document.DocumentElement.LocalName}: unknown document structure! neither input data nor output data format");
+			throw new Exception($"{xdoc.DocumentElement.LocalName}: unknown document structure! neither input data nor output data format");
 		}
 
 		public string GetDigestMethod()
