@@ -21,7 +21,12 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 
 		public bool AbortSimulation(IVehicleContainer container, Exception exception)
 		{
-			if (container.RunData.Mission.MissionType != MissionType.Interurban) {
+            if (container.RunData.JobType.IsFCHV() && (container.RunData.Mission.MissionType == MissionType.Coach) && (exception is VectoSearchAbortedException))
+            {
+                return false;
+            }
+
+            if (container.RunData.Mission.MissionType != MissionType.Interurban) {
 				// for now only consider interurban cycle
 				return true;
 			}
