@@ -9,6 +9,7 @@
 	<UseWindowsForms>true</UseWindowsForms>
 	<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+	<CheckEolTargetFramework>false</CheckEolTargetFramework>
 	<MyType>WindowsForms</MyType>
 		<TargetFrameworks>net48;net6.0-windows;net8.0-windows</TargetFrameworks>
 		<TargetFrameworks Condition="'$(Configuration)' == 'Release'">net48;net6.0-windows;net8.0-windows</TargetFrameworks>
