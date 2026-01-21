@@ -44,7 +44,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			switch (TestPowertrain.Container.GearboxInfo()) {
 				case IAMTGearbox _:
-				case IEPCGearboxMultipleGears _:
+                case IAPTNGearbox _:
+                case IEPCGearboxMultipleGears _:
                     RunPreprocessingAMTGearbox();
 					return;
 				case IAPTGearbox _:
