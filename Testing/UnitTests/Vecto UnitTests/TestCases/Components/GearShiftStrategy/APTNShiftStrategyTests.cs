@@ -739,7 +739,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 
 				};
 			}
-			var axlRatio = 3.240355;
+			
 			var gearsInput = gearboxData.Gears.Select(x => {
 				var r = new Mock<ITransmissionInputData>();
 				r.Setup(g => g.Ratio).Returns(x.Value.Ratio);
@@ -849,7 +849,7 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 		}
 
 
-		private new List<IElectricMotorLoadCurve> GetFullLoadCurveData()
+		private List<IElectricMotorLoadCurve> GetFullLoadCurveData()
 		{
 			var data = new[] {
 				#region data
