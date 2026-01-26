@@ -1361,7 +1361,22 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 							response = Driver.DrivingActionBrake(absTime, ds, targetVelocity, gradient);
 							debug.Add("[DMB-DB-6] Brake", response);
 						}
-					} else {
+                        if (DataBus.ClutchesInfo.First().ClutchClosed(absTime))
+                        {
+                            response = Driver.DrivingActionCoast(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+                            debug.Add("[DMB-DB-6-1] Coast", response);
+                            if (response is ResponseGearShift)
+                            {
+                                response = Driver.DrivingActionCoast(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+                                debug.Add("[DMB-DB-6-2] Coast", response);
+                            }
+							if ((response is ResponseOverload) || (response is ResponseDrivingCycleDistanceExceeded))
+							{
+                                response = Driver.DrivingActionAccelerate(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+                                debug.Add("[DMB-DB-6-3] Accelerate", response);
+                            }
+                        }
+                    } else {
 						Log.Info("Brake -> Overload -> Clutch is closed - Trying brake action again");
 						DataBus.Brakes.BrakePower = 0.SI<Watt>();
 						DataBus.HybridControllerCtl?.RepeatDrivingAction(absTime);
