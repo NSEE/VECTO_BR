@@ -398,7 +398,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 			get; set;
 		}
 		public PowertrainPosition[] ElectricMotorPositions { get; set; }
-		public VectoSimulationJobType VehicleArchitecutre { get; }
+		public VectoSimulationJobType VehicleArchitecture { get; }
 
 		#endregion
 
