@@ -57,7 +57,7 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 		protected virtual Radian GetMaxGradability(IVehicleContainer container)
 		{
 			ITestPowertrain testContainer = null;
-            switch (container.PowertrainInfo.VehicleArchitecutre) {
+            switch (container.PowertrainInfo.VehicleArchitecture) {
 				//case VectoSimulationJobType.ConventionalVehicle:
 				//	PowertrainBuilder.BuildSimplePowertrain(container.RunData, testContainer);
 				//	break;
@@ -78,7 +78,7 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 					testContainer = container.SimplePowertrainBuilder.CreateTestPowertrain(container, false);
 					break;
 				default:
-					throw new VectoException($"unhandled powertrain architecture {container.PowertrainInfo.VehicleArchitecutre} to calculate gradability");
+					throw new VectoException($"unhandled powertrain architecture {container.PowertrainInfo.VehicleArchitecture} to calculate gradability");
 			}
 
 			testContainer.UpdateComponents();
@@ -110,7 +110,7 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 			
 			vehicle.Initialize(0.KMPHtoMeterPerSecond(), gradient);
 
-			var architecture = testPowertrain.Container.VehicleArchitecutre;
+			var architecture = testPowertrain.Container.VehicleArchitecture;
             var initialResponse = vehicle.Request(absTime, simulationInterval, acceleration, gradient, true);
 			var delta = GetDelta(initialResponse as ResponseDryRun, architecture);
 

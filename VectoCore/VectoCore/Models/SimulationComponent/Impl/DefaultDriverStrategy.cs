@@ -254,7 +254,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 												((NextDrivingAction.TriggerDistance - NextDrivingAction.ActionDistance) / DataBus.VehicleInfo.VehicleSpeed)
 												.IsSmaller(
 													Constants.SimulationSettings.LowerBoundTimeInterval / 2) 
-													&& !DataBus.PowertrainInfo.VehicleArchitecutre.IsMultiplePowertrains()
+													&& !DataBus.PowertrainInfo.VehicleArchitecture.IsMultiplePowertrains()
 													&& (DataBus.GearboxInfo().GearboxType.AutomaticTransmission() || !DataBus.ClutchesInfo.First().ClutchClosed(absTime));
 					
 					if (brakingIntervalShort && remainingDistance.IsEqual(ds)) {

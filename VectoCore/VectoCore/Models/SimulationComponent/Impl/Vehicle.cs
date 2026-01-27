@@ -104,7 +104,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected virtual void SetMaxVehicleSpeed()
 		{
-			if (!DataBus.PowertrainInfo.VehicleArchitecutre.IsOneOf(
+			if (!DataBus.PowertrainInfo.VehicleArchitecture.IsOneOf(
 					VectoSimulationJobType.SerialHybridVehicle, 
 					VectoSimulationJobType.Multiple_FCHV,
 					VectoSimulationJobType.Multiple_PEV,
@@ -131,7 +131,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					DataBus.WheelsInfo.DynamicTyreRadius * 0.995;
 			}
 
-			if (DataBus.PowertrainInfo.VehicleArchitecutre.IsMultiplePowertrains())
+			if (DataBus.PowertrainInfo.VehicleArchitecture.IsMultiplePowertrains())
 			{
 				var ems = DataBus.ElectricMotorsInfo.Where(x => x.Position != PowertrainPosition.GEN);
 

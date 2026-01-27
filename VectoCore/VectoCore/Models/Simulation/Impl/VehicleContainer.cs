@@ -409,7 +409,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		public virtual bool HasElectricMotor { get; private set; }
 
-		public VectoSimulationJobType VehicleArchitecutre => RunData.JobType;
+		public VectoSimulationJobType VehicleArchitecture => RunData.JobType;
 
 		public virtual bool HasCombustionEngine { get; private set; }
 
