@@ -54,7 +54,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				case null when !TestPowertrain.Container.HasGearbox:
 				case IGearboxInfo _ when !TestPowertrain.Container.HasGearbox:
 				case DisengagedGearbox _:
-					RunPreprocessingNoGearbox();
+				case IEPCGearboxSingleSpeed _:
+                    RunPreprocessingNoGearbox();
 					return;
 				default:
 					throw new VectoException("no valid gearbox found...");
