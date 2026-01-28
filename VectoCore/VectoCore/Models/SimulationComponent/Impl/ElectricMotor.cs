@@ -532,8 +532,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					((inTorqueDt - outTorque) * avgDtSpeed - emTorque * avgEmSpeed)
 					/ avgDtSpeed;
 
-				CurrentState.ElectricPowerToBattery = retVal.ElectricSystem?.ConsumerPower;
-
+				CurrentState.ElectricPowerToBattery = (AxleNumber == Constants.NOT_IN_AXLE_POWERTRAIN) ? retVal.ElectricSystem?.ConsumerPower : electricPower;
 			}
 			return retVal;
 		}
