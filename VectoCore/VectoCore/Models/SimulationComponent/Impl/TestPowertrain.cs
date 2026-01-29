@@ -46,7 +46,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             RealContainer = realContainer;
 
             Vehicle = Container.VehicleInfo as ITestPowertrainVehicle;
-            Gearboxes = Container.GearboxesCtl.Select(x => x as ITestPowertrainTransmission).ToList();
+            Gearboxes = Container.GearboxesCtl.Where(x => x is ITestPowertrainTransmission).Select(x => x as ITestPowertrainTransmission).ToList();
             
             HybridController = Container.HybridController as ISimpleHybridController;
             BatterySystem = container.BatteryInfo;
