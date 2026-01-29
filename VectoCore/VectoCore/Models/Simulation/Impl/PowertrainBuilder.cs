@@ -1372,8 +1372,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
             ComponentFactory.CreateDummyGearboxInfo(false, container, null, axlePt.AxleNumber);
             ComponentFactory.CreateATClutchInfo(container, axlePt.AxleNumber);
+            ComponentFactory.CreateDummyAxleGearInfo(container, axlePt.AxleNumber);
 
-			return em;
+            return em;
 		}
 
 		/// <summary>
