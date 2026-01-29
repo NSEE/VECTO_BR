@@ -114,11 +114,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			PCCSegments = new PCCSegments();
 
 			PowertrainArchitecture = data.JobType;
-			//TODO (SD): testpowertrain for jobs with multiple powertrains
-			if ((ADAS.PredictiveCruiseControl != PredictiveCruiseControlType.None) && !PowertrainArchitecture.IsMultiplePowertrains()) {
+			
+			if (ADAS.PredictiveCruiseControl != PredictiveCruiseControlType.None) {
 				// create a dummy powertrain for pre-processing and estimations
-				var jobType = data.JobType;
-				var testPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(container, false, jobType);
+				var testPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(container, false, data.JobType);
 				container.AddPreprocessor(new PCCSegmentPreprocessor(testPowertrain, PCCSegments, data?.DriverData.PCC));
 			}
 		}

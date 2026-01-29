@@ -17,7 +17,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
     public class TestPowertrainElectricMotor : ElectricMotor, ITestpowertrainElectricMotor
 	{
 		public TestPowertrainElectricMotor(IVehicleContainer container, ElectricMotorData data,
-			IElectricMotorControl control, PowertrainPosition position) : base(container, data, control, position, false, Constants.NOT_IN_AXLE_POWERTRAIN)
+			IElectricMotorControl control, PowertrainPosition position, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN) : base(container, data, control, position, false, axleNumber)
 		{
 			if (!container.IsTestPowertrain) {
 				throw new VectoException(
