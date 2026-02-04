@@ -130,9 +130,6 @@
 		</xsl:element>
 	</xsl:template>
 
-	<!-- Remove Monitoring Data -->
-	<xsl:template match="*[local-name()='MonitoringData']"/>
-
 	<xsl:template match="*[local-name()='GearshiftCount' and @axleNumber]">
 		<xsl:if test="count(preceding-sibling::*[local-name()='GearshiftCount']) = 0">
 			<xsl:for-each select="../*[local-name()='GearshiftCount']">

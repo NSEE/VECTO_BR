@@ -88,6 +88,15 @@ namespace TUGraz.VectoHashing.Impl
 				&& (VersioningUtil.CompareVersions(versionNodes[0].InnerText, "1.0.0") >= 0);
 		}
 
+		public static bool DoesReportHaveBadJobHashWithMonitoringData(XmlDocument xmlDoc)
+		{
+            var toolVersion = xmlDoc.SelectSingleNode("//*[local-name()='SimulationToolVersion']")?.InnerText;
+
+            return VersioningUtil.IsVersion(toolVersion)
+                && (VersioningUtil.CompareVersions(toolVersion, "5.0.8") <= 0)
+                && (VersioningUtil.CompareVersions(toolVersion, "5.0.0") >= 0);
+        }
+
 		public static XmlDocument ComputeHash(XmlDocument doc, string elementId, IEnumerable<string> canonicalization,
 			string digestMethod)
 		{
