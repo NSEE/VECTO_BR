@@ -168,17 +168,18 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl.FuelCell
 
 			ApplyBatterySafetyMargin(batData, rawFcCalcEntries, maxWindowSize);
 
-			if (TryWithFullDistance(fcData, ref batData, out var result)) {
-				StartSoC = result.InitSoc;
-				WindowSize = maxWindowSize;
-				BinarySearchIterations = 0;
-				return result;
-			}
-
             SearchResult searchResult = null;
 			try
 			{
-				searchResult = BinarySearchFuelCellPowerDemand(fcData, batData);
+                if (TryWithFullDistance(fcData, ref batData, out var result))
+                {
+                    StartSoC = result.InitSoc;
+                    WindowSize = maxWindowSize;
+                    BinarySearchIterations = 0;
+                    return result;
+                }
+
+                searchResult = BinarySearchFuelCellPowerDemand(fcData, batData);
             }
 			catch (Exception ex)
 			{
