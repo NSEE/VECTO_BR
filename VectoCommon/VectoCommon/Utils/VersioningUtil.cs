@@ -14,7 +14,12 @@ namespace TUGraz.VectoCommon.Utils
 		};
 
 		public static bool IsVersion(string text)
-		{ 
+		{
+			if (string.IsNullOrEmpty(text))
+			{
+				return false;
+			}
+
 			var parts = text.Split('-')[0].Split('.');
         
 			return (parts.Length == Enum.GetNames(typeof(VersionPart)).Length) 
