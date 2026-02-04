@@ -417,7 +417,20 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
                 // electric motor only
 				var speedLimit = GetMotorSpeedLimit(absTime);
-				var remainingPower = VectoMath.Max(inTorqueDt * avgDtSpeed, electricSupplyResponse.RESSResponse.MaxDischargePower - electricSupplyResponse.RESSResponse.PowerDemand);
+
+                var remainingPower = inTorqueDt * avgDtSpeed;
+
+                var remainingPowerRESSdischarge = electricSupplyResponse.RESSResponse.MaxDischargePower - electricSupplyResponse.RESSResponse.PowerDemand; //positive
+                var remainingPowerRESScharge = electricSupplyResponse.RESSResponse.MaxChargePower - electricSupplyResponse.RESSResponse.PowerDemand; // negative
+
+                if ((electricSupplyResponse is ElectricSystemOverloadResponse))
+				{
+                    remainingPower = remainingPowerRESScharge;
+                }
+                if ((electricSupplyResponse is ElectricSystemUnderloadResponse))
+                {
+                    remainingPower = remainingPowerRESSdischarge;
+                }
 
 				if (dryRun) {
 					retVal = new ResponseDryRun(this) {
