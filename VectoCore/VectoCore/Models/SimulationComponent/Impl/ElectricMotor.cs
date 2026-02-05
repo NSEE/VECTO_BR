@@ -418,21 +418,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                 // electric motor only
 				var speedLimit = GetMotorSpeedLimit(absTime);
 
-                var remainingPower = inTorqueDt * avgDtSpeed;
+                var remainingPowerDrive = VectoMath.Max(inTorqueDt * avgDtSpeed, electricSupplyResponse.RESSResponse.MaxDischargePower - electricSupplyResponse.RESSResponse.PowerDemand); 
+                var remainingPowerBrk = VectoMath.Min(inTorqueDt * avgDtSpeed, electricSupplyResponse.RESSResponse.MaxChargePower - electricSupplyResponse.RESSResponse.PowerDemand); 
 
-                var remainingPowerRESSdischarge = electricSupplyResponse.RESSResponse.MaxDischargePower - electricSupplyResponse.RESSResponse.PowerDemand; //positive
-                var remainingPowerRESScharge = electricSupplyResponse.RESSResponse.MaxChargePower - electricSupplyResponse.RESSResponse.PowerDemand; // negative
+                var remainingPower = remainingPowerDrive;
 
-                if ((electricSupplyResponse is ElectricSystemOverloadResponse))
-				{
-                    remainingPower = remainingPowerRESScharge;
-                }
-                if ((electricSupplyResponse is ElectricSystemUnderloadResponse))
+                if (remainingPowerBrk.IsSmaller(0.0))
                 {
-                    remainingPower = remainingPowerRESSdischarge;
+                    remainingPower = remainingPowerBrk;
                 }
 
-				if (dryRun) {
+                if (dryRun) {
 					retVal = new ResponseDryRun(this) {
 						DeltaEngineSpeed = outAngularVelocity - speedLimit,
                         Engine = { EngineSpeed = avgDtSpeed},
