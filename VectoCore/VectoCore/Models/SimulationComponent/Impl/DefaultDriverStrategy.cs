@@ -1388,6 +1388,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 							if (DataBus.GearboxInfo().GearEngaged(absTime)) {
 								response = Driver.DrivingActionAccelerate(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
 								debug.Add("[DMB-DB-8] Accelerate", response);
+								if (response is ResponseOverload)
+								{
+									Log.Info("Brake -> Overload --> Accelerate -> Overload -> trying coast action");
+									response = Driver.DrivingActionCoast(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+									debug.Add("[DMB-DB-8-1] Coast", response);
+								}
 							} else {
 								response = Driver.DrivingActionRoll(absTime, ds, targetVelocity, gradient);
 								debug.Add("[DMB-DB-9] Roll", response);
