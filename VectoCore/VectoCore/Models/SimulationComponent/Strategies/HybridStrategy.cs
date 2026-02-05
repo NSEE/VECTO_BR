@@ -1458,6 +1458,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			var eval2 = eval.Where(x =>
 					(x.IgnoreReason & HybridConfigurationIgnoreReason.VehicleSpeedBelowMinSpeedAfterGearshift) == 0)
 				.ToList();
+
 			var prohibitGearshift = eval.Where(x => !x.Gear.Equals(currentGear)).All(x =>
 				(x.IgnoreReason & HybridConfigurationIgnoreReason.VehicleSpeedBelowMinSpeedAfterGearshift) != 0);
 			var best = DoSelectBestOption(eval2, absTime, dt, outTorque, outAngularVelocity, dryRun, currentGear);
@@ -2223,6 +2224,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				}
 			}
 
+			if (ModelData.GearboxSinglePwt.Type is GearboxType.IHPC)
+			{
+				if (resp.Engine.EngineSpeed != resp.Clutch.OutputSpeed)
+				{
+                    tmp.IgnoreReason |= HybridConfigurationIgnoreReason.ClutchSlipping;
+                }
+			}
 
 			//if (resp.Engine.EngineSpeed != null && resp.Gearbox.Gear.Engaged && GearList.HasSuccessor(resp.Gearbox.Gear) && ModelData.GearboxData.Gears[resp.Gearbox.Gear.Gear].ShiftPolygon.IsAboveUpshiftCurve(resp.Engine.TorqueOutDemand, resp.Engine.EngineSpeed)) {
 			//	//lastShiftTime = absTime;
