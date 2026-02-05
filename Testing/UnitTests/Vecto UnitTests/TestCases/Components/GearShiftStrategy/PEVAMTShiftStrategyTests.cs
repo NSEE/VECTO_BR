@@ -599,7 +599,8 @@ namespace TUGraz.Vecto.UnitTests.TestCases.Components.GearShiftStrategy
 					response
 						.Setup(mr => mr.RESSPowerDemand).Returns(powerDemand);
 					var reessResponse = new Mock<IRESSResponse>();
-					reessResponse.SetupGet(r => r.MaxDischargePower).Returns(0.SI<Watt>());
+                    reessResponse.SetupGet(r => r.MaxChargePower).Returns(0.SI<Watt>());
+                    reessResponse.SetupGet(r => r.MaxDischargePower).Returns(0.SI<Watt>());
 					reessResponse.SetupGet(r => r.PowerDemand).Returns(0.SI<Watt>());
 					response.SetupGet(r => r.RESSResponse).Returns(reessResponse.Object);
 
