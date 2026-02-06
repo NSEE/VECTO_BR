@@ -22,7 +22,10 @@ namespace TUGraz.VectoCore.Models.Declaration.PostMortemAnalysisStrategy
 
 		public bool AbortSimulation(IVehicleContainer container, Exception exception)
 		{
-            if (container.RunData.JobType.IsFCHV() && (container.RunData.Mission.MissionType == MissionType.Coach) && (exception is VectoSearchAbortedException))
+            if (container.RunData.JobType.IsFCHV() 
+				&& container.RunData.Mission.MissionType.IsOneOf(MissionType.Coach, MissionType.Interurban) 
+				&& exception.Data.Contains(ErrorCode.ERROR_CODE)
+				&& exception.Data[ErrorCode.ERROR_CODE].ToString() == ErrorCode.FUELCELL_POWERMAP_GENERATION_FAILED)
             {
                 return false;
             }

@@ -114,13 +114,16 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
             Initialize();
             IResponse response = null;
             var iterationCount = 0;
-
+            
             try {
                 do {
                     if (!string.IsNullOrEmpty(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError))
                     {
                         Log.Warn(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError);
-                        throw new VectoSearchAbortedException(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError);
+
+                        var ve = new VectoException(Container.RunData.FuelCellSystemData?.FuelCellPowerMap?.CalculationError);
+                        ve.Data[ErrorCode.ERROR_CODE] = ErrorCode.FUELCELL_POWERMAP_GENERATION_FAILED;
+                        throw ve;
                     }
 
                     response = DoSimulationStep();
