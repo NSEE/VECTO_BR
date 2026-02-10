@@ -439,7 +439,11 @@ Map</a></li>
 <li><a href="#fuel-cell-system-input-file" id="toc-fuel-cell-system-input-file">Fuel Cell System Input
 File</a></li>
 </ul></li>
-<li><a href="#changelog" id="toc-changelog">Changelog</a></li>
+<li><a href="#changelog" id="toc-changelog">Changelog</a>
+<ul>
+<li><a href="#vecto-v5.0.8rc-16122025" id="toc-vecto-v5.0.8rc-16122025">VECTO v5.0.8<em>RC
+(16</em>12*2025)</a></li>
+</ul></li>
 </ul>
 </nav>
 <section id="platform-requirements" class="level1">
@@ -11486,6 +11490,156 @@ single fuel cell system</p>
 </section>
 <section id="changelog" class="level1">
 <h1>Changelog</h1>
+<p><strong>VECTO v5.1.1 Official Release
+(10<em>02</em>2026)</strong></p>
+<ul>
+<li><p>Features</p>
+<ul>
+<li>CodeEU n.a.: Added input (axle<em>number specific) validation for
+multiple</em>powertrain vehicles. (vecto/vecto!537)</li>
+<li>CodeEU n.a.: PCC for multiple powertrains. (vecto/vecto!565)</li>
+</ul></li>
+<li><p>Bug Fixes</p>
+<ul>
+<li>CodeEU n.a.: Modified xArchitecture element in reports to support
+multiple powertrains. (vecto/vecto!533)</li>
+<li>CodeEU n.a.: Calculate TotalPropulsionPower for multiple*powertrain
+vehicles (vecto/vecto!534)</li>
+<li>CodeEU n.a.: Improved error message when not finding primary vehicle
+missions (vecto/vecto!535)</li>
+<li>CodeEU n.a.: Removed engine power from calculation of total
+propulsion for SHEV (vecto/vecto!536)</li>
+<li>CodeEU n.a.: Added missing parameter to method that creates gearbox.
+(vecto/vecto!538)</li>
+<li>CodeEU n.a.: Modified method signature to satisfy interface
+(vecto/vecto!539)</li>
+<li>CodeEU n.a.: Re*enabled unit tests, that required battery input
+data. (vecto/vecto!540)</li>
+<li>CodeEU n.a.: Added OVC info to tests’ vehicle input
+(vecto/vecto!541)</li>
+<li>CodeEU n.a.: Ignore monitoring data when calculating job hash for
+reports (vecto/vecto!544)</li>
+<li>CodeEU n.a.: hashing tests (vecto/vecto!545)</li>
+<li>CodeEU n.a.: Save vehicle in job editor (vecto/vecto!546)</li>
+<li>CodeEU n.a.: Remove xml comments before calculating hash
+(vecto/vecto!547)</li>
+<li>CodeEU n.a.: Hashing Tool ignores comments when verifying XML
+content, and Monitoring… (vecto/vecto!551)</li>
+<li>CodeEU n.a.: Null reference &amp; sample job file
+(vecto/vecto!552)</li>
+<li>CodeEU n.a.: Handle cycles that fail during setup of the follow*up
+run. (vecto/vecto!553)</li>
+<li>CodeEU n.a.: Added pre<em>processing for APT</em>N gearboxes
+(vecto/vecto!554)</li>
+<li>CodeEU n.a.: Overloaded equality operators in GearshiftPosition
+(vecto/vecto!556)</li>
+<li>CodeEU #778, #785, #1029, #849: TC dryRun Response in Motoring
+conditions (vecto/vecto!561)</li>
+<li>CodeEU #639, #644, #646, #647, #664, #665, #666, #667, #668, #669,
+#670, #691: Brake Overload management (vecto/vecto!560)</li>
+<li>CodeEU #1281: Handled PCC pre<em>processing for IEPC
+single</em>speed gearbox (vecto/vecto!562)</li>
+<li>CodeEU n.a.: Corrected EM ElectricPowerToBattery for multiple
+powertrains. (vecto/vecto!563)</li>
+<li>CodeEU n.a.: Added missing dummy axlegear to E4 axle*powertrain
+(vecto/vecto!564)</li>
+<li>CodeEU n.a.: Avoid null reference in TestPowertrain Gearboxes
+(vecto/vecto!566)</li>
+<li>CodeEU #1242.: verification of reports with bad job hashes
+(incl. Monitoring Data) (vecto/vecto!568)</li>
+<li>CodeEU #1246: Handle primary cycles with insufficient fuel cell
+power (vecto/vecto!569)</li>
+<li>CodeEU #535, #536, #539, #541, #600, #604, #993, #689, #690: IHPC *
+add ignoreReason for clutch slipping (vecto/vecto!567)</li>
+<li>CodeEU #1042, #1133, #1138, #1139, #1182, #1191, #1244, #1277: Brake
+Overload management when engaged (vecto/vecto!570)</li>
+<li>CodeEU #1286: date parsing in fuel cell component hashing
+(vecto/vecto!572)</li>
+<li>CodeEU #1254, #1255, #1258, #1282: Integrate RESS ovl/underload in
+EM response (vecto/vecto!571)</li>
+<li>CodeEU n.a.: failing unit tests for shift strategies
+(vecto/vecto!573)</li>
+<li>CodeEU #1254, #1255, #1258, #1282: Integrate RESS ovl/underload in
+EM response * corrected (vecto/vecto!574)</li>
+<li>CodeEU n.a.: Handle InterUrban cycle setup fail in FCHV primary bus
+(vecto/vecto!575)</li>
+<li>CodeEU n.a.: fuel cell input in multiple*powertrain vehicle file
+(vecto/vecto!576)</li>
+<li>CodeEU #1242: Modified version*checking method to accept versions
+without build part (vecto/vecto!577)</li>
+</ul></li>
+<li><p>Refact</p>
+<ul>
+<li>CodeEU n.a.: Modified IDataBus properties/methods to handle single
+&amp; multiple powertrains. (vecto/vecto!542)</li>
+<li>CodeEU n.a.: Renamed VectoRunData properties to indicate single
+powertrain (vecto/vecto!543)</li>
+<li>CodeEU n.a.: Minor cleanup/refactoring to reduce build*time
+warnings. (vecto/vecto!548)</li>
+<li>CodeEU n.a.: Cleaned up root folder (vecto/vecto!549)</li>
+<li>CodeEU n.a.: Cleanup/refactoring to reduce build<em>time warnings
+</em> part II. (vecto/vecto!550)</li>
+<li>CodeEU n.a.: Reduce compile*time warnings part III
+(vecto/vecto!555)</li>
+<li>CodeEU n.a.: Eliminated compile*time warnings in VectoCoreTests.
+(vecto/vecto!557)</li>
+<li>CodeEU n.a.: Reduce compile*time warnings in new Test projects.
+(vecto/vecto!558)</li>
+<li>CodeEU n.a.: Minor refactoring (vecto/vecto!559)</li>
+</ul></li>
+</ul>
+<section id="vecto-v5.0.8rc-16122025" class="level2">
+<h2>VECTO v5.0.8<em>RC (16</em>12*2025)</h2>
+<ul>
+<li><p>Features</p>
+<ul>
+<li>multiple powertrains completed and single bus.
+(vecto/vecto!516)</li>
+<li>Single*gear IEPC in multiple powertrains (vecto/vecto!524)</li>
+</ul></li>
+<li><p>Bug Fixes</p>
+<ul>
+<li>Vecto console references (vecto/vecto!507)</li>
+<li>Completed bus input generation for v2.7 (vecto/vecto!508)</li>
+<li>DefaultDriverStrategy - add accel action after gearshift + roll +
+brake if overload (vecto/vecto!510)</li>
+<li>Add retarder losses to TC max torque request (vecto/vecto!511)</li>
+<li>Rename constructor parameter to match factory method
+(vecto/vecto!512)</li>
+<li>Propagate ‘allowDeprecated’ parameter for XMLReader classes through
+injection hierarchy (vecto/vecto!513)</li>
+<li>Multiple powertrain FCHV bus execution (vecto/vecto!515)</li>
+<li>vsum fields for Retarder, Axlegear for multiple powertrains.
+(vecto/vecto!517)</li>
+<li>Increase max iteration in InterpolateSearch (vecto/vecto!514)</li>
+<li>use of battery SoC limits (input vs default) (vecto/vecto!519)</li>
+<li>Create fuel cell in testpowertrain (required in shift strategy)
+(vecto/vecto!520)</li>
+<li>Added missing function to DummyRunNinjectModule
+(vecto/vecto!521)</li>
+<li>Calculation of axlegear efficiency for P4 vehicles: in case of an
+P4, use EM<em>in to calculate axlegear efficiency instead of
+Brake</em>in (vecto/vecto!522)</li>
+<li>Added multiple-powertrain sample jobs (vecto/vecto!525)</li>
+<li>Avoid null reference in DeclarationData.cs (vecto/vecto!526)</li>
+<li>bugs regarding multiple powertrains. (vecto/vecto!527)</li>
+<li>Modified Torque Converter columns to handle multiple powertrains.
+(vecto/vecto!528)</li>
+<li>OVC-HEV mode for FCHV vehicles, null reference in fuel cells.
+(vecto/vecto!529)</li>
+<li>Don’t allow unsupported variations of multiple powertrain vehicles.
+(vecto/vecto!530)</li>
+<li>Enable unsupported vehicles in development mode
+(vecto/vecto!531)</li>
+</ul></li>
+<li><p>Refactor</p>
+<ul>
+<li>Refactored multiple powertrains builder methods
+(vecto/vecto!509)</li>
+<li>Reduced build-time warnings (vecto/vecto!518)</li>
+<li>Project vecto sw3/task 2/unit tests amdm3 (vecto/vecto!460)</li>
+</ul></li>
+</ul>
 <p><strong>VECTO v5.0.7 Official Release (14-10-2025)</strong></p>
 <ul>
 <li><p>Bug Fixes</p>
@@ -13440,6 +13594,7 @@ lookup</li>
 <li>Bugfix: use unique identifier for jobs in job list</li>
 <li>Bugfix: error in triagulation of fuel consumption map</li>
 </ul>
+</section>
 </section>
 <div id="FOOTER">
 <a target="mainframe" href="mailto:JRC-VECTO@ec.europa.eu">Contact</a>
