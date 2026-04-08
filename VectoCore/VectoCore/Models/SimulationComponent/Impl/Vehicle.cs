@@ -1,0 +1,310 @@
+﻿/*
+* This file is part of VECTO.
+*
+* Copyright © 2012-2019 European Union
+*
+* Developed by Graz University of Technology,
+*              Institute of Internal Combustion Engines and Thermodynamics,
+*              Institute of Technical Informatics
+*
+* VECTO is licensed under the EUPL, Version 1.1 or - as soon they will be approved
+* by the European Commission - subsequent versions of the EUPL (the "Licence");
+* You may not use VECTO except in compliance with the Licence.
+* You may obtain a copy of the Licence at:
+*
+* https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+*
+* Unless required by applicable law or agreed to in writing, VECTO
+* distributed under the Licence is distributed on an "AS IS" basis,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the Licence for the specific language governing permissions and
+* limitations under the Licence.
+*
+* Authors:
+*   Stefan Hausberger, hausberger@ivt.tugraz.at, IVT, Graz University of Technology
+*   Christian Kreiner, christian.kreiner@tugraz.at, ITI, Graz University of Technology
+*   Michael Krisper, michael.krisper@tugraz.at, ITI, Graz University of Technology
+*   Raphael Luz, luz@ivt.tugraz.at, IVT, Graz University of Technology
+*   Markus Quaritsch, markus.quaritsch@tugraz.at, IVT, Graz University of Technology
+*   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
+*/
+
+using System;
+using System.Linq;
+using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.Models.Connector.Ports;
+using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.OutputData;
+using TUGraz.VectoCore.Utils;
+
+namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
+{
+	public class Vehicle : StatefulProviderComponent<Vehicle.VehicleState, IDriverDemandOutPort, IFvInPort, IFvOutPort>,
+		IVehicle, IMileageCounter, IFvInPort, IDriverDemandOutPort, IUpdateable
+	{
+		internal readonly VehicleData ModelData;
+
+		public readonly AirdragData AirdragData;
+
+
+		public Vehicle(IVehicleContainer container, VehicleData modelData, AirdragData airdrag) : base(container)
+		{
+			ModelData = modelData;
+			AirdragData = airdrag;
+			if (AirdragData?.CrossWindCorrectionCurve != null) {
+				AirdragData.CrossWindCorrectionCurve.SetDataBus(container);
+			}
+			var model = container.RunData;
+			
+			
+		}
+
+
+		public IResponse Initialize(MeterPerSecond vehicleSpeed, Radian roadGradient)
+		{
+			SetMaxVehicleSpeed();
+			PreviousState = new VehicleState {
+				Distance = DataBus.DrivingCycleInfo.CycleStartDistance,
+				Velocity = vehicleSpeed,
+				RollingResistance = RollingResistance(roadGradient),
+				SlopeResistance = SlopeResistance(roadGradient),
+				AirDragResistance = AirDragResistance(vehicleSpeed, vehicleSpeed),
+			};
+			PreviousState.VehicleTractionForce = PreviousState.RollingResistance
+												+ PreviousState.AirDragResistance
+												+ PreviousState.SlopeResistance;
+
+			return NextComponent?.Initialize(PreviousState.VehicleTractionForce, vehicleSpeed);
+		}
+
+		protected virtual void SetMaxVehicleSpeed()
+		{
+			if (DataBus.PowertrainInfo.VehicleArchitecutre != VectoSimulationJobType.SerialHybridVehicle && DataBus.PowertrainInfo.HasCombustionEngine) {
+				if (DataBus.GearboxInfo == null || DataBus.AxlegearInfo == null) {
+					throw new VectoException("Powertrain with combustion engine requires gearbox and axlegear!");
+					//return;
+				}
+
+				var maxDrivetrainSpeed = VectoMath.Min(
+					DataBus.EngineInfo.EngineN95hSpeed, 
+					DataBus.GearboxInfo.GetGearData(DataBus.GearboxInfo.NumGears).MaxSpeed);
+
+				MaxVehicleSpeed = maxDrivetrainSpeed /
+					DataBus.GearboxInfo.GetGearData(DataBus.GearboxInfo.NumGears).Ratio /
+					DataBus.AxlegearInfo.Ratio /
+					(DataBus.AngledriveInfo?.Ratio ?? 1.0) * 
+					DataBus.WheelsInfo.DynamicTyreRadius * 0.995;
+			}
+
+			
+			if (DataBus.PowertrainInfo.HasElectricMotor) {
+				var positions = DataBus.PowertrainInfo.ElectricMotorPositions.Where(x => x != PowertrainPosition.GEN).ToArray();
+				;
+				if (positions.Length > 1) {
+					throw new VectoException("Multiple electrical machines are currently not supported");
+				}
+
+				var pos = positions.First();
+				if (pos.IsBatteryElectric()) {
+					var maxEMSpeed = DataBus.ElectricMotorInfo(pos).MaxSpeed;
+
+					var ratio = 1.0;
+					if (pos == PowertrainPosition.BatteryElectricE3) {
+						ratio = DataBus.AxlegearInfo.Ratio;
+					}
+
+					if (pos == PowertrainPosition.BatteryElectricE2 || pos == PowertrainPosition.IEPC) {
+						ratio = DataBus.GearboxInfo.GetGearData(DataBus.GearboxInfo.NumGears).Ratio *
+								(DataBus.AxlegearInfo?.Ratio ?? 1.0) *
+								(DataBus.AngledriveInfo?.Ratio ?? 1.0);
+
+						maxEMSpeed = VectoMath.Min(
+							DataBus.ElectricMotorInfo(pos).MaxSpeed,
+							DataBus.GearboxInfo.GetGearData(DataBus.GearboxInfo.NumGears).MaxSpeed);
+					}
+					MaxVehicleSpeed = maxEMSpeed / ratio * DataBus.WheelsInfo.DynamicTyreRadius * 0.995;
+				}
+			}
+		}
+
+		public IResponse Initialize(MeterPerSecond vehicleSpeed, Radian roadGradient, MeterPerSquareSecond startAcceleration)
+		{
+			//CurrentState.Velocity = vehicleSpeed + startAcceleration * Constants.SimulationSettings.TargetTimeInterval;
+			var vehicleAccelerationForce = AccelerationForce(startAcceleration)
+											+ RollingResistance(roadGradient)
+											+
+											AirDragResistance(vehicleSpeed,
+												vehicleSpeed + startAcceleration * Constants.SimulationSettings.TargetTimeInterval)
+											+ SlopeResistance(roadGradient);
+
+			var retVal = NextComponent.Initialize(vehicleAccelerationForce, vehicleSpeed);
+			return retVal;
+		}
+
+		public IResponse Request(Second absTime, Second dt, MeterPerSquareSecond acceleration, Radian gradient,
+			bool dryRun = false)
+		{
+
+			Log.Debug("Vehicle: acceleration: {0}", acceleration);
+			CurrentState.SimulationInterval = dt;
+			CurrentState.Acceleration = acceleration;
+			CurrentState.Velocity = PreviousState.Velocity + acceleration * dt;
+			if (CurrentState.Velocity.IsEqual(0.SI<MeterPerSecond>(),
+				Constants.SimulationSettings.VehicleSpeedHaltTolerance)) {
+				CurrentState.Velocity = 0.SI<MeterPerSecond>();
+			}
+			CurrentState.Distance = PreviousState.Distance + PreviousState.Velocity * dt + acceleration * dt * dt / 2;
+
+			CurrentState.DriverAcceleration = AccelerationForce(acceleration);
+			CurrentState.RollingResistance = (PreviousState.Velocity + CurrentState.Velocity).IsEqual(0, 1e-9) ? 0.SI<Newton>() : RollingResistance(gradient);
+			try {
+				CurrentState.AirDragResistance = AirDragResistance(PreviousState.Velocity, CurrentState.Velocity);
+			} catch (VectoException ex) {
+				Log.Warn("Exception during calculation of AirDragResistance: absTime: {0}, dist: {1}, v: {2}. {3}", absTime,
+					CurrentState.Distance, CurrentState.Velocity, ex);
+				CurrentState.AirDragResistance = AirDragResistance(VectoMath.Max(0, PreviousState.Velocity),
+					VectoMath.Max(0, CurrentState.Velocity));
+			}
+			CurrentState.SlopeResistance = SlopeResistance(gradient);
+
+			// DriverAcceleration = vehicleTractionForce - RollingResistance - AirDragResistance - SlopeResistance
+			CurrentState.VehicleTractionForce = CurrentState.DriverAcceleration
+												+ CurrentState.RollingResistance
+												+ CurrentState.AirDragResistance
+												+ CurrentState.SlopeResistance;
+
+			var retval = NextComponent.Request(absTime, dt, CurrentState.VehicleTractionForce,
+				CurrentState.Velocity, dryRun);
+			retval.Vehicle.VehicleSpeed = CurrentState.Velocity;
+			return retval;
+		}
+
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
+		{
+			var averageVelocity = (PreviousState.Velocity + CurrentState.Velocity) / 2.0;
+
+			container[ModalResultField.v_act] = averageVelocity;
+
+			container[ModalResultField.P_veh_inertia] = CurrentState.DriverAcceleration * averageVelocity;
+			container[ModalResultField.P_roll] = CurrentState.RollingResistance * averageVelocity;
+			container[ModalResultField.P_air] = CurrentState.AirDragResistance * averageVelocity;
+			container[ModalResultField.P_slope] = CurrentState.SlopeResistance * averageVelocity;
+			container[ModalResultField.P_trac] = CurrentState.VehicleTractionForce * averageVelocity;
+
+			// sanity check: is the vehicle in step with the cycle?
+			if (container[ModalResultField.dist] == DBNull.Value) {
+				Log.Warn("Distance field is not set!");
+			} else {
+				var distance = (SI)container[ModalResultField.dist];
+                if (!distance.IsEqual(CurrentState.Distance))
+                {
+                    Log.Warn("Vehicle Distance diverges from Cycle by {0} [m]. Distance: {1}",
+                        (distance - CurrentState.Distance).Value(), distance);
+                }
+            }
+		}
+
+		public Newton RollingResistance(Radian gradient)
+		{
+			var weight = ModelData.TotalVehicleMass;
+			var gravity = Physics.GravityAccelleration;
+			var rollCoefficient = ModelData.TotalRollResistanceCoefficient;
+
+			var retVal = Math.Cos(gradient.Value()) * weight * gravity * rollCoefficient;
+			Log.Debug("RollingResistance: {0}", retVal);
+			return retVal;
+		}
+
+		protected internal Newton AccelerationForce(MeterPerSquareSecond accelleration)
+		{
+			var retVal = ModelData.TotalVehicleMass * accelleration;
+			Log.Debug("DriverAcceleration: {0}", retVal);
+			return retVal;
+		}
+
+		public Newton SlopeResistance(Radian gradient)
+		{
+			var retVal = ModelData.TotalVehicleMass * Physics.GravityAccelleration * Math.Sin(gradient.Value());
+			Log.Debug("SlopeResistance: {0}", retVal);
+			return retVal;
+		}
+
+		public MeterPerSecond MaxVehicleSpeed { get; set; }
+
+		public Newton AirDragResistance(MeterPerSecond previousVelocity, MeterPerSecond nextVelocity)
+		{
+			var vAverage = (previousVelocity + nextVelocity) / 2;
+			if (vAverage.IsEqual(0)) {
+				return 0.SI<Newton>();
+			}
+			var result = ComputeAirDragPowerLoss(previousVelocity, nextVelocity) / vAverage;
+
+			Log.Debug("AirDragResistance: {0}", result);
+			return result;
+		}
+
+		private Watt ComputeAirDragPowerLoss(MeterPerSecond v1, MeterPerSecond v2)
+		{
+			return AirdragData.CrossWindCorrectionCurve.AverageAirDragPowerLoss(v1, v2, ModelData.AirDensity);
+		}
+
+		public Meter Distance => PreviousState.Distance;
+
+		public MeterPerSecond VehicleSpeed => PreviousState.Velocity;
+
+		public bool VehicleStopped => PreviousState.Velocity.IsEqual(0.SI<MeterPerSecond>(), 0.01.SI<MeterPerSecond>());
+
+		public Kilogram VehicleMass => ModelData.TotalCurbMass;
+
+		public Kilogram VehicleLoading => ModelData.Loading;
+
+		public Kilogram TotalMass => ModelData.TotalVehicleMass;
+
+		public CubicMeter CargoVolume => ModelData.CargoVolume;
+
+		public class VehicleState
+		{
+			public Meter Distance = 0.SI<Meter>();
+			public Second SimulationInterval = 0.SI<Second>();
+			public Newton AirDragResistance = 0.SI<Newton>();
+			public Newton DriverAcceleration = 0.SI<Newton>();
+			public Newton RollingResistance = 0.SI<Newton>();
+			public Newton SlopeResistance = 0.SI<Newton>();
+			public Newton VehicleTractionForce = 0.SI<Newton>();
+			public MeterPerSecond Velocity = 0.SI<MeterPerSecond>();
+			public MeterPerSquareSecond Acceleration = 0.SI<MeterPerSquareSecond>();
+
+			public override string ToString() =>
+				$"v: {Velocity}  " +
+				$"a: {Acceleration}, " +
+				$"dt: {SimulationInterval}, " +
+				$"driver_acc: {DriverAcceleration}, " +
+				$"roll_res: {RollingResistance}, " +
+				$"slope_res: {SlopeResistance}, " +
+				$"air_drag: {AirDragResistance}, " +
+				$"traction force: {VehicleTractionForce}";
+
+			public VehicleState Clone() => (VehicleState)MemberwiseClone();
+		}
+
+		#region Implementation of IUpdateable
+
+		protected override bool DoUpdateFrom(object other) {
+			if (other is Vehicle v) {
+				PreviousState = v.PreviousState.Clone();
+				MaxVehicleSpeed = v.MaxVehicleSpeed;
+				return true;
+			}
+			return false;
+		}
+
+		#endregion
+	}
+}

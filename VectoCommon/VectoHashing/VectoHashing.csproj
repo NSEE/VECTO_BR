@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Title>Vehicle Energy Consumption Calculation TOol: VectoHashing</Title>
+    <Description>Provides Vecto Hashing functionality.</Description>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>TUGraz.VectoHashing</RootNamespace>
+    <AssemblyName>VectoHashing</AssemblyName>
+    <TargetFrameworks>net48;net6.0</TargetFrameworks>
+    <Configurations>Debug;Release;MockupRelease</Configurations>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <PackageReference Include="System.Security.Cryptography.Xml">
+      <Version>7.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="System.Security.Cryptography.Xml">
+      <Version>6.0.0</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\XSLT\SortInputData.v3.xslt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VectoCommon\VectoCommon.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\XSLT\SortInputData.v3.xslt" />
+    <EmbeddedResource Include="Resources\XSLT\SortInputData.xslt" />
+  </ItemGroup>
+</Project>

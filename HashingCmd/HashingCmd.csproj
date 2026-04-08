@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>HashingCmd</RootNamespace>
+    <AssemblyName>hashingcmd</AssemblyName>
+    <TargetFrameworks>net48;net6.0</TargetFrameworks>
+
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VectoCommon\VectoCommon\VectoCommon.csproj" />
+    <ProjectReference Include="..\VectoCommon\VectoHashing\VectoHashing.csproj" />
+    <ProjectReference Include="..\VectoCore\VectoCore\VectoCore.csproj" />
+  </ItemGroup>
+</Project>

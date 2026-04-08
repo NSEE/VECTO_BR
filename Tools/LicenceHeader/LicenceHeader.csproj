@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>LicenceHeader</RootNamespace>
+    <AssemblyName>LicenceHeader</AssemblyName>
+    <TargetFrameworks>net6.0</TargetFrameworks>
+     
+  </PropertyGroup>
+  <ItemGroup>
+    <None Update="header.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
