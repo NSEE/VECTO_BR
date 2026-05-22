@@ -1,22 +1,13 @@
 ﻿using System;
-using System.CodeDom;
-using System.Diagnostics;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.InputData.FileIO.XML;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader;
 using VECTO3GUI2020.Helper;
 using VECTO3GUI2020.Properties;
 using VECTO3GUI2020.ViewModel.Implementation.Common;
 using VECTO3GUI2020.ViewModel.Interfaces;
-using VECTO3GUI2020.ViewModel.Interfaces.JobEdit.Vehicle;
-using VECTO3GUI2020.ViewModel.Interfaces.JobEdit.Vehicle.Components;
 using VECTO3GUI2020.ViewModel.MultiStage.Interfaces;
 
 namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
@@ -24,7 +15,6 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 	public class NewMultiStageJobViewModel : ViewModelBase
 	{
 		private readonly Settings _settings = Settings.Default;
-		private ICommand _addVifCommand;
 		private string _vifPath;
 		private IDialogHelper _dialogHelper;
 		private IXMLInputDataReader _inputDataReader;
@@ -64,7 +54,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 
 		public ICommand AddVifFileCommand
 		{
-			get => _addVifCommand ?? new RelayCommand(AddVifFileExecute, () => true);
+			get => new RelayCommand(AddVifFileExecute, () => true);
 		}
 
 		private void AddVifFileExecute()
@@ -104,12 +94,11 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		}
 
 
-		private ICommand _closeWindow;
 		private readonly IJobListViewModel _jobListViewModel;
 
-		public ICommand CloseWindow
+		public new ICommand CloseWindow
 		{
-			get => _closeWindow ?? new RelayCommand<Window>(window => base.CloseWindow(window, _dialogHelper, false),
+			get => new RelayCommand<Window>(window => base.CloseWindow(window, _dialogHelper, false),
 				(window) => MultiStageJobViewModel == null);
 		}
 

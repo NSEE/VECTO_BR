@@ -40,8 +40,10 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
@@ -91,13 +93,14 @@ namespace TUGraz.VectoCore.Tests.Integration
 		}
 
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearboxTorqueLimitsAbove90FLD()
 		{
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(GearboxLimitJobDecl_865);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputDataProvider, null, null, null, false);
 
-			var run = factory.RunDataFactory.NextRun().First();
+            var run = factory.RunDataFactory.NextRun().First();
 
 			var engineData = run.EngineData;
 
@@ -118,13 +121,13 @@ namespace TUGraz.VectoCore.Tests.Integration
 			Assert.AreEqual(-115, engineData.FullLoadCurves[6].MaxDragTorque.Value());
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearboxTorqueLimitsBelow90FLD()
 		{
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(GearboxLimitJobDecl_800);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null);
-
-			var run = factory.RunDataFactory.NextRun().First();
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputDataProvider, null, null, null, false);
+            var run = factory.RunDataFactory.NextRun().First();
 
 			var engineData = run.EngineData;
 
@@ -145,13 +148,13 @@ namespace TUGraz.VectoCore.Tests.Integration
 			Assert.AreEqual(-115, engineData.FullLoadCurves[6].MaxDragTorque.Value());
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestVehicleTorqueLimitsAbove95FLD()
 		{
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(VehicleLimitJobDecl_910);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null);
-
-			var run = factory.RunDataFactory.NextRun().First();
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputDataProvider, null, null, null, false);
+            var run = factory.RunDataFactory.NextRun().First();
 
 			var engineData = run.EngineData;
 
@@ -172,13 +175,13 @@ namespace TUGraz.VectoCore.Tests.Integration
 			Assert.AreEqual(-115, engineData.FullLoadCurves[6].MaxDragTorque.Value());
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestVehicleTorqueLimitsBelow95FLD()
 		{
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(VehicleLimitJobDecl_850);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null);
-
-			var run = factory.RunDataFactory.NextRun().First();
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputDataProvider, null, null, null, false);
+            var run = factory.RunDataFactory.NextRun().First();
 
 			var engineData = run.EngineData;
 
@@ -208,8 +211,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var fileWriter = new FileOutputWriter(file);
 			var sumData = new SummaryDataContainer(fileWriter);
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(file);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, fileWriter);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputDataProvider, fileWriter, null, null, false);
+            factory.WriteModalResults = true;
 
 
 			var jobContainer = new JobContainer(sumData);
@@ -228,8 +231,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var fileWriter = new FileOutputWriter(file);
 			var sumData = new SummaryDataContainer(fileWriter);
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(file);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, fileWriter);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputDataProvider, fileWriter, null, null, false);
+            factory.WriteModalResults = true;
 			factory.ActualModalData = true;
 
 
@@ -248,8 +251,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var fileWriter = new FileOutputWriter(file);
 			var sumData = new SummaryDataContainer(fileWriter);
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(file);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, fileWriter);
-			factory.WriteModalResults = true; //ActualModalData = true
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputDataProvider, fileWriter, null, null, false);
+            factory.WriteModalResults = true; //ActualModalData = true
 
 
 			var jobContainer = new JobContainer(sumData);
@@ -277,8 +280,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobFile);
 			var fileWriter = new FileOutputWriter(jobFile);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, fileWriter, null, null, false);
+            factory.WriteModalResults = true;
 			factory.Validate = false;
 			var sumData = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumData);
@@ -298,7 +301,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 		{
 			var inputData = xmlInputReader.CreateDeclaration(jobFile);
 			var fileWriter = new FileOutputWriter(jobFile);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, fileWriter, null, null, false);
 			factory.WriteModalResults = true;
 			factory.Validate = false;
 			var sumData = new SummaryDataContainer(fileWriter);
@@ -322,7 +325,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var fileWriter = new FileOutputWriter(file);
 			var sumData = new SummaryDataContainer(fileWriter);
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(file);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, fileWriter);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputDataProvider, fileWriter, null, null, false);
 			var jobContainer = new JobContainer(sumData);
 			jobContainer.AddRuns(factory);
 			jobContainer.Execute();
@@ -339,7 +342,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var fileWriter = new FileOutputWriter(file);
 			var sumData = new SummaryDataContainer(fileWriter);
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(file);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, fileWriter);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputDataProvider, fileWriter, null, null, false);
 			var jobContainer = new JobContainer(sumData);
 			AssertHelper.Exception<VectoException>(() => jobContainer.AddRuns(factory), messageContains: "Only the last 1 or 2 gears can be disabled. Disabling gear ");
 		}
@@ -352,8 +355,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var fileWriter = new FileOutputWriter(file);
 			var sumData = new SummaryDataContainer(fileWriter);
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(file);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputDataProvider, fileWriter);
-			var jobContainer = new JobContainer(sumData);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputDataProvider, fileWriter, null, null, false);
+            var jobContainer = new JobContainer(sumData);
 			jobContainer.AddRuns(factory);
 			jobContainer.Execute();
 			jobContainer.WaitFinished();
@@ -369,7 +372,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var fileWriter = new FileOutputWriter(file);
 			var sumData = new SummaryDataContainer(fileWriter);
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(file);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputDataProvider, fileWriter);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputDataProvider, fileWriter, null, null, false);
 			var jobContainer = new JobContainer(sumData);
 			AssertHelper.Exception<VectoException>(() => jobContainer.AddRuns(factory), messageContains: "Only the last 1 or 2 gears can be disabled. Disabling gear ");
 		}

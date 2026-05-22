@@ -31,6 +31,7 @@
 
 using System.Globalization;
 using System.IO;
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
@@ -43,20 +44,23 @@ using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
-using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Tests.Integration;
 using TUGraz.VectoCore.Tests.Utils;
+using MockDriver = TUGraz.VectoCore.Tests.Utils.MockDriver;
 
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 {
-	[TestFixture]
+    [TestFixture]
 	[Parallelizable(ParallelScope.All)]
 	public class DistanceBasedDrivingCycleTest
 	{
-		public const string ShortCycle = @"TestData/Cycles/Coach_24t_xshort.vdri";
+        private StandardKernel _kernel;
+
+        public const string ShortCycle = @"TestData/Cycles/Coach_24t_xshort.vdri";
 
 		public const double Tolerance = 0.0001;
 
@@ -64,9 +68,11 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestLimitRequst()
 		{
 			var data = new string[] {
@@ -79,11 +85,11 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				" 20,  30, -0.1,   0"
 			};
 			var cycleData = SimpleDrivingCycles.CreateCycleData(data);
-			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData() {
-				GearshiftParameters = new ShiftStrategyParameters() {
+			var container = _kernel.Get<IPowertrainBuilder>().Build(new VectoRunData() {
+				GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 					StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
 					StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration
-				}
+				},
 			}, null, null);
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 
@@ -163,17 +169,19 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			Assert.IsInstanceOf<ResponseSuccess>(response);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestDistanceRequest()
 		{
 			var cycleData = DrivingCycleDataReader.ReadFromFile(ShortCycle, CycleType.DistanceBased, false);
 
-			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData() {
-				GearshiftParameters = new ShiftStrategyParameters() {
+			var container = _kernel.Get<IPowertrainBuilder>().Build(new VectoRunData() {
+				GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 					StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
 					StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration
 				}
 			}, null, null);
+		
 		
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 
@@ -292,7 +300,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 	public class DummyVehicleInfo : VectoSimulationComponent, IVehicleInfo
 	{
-		public DummyVehicleInfo(IVehicleContainer container) : base(container)
+		public DummyVehicleInfo(IVehicleContainer container) : base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
 		{
 			
 		}
@@ -325,7 +333,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 		public CubicMeter CargoVolume => throw new System.NotImplementedException();
 
-		public Newton AirDragResistance(MeterPerSecond previousVelocity, MeterPerSecond nextVelocity)
+		public AirDragLossResult AirDragResistance(MeterPerSecond previousVelocity, MeterPerSecond nextVelocity)
 		{
 			throw new System.NotImplementedException();
 		}

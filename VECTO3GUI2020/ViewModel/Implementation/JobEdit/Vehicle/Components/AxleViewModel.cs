@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using VECTO3GUI2020.ViewModel.Implementation.Common;
@@ -20,9 +21,18 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
 
 		private bool _twinTyres;
 
+        private NewtonMeter _wheelEndFriction;
+
+        private string _wheelEndCertificationNumber;
+
         public bool TwinTyres { get => _twinTyres; set => SetProperty(ref _twinTyres, value); }
 
+        public NewtonMeter WheelEndFriction { get => _wheelEndFriction; set => SetProperty(ref _wheelEndFriction, value); }
 
+        public string WheelEndCertificationNumber { 
+            get => _wheelEndCertificationNumber; 
+            set => SetProperty(ref _wheelEndCertificationNumber, value); 
+        }
 
         private AxleType _axleType;
         public AxleType AxleType { get => _axleType; set => SetProperty(ref _axleType, value); }
@@ -31,7 +41,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
 		public int AxleNumber { get => _axleNumber;
 			set => SetProperty(ref _axleNumber, value);
 		}
-		public DataSource DataSource => _dataSource;
+		public DataSource DataSource => null;
 
 		private ITyreViewModel _tyreViewModel;
 		public ITyreViewModel TyreViewModel { 
@@ -41,8 +51,8 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
 		ITyreDeclarationInputData IAxleDeclarationInputData.Tyre => _tyreViewModel;
 
         private bool _steered;
-		private DataSource _dataSource;
-		public bool Steered { get => _steered; set => SetProperty(ref _steered, value); }
+		
+        public bool Steered { get => _steered; set => SetProperty(ref _steered, value); }
 
 
 

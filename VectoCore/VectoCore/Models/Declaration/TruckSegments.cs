@@ -32,7 +32,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
@@ -93,7 +92,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			Kilogram grossVehicleMassRating, Kilogram curbWeight, bool vocational, bool considerInvalid,
 			bool isBatteryElectric, bool hasNgFuel, bool isOvcHev)
 		{
-			var row = GetSegmentDataRow(vehicleCategory, axleConfiguration, grossVehicleMassRating, vocational, considerInvalid);
+			var row = GetSegmentDataRow(vehicleCategory, axleConfiguration, grossVehicleMassRating, vocational, considerInvalid, throwExceptionOnFailure: false);
 			if (row == null) {
 				return new Segment() { Found = false };
 			}
@@ -121,9 +120,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private DataRow GetSegmentDataRow(
 			VehicleCategory vehicleCategory, AxleConfiguration axleConfiguration,
-			Kilogram grossVehicleMassRating, bool vocational, bool considerInvalid)
+			Kilogram grossVehicleMassRating, bool vocational, bool considerInvalid, bool throwExceptionOnFailure = true)
 		{
-			DataRow row;
+			DataRow row = null;
 			try {
 				row = _segmentTable.AsEnumerable().First(
 					r => {
@@ -143,8 +142,12 @@ namespace TUGraz.VectoCore.Models.Declaration
 				var errorMessage = string.Format(
 					ErrorMessage, vehicleCategory, axleConfiguration.GetName(),
 					grossVehicleMassRating);
-				Log.Fatal(errorMessage);
-				throw new VectoException(errorMessage, e);
+
+				if (throwExceptionOnFailure)
+				{
+                    Log.Fatal(errorMessage);
+                    throw new VectoException(errorMessage, e);
+                }
 			}
 
 			return row;

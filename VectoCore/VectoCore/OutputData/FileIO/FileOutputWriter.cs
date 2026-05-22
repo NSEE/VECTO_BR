@@ -34,11 +34,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Utils;
@@ -209,17 +207,15 @@ namespace TUGraz.VectoCore.OutputData.FileIO
 
 		public virtual void WriteReport(ReportType type, Stream data)
 		{
-			Stream stream = null;
-			switch (type) {
-				case ReportType.DeclarationReportPdf:
-					stream = new FileStream(PDFReportName, FileMode.Create);
-					break;
-				default:
+			if (type != ReportType.DeclarationReportPdf)
+			{
+                throw new ArgumentOutOfRangeException($"ReportType is {type}, but {ReportType.DeclarationReportPdf} is expected.");
+            }
 
-					throw new ArgumentOutOfRangeException("type");
-			}
-			data.CopyToAsync(stream);
-			//stream.Write(data);
+			using (Stream stream = new FileStream(PDFReportName, FileMode.Create))
+			{
+                data.CopyToAsync(stream);
+            }
 		}
 	}
 }

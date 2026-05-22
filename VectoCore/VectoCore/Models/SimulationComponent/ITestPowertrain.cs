@@ -1,21 +1,25 @@
 ﻿using System.Collections.Generic;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
-using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent
 {
 
-    public interface ITestPowertrain<T> where T : class, IHybridControlledGearbox, IGearbox
+    public interface ITestPowertrain 
     {
         void UpdateComponents();
 
-        T Gearbox { get; }
+		ITestPowertrainVehicle Vehicle { get; }
 
-        ICombustionEngine CombustionEngine { get; }
+        IList<ITestPowertrainTransmission> Gearboxes { get; }
+
+        ITestPowertrainTransmission GetGearbox(int axleNumber);
+
+        ITestpowertrainCombustionEngine CombustionEngine { get; }
 
         ISimpleVehicleContainer Container { get; }
 
@@ -27,19 +31,21 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 
         IBrakes Brakes { get; }
 
-        IElectricMotor ElectricMotor { get; }
-        Dictionary<PowertrainPosition, ElectricMotor> ElectricMotorsUpstreamTransmission { get; }
+        ITestpowertrainElectricMotor GetElectricMotor(int axleNumber);
+		IList<ITestpowertrainElectricMotor> ElectricMotors { get; } 
+		IList<IElectricMotor> ElectricMotorsUpstreamTransmission { get; }
         IDCDCConverter DCDCConverter { get; }
-        ITorqueConverter TorqueConverter { get; }
-        IElectricChargerPort Charger { get; }
-		IElectricEnergyStorage BatterySystem { get; }
+        IList<ITorqueConverter> TorqueConverters { get; }
+		ITestpowertrainGensetChargerAdapter Charger { get; }
+		IRESSInfo BatterySystem { get; }
+
     }
 
     public interface ITestGenset
     {
-        ICombustionEngine CombustionEngine { get; }
+		ITestpowertrainCombustionEngine CombustionEngine { get; }
 
-        IElectricMotor ElectricMotor { get; }
+		ITestpowertrainElectricMotor ElectricMotor { get; }
 
         IGensetMotorController ElectricMotorCtl { get; }
 

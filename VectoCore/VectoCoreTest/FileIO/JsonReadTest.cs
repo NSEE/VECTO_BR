@@ -31,10 +31,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Ninject;
 using NUnit.Framework;
-using System.IO;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
@@ -43,9 +45,12 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.Utils;
 
 
@@ -55,14 +60,17 @@ namespace TUGraz.VectoCore.Tests.FileIO
 	[Parallelizable(ParallelScope.All)]
 	public class JsonReadTest
 	{
-		private const string TestJobFile = @"TestData/Jobs/40t_Long_Haul_Truck.vecto";
+        private StandardKernel _kernel;
+
+        private const string TestJobFile = @"TestData/Jobs/40t_Long_Haul_Truck.vecto";
 		private const string TestVehicleFile = @"TestData/Components/24t Coach.vveh";
 
 		[OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		[TestCase]
 		public void ReadJobTest()
@@ -206,8 +214,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 						VehicleCategory = VehicleCategory.RigidTruck,
 						DynamicTyreRadius = 0.5.SI<Meter>()
 					},
-					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1} }
-				}, null);
+					AxleGearSinglePwt = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1} }
+				});
 			Assert.AreEqual(ratios.Length, gbxData.Gears.Count);
 
 			// interpreted as gearbox with first and second gear using TC (due to gear ratios)
@@ -219,7 +227,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Assert.IsFalse(gbxData.Gears[3].HasTorqueConverter);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void ReadGearboxSerialTC()
 		{
 			var inputProvider = JSONInputDataFactory.ReadGearbox(@"TestData/Components/AT_GBX/GearboxSerial.vgbx");
@@ -247,8 +256,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 						VehicleCategory = VehicleCategory.RigidTruck,
 						DynamicTyreRadius = 0.5.SI<Meter>()
 					},
-					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
-				}, null);
+					AxleGearSinglePwt = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+				});
 
 				//inputProvider,
 				//MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData/Components/AT_GBX/Engine.veng", 0),
@@ -267,7 +276,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Assert.AreEqual(gear.Ratio, gear.TorqueConverterRatio);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void ReadGearboxPowersplitTC()
 		{
 			var inputProvider = JSONInputDataFactory.ReadGearbox(@"TestData/Components/AT_GBX/GearboxPowerSplit.vgbx");
@@ -295,8 +305,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 						VehicleCategory = VehicleCategory.RigidTruck,
 						DynamicTyreRadius = 0.5.SI<Meter>()
 					},
-					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
-				}, null);
+					AxleGearSinglePwt = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+				});
 
 				//inputProvider,
 				//MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData/Components/AT_GBX/Engine.veng", 0),
@@ -314,7 +324,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Assert.AreEqual(1, gbxData.Gears[1].TorqueConverterRatio);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void ReadGearboxDualTCTruck()
 		{
 			var inputProvider = JSONInputDataFactory.ReadGearbox(@"TestData/Components/AT_GBX/GearboxSerialDualTC.vgbx");
@@ -342,8 +353,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 						VehicleCategory = VehicleCategory.RigidTruck,
 						DynamicTyreRadius = 0.5.SI<Meter>()
 					},
-					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
-				}, null);
+					AxleGearSinglePwt = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+				});
 				//inputProvider,
 				//MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData/Components/AT_GBX/Engine.veng", 0),
 				//(IGearshiftEngineeringInputData)inputProvider, 2.1,
@@ -362,7 +373,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Assert.AreEqual(gear.Ratio, gear.TorqueConverterRatio);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void ReadGearboxSingleTCBus()
 		{
 			var inputProvider = JSONInputDataFactory.ReadGearbox(@"TestData/Components/AT_GBX/GearboxSerialDualTC.vgbx");
@@ -390,8 +402,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 						VehicleCategory = VehicleCategory.HeavyBusPrimaryVehicle,
 						DynamicTyreRadius = 0.5.SI<Meter>()
 					},
-					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
-				}, null);
+					AxleGearSinglePwt = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+				});
 				//inputProvider,
 				//MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData/Components/AT_GBX/Engine.veng", 0),
 				//(IGearshiftEngineeringInputData)inputProvider, 2.1,
@@ -410,7 +422,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Assert.AreEqual(gear.Ratio, gear.TorqueConverterRatio);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void ReadGearboxDualTCBus()
 		{
 			var inputProvider = JSONInputDataFactory.ReadGearbox(@"TestData/Components/AT_GBX/GearboxSerialDualTCBus.vgbx");
@@ -438,8 +451,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 						VehicleCategory = VehicleCategory.RigidTruck,
 						DynamicTyreRadius = 0.5.SI<Meter>()
 					},
-					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
-				}, null);
+					AxleGearSinglePwt = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+				});
 				
 				//inputProvider,
 				//MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData/Components/AT_GBX/Engine.veng", 0),
@@ -458,6 +471,8 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			var gear = gbxData.Gears[2];
 			Assert.AreEqual(gear.Ratio, gear.TorqueConverterRatio);
 		}
+
+
 
 		//[TestCase]
 		//public void TestReadingElectricTechlist()
@@ -486,6 +501,104 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Assert.AreEqual("AngleGear.vtlm", angleGear["LossMap"].Value<string>());
 		}
 
+		[
+		TestCase(@"Group5_Tractor_4x2/Class5_Tractor_DECL.vecto", 3.2, double.NaN, -3.2, TestName="JSON_job_WheelBearings_Conventional"),
+		TestCase(@"GenericVehicleE2/BEV_E2.vecto", 3.2, double.NaN, -3.2, TestName="JSON_job_WheelBearings_HEV_BEV"),
+		TestCase(@"GenericIEPC/IEPC_Gbx1Speed/IEPC__Gbx1.vecto", 3.2, double.NaN, -3.2, TestName="JSON_job_WheelBearings_IEPC"),
+		]
+		public void ReadJobWithWheelBearings(string jobfile, double friction0, double friction1, double delta)
+		{
+			var testDir = @"TestData/Generic Vehicles/Declaration Mode";
+			var filename = Path.Combine(testDir, jobfile);
+
+			var inputProvider = (IDeclarationInputDataProvider)JSONInputDataFactory.ReadJsonJob(filename);
+
+			Assert.NotNull(inputProvider);
+		
+			var axlesDec = inputProvider.JobInputData.Vehicle.Components.AxleWheels.AxlesDeclaration;
+
+			Assert.AreEqual(axlesDec[0].WheelEndFriction?.Value() ?? double.NaN, friction0);
+			Assert.AreEqual(axlesDec[1].WheelEndFriction?.Value() ?? double.NaN, friction1);
+
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputProvider, null, null, null, false);
+            var deltaFriction = runsFactory.RunDataFactory.NextRun().First().WheelEndData.DeltaFrictionTorque;
+
+			Assert.AreEqual(delta, deltaFriction.Value(), 1E-03);
+		}
+
+		[
+		TestCase(@"Group5_Tractor_4x2/Class5_Tractor_ENG.vecto", 3, double.NaN, 1.5, -10.2, TestName = "JSON_ENG_job_WheelBearings_Conventional"),
+		]
+		public void ReadEngineeringJobWithWheelBearings(string jobfile, double friction0, double friction1, double friction2, double delta)
+		{
+			var testDir = @"TestData/Generic Vehicles/Engineering Mode";
+			var filename = Path.Combine(testDir, jobfile);
+
+			var inputProvider = (IEngineeringInputDataProvider)JSONInputDataFactory.ReadJsonJob(filename);
+
+			Assert.NotNull(inputProvider);
+
+			var axlesDec = inputProvider.JobInputData.Vehicle.Components.AxleWheels.AxlesEngineering;
+
+			Assert.AreEqual(friction0, axlesDec[0].WheelEndFriction?.Value() ?? double.NaN);
+			Assert.AreEqual(friction1, axlesDec[1].WheelEndFriction?.Value() ?? double.NaN);
+			Assert.AreEqual(friction2, axlesDec[2].WheelEndFriction?.Value() ?? double.NaN);
+
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputProvider, null, null, null, false);
+            var deltaFriction = runsFactory.RunDataFactory.NextRun().First().WheelEndData.DeltaFrictionTorque;
+
+			Assert.AreEqual(delta, deltaFriction.Value(), 1E-03);
+		}
+
+		[
+		TestCase(@"Group5_Tractor_4x2/Class5_Tractor_DECL_BAD.vecto", "VehicleDriven", TestName="JSON_job_WheelBearings_Bad"),
+		TestCase(@"Group5_Tractor_4x2/Class5_Tractor_DECL_Negative.vecto", "negative", TestName="JSON_job_WheelBearings_Negative"),
+		TestCase(@"Group5_Tractor_4x2/Class5_Tractor_DECL_TooBig.vecto", "greater than", TestName="JSON_job_WheelBearings_TooBig"),
+		]
+		public void TestBadWheelBearings(string jobfile, string keyword)
+		{
+			var testDir = @"TestData/Generic Vehicles/Declaration Mode";
+			var filename = Path.Combine(testDir, jobfile);
+
+			var dataProvider = (IDeclarationInputDataProvider)JSONInputDataFactory.ReadJsonJob(filename);
+					
+			var exception = Assert.Throws<VectoException>(
+				() => { 
+					var axlesDec = dataProvider.JobInputData.Vehicle.Components.AxleWheels.AxlesDeclaration;
+					var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, null, null, null, false);
+                    runsFactory.RunDataFactory.NextRun().First();
+				});
+				
+			TestContext.WriteLine(exception.Message);
+		 	Assert.IsTrue(exception.Message.Contains(keyword));
+		}
+
+		[
+			TestCase(@"MultiplePowertrains/MultipleBEV_E2_E3/MultipleBEV.vecto", TestName="JSON_job_Multiple_powertrains_E2_E3")
+		]
+		public void JSON_Read_MultiplePowertrains(string jobfile)
+		{
+			var testDir = @"TestData/Generic Vehicles/Engineering Mode";
+			var filename = Path.Combine(testDir, jobfile);
+
+			var inputProvider = (IEngineeringInputDataProvider)JSONInputDataFactory.ReadJsonJob(filename);
+
+			var axlePts = inputProvider.JobInputData.Vehicle.Components.AxlePowertrainEngineeringInputData;
+
+			Assert.NotNull(axlePts);
+			Assert.IsTrue(axlePts.Count() > 0);
+
+			Assert.IsTrue(axlePts[0].AxleNumber == 1);
+			Assert.IsTrue(axlePts[0].Architecture == ArchitectureID.E2);
+			Assert.NotNull(axlePts[0].GearboxInputData);
+			Assert.NotNull(axlePts[0].AxleGearInputData);
+			Assert.NotNull(axlePts[0].TorqueConverterInputData);
+			Assert.NotNull(axlePts[0].GearshiftInputData);
+			Assert.NotNull(axlePts[0].AngledriveInputData);
+			Assert.NotNull(axlePts[0].RetarderInputData);
+			Assert.NotNull(axlePts[0].PTOTransmissionInputData);
+			Assert.NotNull(axlePts[0].ElectricMotor);
+		}
 
 		[TestCase]
 		public void JSON_Read_HeavyBus()

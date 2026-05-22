@@ -38,17 +38,15 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using Ninject;
 using NUnit.Framework;
-using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
-using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Models.Simulation;
-using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
@@ -103,8 +101,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 
 			var inputData = xmlInputReader.CreateDeclaration(filename);
 
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, writer, null, null, false);
+            factory.WriteModalResults = true;
 			factory.ActualModalData = true;
 			var jobContainer = new JobContainer(new MockSumWriter());
 			jobContainer.AddRuns(factory);
@@ -164,8 +162,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 
 			var inputData = xmlInputReader.CreateDeclaration(filename);
 
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
-			factory.WriteModalResults = true;
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, writer, null, null, false);
+            factory.WriteModalResults = true;
 			factory.ActualModalData = true;
 			var jobContainer = new JobContainer(new MockSumWriter());
 

@@ -11,7 +11,6 @@ using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
-using TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
@@ -33,12 +32,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		protected IXMLMultistageInputDataProvider InputData;
 
 		protected XmlNode JobNode;
+		
+		protected readonly bool _allowDeprecated;
 
-		public XMLDeclarationMultistageInputReaderV01(IXMLMultistageInputDataProvider inputData, XmlNode baseNode)
+		public XMLDeclarationMultistageInputReaderV01(IXMLMultistageInputDataProvider inputData, XmlNode baseNode, bool allowDeprecated)
 			: base(inputData, baseNode)
 		{
 			JobNode = baseNode;
 			InputData = inputData;
+			_allowDeprecated = allowDeprecated;
 		}
 
 		public IDeclarationMultistageJobInputData JobData => _jobData ?? (_jobData = CreateComponent(XMLNames.VectoOutputMultistep, JobCreator));
@@ -46,11 +48,22 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		protected virtual IDeclarationMultistageJobInputData JobCreator(string version, XmlNode node, string arg3)
 		{
 			var job = Factory.CreateMultiStageJobData(version, BaseNode, InputData, (InputData as IXMLResource).DataSource.SourceFile);
-			job.Reader = Factory.CreateMultistageJobReader(version, job, JobNode);
+			job.Reader = Factory.CreateMultistageJobReader(version, job, JobNode, _allowDeprecated);
 			return job;
 
 		}
 	}
+
+	public class XMLDeclarationMultistageInputReaderV11 : XMLDeclarationMultistageInputReaderV01
+	{
+        public new static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_MULTISTAGE_BUS_VEHICLE_NAMESPACE_V11;
+
+        public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+
+		public XMLDeclarationMultistageInputReaderV11(IXMLMultistageInputDataProvider inputData, XmlNode baseNode, bool allowDeprecated)
+			: base(inputData, baseNode, allowDeprecated) 
+		{ }
+    }
 
 	// ---------------------------------------------------------------------------------------
 
@@ -69,26 +82,28 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		private IList<string> _invalidEntries = new List<string>();
 
 		private XmlNodeList _manufacturingNodeStages;
+		private readonly bool _allowDeprecated;
 
 		[Inject]
 		public IDeclarationInjectFactory Factory { protected get; set; }
 
 
 
-		public XMLMultistageJobReaderV01(IXMLDeclarationMultistageJobInputData inputData, XmlNode baseNode)
+		public XMLMultistageJobReaderV01(IXMLDeclarationMultistageJobInputData inputData, XmlNode baseNode, bool allowDeprecated)
 			: base(inputData, baseNode)
 		{
 			InputData = inputData;
 			SetManufacturingStageNodes();
+			_allowDeprecated = allowDeprecated;
 		}
 
 		public IPrimaryVehicleInformationInputDataProvider PrimaryVehicle => _primaryVehicle ?? (_primaryVehicle = CreateComponent(XMLNames.Bus_PrimaryVehicle, PrimaryVehicleCreator));
 
 		protected IPrimaryVehicleInformationInputDataProvider PrimaryVehicleCreator(string version, XmlNode node,
-			string arg3)
+			string source)
 		{
-			var primaryVehicle = Factory.CreatePrimaryMultistageVehicleData(version, node, arg3);
-			primaryVehicle.Reader = Factory.CreatePrimaryVehicleBusInputReader(version, primaryVehicle, node.FirstChild);
+			var primaryVehicle = Factory.CreatePrimaryMultistageVehicleData(version, node, source);
+			primaryVehicle.Reader = Factory.CreatePrimaryVehicleBusInputReader(version, primaryVehicle, node.FirstChild, _allowDeprecated);
 			return primaryVehicle;
 		}
 
@@ -118,11 +133,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		protected IManufacturingStageInputData ManufacturingStageCreator(string version, XmlNode node)
 		{
 			var stage = Factory.CreateMultistageData(version, node, null);
-			stage.Reader = Factory.CreateMultistageDataReader(version, stage, node);
+			stage.Reader = Factory.CreateMultistageDataReader(version, stage, node, _allowDeprecated);
 			return stage;
 		}
 
-		public IManufacturingStageInputData ConsolidateManufacturingStage
+		public virtual IManufacturingStageInputData ConsolidateManufacturingStage
 		{
 			get
 			{
@@ -178,9 +193,20 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		}
 	}
 
-	// ---------------------------------------------------------------------------------------
+    public class XMLMultistageJobReaderV11 : XMLMultistageJobReaderV01
+	{
+        public new static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_MULTISTAGE_BUS_VEHICLE_NAMESPACE_V11;
 
-	public class XMLMultistageEntryReaderV01 : AbstractComponentReader, IXMLMultistageReader
+        public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+
+		public XMLMultistageJobReaderV11(IXMLDeclarationMultistageJobInputData inputData, XmlNode baseNode, bool allowDeprecated)
+			: base(inputData, baseNode, allowDeprecated)
+		{ }
+    }
+
+    // ---------------------------------------------------------------------------------------
+
+    public class XMLMultistageEntryReaderV01 : AbstractComponentReader, IXMLMultistageReader
 	{
 		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_MULTISTAGE_BUS_VEHICLE_NAMESPACE_VO1;
 
@@ -193,22 +219,24 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		protected readonly IXMLMultistageEntryInputDataProvider _multistageData;
 		protected IApplicationInformation _applicationInformation;
 		protected IVehicleDeclarationInputData _vehicle;
+		private readonly bool _allowDeprecated;
 
 		[Inject]
 		public IDeclarationInjectFactory Factory { protected get; set; }
 
-		public XMLMultistageEntryReaderV01(IXMLMultistageEntryInputDataProvider multistageData, XmlNode node) : base(
+		public XMLMultistageEntryReaderV01(IXMLMultistageEntryInputDataProvider multistageData, XmlNode node, bool allowDeprecated) : base(
 			multistageData, node)
 		{
 			JobNode = node;
 			_multistageData = multistageData;
+            _allowDeprecated = allowDeprecated;
 		}
 
 		public IVehicleDeclarationInputData Vehicle => _vehicle ?? (_vehicle = CreateComponent(XMLNames.Tag_Vehicle, VehicleCreator));
 
-		private IVehicleDeclarationInputData VehicleCreator(string version, XmlNode node, string arg3)
+		private IVehicleDeclarationInputData VehicleCreator(string version, XmlNode node, string source)
 		{
-			var vehicle = Factory.CreateVehicleData(version, null, node, arg3, false);
+			var vehicle = Factory.CreateVehicleData(version, null, node, source, _allowDeprecated);
 
 			if (vehicle.ComponentNode != null)
 				vehicle.ComponentReader = GetReader(vehicle, vehicle.ComponentNode, Factory.CreateComponentReader);
@@ -234,8 +262,18 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		}
 	}
 
-	// ---------------------------------------------------------------------------------------
+	public class XMLMultistageEntryReaderV11 : XMLMultistageEntryReaderV01
+	{
+        public new static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_MULTISTAGE_BUS_VEHICLE_NAMESPACE_V11;
 
+        public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+
+		public XMLMultistageEntryReaderV11(IXMLMultistageEntryInputDataProvider multistageData, XmlNode node, bool allowDeprecated) 
+			: base(multistageData, node, allowDeprecated)
+		{ }
+    }
+
+	// ---------------------------------------------------------------------------------------
 
 	public class XMLMultistagePrimaryVehicleReaderV01 : AbstractComponentReader, IXMLDeclarationPrimaryVehicleBusInputDataReader
 	{
@@ -251,15 +289,17 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		protected IXMLPrimaryVehicleBusInputData _primaryInputData;
 		protected IApplicationInformation _applicationInformation;
 		protected IResultsInputData _resultsInputData;
+		protected readonly bool _allowDeprecated;
 
 		[Inject]
 		public IDeclarationInjectFactory Factory { protected get; set; }
 
 
-		public XMLMultistagePrimaryVehicleReaderV01(IXMLPrimaryVehicleBusInputData inputData, XmlNode baseNode) : base(inputData, baseNode)
+		public XMLMultistagePrimaryVehicleReaderV01(IXMLPrimaryVehicleBusInputData inputData, XmlNode baseNode, bool allowDeprecated) : base(inputData, baseNode)
 		{
 			JobNode = baseNode;
 			_primaryInputData = inputData;
+			_allowDeprecated = allowDeprecated;
 		}
 
 		public virtual IDeclarationJobInputData JobData => _jobData ?? (_jobData = CreateComponent(XMLNames.Tag_Vehicle, JobCreator));
@@ -296,6 +336,16 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			_applicationInformation ??
 			(_applicationInformation = CreateComponent(XMLNames.Tag_ApplicationInformation, ApplicationCreator));
 	}
+
+	public class XMLMultistagePrimaryVehicleReaderV11 : XMLMultistagePrimaryVehicleReaderV01
+	{
+        public new static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_MULTISTAGE_BUS_VEHICLE_NAMESPACE_V11;
+
+        public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+
+		public XMLMultistagePrimaryVehicleReaderV11(IXMLPrimaryVehicleBusInputData inputData, XmlNode baseNode, bool allowDeprecated) : base(inputData, baseNode, allowDeprecated)
+		{ }
+    }
 
 	// ---------------------------------------------------------------------------------------
 
@@ -428,7 +478,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 	public class ConsolidateManufacturingStages : ConsolidatedDataBase, IManufacturingStageInputData
 	{
 		private ConsolidatedVehicleData _consolidatedVehicleData;
-		private IPrimaryVehicleInformationInputDataProvider _primaryVehicle;
+		protected IPrimaryVehicleInformationInputDataProvider _primaryVehicle;
 		
 		public ConsolidateManufacturingStages(IPrimaryVehicleInformationInputDataProvider primaryVehicle, 
 			IEnumerable<IManufacturingStageInputData> manufacturingStages) : base(manufacturingStages)
@@ -440,7 +490,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 
 		public int StepCount => _manufacturingStages?.First().StepCount ?? 0;
 
-		public IVehicleDeclarationInputData Vehicle => GetConsolidatedVehicleData();
+		public virtual IVehicleDeclarationInputData Vehicle => GetConsolidatedVehicleData();
 
 		public IApplicationInformation ApplicationInformation => _manufacturingStages?.First().ApplicationInformation;
 
@@ -498,11 +548,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		public DateTime Date => _manufacturingStages?.First().Vehicle.Date ?? DateTime.MinValue;
 
 		public string VIN => _manufacturingStages?.First().Vehicle.VIN;
+		
+		public string SimulationToolLicenseNumber => _manufacturingStages?.First().Vehicle.SimulationToolLicenseNumber;
 
 		public VehicleDeclarationType VehicleDeclarationType => _manufacturingStages?.First().Vehicle.VehicleDeclarationType ?? default(VehicleDeclarationType);
 
-
-		public IDictionary<PowertrainPosition, IList<Tuple<Volt, TableData>>> ElectricMotorTorqueLimits => throw new NotImplementedException();
+		public IDictionary<EMPlacement, IList<Tuple<Volt, TableData>>> ElectricMotorTorqueLimits => throw new NotImplementedException();
+		
 		public TableData BoostingLimitations => throw new NotImplementedException();
 
 		#endregion
@@ -549,6 +601,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 
 		public IAdvancedDriverAssistantSystemDeclarationInputData ADAS => GetADAS();
 
+		public IVehicleInMotionChargingDeclaration InMotionCharging => GetVehiclePropertyValue<IVehicleInMotionChargingDeclaration>(nameof(InMotionCharging));
+
 		private IAdvancedDriverAssistantSystemDeclarationInputData GetADAS()
 		{
 			return _consolidatedADAS
@@ -581,7 +635,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		public string CertificationNumber { get; }
 		public DigestData DigestValue { get; }
 		public string Identifier { get; }
-		public bool ExemptedVehicle
+        public string VehicleMonitoringData { get; }
+
+        public bool ExemptedVehicle
 		{
 			get
 			{
@@ -619,7 +675,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 
 		public bool DualFuelVehicle => _primaryVehicle.Vehicle.DualFuelVehicle;
 
-		public bool OvcHev => _primaryVehicle.Vehicle.OvcHev;
+		public bool OVC => _primaryVehicle.Vehicle.OVC;
 
 		public PerSecond EngineIdleSpeed => _primaryVehicle.Vehicle.EngineIdleSpeed;
 
@@ -628,24 +684,25 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 
 		public ArchitectureID ArchitectureID => _primaryVehicle.Vehicle.ArchitectureID;
 
-		public Watt MaxChargingPower => _primaryVehicle.Vehicle.MaxChargingPower;
+		public ArchitectureID ArchitectureIDPwt2 => _primaryVehicle.Vehicle.ArchitectureIDPwt2;
+
+        public Watt MaxChargingPower => _primaryVehicle.Vehicle.MaxChargingPower;
+
+		public Kilogram H2StorageUsableCapacity => GetVehiclePropertyValue<Kilogram>(nameof(H2StorageUsableCapacity)); 
+
+		public HydrogenStorageTechnology? HydrogenStorageTechnology => GetVehiclePropertyValue<HydrogenStorageTechnology?>(nameof(HydrogenStorageTechnology)); 
+
+        public bool BatteryOnlyMode => _primaryVehicle.Vehicle.BatteryOnlyMode;
+
+		public DynamicChargingTechnology DynamicChargingTechnology => _primaryVehicle.Vehicle.DynamicChargingTechnology;
 
         #endregion
 
+		public CubicMeter CargoVolume { get; }
 
-
-
-
-
-
-
-        public CubicMeter CargoVolume { get; }
 		public bool Articulated { get; }
 
 		public XmlNode XMLSource { get; }
-		
-
-
 
 		#endregion
 
@@ -973,13 +1030,19 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 					(_consolidateBusAuxiliariesData = new ConsolidatedBusAuxiliariesData(_manufacturingStages));
 		}
 
-
 		public IElectricStorageSystemDeclarationInputData ElectricStorage => null;
 
 		public IElectricMachinesDeclarationInputData ElectricMachines => null;
+		
 		public IIEPCDeclarationInputData IEPC => null;
 
-		private T GetComponentPropertyValue<T>(string propertyName)
+		public IFuelCellSystemDeclarationInputData FuelCellSystem => null;
+
+		public IList<IAxlePowertrainDeclarationInputData> AxlePowertrainInputData => null;
+
+		public ElectricMachineEntry<IElectricMotorDeclarationInputData> Generator => null;
+
+        private T GetComponentPropertyValue<T>(string propertyName)
 		{
 
 			foreach (var manufacturingStage in _manufacturingStages) {
@@ -1062,8 +1125,16 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		public SquareMeter TransferredAirDragArea => AirdragEntry?.TransferredAirDragArea;
 
 		public SquareMeter AirDragArea_0 => AirdragEntry.AirDragArea_0;
-		
-		public XmlNode XMLSource => AirdragEntry.XMLSource;
+
+		public SquareMeter DeltaCdxA_CFD => AirdragEntry?.DeltaCdxA_CFD;
+
+		public SquareMeter DeltaCdxA_declared => AirdragEntry?.DeltaCdxA_declared;
+
+		public SquareMeter DeltaTransferredCdxA => AirdragEntry?.DeltaTransferredCdxA;
+
+		public string LicenseNumberCFDMethod => AirdragEntry?.LicenseNumberCFDMethod;
+
+        public XmlNode XMLSource => AirdragEntry.XMLSource;
 
 		public DataSource DataSource => AirdragEntry?.DataSource;
 		public bool SavedInDeclarationMode { get; }
@@ -1106,9 +1177,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 	{
 		private ConsolidateElectricConsumerData _consolidateElectricConsumerData;
 		private ConsolidatedHVACBusAuxiliariesData _consolidatedHVACBusAuxiliariesData;
-		private XmlNode _xmlNode;
-		private IList<string> _consolidateSteeringPumpData;
-
 
 		public ConsolidatedBusAuxiliariesData(IEnumerable<IManufacturingStageInputData> manufacturingStages)
 			: base(manufacturingStages) { }
@@ -1117,7 +1185,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		{
 			get => _manufacturingStages.Select(s => s.Vehicle.Components.BusAuxiliaries.DataSource).FirstOrDefault();
 		}
-		public XmlNode XMLSource => _xmlNode ?? (_xmlNode = GetBusAuxXMLSource());
 
 		public string FanTechnology => null;
 
@@ -1205,23 +1272,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			return _invalidEntries.Concat(_consolidateElectricConsumerData?.GetInvalidEntries(jobType) 
 					?? new List<string>() { XMLNames.BusAux_ElectricSystem })
 				.Concat(_consolidatedHVACBusAuxiliariesData?.GetInvalidEntries(jobType) ?? new List<string>()).ToList();
-		}
-
-
-		private XmlNode GetBusAuxXMLSource()
-		{
-			var multistageBusReport = new XMLMultistageBusReport();
-			var auxElement = multistageBusReport.GetBusAuxiliaries(this);
-			
-			if (auxElement == null)
-				return null;
-			
-			using (var xmlReader = auxElement.CreateReader())
-			{
-				var xmlDoc = new XmlDocument();
-				xmlDoc.Load(xmlReader);
-				return xmlDoc.FirstChild;
-			}
 		}
 
 	}
@@ -1352,6 +1402,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 				case VectoSimulationJobType.IEPC_S:
 				case VectoSimulationJobType.IEPC_E:
 				case VectoSimulationJobType.IHPC:
+				case VectoSimulationJobType.FCHV:
+				case VectoSimulationJobType.FCHV_IEPC:
+				case VectoSimulationJobType.Multiple_FCHV:
+				case VectoSimulationJobType.Multiple_PEV:
+				case VectoSimulationJobType.Multiple_SHEV:
 					return WaterElectricHeater != null && AirElectricHeater != null && OtherHeatingTechnology != null;
 				default:
 					return false;

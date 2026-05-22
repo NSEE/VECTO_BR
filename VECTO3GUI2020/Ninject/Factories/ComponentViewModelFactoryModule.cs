@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using Ninject.Extensions.Factory;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Utils;
 using TUGraz.VectoCore.Utils.Ninject;
 using VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components;
@@ -28,7 +24,6 @@ namespace VECTO3GUI2020.Ninject.Factories
 
     public class ComponentViewModelFactoryModule : AbstractNinjectModule
 	{
-		private IComponentViewModelFactoryInternal factory;
 		private const string scopeName = nameof(IComponentViewModelFactory);
 		private const string common = "common";
 
@@ -56,11 +51,8 @@ namespace VECTO3GUI2020.Ninject.Factories
 			AddInternalComponentBinding<AirDragViewModel_v1_0>(XMLDeclarationAirdragDataProviderV10.NAMESPACE_URI, XMLDeclarationAirdragDataProviderV10.XSD_TYPE);
 			AddInternalComponentBinding<AirDragViewModel_v2_0>(XMLDeclarationAirdragDataProviderV20.NAMESPACE_URI, XMLDeclarationAirdragDataProviderV20.XSD_TYPE);
 			AddInternalComponentBinding<AirDragViewModel_v2_4>(XMLDeclarationAirdragDataProviderV24.NAMESPACE_URI, XMLDeclarationAirdragDataProviderV24.XSD_TYPE);
-
-
-
-
-		}
+            AddInternalComponentBinding<AirDragViewModel_v2_7>(XMLDeclarationAirdragDataProviderV27.NAMESPACE_URI, XMLDeclarationAirdragDataProviderV27.XSD_TYPE);
+        }
 
 		private void AddInternalComponentBinding<TConcrete>(XNamespace ns, string type) where TConcrete : IComponentViewModel
 		{

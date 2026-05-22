@@ -14,8 +14,8 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Simulation;
-using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData.FileIO;
 
 namespace TUGraz.VectoCore.Tests.XML
@@ -127,7 +127,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			//var sumWriter = new SummaryDataContainer(fileWriter);
 			//var jobContainer = new JobContainer(sumWriter);
 			var dataProvider = xmlInputReader.CreateDeclaration(XmlReader.Create(filename));
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, fileWriter, null, null, false);
 			runsFactory.ModalResults1Hz = false;
 			runsFactory.WriteModalResults = false;
 			runsFactory.ActualModalData = false;
@@ -389,14 +389,14 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.AreEqual(400.SI<Volt>(), voltageLevel.VoltageLevel);
 			
 			TestOverloadValues(voltageLevel);
-			TestMaxTorqueCurve(voltageLevel.FullLoadCurve);
+			TestMaxTorqueCurve(voltageLevel.FullLoadCurve.First().LoadCurve);
 			TestPowerMap(voltageLevel.PowerMap);
 
 			voltageLevel = voltageLevels[1];
 			Assert.AreEqual(600.SI<Volt>(), voltageLevel.VoltageLevel);
 			
 			TestOverloadValues(voltageLevel);
-			TestMaxTorqueCurve(voltageLevel.FullLoadCurve);
+			TestMaxTorqueCurve(voltageLevel.FullLoadCurve.First().LoadCurve);
 			TestPowerMap(voltageLevel.PowerMap);
 
 		}
@@ -408,14 +408,14 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.AreEqual(400.SI<Volt>(), voltageLevel.VoltageLevel);
 
 			TestOverloadValues(voltageLevel);
-			TestMaxTorqueCurveIEPC(voltageLevel.FullLoadCurve);
+			TestMaxTorqueCurveIEPC(voltageLevel.FullLoadCurve.First().LoadCurve);
 			TestPowerMap(voltageLevel.PowerMap);
 
 			voltageLevel = voltageLevels[1];
 			Assert.AreEqual(600.SI<Volt>(), voltageLevel.VoltageLevel);
 
 			TestOverloadValues(voltageLevel);
-			TestMaxTorqueCurveIEPC(voltageLevel.FullLoadCurve);
+			TestMaxTorqueCurveIEPC(voltageLevel.FullLoadCurve.First().LoadCurve);
 			TestPowerMap(voltageLevel.PowerMap);
 
 		}
@@ -662,7 +662,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 		#region Test Electric Motor TorqueLimits Reader
 
-		private void TestElectricMotorTorqueLimits(IDictionary<PowertrainPosition, IList<Tuple<Volt, TableData>>> limits)
+		private void TestElectricMotorTorqueLimits(IDictionary<EMPlacement, IList<Tuple<Volt, TableData>>> limits)
 		{
 			Assert.IsNotNull(limits);
 			Assert.AreEqual(1, limits.Count);
@@ -2128,7 +2128,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.AreEqual("None", eMachine.ElectricMachine.IHPCType);
 			
 			Assert.AreEqual(1, eMachine.ElectricMachine.VoltageLevels.Count);
-			TestMaxTorqueCurve(eMachine.ElectricMachine.VoltageLevels[0].FullLoadCurve);
+			TestMaxTorqueCurve(eMachine.ElectricMachine.VoltageLevels[0].FullLoadCurve.First().LoadCurve);
 			Assert.IsNotNull(eMachine.ElectricMachine.VoltageLevels[0].PowerMap);
 			TestPowerMapData01(eMachine.ElectricMachine.VoltageLevels[0].PowerMap[0]);
 			Assert.IsNull(eMachine.ElectricMachine.Conditioning);

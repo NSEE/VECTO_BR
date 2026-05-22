@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 
@@ -49,6 +48,6 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing
 
         WattSecond ElectricEnergyConsumption_Final { get; set; }
         WattSecondPerMeter ElectricEnergyConsumption_Final_PerMeter { get; }
-
-    }
+		WattSecond DeltaEReessFuelCell { get; set; }
+	}
 }

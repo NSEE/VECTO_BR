@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -10,7 +9,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 {
     public class MeasuredSpeedHybridStrategy : HybridStrategy
     {
-        public MeasuredSpeedHybridStrategy(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData, vehicleContainer) {}
+        public MeasuredSpeedHybridStrategy(VectoRunData runData, IVehicleContainer container) : base(runData, container) {}
 
         protected override List<HybridResultEntry> FindSolution(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
         {
@@ -27,10 +26,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
                 ((x.IgnoreReason & HybridConfigurationIgnoreReason.EngineTorqueDemandTooLow) != 0));
 
             if (engineSpeedTooHigh || engineSpeedTooLow) {
-                var duringTractionInterruption = (PreviousState.GearshiftTriggerTstmp + ModelData.GearboxData.TractionInterruption).IsGreaterOrEqual(absTime, ModelData.GearboxData.TractionInterruption / 20);
+                var duringTractionInterruption = (PreviousState.GearshiftTriggerTstmp + ModelData.GearboxSinglePwt.TractionInterruption).IsGreaterOrEqual(absTime, ModelData.GearboxSinglePwt.TractionInterruption / 20);
 			    var allowICEOff = AllowICEOff(absTime) && (!DataBus.EngineInfo.EngineOn || !duringTractionInterruption);
 
-			    var emPos = ModelData.ElectricMachinesData.First().Item1;
+			    var emPos = ModelData.ElectricMachinesSinglePwt.First().Item1;
 
                 var gear = PreviousState.GearboxEngaged ? CurrentGear : NextGear;
                 var nextGear = engineSpeedTooLow ? GearList.Predecessor(gear, 1) : GearList.Successor(gear, 1);
@@ -44,7 +43,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
     public class MeasuredSpeedHybridStrategyAT : HybridStrategyAT 
     { 
-        public MeasuredSpeedHybridStrategyAT(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData, vehicleContainer)
+        public MeasuredSpeedHybridStrategyAT(VectoRunData runData, IVehicleContainer container) : base(runData, container)
 		{ }
 
         protected override List<HybridResultEntry> FindSolution(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
@@ -62,10 +61,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
                 ((x.IgnoreReason & HybridConfigurationIgnoreReason.EngineTorqueDemandTooLow) != 0));
 
             if (engineSpeedTooHigh || engineSpeedTooLow) {
-                var duringTractionInterruption = (PreviousState.GearshiftTriggerTstmp + ModelData.GearboxData.TractionInterruption).IsGreaterOrEqual(absTime, ModelData.GearboxData.TractionInterruption / 20);
+                var duringTractionInterruption = (PreviousState.GearshiftTriggerTstmp + ModelData.GearboxSinglePwt.TractionInterruption).IsGreaterOrEqual(absTime, ModelData.GearboxSinglePwt.TractionInterruption / 20);
 			    var allowICEOff = AllowICEOff(absTime) && (!DataBus.EngineInfo.EngineOn || !duringTractionInterruption);
 
-			    var emPos = ModelData.ElectricMachinesData.First().Item1;
+			    var emPos = ModelData.ElectricMachinesSinglePwt.First().Item1;
 
                 var gear = PreviousState.GearboxEngaged ? CurrentGear : NextGear;
                 var nextGear = engineSpeedTooLow ? GearList.Predecessor(gear, 1) : GearList.Successor(gear, 1);

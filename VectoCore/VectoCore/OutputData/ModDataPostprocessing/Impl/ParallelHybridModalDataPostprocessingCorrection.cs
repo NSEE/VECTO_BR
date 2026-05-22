@@ -1,5 +1,4 @@
-﻿using TUGraz.VectoCommon.Exceptions;
-using TUGraz.VectoCommon.Models;
+﻿using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
@@ -10,7 +9,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
     {
         #region Overrides of ModalDataPostprocessingCorrection
 
-        protected override CorrectedModalData DoApplyCorrection(IModalDataContainer modData, VectoRunData runData)
+        protected override ICorrectedModalData DoApplyCorrection(IModalDataContainer modData, VectoRunData runData)
         {
             var r = base.DoApplyCorrection(modData, runData);
 
@@ -19,9 +18,8 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
 
             if (runData.OVCMode == OvcHevMode.ChargeDepleting && runData.Mission != null) {
                 var vehicleOperation = DeclarationData.VehicleOperation.LookupVehicleOperation(runData.Mission.BusParameter?.BusGroup ?? runData.VehicleData.VehicleClass, runData.Mission.MissionType);
-                (_, _, etaChtBatWeighted) =
-                    DeclarationData.CalculateChargingEfficiencyOVCHEV(runData.MaxChargingPower, vehicleOperation,
-                        runData.BatteryData);
+                etaChtBatWeighted =
+                    DeclarationData.CalculateChargingEfficiencyOVCHEV(runData, vehicleOperation).EtaChargingWeighted;
                 electricEnergyConsumption = -modData.TimeIntegral<WattSecond>(ModalResultField.P_reess_int);
             }
 
@@ -32,4 +30,28 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
 
         #endregion
     }
+
+	public class BatteryOnlyHybridModalDataPostprocessingCorrection : BatteryElectricPostprocessingCorrection
+	{
+		#region Overrides of BatteryElectricPostprocessingCorrection
+
+        protected override ICorrectedModalData DoApplyCorrection(IModalDataContainer modData, VectoRunData runData)
+		{
+			var r = base.DoApplyCorrection(modData, runData);
+			foreach (var fuel in modData.FuelData) {
+				if (r.FuelCorrection.ContainsKey(fuel.FuelType)) {
+                    continue;
+				}
+				r.FuelCorrection[fuel.FuelType] = new ZeroFuelConsumptionCorrection(fuel, modData.Distance, modData.Duration);
+			}
+			return r;
+		}
+
+		protected override AbstractCorrectedModalData GetModalDataCorrection(IModalDataContainer modData)
+		{
+			return new BatteryOnlyHybridCorrectedModalData(modData);
+		}
+
+		#endregion
+	}
 }

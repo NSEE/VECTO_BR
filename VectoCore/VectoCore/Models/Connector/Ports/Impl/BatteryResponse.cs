@@ -73,6 +73,8 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 
 		public IRESSResponse RESSResponse { get; set; }
 
+		public Watt MaxNominalFCRatedPower { get; set; }
+
 		public Watt MaxPowerDrive =>
 			CalculateMaxEMPower(RESSResponse != null && RESSResponse.MaxDischargePower != null
 				? RESSResponse.MaxDischargePower
@@ -142,5 +144,10 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 	{
 		public ElectricSystemDryRunResponse(object source) : base(source) { }
 
+	}
+
+	public class ElectricSystemNotReadyResponse : AbstractElectricSystemResponse
+	{
+		public ElectricSystemNotReadyResponse(object source) : base(source) { }
 	}
 }

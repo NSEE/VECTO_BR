@@ -31,14 +31,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Newtonsoft.Json;
-using Ninject;
-using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -59,32 +56,17 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 	{
 		private static int _jobNumberCounter;
 
-		private static object _kernelLock = new object();
-		private static IKernel _kernel; //Kernel is only used when the SimulatorFactory is created with the Factory Method.
-        
 		protected IFollowUpSimulatorFactoryCreator _followUpSimulatorFactoryCreator = null;
 
 		protected bool _simulate = true;
 
-		protected IPowertrainBuilder PowertrainBuilder;
-
-		protected IModalDataFactory ModDataFactory { get; }
-
-		public ISimulatorFactory FollowUpSimulatorFactory(IDictionary<int, JobContainer.ProgressEntry> progressEntries)
-		{
-			var factory = _followUpSimulatorFactoryCreator?.GetNextFactory(progressEntries);
-			if (factory != null) {
-				factory.WriteModalResults = this.WriteModalResults;
-				//factory.SerializeVectoRunData = this.SerializeVectoRunData;
-			}
-
-			return factory;
-		}
-
 		public bool CreateFollowUpSimulatorFactory { get; set; } = false;
+
 		protected readonly ExecutionMode _mode;
 
-		#region Constructors and Factory Methods to instantiate Instances of SimulatorFactory without NInject (should only be used in Testcases that are not updated yet)
+		protected IPowertrainBuilder PowertrainBuilder { get; }
+
+		protected IModalDataFactory ModDataFactory { get; }
 
 		protected SimulatorFactory(ExecutionMode mode, IOutputDataWriter writer, bool validate, IPowertrainBuilder ptBuilder, IModalDataFactory modDataFactory)
 		{
@@ -105,23 +87,17 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 
 		}
 
-        [Obsolete("Creation of new SimulatorFactories should be done with SimulatorFactoryFactory NInject Factory", false)]
-		public static ISimulatorFactory CreateSimulatorFactory(ExecutionMode mode, IInputDataProvider dataProvider, IOutputDataWriter writer, IDeclarationReport declarationReport = null, IVTPReport vtpReport=null, bool validate = true)
+		public ISimulatorFactory FollowUpSimulatorFactory(IDictionary<int, JobContainer.ProgressEntry> progressEntries)
 		{
-			if (_kernel == null) {
-				lock (_kernelLock) {
-					if (_kernel == null) {
-						_kernel = new StandardKernel(new VectoNinjectModule());
-					}
-				}
+			var factory = _followUpSimulatorFactoryCreator?.GetNextFactory(progressEntries);
+			if (factory != null) {
+				factory.WriteModalResults = this.WriteModalResults;
+				//factory.SerializeVectoRunData = this.SerializeVectoRunData;
 			}
-			return _kernel.Get<ISimulatorFactoryFactory>().Factory(mode, dataProvider, writer, declarationReport, vtpReport, validate);
+			return factory;
 		}
 
-
-        #endregion
-
-		public bool Validate { get; set; }
+        public bool Validate { get; set; }
 
 		public IVectoRunDataFactory RunDataFactory { get; protected set; }
 
@@ -189,7 +165,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 					data.Report.AddResult(data, modData);
 				}
 			});
-		}
+        }
 
 		protected virtual IVectoRun GetNonExemptedRun(VectoRunData data, int current, ref bool warning1Hz, ref bool firstRun)
 		{
@@ -221,7 +197,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 
 			if (Validate && firstRun) {
 				ValidateVectoRunData(
-					run, data.JobType, data.ElectricMachinesData.FirstOrDefault()?.Item1, data.GearboxData?.Type,
+					run, data.JobType, data.ElectricMachinesSinglePwt?.FirstOrDefault()?.Item1, data.GearboxSinglePwt?.Type,
 					data.Mission != null && data.Mission.MissionType.IsEMS());
 				firstRun = false;
 			}
@@ -296,12 +272,12 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 			return run;
 		}
 
-		protected static Action<ModalDataContainer> PrepareReport(VectoRunData data)
+		protected static Action<IModalDataContainer> PrepareReport(VectoRunData data)
 		{
 			if (data.Report != null) {
 				data.Report.PrepareResult(data);
 			}
-			Action<ModalDataContainer> addReportResult = modData => {
+			Action<IModalDataContainer> addReportResult = modData => {
 				if (data.Report != null) {
 					data.Report.AddResult(data, modData);
 				}

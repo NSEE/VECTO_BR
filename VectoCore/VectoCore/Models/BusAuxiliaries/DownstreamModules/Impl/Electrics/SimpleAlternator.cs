@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using TUGraz.VectoCommon.BusAuxiliaries;
-using TUGraz.VectoCommon.InputData;
+﻿using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules.Electrics;
 
 namespace TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics
 {
@@ -26,6 +23,18 @@ namespace TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electric
 
 		public string Source => null;
 
-		#endregion
-	}
+        #endregion
+
+        public override bool Equals(object obj)
+        {
+			var other = obj as SimpleAlternator;
+            return (other != null) && (other._efficiency == _efficiency);
+        }
+
+        public override int GetHashCode()
+        {
+            return _efficiency.GetHashCode();
+        }
+
+    }
 }

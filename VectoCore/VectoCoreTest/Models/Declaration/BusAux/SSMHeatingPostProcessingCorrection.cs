@@ -406,7 +406,7 @@ public class SSMHeatingPostProcessingCorrection
 					ConsumptionMap = FuelConsumptionMapReader.ReadFromStream(FuelMap.ToStream()),
 				}}.ToList(),
 			},
-			ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+			ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 			BusAuxiliaries = busAux
 		};
 		return runData;
@@ -436,7 +436,7 @@ public class SSMHeatingPostProcessingCorrection
 					ConsumptionMap = FuelConsumptionMapReader.ReadFromStream(FuelMap.ToStream()),
 				}}.ToList(),
 			},
-			ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
+			ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
 				Tuple.Create(PowertrainPosition.HybridP2, emData.Object)
 			},
 			BusAuxiliaries = busAux
@@ -469,7 +469,7 @@ public class SSMHeatingPostProcessingCorrection
 					ConsumptionMap = FuelConsumptionMapReader.ReadFromStream(FuelMap.ToStream()),
 				}}.ToList(),
 			},
-			ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
+			ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
 				Tuple.Create(PowertrainPosition.BatteryElectricE2, emData.Object),
 				Tuple.Create(PowertrainPosition.GEN, genData.Object),
 			},
@@ -501,7 +501,7 @@ public class SSMHeatingPostProcessingCorrection
 			//		ConsumptionMap = FuelConsumptionMapReader.ReadFromStream(FuelMap.ToStream()),
 			//	}}.ToList(),
 			//},
-			ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
+			ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
 				Tuple.Create(PowertrainPosition.BatteryElectricE2, emData.Object),
 			},
 			BusAuxiliaries = busAux,
@@ -565,36 +565,43 @@ public class SSMHeatingPostProcessingCorrection
 
 		if (!runData.JobType.IsOneOf(VectoSimulationJobType.ConventionalVehicle,
 				VectoSimulationJobType.EngineOnlySimulation)
-			&& !runData.ElectricMachinesData.Any()) {
+			&& !runData.ElectricMachinesSinglePwt.Any()) {
 			throw new VectoException("hybrid vehicle requires electric machine");
 		}
 		
-		if (runData.ElectricMachinesData.Any(x => x.Item1 != PowertrainPosition.GEN)) {
-			m.Setup(x => x.GetColumnName(It.IsAny<PowertrainPosition>(), It.IsAny<ModalResultField>()))
+		if (runData.GetEMData().Any(x => x.Item1.Position != PowertrainPosition.GEN)) {
+			m.Setup(x => x.GetColumnName(It.IsAny<PowertrainPosition>(), It.IsAny<int>(), It.IsAny<ModalResultField>()))
 				.Returns<PowertrainPosition, ModalResultField>((pos, mrf) =>
 					string.Format(mrf.GetCaption(), pos.GetName()));
-			var emPos = runData.ElectricMachinesData.First(x => x.Item1 != PowertrainPosition.GEN).Item1;
-			SetupMockEMotorValues(emLoss, m, emPos);
 
-			if (runData.ElectricMachinesData.Any(x => x.Item1 == PowertrainPosition.GEN)) {
-				SetupMockEMotorValues(genLoss, m, PowertrainPosition.GEN);
+			var emPlacement = runData.GetEMData().First(x => x.Item1.Position != PowertrainPosition.GEN).Item1;
+
+			SetupMockEMotorValues(emLoss, m, emPlacement.Position, emPlacement.AxleNumber);
+
+			var emGen= runData.GetEMData().FirstOrDefault(x => x.Item1.Position == PowertrainPosition.GEN);
+			if (emGen != null) {
+				SetupMockEMotorValues(genLoss, m, emGen.Item1.Position, emGen.Item1.AxleNumber);
 			}
 		}
 
 		return m.Object;
 	}
 
-	private static void SetupMockEMotorValues(WattSecond emLoss, Mock<IModalDataContainer> m, PowertrainPosition emPos)
+	private static void SetupMockEMotorValues(
+		WattSecond emLoss, 
+		Mock<IModalDataContainer> m, 
+		PowertrainPosition emPos,
+		int axleNumber)
 	{
-		var colName = m.Object.GetColumnName(emPos, ModalResultField.P_EM_electricMotorLoss_);
+		var colName = m.Object.GetColumnName(emPos, axleNumber, ModalResultField.P_EM_electricMotorLoss_);
 		if (emPos == PowertrainPosition.IEPC) {
-			colName = m.Object.GetColumnName(emPos, ModalResultField.P_IEPC_electricMotorLoss_);
+			colName = m.Object.GetColumnName(emPos, axleNumber, ModalResultField.P_IEPC_electricMotorLoss_);
 		}
 
 		m.Setup(x => x.TimeIntegral<WattSecond>(It.Is<string>(c => colName.Equals(c)), null))
 			.Returns(emLoss ?? 0.SI<WattSecond>());
-		m.Setup(x => x.ElectricMotorEfficiencyDrive(emPos)).Returns(0.94);
-		m.Setup(x => x.ElectricMotorEfficiencyGenerate(emPos)).Returns(0.92);
+		m.Setup(x => x.ElectricMotorEfficiencyDrive(emPos, axleNumber)).Returns(0.94);
+		m.Setup(x => x.ElectricMotorEfficiencyGenerate(emPos, axleNumber)).Returns(0.92);
 		SetupMockBatteryValues(m);
 	}
 

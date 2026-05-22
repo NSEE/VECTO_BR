@@ -36,8 +36,10 @@ using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Models.Simulation;
 
@@ -61,14 +63,15 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 		}
 
 
-		[TestCase(@"TestData/Integration/TotalMassExceededInMU/Class4_Tractor_DECL.vecto")]
+		[TestCase(@"TestData/Integration/TotalMassExceededInMU/Class4_Tractor_DECL.vecto"),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestMaxMassInMunicipalCycle(string jobFile)
 		{
 			var relativeJobPath = jobFile;
 			var writer = new FileOutputWriter(relativeJobPath);
 			var inputData = Path.GetExtension(relativeJobPath) == ".xml" ? xmlInputReader.CreateDeclaration(relativeJobPath) : JSONInputDataFactory.ReadJsonJob(relativeJobPath);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
-			factory.WriteModalResults = true; //ActualModalData = true,
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, writer, null, null, false);
+            factory.WriteModalResults = true; //ActualModalData = true,
 			factory.Validate = false;
 			var jobContainer = new JobContainer(new MockSumWriter());
 

@@ -36,8 +36,6 @@ using Ninject;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory;
-using TUGraz.VectoCore.InputData.FileIO.XML.Engineering.Factory;
-using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Utils;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
@@ -48,8 +46,14 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 		[Inject]
 		public IDeclarationInjectFactory DeclarationFactory { protected get; set; }
 
-		[Inject]
-		public IEngineeringInjectFactory EngineeringFactory { protected get; set; }
+		public XMLInputDataFactory()
+		{
+		}
+
+		internal XMLInputDataFactory(IDeclarationInjectFactory declarationFactory)
+		{
+			DeclarationFactory = declarationFactory ?? throw new ArgumentNullException(nameof(declarationFactory));
+		}
 
 		public IInputDataProvider Create(string filename)
 		{
@@ -144,9 +148,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 			switch (documentType.Value)
 			{
 				case XmlDocumentType.DeclarationJobData: return ReadDeclarationJob(xmlDoc, source, allowDeprecated);
-				case XmlDocumentType.EngineeringJobData: return ReadEngineeringJob(xmlDoc, source);
+				//case XmlDocumentType.EngineeringJobData: return ReadEngineeringJob(xmlDoc, source);
 				//case XmlDocumentType.PrimaryVehicleBusOutputData: return ReadPrimaryVehicleDeclarationJob(xmlDoc, source);
-				case XmlDocumentType.MultistepOutputData: return ReadMultistageDeclarationJob(xmlDoc, source);
+				case XmlDocumentType.MultistepOutputData: return ReadMultistageDeclarationJob(xmlDoc, source, allowDeprecated);
 				case XmlDocumentType.EngineeringComponentData:
 				case XmlDocumentType.DeclarationComponentData:
 				case XmlDocumentType.ManufacturerReport:
@@ -156,25 +160,16 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 			}
 		}
 
-		protected virtual IMultistepBusInputDataProvider ReadMultistageDeclarationJob(XmlDocument xmlDoc, string source)
+		protected virtual IMultistepBusInputDataProvider ReadMultistageDeclarationJob(XmlDocument xmlDoc, string source, bool allowDeprecated)
 		{
 			var versionNumber = XMLHelper.GetXsdType(xmlDoc.DocumentElement?.SchemaInfo.SchemaType);
 			try {
 				var input = DeclarationFactory.CreateMultistageInputProvider(versionNumber, xmlDoc, source);
-				input.Reader = DeclarationFactory.CreateMultistageInputReader(versionNumber, input, xmlDoc.DocumentElement);
+				input.Reader = DeclarationFactory.CreateMultistageInputReader(versionNumber, input, xmlDoc.DocumentElement, allowDeprecated);
 				return input;
 			} catch (Exception e) {
 				throw new VectoException("Failed to read Declaration job version {0}", e, versionNumber);
 			}
-		}
-
-		protected virtual IEngineeringInputDataProvider ReadEngineeringJob(XmlDocument xmlDoc, string source)
-		{
-			var versionNumber = XMLHelper.GetXsdType(xmlDoc.DocumentElement?.SchemaInfo.SchemaType);
-
-			var input = EngineeringFactory.CreateInputProvider(versionNumber, xmlDoc, source);
-			input.Reader = EngineeringFactory.CreateInputReader(versionNumber, input, xmlDoc.DocumentElement);
-			return input;
 		}
 
 		protected virtual IDeclarationInputDataProvider ReadDeclarationJob(XmlDocument xmlDoc, string source, 
@@ -190,12 +185,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 			}
 		}
 
-		private IPrimaryVehicleInformationInputDataProvider ReadPrimaryVehicleDeclarationJob(XmlDocument xmlDoc, string source)
+		private IPrimaryVehicleInformationInputDataProvider ReadPrimaryVehicleDeclarationJob(XmlDocument xmlDoc, string source, bool allowDeprecated)
 		{
 			var versionNumber = XMLHelper.GetXsdType(xmlDoc.DocumentElement?.SchemaInfo.SchemaType);
 			try {
 				var input = DeclarationFactory.CreatePrimaryVehicleBusInputProvider(versionNumber, xmlDoc, source);
-				input.Reader = DeclarationFactory.CreatePrimaryVehicleBusInputReader(versionNumber, input, xmlDoc.DocumentElement);
+				input.Reader = DeclarationFactory.CreatePrimaryVehicleBusInputReader(versionNumber, input, xmlDoc.DocumentElement, allowDeprecated);
 				return input;
 			}
 			catch (Exception e) {
@@ -296,12 +291,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 			{
 				throw new VectoException("Failed to read Declaration job version {0}", e, versionNumber);
 			}
-
-
-
-
-
-            return null;
 		}
 
 	}

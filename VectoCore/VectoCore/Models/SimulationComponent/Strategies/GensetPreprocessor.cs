@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
-using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor;
@@ -133,7 +131,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					default:
 						throw new VectoException(
 							$"Could not determine max {(emDerated ? "derated" : "")} electric genset power! Invalid response [{response.GetType().Name}] from {response.Source.GetType().Name}");
-						break;
 				}
 			}
 		}

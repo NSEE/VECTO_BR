@@ -11,7 +11,6 @@ using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.OutputData.XML;
-using TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformationFile.CustomerInformationFile_0_9;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.ManufacturerReport_0_9.ManufacturerReportXMLTypeWriter;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile.VehicleInformationFile_0_1;
 
@@ -25,7 +24,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 
 		IDeclarationReport CurrentStageDeclarationReport { get; }
 		IInputDataProvider CurrentStageInputData { get; }
-	}
+
+        IVehicleDeclarationInputData CompletedVehicle { get; }
+    }
 
 
 	public abstract class FollowUpSimulatorFactoryCreator : IFollowUpSimulatorFactoryCreator
@@ -45,9 +46,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 		public abstract IOutputDataWriter CurrentStageOutputDataWriter { get; }
 		public abstract IDeclarationReport CurrentStageDeclarationReport { get; }
 		public abstract IInputDataProvider CurrentStageInputData { get; }
-
-		#endregion
-	}
+		public abstract IVehicleDeclarationInputData CompletedVehicle { get; }
+        #endregion
+    }
 
 
 	public class InterimAfterPrimaryFactoryCreator : FollowUpSimulatorFactoryCreator
@@ -59,9 +60,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 		private readonly IMultistagePrimaryAndStageInputDataProvider _originalStageInputData;
 		private readonly IDeclarationReport _originalDeclarationReport;
 		private readonly IDeclarationInputDataProvider _currentStageInputData;
-
-		private readonly IManufacturerReportFactory _mrfFactory;
-		private readonly IVIFReportFactory _vifFactory;
 
 		public InterimAfterPrimaryFactoryCreator(IMultistagePrimaryAndStageInputDataProvider originalStageInputData,
 			IOutputDataWriter originalReportWriter,
@@ -122,10 +120,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 		public override IInputDataProvider CurrentStageInputData => _currentStageInputData;
 		public override IOutputDataWriter CurrentStageOutputDataWriter => _currentStageOutputDataWriter;
 		public override IDeclarationReport CurrentStageDeclarationReport => _currentStageDeclarationReport;
+		public override IVehicleDeclarationInputData CompletedVehicle => _originalStageInputData.StageInputData;
 
-		#endregion
+        #endregion
 
-	}
+    }
 
 	
 	public class CompletedAfterInterimPrimaryFactoryCreator : FollowUpSimulatorFactoryCreator
@@ -154,7 +153,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 			}
 			var output = _xmlInputDataReader.CreateDeclaration(
 				XmlReader.Create(CurrentStageOutputDataWriter.MultistageXmlReport.ToString().ToStream())) as IMultistepBusInputDataProvider;
-			var nextStageInput = new XMLDeclarationVIFInputData(output, null, true);
+            var nextStageInput = new XMLDeclarationVIFInputData(output, null, true, _originalInputData.VehicleInputData.VehicleMonitoringData);
 
 			return _simulatorFactoryFactory.Factory(ExecutionMode.Declaration, nextStageInput, CurrentStageOutputDataWriter, null, null,
 				_validate);
@@ -172,5 +171,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 		private readonly IMultistageVIFInputData _originalInputData;
 
 		public override IInputDataProvider CurrentStageInputData => _currentStageInputData;
-	}
+
+        public override IVehicleDeclarationInputData CompletedVehicle => null;
+    }
 }

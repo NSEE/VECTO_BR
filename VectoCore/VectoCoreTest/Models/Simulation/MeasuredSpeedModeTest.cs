@@ -51,6 +51,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
@@ -67,20 +68,22 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 	public class MeasuredSpeedModeTest
 	{
 		private IPowertrainBuilder PowertrainBuilder;
+        private StandardKernel _kernel;
 
-		[OneTimeSetUp]
+        [OneTimeSetUp]
 		public void Init()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-			var kernel = new StandardKernel(new VectoNinjectModule());
-			PowertrainBuilder = kernel.Get<IPowertrainBuilder>();
+			_kernel = new StandardKernel(new VectoNinjectModule());
+			PowertrainBuilder = _kernel.Get<IPowertrainBuilder>();
 		}
 
 		/// <summary>
 		/// Test if the cycle file can be read.
 		/// </summary>
 		/// <remarks>VECTO-181</remarks>
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void MeasuredSpeed_ReadCycle_Gear()
 		{
 			// all data
@@ -139,7 +142,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		/// Test if the cycle file can be read.
 		/// </summary>
 		/// <remarks>VECTO-181</remarks>
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void MeasuredSpeed_ReadCycle()
 		{
 			// all data
@@ -192,10 +196,10 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				"Line 1: The number of values is not correct. Expected 7 Columns, Got 2 Columns");
 		}
 
-		private static void TestCycleRead(string inputData, CycleType cycleType, bool autoCycle = true,
+		private void TestCycleRead(string inputData, CycleType cycleType, bool autoCycle = true,
 			bool crossWindRequired = false)
 		{
-			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData(), null, null);
+			var container = _kernel.Get<IPowertrainBuilder>().Build(new VectoRunData(), null, null);
 
 			if (autoCycle) {
 				var cycleTypeCalc = DrivingCycleDataReader.DetectCycleType(VectoCSVFile.ReadStream(inputData.ToStream()));
@@ -257,11 +261,11 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 					},
 				AirdragData = new AirdragData() {
 					CrossWindCorrectionCurve =
-						new CrosswindCorrectionCdxALookup(6.16498344.SI<SquareMeter>(),
-							CrossWindCorrectionCurveReader.GetNoCorrectionCurve(6.16498344.SI<SquareMeter>()),
+						new CrosswindCorrectionCdxALookup(6.16498344.SI<SquareMeter>(), 0.SI<SquareMeter>(), 
+                            CrossWindCorrectionCurveReader.GetNoCorrectionCurve(6.16498344.SI<SquareMeter>()),
 							CrossWindCorrectionMode.NoCorrection),
 				},
-				AxleGearData = new AxleGearData { AxleGear = new GearData { Ratio = 2.3 } },
+				AxleGearSinglePwt = new AxleGearData { AxleGear = new GearData { Ratio = 2.3 } },
 				EngineData =
 					new CombustionEngineData {
 						IdleSpeed = 560.RPMtoRad(),
@@ -269,8 +273,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 						Inertia = 1.SI<KilogramSquareMeter>(),
 						FullLoadCurves = new Dictionary<uint, EngineFullLoadCurve>() { { 0, fullLoadCurve }, { 1, fullLoadCurve } }
 					},
-				GearboxData = new GearboxData { Gears = new Dictionary<uint, GearData> { { 1, new GearData { Ratio = 6.2 } } } },
-				Retarder = new RetarderData(),
+				GearboxSinglePwt = new GearboxData { Gears = new Dictionary<uint, GearData> { { 1, new GearData { Ratio = 6.2 } } } },
+				RetarderSinglePwt = new RetarderData(),
 				DriverData = new DriverData() {
 					EngineStopStart = new DriverData.EngineStopStartData() {
 						UtilityFactorStandstill = DeclarationData.Driver.GetEngineStopStartLorry().UtilityFactor,
@@ -278,7 +282,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 						MaxEngineOffTimespan =  DeclarationData.Driver.GetEngineStopStartLorry().MaxEngineOffTimespan
 					}
 				},
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			};
 
 			// call builder (actual test)
@@ -329,11 +333,11 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 					},
 				AirdragData = new AirdragData() {
 					CrossWindCorrectionCurve =
-						new CrosswindCorrectionCdxALookup(6.16498344.SI<SquareMeter>(),
-							CrossWindCorrectionCurveReader.GetNoCorrectionCurve(6.16498344.SI<SquareMeter>()),
+						new CrosswindCorrectionCdxALookup(6.16498344.SI<SquareMeter>(), 0.SI<SquareMeter>(),
+                            CrossWindCorrectionCurveReader.GetNoCorrectionCurve(6.16498344.SI<SquareMeter>()),
 							CrossWindCorrectionMode.NoCorrection)
 				},
-				AxleGearData = new AxleGearData { AxleGear = new GearData { Ratio = 2.3 } },
+				AxleGearSinglePwt = new AxleGearData { AxleGear = new GearData { Ratio = 2.3 } },
 				EngineData = new CombustionEngineData {
 					IdleSpeed = 560.RPMtoRad(),
 					Inertia = 1.SI<KilogramSquareMeter>(),
@@ -345,17 +349,17 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 						{ 3, fullLoadCurve }
 					}
 				},
-				GearboxData = new GearboxData {
+				GearboxSinglePwt = new GearboxData {
 					Gears = new Dictionary<uint, GearData> {
 						{ 1, new GearData { Ratio = 6.696 } },
 						{ 2, new GearData { Ratio = 3.806 } },
 						{ 3, new GearData { Ratio = 2.289 } }
 					},
 				},
-				GearshiftParameters = new ShiftStrategyParameters() {
+				GearshiftParametersSinglePwt = new ShiftStrategyParameters() {
 					StartSpeed = 2.SI<MeterPerSecond>()
 				},
-				Retarder = new RetarderData(),
+				RetarderSinglePwt = new RetarderData(),
 				DriverData = new DriverData() {
 					EngineStopStart = new DriverData.EngineStopStartData() {
 						EngineOffStandStillActivationDelay = DeclarationData.Driver.GetEngineStopStartLorry().ActivationDelay,
@@ -363,14 +367,14 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 						MaxEngineOffTimespan = DeclarationData.Driver.GetEngineStopStartLorry().MaxEngineOffTimespan,
 					}
 				},
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			};
 
 			// call builder (actual test)
 			var jobContainer = PowertrainBuilder.Build(data, new MockModalDataContainer());
 		}
 
-		private static void RunJob(string jobFile, string expectedModFile, string actualModFile, string expectedSumFile,
+		private void RunJob(string jobFile, string expectedModFile, string actualModFile, string expectedSumFile,
 			string actualSumFile, bool actualModData = false)
 		{
 			var fileWriter = new FileOutputWriter(jobFile);
@@ -378,8 +382,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var jobContainer = new JobContainer(sumWriter);
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
-			runsFactory.ActualModalData = actualModData;
+			var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, fileWriter, null, null, false);
+            runsFactory.ActualModalData = actualModData;
 			runsFactory.WriteModalResults = true;
 
 			jobContainer.AddRuns(runsFactory);
@@ -530,44 +534,41 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		{
 			var tbl = VectoCSVFile.Read(@"TestData/MeasuredSpeed/VairBetaFull.vcdb");
 
-			var dataBus = new MockVehicleContainer();
-
 			var vairbeta = new CrosswindCorrectionVAirBeta(5.SI<SquareMeter>(),
 				CrossWindCorrectionCurveReader.ReadCdxABetaTable(tbl));
-			vairbeta.SetDataBus(dataBus);
-
+			
 			var cycleEntry = new DrivingCycleData.DrivingCycleEntry() {
 				AirSpeedRelativeToVehicle = 20.KMPHtoMeterPerSecond(),
 				WindYawAngle = 0
 			};
-			dataBus.CycleData = new CycleData() { LeftSample = cycleEntry };
+			
 
 			var pAvg =
-				vairbeta.AverageAirDragPowerLoss(20.KMPHtoMeterPerSecond(), 20.KMPHtoMeterPerSecond(), Physics.AirDensity).Value();
+				vairbeta.AverageAirDragPowerLoss(cycleEntry, 20.KMPHtoMeterPerSecond(), 20.KMPHtoMeterPerSecond(), Physics.AirDensity).PowerLoss.Value();
 			Assert.AreEqual(509.259, pAvg, 1e-3);
 
 			pAvg =
-				vairbeta.AverageAirDragPowerLoss(20.KMPHtoMeterPerSecond(), 21.KMPHtoMeterPerSecond(), Physics.AirDensity).Value();
+				vairbeta.AverageAirDragPowerLoss(cycleEntry, 20.KMPHtoMeterPerSecond(), 21.KMPHtoMeterPerSecond(), Physics.AirDensity).PowerLoss.Value();
 			Assert.AreEqual(521.990, pAvg, 1e-3);
 
 			pAvg =
-				vairbeta.AverageAirDragPowerLoss(20.KMPHtoMeterPerSecond(), 30.KMPHtoMeterPerSecond(), Physics.AirDensity).Value();
+				vairbeta.AverageAirDragPowerLoss(cycleEntry, 20.KMPHtoMeterPerSecond(), 30.KMPHtoMeterPerSecond(), Physics.AirDensity).PowerLoss.Value();
 			Assert.AreEqual(636.574, pAvg, 1e-3);
 
 			cycleEntry.WindYawAngle = 20;
 
 			pAvg =
-				vairbeta.AverageAirDragPowerLoss(20.KMPHtoMeterPerSecond(), 20.KMPHtoMeterPerSecond(), Physics.AirDensity).Value();
+				vairbeta.AverageAirDragPowerLoss(cycleEntry, 20.KMPHtoMeterPerSecond(), 20.KMPHtoMeterPerSecond(), Physics.AirDensity).PowerLoss.Value();
 			Assert.AreEqual(829.074, pAvg, 1e-3);
 
 			pAvg =
-				vairbeta.AverageAirDragPowerLoss(20.KMPHtoMeterPerSecond(), 30.KMPHtoMeterPerSecond(), Physics.AirDensity).Value();
+				vairbeta.AverageAirDragPowerLoss(cycleEntry, 20.KMPHtoMeterPerSecond(), 30.KMPHtoMeterPerSecond(), Physics.AirDensity).PowerLoss.Value();
 			Assert.AreEqual(1036.343, pAvg, 1e-3);
 
 			cycleEntry.WindYawAngle = -120;
 
 			pAvg =
-				vairbeta.AverageAirDragPowerLoss(20.KMPHtoMeterPerSecond(), 20.KMPHtoMeterPerSecond(), Physics.AirDensity).Value();
+				vairbeta.AverageAirDragPowerLoss(cycleEntry, 20.KMPHtoMeterPerSecond(), 20.KMPHtoMeterPerSecond(), Physics.AirDensity).PowerLoss.Value();
 			Assert.AreEqual(-1019.5370, pAvg, 1e-3);
 		}
 	}

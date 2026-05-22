@@ -84,6 +84,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected internal PCCStates pccState = PCCStates.OutsideSegment;
 		protected internal bool ATEcoRollReleaseLockupClutch;
 
+		private readonly VectoSimulationJobType PowertrainArchitecture;
+
 		public DefaultDriverStrategy(IVehicleContainer container)
 		{
 			PTODriveMinSpeed = container.RunData.DriverData.PTODriveMinSpeed;
@@ -99,7 +101,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				EngineStopStart = false,
 				PredictiveCruiseControl = PredictiveCruiseControlType.None,
 			};
-			ATEcoRollReleaseLockupClutch = data?.GearboxData?.ATEcoRollReleaseLockupClutch ?? false;
+			ATEcoRollReleaseLockupClutch = data?.GearboxSinglePwt?.ATEcoRollReleaseLockupClutch ?? false;
 
 			EcoRollState = new EcoRoll {
 				State = EcoRollStates.EcoRollOff,
@@ -111,30 +113,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			PCCSegments = new PCCSegments();
 
+			PowertrainArchitecture = data.JobType;
+			
 			if (ADAS.PredictiveCruiseControl != PredictiveCruiseControlType.None) {
 				// create a dummy powertrain for pre-processing and estimations
-				ISimpleVehicleContainer testContainer = null;
-
-				switch (data.JobType)
-                {
-                    case VectoSimulationJobType.BatteryElectricVehicle:
-                    case VectoSimulationJobType.SerialHybridVehicle:
-                    case VectoSimulationJobType.IEPC_E:
-                    case VectoSimulationJobType.IEPC_S:
-						testContainer = container.SimplePowertrainBuilder.BuildSimplePowertrainElectric(data);
-						break;
-                    case VectoSimulationJobType.IHPC:
-					case VectoSimulationJobType.ParallelHybridVehicle:
-						testContainer = container.SimplePowertrainBuilder.BuildSimpleHybridPowertrain(data);
-						break;
-					case VectoSimulationJobType.ConventionalVehicle:
-						testContainer = container.SimplePowertrainBuilder.BuildSimplePowertrain(data);
-						break;
-					default:
-						throw new ArgumentOutOfRangeException(nameof(data.JobType));
-				}
-				
-				container.AddPreprocessor(new PCCSegmentPreprocessor(testContainer, PCCSegments, data?.DriverData.PCC));
+				var testPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(container, false, data.JobType);
+				container.AddPreprocessor(new PCCSegmentPreprocessor(testPowertrain, PCCSegments, data?.DriverData.PCC));
 			}
 		}
 
@@ -263,12 +247,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					var brakingIntervalTooShort = NextDrivingAction.Action == DrivingBehavior.Braking &&
 												((NextDrivingAction.TriggerDistance - NextDrivingAction.ActionDistance) / DataBus.VehicleInfo.VehicleSpeed)
 												.IsSmaller(
-													Constants.SimulationSettings.LowerBoundTimeInterval / 20) && !DataBus.ClutchInfo.ClutchClosed(absTime);
+													Constants.SimulationSettings.LowerBoundTimeInterval / 20) && !DataBus.ClutchesInfo.First().ClutchClosed(absTime);
 					var brakingIntervalShort = NextDrivingAction.Action == DrivingBehavior.Braking &&
 												NextDrivingAction.ActionDistance.IsSmaller(currentDistance + ds) &&
 												((NextDrivingAction.TriggerDistance - NextDrivingAction.ActionDistance) / DataBus.VehicleInfo.VehicleSpeed)
 												.IsSmaller(
-													Constants.SimulationSettings.LowerBoundTimeInterval / 2) && (DataBus.GearboxInfo.GearboxType.AutomaticTransmission() || !DataBus.ClutchInfo.ClutchClosed(absTime));
+													Constants.SimulationSettings.LowerBoundTimeInterval / 2) 
+													&& !DataBus.PowertrainInfo.VehicleArchitecture.IsMultiplePowertrains()
+													&& (DataBus.GearboxInfo().GearboxType.AutomaticTransmission() || !DataBus.ClutchesInfo.First().ClutchClosed(absTime));
+					
 					if (brakingIntervalShort && remainingDistance.IsEqual(ds)) {
 						return new ResponseDrivingCycleDistanceExceeded(this) {
 							MaxDistance = ds / 2
@@ -332,14 +319,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					switch (ADAS.EcoRoll) {
 						case EcoRollType.None: break;
 						case EcoRollType.WithoutEngineStop:
-							if (DataBus.GearboxCtl != null) {
-								DataBus.GearboxCtl.DisengageGearbox = true;
+							if (DataBus.GearboxCtl() != null) {
+								DataBus.GearboxCtl().DisengageGearbox = true;
 							}
 						
 							break;
 						case EcoRollType.WithEngineStop:
-							if (DataBus.GearboxCtl != null) {
-								DataBus.GearboxCtl.DisengageGearbox = true;
+							if (DataBus.GearboxCtl() != null) {
+								DataBus.GearboxCtl().DisengageGearbox = true;
 							}
 							if (DataBus.EngineCtl != null) {
 								DataBus.EngineCtl.CombustionEngineOn = false;
@@ -352,8 +339,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				case PCCStates.OutsideSegment:
 				case PCCStates.WithinSegment:
 				case PCCStates.PCCinterrupt:
-					if (DataBus.GearboxCtl != null) {
-						DataBus.GearboxCtl.DisengageGearbox = false;
+					if (DataBus.GearboxCtl() != null) {
+						DataBus.GearboxCtl().DisengageGearbox = false;
 					}
 
 					if (DataBus.EngineCtl != null) {
@@ -435,7 +422,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private Newton CalculateCoastingForce(MeterPerSecond targetVelocity, MeterPerSecond vehicleSpeed, Meter targetAltitude, Meter targetDistance)
 		{
 			var dataBus = DataBus;
-			var airDragForce = DataBus.VehicleInfo.AirDragResistance(vehicleSpeed, targetVelocity);
+			var airDrag = DataBus.VehicleInfo.AirDragResistance(vehicleSpeed, targetVelocity);
 			var rollResistanceForce = DataBus.VehicleInfo.RollingResistance(dataBus.DrivingCycleInfo.RoadGradient);
 
 			//mk20211008 shouldn't we calculate it the same as in ComputeCoastingDistance?
@@ -443,13 +430,48 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			//	((targetAltitude - DataBus.DrivingCycleInfo.Altitude) / (targetDistance - DataBus.MileageCounter.Distance))
 			//	.Value().SI<Radian>());
 
-			var gearboxLoss = DataBus.GearboxInfo.GearboxLoss();
-			var axleLoss = DataBus.AxlegearInfo.AxlegearLoss();
+			var gearboxLoss = DataBus.GearboxInfo().GearboxLoss();
+			var axleLoss = DataBus.AxlegearInfo().AxlegearLoss();
 			var emDragLoss = CalculateElectricMotorDragLoss();
+			var iceDragLoss = GetICEDragLossPCC(dataBus);
+
+			var totalComponentLossPowers = gearboxLoss + axleLoss + emDragLoss - iceDragLoss;
+			var coastingResistanceForce = airDrag.AirdragForce + rollResistanceForce + totalComponentLossPowers / vehicleSpeed;
+			return coastingResistanceForce;
+		}
+
+		private Watt GetICEDragLossLookAheadCoasting(IDataBus dataBus)
+		{
+			if (PowertrainArchitecture.IsOneOf(VectoSimulationJobType.SerialHybridVehicle,
+					VectoSimulationJobType.IEPC_S, VectoSimulationJobType.FCHV, VectoSimulationJobType.FCHV_IEPC)) {
+				return 0.SI<Watt>();
+			}
+			return DataBus.EngineInfo.EngineDragPower(DataBus.EngineInfo.EngineSpeed);
+        }
+
+		private Watt GetICEDragLossPCC(IDataBus dataBus)
+		{
+			if (PowertrainArchitecture.IsOneOf(VectoSimulationJobType.SerialHybridVehicle,
+					VectoSimulationJobType.IEPC_S, VectoSimulationJobType.FCHV, VectoSimulationJobType.FCHV_IEPC)) {
+				return 0.SI<Watt>();
+			}
 			var iceDragLoss = 0.SI<Watt>();
-			if (dataBus.GearboxInfo.GearboxType.AutomaticTransmission() && dataBus.GearboxInfo.GearboxType != GearboxType.IHPC) {
-				if (ADAS.EcoRoll == EcoRollType.None && ATEcoRollReleaseLockupClutch) {
-					iceDragLoss = DataBus.EngineInfo.EngineDragPower(DataBus.EngineInfo.EngineSpeed);
+			if (dataBus.GearboxInfo().GearboxType.AutomaticTransmission() &&
+				dataBus.GearboxInfo().GearboxType != GearboxType.IHPC) {
+				switch (ADAS.EcoRoll) {
+					case EcoRollType.None:
+						iceDragLoss = DataBus.EngineInfo.EngineDragPower(DataBus.EngineInfo.EngineSpeed);
+                        break;
+					case EcoRollType.WithoutEngineStop:
+						iceDragLoss = ATEcoRollReleaseLockupClutch
+							? 0.SI<Watt>()
+							: DataBus.EngineInfo.EngineDragPower(DataBus.EngineInfo.EngineSpeed);
+						break;
+					case EcoRollType.WithEngineStop:
+						iceDragLoss = 0.SI<Watt>();
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
 				}
 			} else {
 				if (ADAS.EcoRoll == EcoRollType.None) {
@@ -457,9 +479,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 			}
 
-			var totalComponentLossPowers = gearboxLoss + axleLoss + emDragLoss - iceDragLoss;
-			var coastingResistanceForce = airDragForce + rollResistanceForce + totalComponentLossPowers / vehicleSpeed;
-			return coastingResistanceForce;
+			return iceDragLoss;
 		}
 
 		private Joule CalculateEnergy(Meter altitude, MeterPerSecond velocity, Kilogram mass) =>
@@ -476,12 +496,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			//	return;
 			//}
 			var forces = dBus.VehicleInfo.SlopeResistance(dBus.DrivingCycleInfo.RoadGradient) + dBus.VehicleInfo.RollingResistance(dBus.DrivingCycleInfo.RoadGradient) +
-						dBus.VehicleInfo.AirDragResistance(dBus.VehicleInfo.VehicleSpeed, dBus.VehicleInfo.VehicleSpeed);
+						dBus.VehicleInfo.AirDragResistance(dBus.VehicleInfo.VehicleSpeed, dBus.VehicleInfo.VehicleSpeed).AirdragForce;
 
-			if (dBus.GearboxInfo.GearboxType.AutomaticTransmission() && ATEcoRollReleaseLockupClutch && dBus.VehicleInfo.VehicleSpeed.IsGreater(0)) {
+			if (dBus.GearboxInfo().GearboxType.AutomaticTransmission() && ATEcoRollReleaseLockupClutch && dBus.VehicleInfo.VehicleSpeed.IsGreater(0)) {
 				// for AT transmissions consider engine drag losses during eco-roll events
 				forces -= dBus.EngineInfo.EngineDragPower(dBus.EngineInfo.EngineSpeed) / dBus.VehicleInfo.VehicleSpeed;
-				forces += (dBus.GearboxInfo.GearboxLoss() + dBus.AxlegearInfo.AxlegearLoss()) / dBus.VehicleInfo.VehicleSpeed;
+				forces += (dBus.GearboxInfo().GearboxLoss() + dBus.AxlegearInfo().AxlegearLoss()) / dBus.VehicleInfo.VehicleSpeed;
 			}
 			var accelerationWithinLimits = (-forces / dBus.VehicleInfo.TotalMass).IsBetween(
 				Driver.DriverData.EcoRoll.AccelerationLowerLimit, Driver.DriverData.EcoRoll.AccelerationUpperLimit);
@@ -493,7 +513,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			EcoRollState.AllConditionsMet = vehicleSpeedAboveLowerThreshold && vehcleSpeedBelowMax && slopeNegative && accelerationWithinLimits &&
 											accelerationPedalIdle && !brakeActive;
 
-			EcoRollState.Gear = dBus.GearboxInfo.Gear;
+			EcoRollState.Gear = dBus.GearboxInfo().Gear;
 			switch (EcoRollState.State) {
 				case EcoRollStates.EcoRollOff:
 					if (EcoRollState.AllConditionsMet) {
@@ -524,8 +544,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			switch (EcoRollState.State) {
 				case EcoRollStates.EcoRollOn:
-					if (dBus.GearboxCtl != null) {
-						dBus.GearboxCtl.DisengageGearbox = true;
+					if (dBus.GearboxCtl() != null) {
+						dBus.GearboxCtl().DisengageGearbox = true;
 					}
 			
 					if (ADAS.EcoRoll == EcoRollType.WithEngineStop) {
@@ -533,8 +553,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					}
 					return;
 				case EcoRollStates.EcoRollOff:
-					if (dBus.GearboxCtl != null) {
-						dBus.GearboxCtl.DisengageGearbox = false;
+					if (dBus.GearboxCtl() != null) {
+						dBus.GearboxCtl().DisengageGearbox = false;
 					} 
 					
 					if (ADAS.EcoRoll == EcoRollType.WithEngineStop) {
@@ -736,18 +756,18 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 											+ vehicleMass * vehicleSpeed * vehicleSpeed / 2;
 			var energyDifference = currentKineticEnergy - kineticEnergyAtTarget;
 
-			var airDragForce = DataBus.VehicleInfo.AirDragResistance(vehicleSpeed, targetSpeed);
+			var airDrag = DataBus.VehicleInfo.AirDragResistance(vehicleSpeed, targetSpeed);
 			var rollingResistanceForce = DataBus.VehicleInfo.RollingResistance(
 				((targetAltitude - vehicleAltitude) / (actionEntry.Distance - DataBus.MileageCounter.Distance))
 				.Value().SI<Radian>());
 
-			var gearboxLossPower = DataBus.GearboxInfo?.GearboxLoss() ?? 0.SI<Watt>();
-			var axleLossPower = DataBus.AxlegearInfo?.AxlegearLoss() ?? 0.SI<Watt>();
+			var gearboxLossPower = DataBus.GearboxInfo()?.GearboxLoss() ?? 0.SI<Watt>();
+			var axleLossPower = DataBus.AxlegearInfo()?.AxlegearLoss() ?? 0.SI<Watt>();
 			var emDragLossPower = CalculateElectricMotorDragLoss();
-			var iceDragLossPower = DataBus.EngineInfo?.EngineDragPower(DataBus.EngineInfo.EngineSpeed) ?? 0.SI<Watt>();
+			var iceDragLossPower = GetICEDragLossLookAheadCoasting(DataBus); //DataBus.EngineInfo?.EngineDragPower(DataBus.EngineInfo.EngineSpeed) ?? 0.SI<Watt>();
 
 			var totalComponentLossPowers = gearboxLossPower + axleLossPower + emDragLossPower - iceDragLossPower;
-			var coastingResistanceForce = airDragForce + rollingResistanceForce + totalComponentLossPowers / vehicleSpeed;
+			var coastingResistanceForce = airDrag.AirdragForce + rollingResistanceForce + totalComponentLossPowers / vehicleSpeed;
 
 			var coastingDecisionFactor = Driver.DriverData.LookAheadCoasting.LookAheadDecisionFactor.Lookup(
 				targetSpeed, vehicleSpeed - targetSpeed);
@@ -759,10 +779,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			var sum = 0.SI<Watt>();
 			var db = DataBus;
-			foreach (var pos in db.PowertrainInfo.ElectricMotorPositions)
-				sum += db.ElectricMotorInfo(pos).DragPower(
+			foreach (var emInfo in db.ElectricMotorsInfo.Where(x => x.Position != PowertrainPosition.GEN))
+				sum += emInfo.DragPower(
 					db.BatteryInfo.InternalVoltage,
-					db.ElectricMotorInfo(pos).ElectricMotorSpeed, db.GearboxInfo.Gear);
+					emInfo.ElectricMotorSpeed, db.GearboxesInfo.First(x => x.AxleNumber == emInfo.AxleNumber).Gear);
 			return sum;
 		}
 
@@ -893,7 +913,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				velocity = DriverStrategy.ApplyOverspeed(velocity);
 			}
 
-			if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission() || (DataBus.ClutchInfo.ClutchClosed(absTime) && DataBus.GearboxInfo.GearEngaged(absTime))) {
+			if (DataBus.GearboxInfo().GearboxType.AutomaticTransmission() || (DataBus.ClutchInfo().ClutchClosed(absTime) && DataBus.GearboxInfo().GearEngaged(absTime))) {
 				if (DataBus.DrivingCycleInfo.CycleData.LeftSample.PTOActive == PTOActivity.PTOActivityRoadSweeping && targetVelocity < DriverStrategy.PTODriveMinSpeed) {
 					velocity = DriverStrategy.PTODriveMinSpeed;
 					targetVelocity = velocity;
@@ -914,7 +934,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (response is ResponseDrivingCycleDistanceExceeded) {
 				return response;
 			}
-			if (!(response is ResponseSuccess) && DataBus.ClutchInfo.ClutchClosed(absTime)) {
+			if (!(response is ResponseSuccess) && DataBus.ClutchesInfo.First().ClutchClosed(absTime)) {
 				response = HandleRequestEngaged(absTime, ds, targetVelocity, gradient, prohibitOverspeed, velocity, debug);
 			}
 
@@ -928,7 +948,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				// the clutch is disengaged, and the vehicle stopped - we can't perform a roll action. wait for the clutch to be engaged
 				// todo mk 2016-08-23: is this still needed?
 				var remainingShiftTime = Constants.SimulationSettings.TargetTimeInterval;
-				while (!DataBus.ClutchInfo.ClutchClosed(absTime + remainingShiftTime)) {
+				while (!DataBus.ClutchesInfo.First().ClutchClosed(absTime + remainingShiftTime)) {
 					remainingShiftTime += Constants.SimulationSettings.TargetTimeInterval;
 				}
 
@@ -940,10 +960,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var response = Driver.DrivingActionRoll(absTime, ds, velocity, gradient);
 			debug.Add("[DMD.HRD-0] ClutchOpen -> Roll", response);
 			switch (response) {
-				case ResponseUnderload _ when DataBus.ClutchInfo.ClutchClosed(absTime):
+				case ResponseUnderload _ when DataBus.ClutchesInfo.First().ClutchClosed(absTime):
 					response = HandleRequestEngaged(absTime, ds, velocity, gradient, false, velocity, debug);
 					break;
-				case ResponseUnderload _ when !DataBus.ClutchInfo.ClutchClosed(absTime):
+				case ResponseUnderload _ when !DataBus.ClutchesInfo.First().ClutchClosed(absTime):
 					response = Driver.DrivingActionBrake(absTime, ds, velocity, gradient, response);
 					debug.Add("[DMD.HRD-1] Roll:Underload -> Brake", response);
 					break;
@@ -965,7 +985,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var second = first;
 			switch (first) {
 				case ResponseUnderload _:
-					if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission() && !DataBus.ClutchInfo.ClutchClosed(absTime)) {
+					if (DataBus.GearboxInfo().GearboxType.AutomaticTransmission() && !DataBus.ClutchesInfo.First().ClutchClosed(absTime)) {
 						//TODO mk20210616 the whole statement could be de-nested to switch-pattern matching (with "where") if this first "if" would not be here.
 						var debugResponse = Driver.DrivingActionRoll(absTime, ds, velocityWithOverspeed, gradient);
 						debug.Add("[DMD.HRE-0] (Underload&Overspeed)->Roll", second);
@@ -984,9 +1004,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						// unfortunately, this causes issues for P1 hybrid configurations with AT gearbox in torque converter gear. If the EM propells, the torque
 						// converter cannot find an operating point close to the drag point. therefore, do not announce the different action except for driving off from
 						// standstill.
-						var overrideAction = DataBus.GearboxInfo.GearboxType.AutomaticTransmission()
-											&& (DataBus.GearboxInfo.Gear.TorqueConverterLocked.HasValue && !DataBus.GearboxInfo.Gear.TorqueConverterLocked.Value)
-											&& (DataBus.ElectricMotorInfo(PowertrainPosition.HybridP1) == null || DataBus.VehicleInfo.VehicleStopped)
+						var gearbox = DataBus.GearboxesInfo.First();
+						var overrideAction = gearbox.GearboxType.AutomaticTransmission()
+											&& (gearbox.Gear.TorqueConverterLocked.HasValue && !gearbox.Gear.TorqueConverterLocked.Value)
+											&& (DataBus.ElectricMotorsInfo.Count(x => x.Position == PowertrainPosition.HybridP1) == 0 || DataBus.VehicleInfo.VehicleStopped)
 							? DrivingAction.Accelerate
 							: (DrivingAction?)null;
 						second = Driver.DrivingActionBrake(absTime, ds, velocityWithOverspeed, gradient,
@@ -999,9 +1020,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					break;
 				case ResponseSpeedLimitExceeded _:
 					if (DriverStrategy.EcoRollState.State == EcoRollStates.EcoRollOn &&
-						DataBus.GearboxInfo.GearboxType.AutomaticTransmission() && DriverStrategy.ATEcoRollReleaseLockupClutch) {
+						DataBus.GearboxInfo().GearboxType.AutomaticTransmission() && DriverStrategy.ATEcoRollReleaseLockupClutch) {
 						DriverStrategy.EcoRollState.State = EcoRollStates.EcoRollOff;
-						DataBus.GearboxCtl.DisengageGearbox = false;
+						DataBus.GearboxCtl().DisengageGearbox = false;
 					}
 					second = Driver.DrivingActionBrake(absTime, ds, velocityWithOverspeed, gradient);
 					debug.Add("[DMD.HRE-3] SpeedLimitExceeded->Brake", second);
@@ -1031,6 +1052,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						case ResponseSpeedLimitExceeded _:
 							third = Driver.DrivingActionBrake(absTime, ds, velocityWithOverspeed, gradient);
 							debug.Add("[DMD.HRE-7] third:SpeedLimitExceeded -> Brake", third);
+
+							if (third is ResponseOverload)
+							{
+                                third = Driver.DrivingActionAccelerate(absTime, ds, velocityWithOverspeed, gradient);
+                                debug.Add("[DMD.HRE-7-1] third:Overload after Brake after Gearshift --> Accelerate", third);
+                            }
+
 							break;
 					}
 					break;
@@ -1044,8 +1072,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 							debug.Add("[DMD.HRE-9] third:GearShift -> try again Coast", third);
 							break;
 						case ResponseSpeedLimitExceeded _:
-							if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission() &&
-								!DataBus.GearboxInfo.Gear.IsLockedGear()) {
+							if (DataBus.GearboxInfo().GearboxType.AutomaticTransmission() &&
+								!DataBus.GearboxInfo().Gear.IsLockedGear()) {
 								third = Driver.DrivingActionCoast(absTime, ds, velocityWithOverspeed + 1.KMPHtoMeterPerSecond(), gradient);
 								debug.Add("[DMD.HRE-10] third:Overload (AT, Converter gear) -> Coast", third);
 							} else {
@@ -1054,7 +1082,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 							}
 
 							break;
-					}
+                        case ResponseOverload _:
+                            // for cases with IEPC while first is overspeed, second ist overload due to brake + downshift, third is coast with overload
+							// also for case with xEV having to accelerate before stop due to positive gradient
+                            if (DataBus.GearboxInfo().GearboxType is GearboxType.APTN) {
+                                third = Driver.DrivingActionAccelerate(absTime, ds, velocityWithOverspeed, gradient);
+                                debug.Add("[DMD.HRE-12] third:Overload (APTN,IEPC) -> Accelerate", third);
+                            }
+                            break;
+                    }
 					break;
 			}
 
@@ -1119,7 +1155,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			} else {
 				//we are not driving in overspeed (VehicleSpeed < targetVelocity)
 
-				if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission() && DataBus.GearboxInfo.DisengageGearbox) {
+				if (DataBus.GearboxInfo().GearboxType.AutomaticTransmission() && DataBus.GearboxInfo().DisengageGearbox) {
 					var response = Driver.DrivingActionCoast(absTime, ds, velocityWithOverspeed, gradient);
 					debug.Add("[DMD.FAOC-6] Coast", response);
 					return response;
@@ -1300,7 +1336,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				debug.Add("[DMB-DB-3] Brake", response);
 			}
 
-			if ((DataBus.GearboxInfo.GearboxType.AutomaticTransmission() || DataBus.HybridControllerInfo != null)
+			if ((DataBus.GearboxInfo().GearboxType.AutomaticTransmission() || DataBus.HybridControllerInfo != null)
 				&& response == null) {
 				for (var i = 0; i < 3 && response == null; i++) {
 					DataBus.Brakes.BrakePower = 0.SI<Watt>();
@@ -1316,7 +1352,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			switch (response) {
 				case ResponseOverload r:
 					Log.Info("Brake -> Got OverloadResponse during brake action - desired deceleration could not be reached! response: {0}", r);
-					if (!DataBus.ClutchInfo.ClutchClosed(absTime)) {
+					if (!DataBus.ClutchesInfo.First().ClutchClosed(absTime)) {
 						Log.Info("Brake -> Overload -> Clutch is open - Trying roll action");
 						response = Driver.DrivingActionRoll(absTime, ds, targetVelocity, gradient);
 						debug.Add("[DMB-DB-5] Roll", response);
@@ -1324,7 +1360,22 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 							response = Driver.DrivingActionBrake(absTime, ds, targetVelocity, gradient);
 							debug.Add("[DMB-DB-6] Brake", response);
 						}
-					} else {
+                        if (DataBus.ClutchesInfo.First().ClutchClosed(absTime))
+                        {
+                            response = Driver.DrivingActionCoast(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+                            debug.Add("[DMB-DB-6-1] Coast", response);
+                            if (response is ResponseGearShift)
+                            {
+                                response = Driver.DrivingActionCoast(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+                                debug.Add("[DMB-DB-6-2] Coast", response);
+                            }
+							if ((response is ResponseOverload) || (response is ResponseDrivingCycleDistanceExceeded))
+							{
+                                response = Driver.DrivingActionAccelerate(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+                                debug.Add("[DMB-DB-6-3] Accelerate", response);
+                            }
+                        }
+                    } else {
 						Log.Info("Brake -> Overload -> Clutch is closed - Trying brake action again");
 						DataBus.Brakes.BrakePower = 0.SI<Watt>();
 						DataBus.HybridControllerCtl?.RepeatDrivingAction(absTime);
@@ -1333,10 +1384,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						debug.Add("[DMB-DB-7] Brake", response);
 						if (response is ResponseOverload) {
 							Log.Info("Brake -> Overload -> 2nd Brake -> Overload -> Trying accelerate action");
-							var gear = DataBus.GearboxInfo.Gear;
-							if (DataBus.GearboxInfo.GearEngaged(absTime)) {
+							var gear = DataBus.GearboxInfo().Gear;
+							if (DataBus.GearboxInfo().GearEngaged(absTime)) {
 								response = Driver.DrivingActionAccelerate(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
 								debug.Add("[DMB-DB-8] Accelerate", response);
+								if (response is ResponseOverload)
+								{
+									Log.Info("Brake -> Overload --> Accelerate -> Overload -> trying coast action");
+									response = Driver.DrivingActionCoast(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+									debug.Add("[DMB-DB-8-1] Coast", response);
+								}
 							} else {
 								response = Driver.DrivingActionRoll(absTime, ds, targetVelocity, gradient);
 								debug.Add("[DMB-DB-9] Roll", response);
@@ -1354,8 +1411,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 									debug.Add("[DMB-DB-12] Roll", response);
 									break;
 								case ResponseUnderload _:
-									if (gear.Gear != DataBus.GearboxInfo.Gear.Gear)
-									{
+									if (gear.Gear != DataBus.GearboxInfo().Gear.Gear || absTime.IsEqual(DataBus.GearboxInfo().LastDownshift))
+                                    {
 										// AT Gearbox switched gears, shift losses are no longer applied, try once more...
 										response = Driver.DrivingActionAccelerate(absTime, ds,
 											DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
@@ -1367,7 +1424,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 												gradient, targetDistance: targetDistance);
 											debug.Add("[DMB-DB-14] Brake", response);
 										}
-									}
+                                        if (response is ResponseOverload && DataBus.GearboxInfo().GearboxType is GearboxType.APTN)
+                                        {
+                                            Log.Info("Brake -> Overload --> Accelerate -> Gearshift -> Accelerate --> Underload --> Accelerate --> Underload --> Brake -> Overload -> trying coast action");
+                                            response = Driver.DrivingActionCoast(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+                                            debug.Add("[DMB-DB-15] Coast", response);
+                                        }
+                                    }
 									break;
 							}
 						}
@@ -1394,7 +1457,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private IResponse DoCoast(Second absTime, Meter ds, MeterPerSecond targetVelocity, Radian gradient, Meter currentDistance)
 		{
 			Driver.DriverBehavior = DrivingBehavior.Coasting;
-			var response = DataBus.ClutchInfo.ClutchClosed(absTime)
+			var response = DataBus.ClutchesInfo.First().ClutchClosed(absTime)
 				? Driver.DrivingActionCoast(absTime, ds, VectoMath.Max(targetVelocity, DataBus.VehicleInfo.VehicleSpeed), gradient)
 				: Driver.DrivingActionRoll(absTime, ds, VectoMath.Max(targetVelocity, DataBus.VehicleInfo.VehicleSpeed), gradient);
 			switch (response) {
@@ -1407,7 +1470,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					break;
 				case ResponseOverload _:
 					// limiting deceleration while coast may result in an overload => issue brakes to decelerate with driver's max deceleration
-					response = DataBus.ClutchInfo.ClutchClosed(absTime)
+					response = DataBus.ClutchesInfo.First().ClutchClosed(absTime)
 						? Driver.DrivingActionAccelerate(absTime, ds, targetVelocity, gradient)
 						: Driver.DrivingActionRoll(absTime, ds, targetVelocity, gradient);
 					//Phase = BrakingPhase.Brake;
@@ -1428,23 +1491,35 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return null;
 			}
 
-			// handle the SpeedLimitExceeded Response and Gearshift Response separately in case it occurs in one of the requests in the second try
-			for (var i = 0; i < 3 && (response is ResponseGearShift || response is ResponseSpeedLimitExceeded); i++) {
+			var APTGearShiftCondition = ((DataBus.GearboxInfo().GearboxType is GearboxType.APTN || DataBus.GearboxInfo().GearboxType is GearboxType.ATSerial)
+                    && ((DataBus.GearboxInfo().LastDownshift?.IsEqual(absTime) ?? false) || (DataBus.GearboxInfo().LastShift?.IsEqual(absTime) ?? false)));
+
+            // handle the SpeedLimitExceeded Response and Gearshift Response separately in case it occurs in one of the requests in the second try
+            for (var i = 0; i < 3 && (response is ResponseGearShift || response is ResponseSpeedLimitExceeded || (response is ResponseOverload && APTGearShiftCondition)); i++) {
 				switch (response) {
 					case ResponseGearShift _:
 						response = Driver.DrivingActionRoll(absTime, ds, targetVelocity, gradient);
 						break;
 					case ResponseSpeedLimitExceeded _:
 						response = Driver.DrivingActionBrake(absTime, ds, DataBus.VehicleInfo.VehicleSpeed, gradient);
-						if (response is ResponseOverload && !DataBus.ClutchInfo.ClutchClosed(absTime)) {
+						if (response is ResponseOverload && !DataBus.ClutchesInfo.First().ClutchClosed(absTime)) {
 							response = Driver.DrivingActionRoll(absTime, ds, DataBus.VehicleInfo.VehicleSpeed, gradient);
 						}
 						if (response is ResponseGearShift) {
 							response = Driver.DrivingActionBrake(absTime, ds, DataBus.VehicleInfo.VehicleSpeed, gradient);
 						}
 						break;
+					case ResponseOverload _:
+						// add a condition for APTN/IEPC as ResponseGearShift does not exist for them
+						// add a condition for ATSerial/ICE as ResponseGearShift does not exist for them
+						response = Driver.DrivingActionAccelerate(absTime, ds, DataBus.VehicleInfo.VehicleSpeed, gradient);
+						break;
+
 				}
-			}
+				APTGearShiftCondition = ((DataBus.GearboxInfo().GearboxType is GearboxType.APTN || DataBus.GearboxInfo().GearboxType is GearboxType.ATSerial)
+					&& ((DataBus.GearboxInfo().LastDownshift?.IsEqual(absTime) ?? false) || (DataBus.GearboxInfo().LastShift?.IsEqual(absTime) ?? false)));
+
+            }
 
 			return response;
 		}
@@ -1528,7 +1603,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 								break;
 							case ResponseOverload _:
 								DataBus.Brakes.BrakePower = 0.SI<Watt>();
-								if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission() || DataBus.ClutchInfo.ClutchClosed(absTime)) {
+								if (DataBus.GearboxInfo().GearboxType.AutomaticTransmission() || DataBus.ClutchesInfo.First().ClutchClosed(absTime)) {
 									if (DataBus.VehicleInfo.VehicleSpeed.IsGreater(0)) {
 										response = Driver.DrivingActionAccelerate(absTime, ds,
 											DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
@@ -1558,7 +1633,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			Radian gradient)
 		{
 			IResponse response;
-			if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission() || (DataBus.ClutchInfo.ClutchClosed(absTime) && DataBus.GearboxInfo.GearEngaged(absTime))) {
+			if (DataBus.GearboxInfo().GearboxType.AutomaticTransmission() || (DataBus.ClutchesInfo.First().ClutchClosed(absTime) && DataBus.GearboxInfo().GearEngaged(absTime))) {
 				if (DataBus.VehicleInfo.VehicleSpeed.IsGreater(0)) {
 					response = Driver.DrivingActionAccelerate(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
 				} else {

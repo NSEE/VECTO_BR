@@ -84,7 +84,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 						}
 					}, new VectoRunData() {
 						EngineData = engineData,
-						AxleGearData = new AxleGearData() {
+						AxleGearSinglePwt = new AxleGearData() {
 							AxleGear = new TransmissionData() { Ratio = ((IAxleGearInputData)gearboxInput).Ratio },
 						},
 						VehicleData =
@@ -115,8 +115,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 							VehicleCategory = VehicleCategory.RigidTruck,
 							DynamicTyreRadius = 0.5.SI<Meter>()
 						},
-						AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
-					}, null);
+						AxleGearSinglePwt = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+					});
 
 				//gearboxInput, engineData, (IGearshiftEngineeringInputData)gearboxInput,
 				//((IAxleGearInputData)gearboxInput).Ratio, 0.5.SI<Meter>(),
@@ -243,17 +243,24 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public IElectricStorageSystemDeclarationInputData ElectricStorage { get; }
 		public IElectricMachinesDeclarationInputData ElectricMachines { get; }
 		public IIEPCDeclarationInputData IEPC { get; }
-	}
+		public IFuelCellSystemDeclarationInputData FuelCellSystem { get; }
+        public IList<IAxlePowertrainDeclarationInputData> AxlePowertrainInputData { get; }
+        public ElectricMachineEntry<IElectricMotorDeclarationInputData> Generator { get; }
+    }
 
 	public class MockVehicleTestInputData : IVehicleDeclarationInputData
 	{
-		private DateTime _date;
 		public DataSource DataSource { get; }
 		public bool SavedInDeclarationMode { get; }
 		public string Manufacturer { get; }
 		public string Model { get; }
-
-		DateTime IComponentInputData.Date => _date;
+		public string SimulationToolLicenseNumber { get; }
+		public string VehicleMonitoringData { get; }
+        public Kilogram H2StorageUsableCapacity { get; }
+        public HydrogenStorageTechnology? HydrogenStorageTechnology { get; }
+        public bool BatteryOnlyMode { get; }
+        public DynamicChargingTechnology DynamicChargingTechnology { get; }
+        DateTime IComponentInputData.Date => default;
 
 		public string AppVersion { get; }
 		public string Date { get; }
@@ -278,6 +285,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public bool? AirdragModifiedMultistep { get; }
 		public TankSystem? TankSystem { get; }
 		public IAdvancedDriverAssistantSystemDeclarationInputData ADAS { get; }
+		public IVehicleInMotionChargingDeclaration InMotionCharging { get; }
 		public bool ZeroEmissionVehicle { get; }
 		public bool HybridElectricHDV { get; }
 		public bool DualFuelVehicle { get; }
@@ -298,11 +306,13 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public Meter EntranceHeight { get; }
 		public ConsumerTechnology? DoorDriveTechnology { get; }
 		public VehicleDeclarationType VehicleDeclarationType { get; }
-		public IDictionary<PowertrainPosition, IList<Tuple<Volt, TableData>>> ElectricMotorTorqueLimits { get; }
+		public IDictionary<EMPlacement, IList<Tuple<Volt, TableData>>> ElectricMotorTorqueLimits { get; }
 		public TableData BoostingLimitations { get; }
 		public string VehicleTypeApprovalNumber { get; }
 		public ArchitectureID ArchitectureID { get; }
-		public bool OvcHev { get; }
+		public ArchitectureID ArchitectureIDPwt2 { get; }
+
+        public bool OVC { get; }
 		public Watt MaxChargingPower { get; }
 		public VectoSimulationJobType VehicleType { get; }
 		public IVehicleComponentsDeclaration Components { get; set; }

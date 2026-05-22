@@ -17,8 +17,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 {
     public class StageInputViewModel : StageViewModelBase, IDocumentViewModel, IJobEditViewModel
     {
-		private bool _canBeEdited;
-        private DataSource _dataSource;
+		private DataSource _dataSource;
         private readonly XmlDocumentType _documentType;
         private string _documentName;
         private bool _selected;
@@ -210,6 +209,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		HEV,
 		PEV,
 		IEPC,
+		FCHV,
 		Exempted
 	}
 
@@ -235,6 +235,10 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 				case VectoSimulationJobType.IEPC_E:
 				case VectoSimulationJobType.IEPC_S:
 					return CompletedBusArchitecture.IEPC;
+				case VectoSimulationJobType.FCHV:
+                case VectoSimulationJobType.FCHV_IEPC:
+					return CompletedBusArchitecture.FCHV;
+				case VectoSimulationJobType.EngineOnlySimulation:
 				default:
 					throw new ArgumentOutOfRangeException(nameof(jobType), jobType, null);
 			}

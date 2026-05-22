@@ -33,12 +33,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -84,10 +80,28 @@ namespace TUGraz.VectoCore.Models.Declaration
 			}
 		}
 
+		//#if USE_EXTERNAL_DECLARATION_DATA
+		//[MethodImpl(MethodImplOptions.Synchronized)]
+		//#endif
 		protected DataTable ReadCsvResource(string resourceId, Action<string> overrideWarning = null)
 		{
-			return VectoCSVFile.ReadStream(RessourceHelper.ReadStream(resourceId), source: resourceId);
+			// TODO: MQ 2020-07 Remove in official bus version!
+			//#if USE_EXTERNAL_DECLARATION_DATA
+			//var tmp = resourceId.Replace(DeclarationData.DeclarationDataResourcePrefix + ".", "");
+			//var parts = tmp.Split('.');
+			//var fileName = Path.GetFullPath(Path.Combine(@"Declaration\Override", string.Join(".", parts[parts.Length-2], parts[parts.Length-1])));
 
+			//if (File.Exists(fileName)) {
+			//	if (overrideWarning != null) {
+			//		overrideWarning($"{resourceId} overridden by {fileName}");
+			//	}
+
+			//	_readFromFile = true;
+			//	return VectoCSVFile.Read(fileName);
+			//}
+			//#endif
+
+			return VectoCSVFile.ReadStream(RessourceHelper.ReadStream(resourceId), source: resourceId);
 		}
 
 		protected static void NormalizeTable(DataTable table)
@@ -112,6 +126,11 @@ namespace TUGraz.VectoCore.Models.Declaration
 			} catch (KeyNotFoundException) {
 				throw new VectoException(string.Format(ErrorMessage, key));
 			}
+		}
+
+		public bool ContainsKey(TKey key)
+		{
+			return Data.ContainsKey(key);
 		}
 
 		public Dictionary<TKey, TValue> Entries => Data;

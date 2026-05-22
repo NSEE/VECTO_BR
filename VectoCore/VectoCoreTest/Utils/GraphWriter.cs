@@ -29,17 +29,11 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
 using System.Drawing;
-using System.Linq;
 #if !NET5_0_OR_GREATER
 using System.Windows.Forms.DataVisualization.Charting;
 #endif
 using TUGraz.VectoCommon.Models;
-using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Utils;
 
@@ -49,15 +43,16 @@ namespace TUGraz.VectoCore.Tests.Utils
 	{
 		private bool _enabled = true;
 
+#if !NET5_0_OR_GREATER
 		private Size _diagramSize = new Size(2000, 440);
 
-#if !NET5_0_OR_GREATER
+
 		private readonly Font AxisLabelFont = new Font("Consolas", 10);
 		private readonly Font AxisTitleFont = new Font("Verdana", 12);
 		private readonly Font LegendFont = new Font("Verdana", 14);
 #endif
 
-		public string Series2Label { get; set; }
+        public string Series2Label { get; set; }
 
 		public string Series1Label { get; set; }
 
@@ -69,14 +64,16 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public bool PlotIgnitionState = false;
 
-		public void Enable()
+		public bool Enable()
 		{
 			_enabled = true;
+			return _enabled;
 		}
 
-		public void Disable()
+		public bool Disable()
 		{
 			_enabled = false;
+			return _enabled;
 		}
 
 		public void Write(string fileNameV3, string fileNameV22 = null)

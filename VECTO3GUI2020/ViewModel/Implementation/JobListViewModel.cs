@@ -25,7 +25,6 @@ using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider.v24;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
@@ -36,7 +35,6 @@ using VECTO3GUI2020.Annotations;
 using VECTO3GUI2020.Helper;
 using VECTO3GUI2020.Properties;
 using VECTO3GUI2020.ViewModel.Implementation.Common;
-using VECTO3GUI2020.ViewModel.Implementation.Document;
 using VECTO3GUI2020.ViewModel.Interfaces;
 using VECTO3GUI2020.ViewModel.Interfaces.Document;
 using VECTO3GUI2020.ViewModel.MultiStage.Implementation;
@@ -53,8 +51,6 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 		private bool _simulationLoggingEnabled = true; //Enabled and Disable NLOG Messages
 
 
-
-		private BackgroundWorker fileReadingBackgroundWorker;
 
 		private object _jobsLock = new Object();
         private ObservableCollection<IDocumentViewModel> _jobs = new ObservableCollection<IDocumentViewModel>();
@@ -269,7 +265,6 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 
 		private Task<IDocumentViewModel> LoadJsonFile([NotNull] string fileName)
 		{
-			IDocumentViewModel result = null;
 			try {
 				var inputData = JSONInputDataFactory.ReadJsonJob(fileName, true);
 				return Task.FromResult(_multiStageViewModelFactory.CreateDocumentViewModel(inputData));
@@ -796,10 +791,8 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 		private ICommand _moveJobDownCommand;
 		private ICommand _viewXMLCommand;
 		private IDocumentViewModel _selectedJob;
-		private IAsyncRelayCommand _addJobAsync;
 		private IAsyncRelayCommand<IDocumentViewModel> _simulationCommand;
 		private IRelayCommand<bool> _newVifCommand;
-		private ICommand _newMultiStageFileCommand;
 		private ICommand _openNewFilePopUpCommand;
 		private ICommand _newCompletedInputCommand;
 		private ICommand _newExemptedCompletedInputCommand;
@@ -920,7 +913,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 		{
 			get
 			{
-				return _newMultiStageFileCommand ?? new RelayCommand(NewManufacturingStageFileExecute, () => { return true; });
+				return new RelayCommand(NewManufacturingStageFileExecute, () => { return true; });
 			}
 		}
 
@@ -933,7 +926,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation
 		{
 			get
 			{
-				return _addJobAsync ?? new AsyncRelayCommand(AddJobExecuteAsync
+				return new AsyncRelayCommand(AddJobExecuteAsync
 					, () => true);
 			}
 		}

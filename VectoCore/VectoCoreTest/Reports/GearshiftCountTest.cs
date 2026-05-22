@@ -29,10 +29,13 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Tests.Reports
@@ -41,14 +44,17 @@ namespace TUGraz.VectoCore.Tests.Reports
 	[Parallelizable(ParallelScope.All)]
 	public class GearshiftCountTest
 	{
-		[TestCase()]
+        private StandardKernel _kernel = new StandardKernel(new VectoNinjectModule());
+
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearshiftCountTractionInterruptionShiftup()
 		{
 			var rundata = new VectoRunData() {
 				JobName = "GearshiftRun",
-				GearboxData = new GearboxData()
+				GearboxSinglePwt = new GearboxData()
             };
-			var modData = new ModalDataContainer(rundata, null, null);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, null, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateColumns(ModalResults.GearboxSignals);
 
@@ -65,19 +71,20 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData.CommitSimulationStep();
 			}
 
-			var gearshifts = modData.GearshiftCount();
+			var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
 			Assert.AreEqual(1, gearshifts.Value());
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearshiftCountTractionInterruption()
 		{
 			var rundata = new VectoRunData()
 			{
 				JobName = "GearshiftRun",
-				GearboxData = new GearboxData()
+				GearboxSinglePwt = new GearboxData()
 			};
-			var modData = new ModalDataContainer(rundata, null, null);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, null, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateColumns(ModalResults.GearboxSignals);
 
@@ -94,19 +101,20 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData.CommitSimulationStep();
 			}
 
-			var gearshifts = modData.GearshiftCount();
+			var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
 			Assert.AreEqual(0, gearshifts.Value());
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearshiftCountTractionInterruptionShiftDown()
 		{
 			var rundata = new VectoRunData()
 			{
 				JobName = "GearshiftRun",
-				GearboxData = new GearboxData()
+				GearboxSinglePwt = new GearboxData()
 			};
-			var modData = new ModalDataContainer(rundata, null, null);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, null, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateColumns(ModalResults.GearboxSignals);
 
@@ -123,20 +131,21 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData.CommitSimulationStep();
 			}
 
-			var gearshifts = modData.GearshiftCount();
+			var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
 			Assert.AreEqual(1, gearshifts.Value());
 		}
 
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearshiftCountTractionInterruptionStop()
 		{
 			var rundata = new VectoRunData()
 			{
 				JobName = "GearshiftRun",
-				GearboxData = new GearboxData()
+				GearboxSinglePwt = new GearboxData()
 			};
-			var modData = new ModalDataContainer(rundata, null, null);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, null, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateColumns(ModalResults.GearboxSignals);
 
@@ -153,19 +162,20 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData.CommitSimulationStep();
 			}
 
-			var gearshifts = modData.GearshiftCount();
+			var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
 			Assert.AreEqual(1, gearshifts.Value());
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearshiftCountTractionInterruptionStopDriveOff()
 		{
 			var rundata = new VectoRunData()
 			{
 				JobName = "GearshiftRun",
-				GearboxData = new GearboxData()
+				GearboxSinglePwt = new GearboxData()
 			};
-			var modData = new ModalDataContainer(rundata, null, null);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, null, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateColumns(ModalResults.GearboxSignals);
 
@@ -183,20 +193,21 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData.CommitSimulationStep();
 			}
 
-			var gearshifts = modData.GearshiftCount();
+			var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
 			Assert.AreEqual(2, gearshifts.Value());
 		}
 
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearshiftCountTractionInterruptionShiftupAT()
 		{
 			var rundata = new VectoRunData()
 			{
 				JobName = "GearshiftRun",
-				GearboxData = new GearboxData()
+				GearboxSinglePwt = new GearboxData()
 			};
-			var modData = new ModalDataContainer(rundata, null, null);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, null, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateColumns(ModalResults.GearboxSignals);
 
@@ -213,20 +224,21 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData.CommitSimulationStep();
 			}
 
-			var gearshifts = modData.GearshiftCount();
+			var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
 			Assert.AreEqual(1, gearshifts.Value());
 		}
 
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestGearshiftCountTractionInterruptionShiftDownAT()
 		{
 			var rundata = new VectoRunData()
 			{
 				JobName = "GearshiftRun",
-				GearboxData = new GearboxData()
+				GearboxSinglePwt = new GearboxData()
 			};
-			var modData = new ModalDataContainer(rundata, null, null);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(rundata, null, null, null);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateColumns(ModalResults.GearboxSignals);
 
@@ -243,7 +255,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData.CommitSimulationStep();
 			}
 
-			var gearshifts = modData.GearshiftCount();
+			var gearshifts = modData.GearshiftCount(Constants.NOT_IN_AXLE_POWERTRAIN);
 			Assert.AreEqual(1, gearshifts.Value());
 		}
 

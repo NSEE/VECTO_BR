@@ -30,7 +30,6 @@
 */
 
 using System;
-using NUnit.Framework;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
@@ -38,6 +37,8 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Ninject;
+using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -45,11 +46,13 @@ using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.HeavyLorry;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 
@@ -63,16 +66,20 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 	[SuppressMessage("ReSharper", "UnusedMember.Local")]
 	public class ValidationTestClass
 	{
-		[OneTimeSetUp]
+        private StandardKernel _kernel;
+
+        [OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 		/// <summary>
 		/// VECTO-107 Check valid range of input parameters
 		/// </summary>
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void Validation_CombustionEngineData()
 		{
 			var fuelConsumption = new DataTable();
@@ -114,7 +121,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			Assert.IsTrue(data.IsValid());
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void Validation_CombustionEngineData_Engineering()
 		{
 			var fuelConsumption = new TableData();
@@ -150,7 +158,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			Assert.IsTrue(engineData.IsValid());
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void Validation_CombustionEngineData_Declaration()
 		{
 			var fuelConsumption = new TableData();
@@ -197,7 +206,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			Assert.IsTrue(engineData.IsValid());
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void ValidationModeVehicleDataTest()
 		{
 			var vehicleData = new VehicleData {
@@ -237,7 +247,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 		/// <summary>
 		/// VECTO-107 Check valid range of input parameters
 		/// </summary>
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void ValidationModeVectoRunDataTest()
 		{
 			var engineData = new CombustionEngineData {
@@ -293,21 +304,23 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 				AirdragData = new AirdragData() {
 					CrossWindCorrectionMode = CrossWindCorrectionMode.NoCorrection,
 					CrossWindCorrectionCurve =
-						new CrosswindCorrectionCdxALookup(5.SI<SquareMeter>(),
-							CrossWindCorrectionCurveReader.GetNoCorrectionCurve(5.SI<SquareMeter>()),
+						new CrosswindCorrectionCdxALookup(5.SI<SquareMeter>(), 0.SI<SquareMeter>(),
+                            CrossWindCorrectionCurveReader.GetNoCorrectionCurve(5.SI<SquareMeter>()),
 							CrossWindCorrectionMode.NoCorrection)
 				},
-				GearboxData = gearboxData,
+				GearboxSinglePwt = gearboxData,
 				EngineData = engineData,
-				AxleGearData = axleGearData
-			};
+				AxleGearSinglePwt = axleGearData,
+				ExecutionMode = ExecutionMode.Engineering,
+            };
 
-            var container = VehicleContainer.CreateVehicleContainer(runData, null, null);
+            var container = _kernel.Get<IPowertrainBuilder>().Build(runData, null, null);
 			var data = new DistanceRun(container);
 
 			var results = data.Validate(ExecutionMode.Declaration, VectoSimulationJobType.ConventionalVehicle, null, null, false);
 			Assert.IsTrue(results.Any(), "Validation should have failed, but succeded.");
 
+			ValidationHelper.ClearValHistory();
 			results = vehicleData.Validate(ExecutionMode.Engineering, VectoSimulationJobType.ConventionalVehicle, null, null, false);
 			Assert.IsTrue(!results.Any());
 		}
@@ -315,9 +328,11 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 		/// <summary>
 		/// VECTO-107 Check valid range of input parameters
 		/// </summary>
-		[TestCase]
+		[TestCase,
+		Category(Definitions.DUPLICATE)]
 		public void Validation_VectoRun()
 		{
+			
 			var engineData = new CombustionEngineData {
 				FullLoadCurves =
 					new Dictionary<uint, EngineFullLoadCurve>() {
@@ -340,11 +355,12 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 				}
 			};
 
-			var container = VehicleContainer.CreateVehicleContainer(new VectoRunData {
+			var container = _kernel.Get<IPowertrainBuilder>().Build(
+				new VectoRunData {
 					JobRunId = 0,
-					GearboxData = gearboxData,
+					GearboxSinglePwt = gearboxData,
 					EngineData = engineData,
-					AxleGearData = axleGearData
+					AxleGearSinglePwt = axleGearData
 				}, null, null);
 			var data = new DistanceRun(container);
 
@@ -360,7 +376,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 		/// <summary>
 		/// VECTO-107 Check valid range of input parameters
 		/// </summary>
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void Validation_Test()
 		{
 			var results = new DataObject().Validate(ExecutionMode.Declaration, VectoSimulationJobType.ConventionalVehicle, null, null, false);
@@ -370,7 +387,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			Assert.AreEqual(32, results.Count, "Validation Error: " + results.Select(r => r.ErrorMessage).Join("\n_eng_avg"));
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void ValidateDictionaryTest()
 		{
 			var container = new ContainerObject() {
@@ -384,7 +402,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			Assert.AreEqual(1, results.Count);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void ValidateDoubleErrorTest()
 		{
 			var wrap = new WrapperObject() { Value = 101 };
@@ -404,7 +423,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 		/// <summary>
 		/// VECTO-249: check upshift is above downshift
 		/// </summary>
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void ShiftPolygonValidationTest()
 		{
 			var vgbs = new[] {
@@ -433,7 +453,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			Assert.IsTrue(results.Any());
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void ShiftPolygonValidationATTest()
 		{
 			var vgbs = new[] {

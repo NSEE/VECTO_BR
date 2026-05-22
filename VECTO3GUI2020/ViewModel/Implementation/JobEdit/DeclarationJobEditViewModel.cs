@@ -1,24 +1,14 @@
-﻿using Ninject;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Windows;
-using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
-using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Schema;
 using CommunityToolkit.Mvvm.Input;
-using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using VECTO3GUI2020.Helper;
 using VECTO3GUI2020.Properties;
 using VECTO3GUI2020.ViewModel.Implementation.Common;
-using VECTO3GUI2020.ViewModel.Interfaces;
 using VECTO3GUI2020.ViewModel.Interfaces.JobEdit;
 using VECTO3GUI2020.ViewModel.Interfaces.JobEdit.Vehicle;
 using VECTO3GUI2020.ViewModel.Interfaces.JobEdit.Vehicle.Components;
@@ -99,12 +89,8 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit
 
         #region Commands
 
-        private ICommand _saveCommand;
-		private ICommand _saveAsCommand;
-		private DataSource _dataSource;
+        private DataSource _dataSource;
 		private IDialogHelper _dialogHelper;
-		private VectoSimulationJobType _jobType;
-
 
 		private void UpdateDataSource(string filename)
 		{
@@ -113,10 +99,10 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit
 		}
 
 		public ICommand SaveCommand =>
-			_saveCommand ?? new RelayCommand(
+			new RelayCommand(
 				SaveExecute, () => true);
 
-		public ICommand SaveAsCommand => _saveAsCommand ?? new RelayCommand(
+		public ICommand SaveAsCommand => new RelayCommand(
 			SaveAsExecute, () => true);
 
 		private void SaveAsExecute()
@@ -167,7 +153,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit
 
 		public string ShiftStrategy => throw new NotImplementedException();
 
-		public VectoSimulationJobType JobType => _jobType;
+		public VectoSimulationJobType JobType => VectoSimulationJobType.ConventionalVehicle;
 	}
 
     public class DeclarationJobEditViewModel_v1_0 : DeclarationJobEditViewModel

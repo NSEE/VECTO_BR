@@ -56,6 +56,15 @@
 			</xsl:for-each>
 		</xsl:element>
 	</xsl:template>
+	<xsl:template match="*[local-name()='FuelCellPowerOutputConsumptionMap']">
+		<xsl:element name="{local-name()}">
+			<xsl:apply-templates select="@*"/>
+			<xsl:for-each select="*">
+				<xsl:sort data-type="number" select="@powerOutput" order="ascending"/>
+				<xsl:apply-templates select="."/>
+			</xsl:for-each>
+		</xsl:element>
+	</xsl:template>
 	<xsl:template match="*[local-name()='FullLoadAndDragCurve']">
 		<xsl:element name="{local-name()}">
 			<xsl:apply-templates select="@*"/>
@@ -120,6 +129,73 @@
 			</xsl:for-each>
 		</xsl:element>
 	</xsl:template>
+
+	<xsl:template match="*[local-name()='GearshiftCount' and @axleNumber]">
+		<xsl:if test="count(preceding-sibling::*[local-name()='GearshiftCount']) = 0">
+			<xsl:for-each select="../*[local-name()='GearshiftCount']">
+				<xsl:sort data-type="number" select="@axleNumber" order="ascending"/>
+				<xsl:element name="{local-name()}">
+					<xsl:apply-templates select="*"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='AverageGearboxEfficiency' and @axleNumber]">
+		<xsl:if test="count(preceding-sibling::*[local-name()='AverageGearboxEfficiency']) = 0">
+			<xsl:for-each select="../*[local-name()='AverageGearboxEfficiency']">
+				<xsl:sort data-type="number" select="@axleNumber" order="ascending"/>
+				<xsl:element name="{local-name()}">
+					<xsl:apply-templates select="*"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='AverageAxlegearEfficiency' and @axleNumber]">
+		<xsl:if test="count(preceding-sibling::*[local-name()='AverageAxlegearEfficiency']) = 0">
+			<xsl:for-each select="../*[local-name()='AverageAxlegearEfficiency']">
+				<xsl:sort data-type="number" select="@axleNumber" order="ascending"/>
+				<xsl:element name="{local-name()}">
+					<xsl:apply-templates select="*"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='PEVArchitecture' and @axleNumber]">
+		<xsl:if test="count(preceding-sibling::*[local-name()='PEVArchitecture']) = 0">
+			<xsl:for-each select="../*[local-name()='PEVArchitecture']">
+				<xsl:sort data-type="number" select="@axleNumber" order="ascending"/>
+				<xsl:element name="{local-name()}">
+					<xsl:apply-templates select="*"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='HEVArchitecture' and @axleNumber]">
+		<xsl:if test="count(preceding-sibling::*[local-name()='HEVArchitecture']) = 0">
+			<xsl:for-each select="../*[local-name()='HEVArchitecture']">
+				<xsl:sort data-type="number" select="@axleNumber" order="ascending"/>
+				<xsl:element name="{local-name()}">
+					<xsl:apply-templates select="*"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='FCHVArchitecture' and @axleNumber]">
+		<xsl:if test="count(preceding-sibling::*[local-name()='FCHVArchitecture']) = 0">
+			<xsl:for-each select="../*[local-name()='FCHVArchitecture']">
+				<xsl:sort data-type="number" select="@axleNumber" order="ascending"/>
+				<xsl:element name="{local-name()}">
+					<xsl:apply-templates select="*"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+	
 	<xsl:template match="*[local-name()='MaxTorqueCurve']">
 		<xsl:element name="{local-name()}">
 			<xsl:apply-templates select="@*"/>
@@ -234,7 +310,99 @@
 			</xsl:for-each>			
 		</xsl:if>				
 	</xsl:template>
-	
+
+	<!-- Sorts ElectricMachine, which has a child element Position and sorts them by this value in ascending order -->
+	<!-- For SHEV_Sx vehicles with ElectricMotorTorqueLimits -->
+	<xsl:template match="*[local-name()='ElectricMachine' and ./*[local-name()='Position']]">
+		<xsl:if test="count(preceding-sibling::*[local-name()='ElectricMachine']) = 0">
+			<xsl:for-each select="../*[local-name()='ElectricMachine']">
+				<xsl:sort data-type="text" select="./*[local-name() = 'Position']/text()" order="ascending"/>
+				<xsl:element name="{local-name()}">
+					<xsl:apply-templates select="*"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+
+	<!-- Sorts AngledriveType, which has an attribute axleNumber and sorts them by this value in ascending order -->
+	<!-- For Multiple powertrain vehicles -->
+	<xsl:template match="*[local-name()='AngledriveType' and @axleNumber]">
+		<xsl:if test="count(preceding-sibling::*[local-name()='AngledriveType']) = 0">
+			<xsl:for-each select="../*[local-name()='AngledriveType']">
+				<xsl:sort data-type="number" select="@axleNumber" order="ascending"/>
+				<xsl:element name="{local-name()}">
+					<xsl:apply-templates select="*"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+
+	<!-- Sorts RetarderType, which has an attribute axleNumber and sorts them by this value in ascending order -->
+	<!-- For Multiple powertrain vehicles -->
+	<xsl:template match="*[local-name()='RetarderType' and @axleNumber]">
+		<xsl:if test="count(preceding-sibling::*[local-name()='RetarderType']) = 0">
+			<xsl:for-each select="../*[local-name()='RetarderType']">
+				<xsl:sort data-type="number" select="@axleNumber" order="ascending"/>
+				<xsl:element name="{local-name()}">
+					<xsl:apply-templates select="*"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+
+	<!-- Sorts RetarderRatio, which has an attribute axleNumber and sorts them by this value in ascending order -->
+	<!-- For Multiple powertrain vehicles -->
+	<xsl:template match="*[local-name()='RetarderRatio' and @axleNumber]">
+		<xsl:if test="count(preceding-sibling::*[local-name()='RetarderRatio']) = 0">
+			<xsl:for-each select="../*[local-name()='RetarderRatio']">
+				<xsl:sort data-type="number" select="@axleNumber" order="ascending"/>
+				<xsl:element name="{local-name()}">
+					<xsl:apply-templates select="*"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+
+	<!-- Sorts PTO, which has an attribute axleNumber and sorts them by this value in ascending order -->
+	<!-- For Multiple powertrain vehicles -->
+	<xsl:template match="*[local-name()='PTO' and @axleNumber]">
+		<xsl:if test="count(preceding-sibling::*[local-name()='PTO']) = 0">
+			<xsl:for-each select="../*[local-name()='PTO']">
+				<xsl:sort data-type="number" select="@axleNumber" order="ascending"/>
+				<xsl:element name="{local-name()}">
+					<xsl:apply-templates select="*"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+
+	<!-- Sorts Powertrain, which has an attribute axleNumber and sorts them by this value in ascending order -->
+	<!-- For Multiple powertrain vehicles -->
+	<xsl:template match="*[local-name()='Powertrain' and @axleNumber]">
+		<xsl:if test="count(preceding-sibling::*[local-name()='Powertrain']) = 0">
+			<xsl:for-each select="../*[local-name()='Powertrain']">
+				<xsl:sort data-type="number" select="@axleNumber" order="ascending"/>
+				<xsl:element name="{local-name()}">
+					<xsl:apply-templates select="*"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+
+	<!-- Sorts FuelCellModule -->
+	<!-- For FCHV vehicles -->
+	<xsl:template match="*[local-name()='FuelCellModule' and ./*[local-name()='Count']]">
+		<xsl:if test="count(preceding-sibling::*[local-name()='FuelCellModule']) = 0">
+			<xsl:for-each select="../*[local-name()='FuelCellModule']">
+				<xsl:sort data-type="number" select="./*[local-name() = 'Count']/text()" order="ascending"/>
+				<xsl:sort data-type="text" select="./*[local-name() = 'FuelCell']/*[local-name() = 'Data']/@id" order="ascending"/>
+				<xsl:element name="{local-name()}">
+					<xsl:apply-templates select="*"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
+
 	<!-- Sorts DragCurve, which has a attribute gear and sorts them by the gear number in ascending order -->
 	<!-- For the components EM IHPC and IEPC -->
 	<xsl:template match="*[local-name()='DragCurve' and @gear]">

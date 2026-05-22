@@ -32,7 +32,6 @@
 using System.Diagnostics;
 using System.Linq;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCommon.Models
 {
@@ -110,8 +109,14 @@ namespace TUGraz.VectoCommon.Models
 		public NewtonMeter TorqueConverterTorqueDemand { get; set; }
 
 	}
+	
+	public class RetarderResponse : AbstractPowertrainComponentResponse
+    {
+        public NewtonMeter RetarderTorqueLoss { get; set; }
 
-	[DebuggerDisplay("P_out: {PowerRequest}; T_card: {CardanTorque}")]
+    }
+
+    [DebuggerDisplay("P_out: {PowerRequest}; T_card: {CardanTorque}")]
 	public class AxlegearResponse : AbstractPowertrainComponentResponse
 	{
 		public NewtonMeter CardanTorque { get; set; }
@@ -192,7 +197,9 @@ namespace TUGraz.VectoCommon.Models
 
 		TorqueConverterResponse TorqueConverter { get; }
 
-		AxlegearResponse Axlegear { get; }
+        RetarderResponse Retarder { get; }
+
+        AxlegearResponse Axlegear { get; }
 
 		AngledriveResponse Angledrive { get; }
 		WheelsResponse Wheels { get; }
@@ -238,7 +245,9 @@ namespace TUGraz.VectoCommon.Models
 	{
 		IRESSResponse RESSResponse { get; set; }
 
-		Watt AuxPower { get; set; }
+        Watt MaxNominalFCRatedPower { get; set; }
+
+        Watt AuxPower { get; set; }
 
 		Watt ConsumerPower { get; set; }
 

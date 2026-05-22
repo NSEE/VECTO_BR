@@ -1,35 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Schema;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.DataCollection;
-using Moq;
 using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
-using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
-using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
-using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformationFile.CustomerInformationFile_0_9;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformationFile.CustomerInformationFile_0_9.ResultWriter;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport;
-using TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.ManufacturerReport_0_9;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.ManufacturerReport_0_9.ManufacturerReport;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport.ManufacturerReport_0_9.ManufacturerReportXMLTypeWriter;
-using TUGraz.VectoCore.Tests.Integration.CompletedBus;
-using TUGraz.VectoCore.Tests.Models.Simulation;
 using TUGraz.VectoCore.Utils;
 using TUGraz.VectoCore.Utils.Ninject;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
@@ -228,13 +219,15 @@ namespace TUGraz.VectoCore.Tests.XML.Reports
 			var ihpc = (dataProvider.JobInputData.Vehicle.Components?.ElectricMachines?.Entries)?.Count(electric =>
 				electric.ElectricMachine.IHPCType != "None") > 0;
 			var iepc = (dataProvider.JobInputData.Vehicle.Components?.IEPC != null);
+
 			var report = _mrfFactory.GetManufacturerReport(
 				dataProvider.JobInputData.Vehicle.VehicleCategory,
 				dataProvider.JobInputData.JobType,
 				dataProvider.JobInputData.Vehicle.ArchitectureID,
-				dataProvider.JobInputData.Vehicle.ExemptedVehicle,
+                dataProvider.JobInputData.Vehicle.ExemptedVehicle,
 				iepc,
 				ihpc);
+
 			return report;
 		}
 
@@ -251,13 +244,15 @@ namespace TUGraz.VectoCore.Tests.XML.Reports
 
 			var ihpc = (dataProvider.JobInputData.PrimaryVehicle.Vehicle.Components.ElectricMachines?.Entries)?.Count(electric => electric.ElectricMachine.IHPCType != "None") > 0;
 			var iepc = (dataProvider.JobInputData.PrimaryVehicle.Vehicle.Components.IEPC != null);
+			
 			var report = _mrfFactory.GetManufacturerReport(
 				dataProvider.JobInputData.ConsolidateManufacturingStage.Vehicle.VehicleCategory,
 				dataProvider.JobInputData.JobType,
 				dataProvider.JobInputData.PrimaryVehicle.Vehicle.ArchitectureID,
-				dataProvider.JobInputData.PrimaryVehicle.Vehicle.ExemptedVehicle,
+                dataProvider.JobInputData.PrimaryVehicle.Vehicle.ExemptedVehicle,
 				iepc,
 				ihpc);
+
 			return report;
 		}
 

@@ -1,54 +1,37 @@
-﻿using TUGraz.VectoCommon.Models;
+﻿using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies
 {
-	public class APTNShiftStrategy : PEVAMTShiftStrategy
+	public class FCHVAPTNShiftStrategy : APTNShiftStrategy
 	{
-		public APTNShiftStrategy(IVehicleContainer dataBus) : base(dataBus, false)
+		public new const string Name = "APT-N - EffShift (FCHV)";
+
+		public FCHVAPTNShiftStrategy(IVehicleContainer container) : base(container, VectoSimulationJobType.FCHV, false) { }
+	}
+
+
+    public class APTNShiftStrategy : PEVAMTShiftStrategy
+	{
+		public new const string Name = "APT-N - EffShift (BEV)";
+		
+		public APTNShiftStrategy(IVehicleContainer container) : this(container, VectoSimulationJobType.BatteryElectricVehicle, false)
+		{}
+
+		public APTNShiftStrategy(IVehicleContainer container, VectoSimulationJobType jobType, bool dummy) : base(container, jobType,  false)
 		{
-			//VelocityDropData.Data = new[] {
-			//	new VelocitySpeedGearshiftPreprocessor.Entry() {
-			//		StartVelocity = 0.KMPHtoMeterPerSecond(), EndVelocity = 0.KMPHtoMeterPerSecond(), Gradient = VectoMath.InclinationToAngle(-20),
-			//	},
-			//	new VelocitySpeedGearshiftPreprocessor.Entry() {
-			//		StartVelocity = 0.KMPHtoMeterPerSecond(), EndVelocity = 0.KMPHtoMeterPerSecond(), Gradient = VectoMath.InclinationToAngle(20),
-			//	},
-			//	new VelocitySpeedGearshiftPreprocessor.Entry() {
-			//		StartVelocity = 200.KMPHtoMeterPerSecond(), EndVelocity = 200.KMPHtoMeterPerSecond(), Gradient = VectoMath.InclinationToAngle(-20),
-			//	},
-			//	new VelocitySpeedGearshiftPreprocessor.Entry() {
-			//		StartVelocity = 200.KMPHtoMeterPerSecond(), EndVelocity = 200.KMPHtoMeterPerSecond(), Gradient = VectoMath.InclinationToAngle(20),
-			//	},
-			//};
-			if (dataBus.RunData.VehicleData == null) {
+			if (container.RunData.VehicleData == null) {
 				return;
 			}
 
-			if (!dataBus.IsTestPowertrain) {
-				SetupVelocityDropPreprocessor(dataBus);
+			if (!container.IsTestPowertrain) {
+				SetupVelocityDropPreprocessor(container.SimplePowertrainBuilder);
 			}
 		}
 
-		public new static string Name => "APT-N";
-
-		protected override GearshiftPosition CheckEarlyDownshift(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, GearshiftPosition currentGear, IResponse resp)
-		{
-			return base.CheckEarlyDownshift(absTime, dt, outTorque, outAngularVelocity, currentGear, resp);
-		}
-
-		protected override GearshiftPosition CheckEarlyUpshift(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, GearshiftPosition currentGear, IResponse resp)
-		{
-			return base.CheckEarlyUpshift(absTime, dt, outTorque, outAngularVelocity, currentGear, resp);
-		}
-
-		protected override GearshiftPosition DoCheckUpshift(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, NewtonMeter inTorque, PerSecond inAngularVelocity, GearshiftPosition currentGear, IResponse r)
-		{
-			return base.DoCheckUpshift(absTime, dt, outTorque, outAngularVelocity, inTorque, inAngularVelocity, currentGear, r);
-		}
-		
 		public override bool ShiftRequired(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, NewtonMeter inTorque,
             PerSecond inAngularVelocity, GearshiftPosition gear, Second lastShiftTime, IResponse response)
         {

@@ -4,6 +4,8 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformation
 	ResultWriter
 {
 
-	public interface ICIFResultsWriterFactory : ICommonResultsWriterFactory { }
+	public interface ICIFResultsWriterFactory : ICommonResultsWriterFactory
+	{
+	}
 
 }

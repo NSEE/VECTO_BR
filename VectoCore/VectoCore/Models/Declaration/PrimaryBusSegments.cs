@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration
@@ -143,7 +141,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 						MaxLoad = null,
 						LowLoad = passengerCountLow * missionType.GetAveragePassengerMass() * missionType.GetLowLoadFactorBus(),
 						RefLoad = passengerCountRef * missionType.GetAveragePassengerMass(),
-						VehicleHeight = row.ParseDouble("bodyheight").SI<Meter>() + 0.3.SI<Meter>(), //row.ParseDouble("height").SI<Meter>(),
+						VehicleHeight = row.ParseDouble("bodyheight").SI<Meter>(),
 						PassengersRefLoad = passengerCountRef,
 						PassengersLowLoad = passengerCountLow * missionType.GetLowLoadFactorBus(),
 						TotalCargoVolume = 0.SI<CubicMeter>(),
@@ -155,6 +153,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 							VehicleWidth = row.ParseDouble("width").SI<Meter>(),
 							CurbMassTPMLMFactor = row.Field<string>("curbmasstpmlmfactor").ToDouble(double.NaN),
 							BodyHeight = row.ParseDouble("bodyheight").SI<Meter>(),
+							DeltaHeight = 0.3.SI<Meter>(), //row.ParseDouble("height").SI<Meter>(),
 							NumberPassengersLowerDeck = row.ParseDouble("passengerslowerdeck"),
 							NumberPassengersUpperDeck = row.ParseDouble("passengersupperdeck"),
 							PassengerDensityLow = passengerDensityLow,

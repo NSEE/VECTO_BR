@@ -1,7 +1,5 @@
 using System;
 using System.IO;
-using System.Xml.Linq;
-using Moq;
 using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.BusAuxiliaries;
@@ -101,7 +99,6 @@ namespace Vecto3GUI2020Test
 			var multiStageJobViewModel = vm.MultiStageJobViewModel as MultiStageJobViewModel_v0_1;
 
 
-			var fileToSave = "loadAndSaveFullInputDataTest.xml";
 			multiStageJobViewModel.ManufacturingStageViewModel.LoadStageInputData(Path.GetFullPath(TestData.stageInputFullSample));
 
 
@@ -221,9 +218,6 @@ namespace Vecto3GUI2020Test
 
 
 			
-			var fileToSave = "stageInput.xml";
-
-
 			TestContext.Write("Saving file with loaded Airdrag Component ... ");
 			var multistageJobViewModel = vm.MultiStageJobViewModel as MultiStageJobViewModel_v0_1;
 			var savePath = Path.GetFullPath($"{TestContext.CurrentContext.Test.Name}.xml");

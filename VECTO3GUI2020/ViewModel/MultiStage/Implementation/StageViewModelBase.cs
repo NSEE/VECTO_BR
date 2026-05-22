@@ -4,19 +4,14 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
-using System.Windows.Forms.Design;
 using System.Windows.Input;
 using System.Xml.Linq;
 using CommunityToolkit.Mvvm.Input;
-using Newtonsoft.Json;
 using Ninject;
 using TUGraz.VectoCommon.InputData;
-using TUGraz.VectoCommon.Resources;
-using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.Utils;
 using VECTO3GUI2020.Helper;
-using VECTO3GUI2020.Model.Multistage;
 using VECTO3GUI2020.Ninject;
 using VECTO3GUI2020.Properties;
 using VECTO3GUI2020.Util.XML;
@@ -47,8 +42,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		protected IMultistageVehicleViewModel _vehicleViewModel;
 		protected IMultiStageViewModelFactory _viewModelFactory;
 		private IViewModelBase _currentview;
-		private ICommand _switchComponentViewCommand;
-
+		
 		[Inject]
 		public IMultistageDependencies MultistageDependencies
 		{
@@ -95,8 +89,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		{
 			get
 			{
-				return _switchComponentViewCommand ??
-						new RelayCommand<string>(SwitchViewExecute, (string s) => SwitchViewCanExecute(s));
+				return new RelayCommand<string>(SwitchViewExecute, (string s) => SwitchViewCanExecute(s));
 			}
 		}
 
@@ -115,25 +108,21 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 			return found && vm != null;
 		}
 
-		private IRelayCommand _saveInputDataCommand;
-		private ICommand _saveInputDataAsCommand;
 		private IMultistageDependencies _multistageDependencies;
 		private IXMLInputDataReader _inputDataReader;
 
 		public IRelayCommand SaveInputDataCommand =>
-			_saveInputDataCommand ??
 			new RelayCommand(() => { SaveInputDataExecute(filename: _vehicleInputDataFilePath); },
 				() => _vehicleInputDataFilePath != null);
 
 		public ICommand SaveInputDataAsCommand =>
-			_saveInputDataAsCommand ?? new RelayCommand(() => { SaveInputDataExecute(filename: null); }, () => true);
+			new RelayCommand(() => { SaveInputDataExecute(filename: null); }, () => true);
 
-        private ICommand _loadVehicleDataCommand;
-		private string _vehicleInputDataFilePath;
+        private string _vehicleInputDataFilePath;
 
 		public ICommand LoadVehicleDataCommand
 		{
-			get { return _loadVehicleDataCommand ?? new RelayCommand(LoadVehicleDataExecute, () => true); }
+			get { return new RelayCommand(LoadVehicleDataExecute, () => true); }
 		}
 
 		#endregion Commands
@@ -156,14 +145,16 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		public void SaveInputDataExecute(string filename)
 		{
 			var dialogHelper = _multistageDependencies.DialogHelper;
-			if (VehicleViewModel.HasErrors) {
+			if (VehicleViewModel.HasErrors)
+			{
 				var errorMessage = "Vehicle:\n";
 				var vehicleErrorInfo = VehicleViewModel as IDataErrorInfo;
 				errorMessage += vehicleErrorInfo.Error.Replace(",", "\n");
 
 
 				if (VehicleViewModel.MultistageAuxiliariesViewModel is IDataErrorInfo auxiliariesErrorInfo &&
-					!string.IsNullOrEmpty(auxiliariesErrorInfo.Error)) {
+					!string.IsNullOrEmpty(auxiliariesErrorInfo.Error))
+				{
 					errorMessage += "\nAuxiliaries:\n";
 					errorMessage += auxiliariesErrorInfo.Error.Replace(",", "\n");
 				}
@@ -187,41 +178,48 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 
 
 			var xElement = vehicleWriter.GetElement();
-			var xDoc = xElement.CreateWrapperDocument(XMLNamespaces.V24);
-			Debug.WriteLine(xElement.CreateWrapperDocument(XMLNamespaces.V24).ToString());
+			var xDoc = xElement.CreateWrapperDocument(XMLNamespaces.V27);
+			Debug.WriteLine(xElement.CreateWrapperDocument(XMLNamespaces.V27).ToString());
 
 
 			var valid = false;
 			var validationError = "";
-			try {
+			try
+			{
 				var validator = new XMLValidator(xDoc.ToXmlDocument());
 				valid = validator.ValidateXML(XmlDocumentType.DeclarationJobData);
 				validationError = validator.ValidationError;
-			} catch (Exception e) {
+			} 
+			catch (Exception e)
+			{
 				dialogHelper.ShowMessageBox(messageBoxText: (e.Message + "\n" + e.InnerException),
 					caption: "Error saving File");
 			}
 
-			if (!valid) {
+			if (!valid)
+			{
 				dialogHelper.ShowMessageBox($"Invalid Document: {validationError}", "Error");
 				var tempFile = Path.GetTempFileName();
-				try {
+				try
+				{
 					xDoc.Save(tempFile, SaveOptions.OmitDuplicateNamespaces);
 					LoadStageInputData(tempFile);
 
-				} catch (Exception e) {
+				} catch (Exception e)
+				{
 					dialogHelper.ShowMessageBox(e.Message, "Error");
 					throw;
-				} finally {
-					if (File.Exists(tempFile)) {
+				} finally
+				{
+					if (File.Exists(tempFile))
+					{
 						File.Delete(tempFile);
 					}
-
-					;
 				}
 
 
-			} else {
+			} else
+			{
 				xDoc.Save(filename, SaveOptions.OmitDuplicateNamespaces);
 				LoadStageInputData(filename);
 			}
@@ -245,7 +243,6 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 				_multistageDependencies.DialogHelper.ShowMessageBox(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 				return false;
 			}
-			return true;
 		}
 
 		protected virtual void LoadStageInputDataFollowUp(IDeclarationInputDataProvider loadedInputData)
@@ -259,7 +256,6 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 			set
 			{
 				SetProperty(ref _vehicleInputDataFilePath, value);
-				_saveInputDataCommand?.NotifyCanExecuteChanged();
 			}
 		}
 

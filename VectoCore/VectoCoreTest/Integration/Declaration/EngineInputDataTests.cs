@@ -29,7 +29,6 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -38,9 +37,10 @@ using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
-using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
 
@@ -92,8 +92,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 			}
 			var inputDataProvider = xmlInputReader.CreateDeclaration(modified);
 
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null, validate: false);
-			var first = factory.SimulationRuns().ToArray().First();
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputDataProvider, null, null, null, false);
+            var first = factory.SimulationRuns().ToArray().First();
 
 			var modData = ((ModalDataContainer)first.GetContainer().ModalData).Data;
 			first.Run();

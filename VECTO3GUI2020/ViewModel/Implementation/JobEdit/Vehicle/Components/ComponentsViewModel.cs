@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using TUGraz.VectoCommon.InputData;
-using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using VECTO3GUI2020.ViewModel.Implementation.Common;
@@ -148,13 +147,19 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
 		public IElectricMachinesDeclarationInputData ElectricMachines => throw new NotImplementedException();
 		public IIEPCDeclarationInputData IEPC { get => throw new NotImplementedException(); }
 
-		#endregion
+		public IFuelCellSystemDeclarationInputData FuelCellSystem => throw new NotImplementedException();
 
-	}
+        public IList<IAxlePowertrainDeclarationInputData> AxlePowertrainInputData => throw new NotImplementedException();
+
+        public ElectricMachineEntry<IElectricMotorDeclarationInputData> Generator => throw new NotImplementedException();
+
+        #endregion
+
+    }
 	public class ComponentsViewModel_v1_0 : ComponentsViewModel
 	{
 
-		public static new readonly string VERSION = typeof(XMLDeclarationComponentsDataProviderV10).FullName;
+		public static readonly string VERSION = typeof(XMLDeclarationComponentsDataProviderV10).FullName;
 
 		public ComponentsViewModel_v1_0(IXMLVehicleComponentsDeclaration inputData, IComponentViewModelFactory vmFactory) : base(inputData, vmFactory)
 		{

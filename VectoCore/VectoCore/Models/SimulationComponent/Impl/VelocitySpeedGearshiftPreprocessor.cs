@@ -6,11 +6,11 @@ using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
-using TUGraz.VectoCore.Models.Simulation.DataBus;
-using TUGraz.VectoCore.Models.SimulationComponent.Strategies;
+using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
 
@@ -20,13 +20,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 	{
 		protected readonly Second TractionInterruption;
 		protected readonly VelocityRollingLookup VehicleVelocityDropLookup;
-		protected ISimpleVehicleContainer Container;
+		protected ITestPowertrain TestPowertrain;
 
 		public VelocitySpeedGearshiftPreprocessor(
-			VelocityRollingLookup velocityDropData, Second tracktionInterruption, ISimpleVehicleContainer simpleContainer,
+			VelocityRollingLookup velocityDropData, Second tracktionInterruption, ITestPowertrain simpleContainer,
 			int minGradient = -24, int maxGradient = 24, int gradientStep = 2)
 		{
-			Container = simpleContainer;
+			TestPowertrain = simpleContainer;
 			VehicleVelocityDropLookup = velocityDropData;
 			TractionInterruption = tracktionInterruption;
 			MinGradient = minGradient;
@@ -55,14 +55,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected Entry[] IterateVehicleSpeedAndGradient()
 		{
-			var container = Container;
-			var vehicle = container?.VehicleInfo as Vehicle;
+			var container = TestPowertrain.Container;
+			var vehicle = container?.VehicleInfo as IVehicle;
+			var vehiclePort = vehicle as IDriverDemandOutPort;
 
-			if (vehicle == null) {
+            if (vehicle == null || vehiclePort == null) {
 				throw new VectoException("no vehicle found...");
 			}
 
-			var gearbox = container.GearboxInfo as Gearbox;
+            var gearbox = TestPowertrain.Gearboxes.FirstOrDefault();
 			if (gearbox == null) {
 				throw new VectoException("no gearbox found...");
 			}
@@ -70,8 +71,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var modData = container.ModalData as ModalDataContainer;
 			var runData = container.RunData;
 			var ratio = 1.0 / runData.VehicleData.DynamicTyreRadius *
-						(runData.AxleGearData?.AxleGear.Ratio ?? 1.0) * // alxlegear may be null for certain IEPC configurations
-						(runData.AngledriveData?.Angledrive.Ratio ?? 1.0);
+						(runData.AxleGearSinglePwt?.AxleGear.Ratio ?? 1.0) * // alxlegear may be null for certain IEPC configurations
+						(runData.AngledriveSinglePwt?.Angledrive.Ratio ?? 1.0);
 
 			var tmp = new List<Entry>();
 			//(Container.DriverInfo as MockDriver).DriverBehavior = DrivingBehavior.Coasting;
@@ -82,11 +83,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 
 				var targetEngineSpeed = GetMotorTargetSpeed(runData);
-				var gearForSpeed = runData.GearboxData.GearList
+				var gearForSpeed = runData.GearboxSinglePwt.GearList
 					.Where(x => !x.TorqueConverterLocked.HasValue || x.TorqueConverterLocked.Value)
 					.Select(x => new {
 						Gear = x,
-						SpeedDiff = Math.Abs((speed * ratio * runData.GearboxData.Gears[x.Gear].Ratio -
+						SpeedDiff = Math.Abs((speed * ratio * runData.GearboxSinglePwt.Gears[x.Gear].Ratio -
 											targetEngineSpeed).Value())
 					})
 					.OrderBy(x => x.SpeedDiff).FirstOrDefault()?.Gear ?? new GearshiftPosition(0);
@@ -98,13 +99,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 				for (var grad = MinGradient; grad <= MaxGradient; grad += GradientStep) {
 					var gradient = VectoMath.InclinationToAngle(grad / 100.0);
-					gearbox.Disengaged = false;
-					gearbox.Gear = gearForSpeed;
-					vehicle.Initialize(speed, gradient);
-					gearbox.Gear = new GearshiftPosition(0);
-					gearbox.Disengaged = true;
-					gearbox.EngageTime = 100.SI<Second>();
-					gearbox._nextGear = gearForSpeed;
+					gearbox.SetDisengaged = false;
+					gearbox.SetGear = gearForSpeed;
+					vehiclePort.Initialize(speed, gradient);
+					gearbox.SetGear = new GearshiftPosition(0);
+					gearbox.SetDisengaged = true;
+					gearbox.SetEngageTime = 100.SI<Second>();
+					gearbox.SetNextGear = gearForSpeed;
 
 					var vehicleSpeed = SimulateRollingVehicle(vehicle, gradient, container);
 					modData?.Reset();
@@ -122,8 +123,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected virtual MeterPerSecond GetVehicleMaxSpeed(VectoRunData runData)
 		{
-			var axleGearData = runData.AxleGearData;
-			var angledriveData = runData.AngledriveData;
+			var axleGearData = runData.AxleGearSinglePwt;
+			var angledriveData = runData.AngledriveSinglePwt;
 			var hasAngleDrive = angledriveData != null && angledriveData.Angledrive != null;
 			var angledriveRatio = hasAngleDrive && angledriveData.Type == AngledriveType.SeparateAngledrive
 				? angledriveData.Angledrive.Ratio
@@ -132,7 +133,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var dynamicTyreRadius = runData.VehicleData != null ? runData.VehicleData.DynamicTyreRadius : 0.0.SI<Meter>();
 
 			var vehicleMaxSpeed = GetMaxMotorspeed(runData) /
-					runData.GearboxData.Gears[runData.GearboxData.Gears.Keys.Max()].Ratio / axlegearRatio /
+					runData.GearboxSinglePwt.Gears[runData.GearboxSinglePwt.Gears.Keys.Max()].Ratio / axlegearRatio /
 					angledriveRatio * dynamicTyreRadius;
 			
 			var maxSpeed = VectoMath.Min(
@@ -149,7 +150,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public IList<MeterPerSecond> Speeds { get; }
 
-		protected MeterPerSecond SimulateRollingVehicle(Vehicle vehicle, Radian gradient, IVehicleContainer container)
+		protected MeterPerSecond SimulateRollingVehicle(IVehicle vehicle, Radian gradient, IVehicleContainer container)
 		{
 			var simulationInterval = TractionInterruption;
 
@@ -157,9 +158,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return vehicle.VehicleSpeed;
 			}
 
+			var vehiclePort = vehicle as IDriverDemandOutPort;
+
 			var acceleration = 0.SI<MeterPerSquareSecond>();
 			var absTime = 0.SI<Second>();
-			var initialResponse = vehicle.Request(absTime, simulationInterval, acceleration, gradient);
+			var initialResponse = vehiclePort.Request(absTime, simulationInterval, acceleration, gradient, false);
 			var delta = initialResponse.Gearbox.PowerRequest;
 			try {
 				var time = absTime;
@@ -170,7 +173,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						return r.Gearbox.PowerRequest;
 					},
 					evaluateFunction: acc => {
-						var response = vehicle.Request(time, simulationInterval, acc, gradient, true);
+						var response = vehiclePort.Request(time, simulationInterval, acc, gradient, true);
 						response.Driver.Acceleration = acc;
 						return response;
 					},
@@ -184,7 +187,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					},
 					searcher: this
 				);
-				var step = vehicle.Request(absTime, simulationInterval, acceleration, gradient);
+				var step = vehiclePort.Request(absTime, simulationInterval, acceleration, gradient, false);
 				if (!(step is ResponseSuccess) && !(step is ResponseEngineSpeedTooHigh)) {
 					throw new VectoSimulationException("failed to find acceleration for rolling");
 				}
@@ -210,29 +213,41 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 	public class VelocitySpeedGearshiftPreprocessorE2 : VelocitySpeedGearshiftPreprocessor
 	{
 		public VelocitySpeedGearshiftPreprocessorE2(VelocityRollingLookup velocityDropData,
-			Second tracktionInterruption, ISimpleVehicleContainer simpleContainer, int minGradient = -24,
+			Second tracktionInterruption, ITestPowertrain simpleContainer, int minGradient = -24,
 			int maxGradient = 24, int gradientStep = 2) : base(velocityDropData, tracktionInterruption, simpleContainer,
 			minGradient, maxGradient, gradientStep) { }
 
 		protected override PerSecond GetMotorTargetSpeed(VectoRunData runData)
 		{
-			var em = runData.ElectricMachinesData
-				.FirstOrDefault(x => x.Item1 == PowertrainPosition.BatteryElectricE2 || x.Item1 == PowertrainPosition.IEPC);
+			var em = GetEMPos(runData);
 			if (em == null) {
 				throw new VectoException("E2 EM required for PEV E2 GearshiftPreprocessing");
 			}
-			return 0.5 * em.Item2.EfficiencyData.VoltageLevels.First().FullLoadCurve
-				.MaxSpeed / em.Item2.RatioADC;
+
+            var voltageLevel = em.Item2.EfficiencyData.VoltageLevels.First();
+
+            return 0.5 * (voltageLevel.FullLoadCurve?.MaxSpeed ?? (voltageLevel as IEPCVoltageLevelData).FullLoadCurves.Min(x => x.Value.MaxSpeed)) / em.Item2.RatioADC;
 		}
 
 		protected override PerSecond GetMaxMotorspeed(VectoRunData runData)
 		{
-			var em = runData.ElectricMachinesData
-				.FirstOrDefault(x => x.Item1 == PowertrainPosition.BatteryElectricE2 || x.Item1 == PowertrainPosition.IEPC);
+			var em = GetEMPos(runData);
 			if (em == null) {
 				throw new VectoException("E2 EM required for PEV E2 GearshiftPreprocessing");
 			}
-			return em.Item2.EfficiencyData.VoltageLevels.First().FullLoadCurve.MaxSpeed / em.Item2.RatioADC;
+
+			var voltageLevel = em.Item2.EfficiencyData.VoltageLevels.First();
+            return (voltageLevel.FullLoadCurve?.MaxSpeed ?? (voltageLevel as IEPCVoltageLevelData).FullLoadCurves.Min(x => x.Value.MaxSpeed)) / em.Item2.RatioADC;
+        }
+
+		private Tuple<PowertrainPosition, ElectricMotorData> GetEMPos(VectoRunData runData)
+		{
+			if (runData.JobType.IsOneOf(VectoSimulationJobType.ParallelHybridVehicle, VectoSimulationJobType.IHPC) && runData.BatteryOnlyHybridMode) {
+				return runData.ElectricMachinesSinglePwt
+					.FirstOrDefault(x => x.Item1.IsOneOf(PowertrainPosition.HybridP2, PowertrainPosition.HybridP2_5, PowertrainPosition.IHPC));
+            }
+			return runData.ElectricMachinesSinglePwt
+				.FirstOrDefault(x => x.Item1 == PowertrainPosition.BatteryElectricE2 || x.Item1 == PowertrainPosition.IEPC);
         }
 	}
 }

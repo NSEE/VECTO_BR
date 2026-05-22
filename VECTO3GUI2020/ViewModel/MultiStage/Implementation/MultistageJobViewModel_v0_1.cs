@@ -24,7 +24,6 @@ using VECTO3GUI2020.Model.Multistage;
 using VECTO3GUI2020.Ninject;
 using VECTO3GUI2020.Properties;
 using VECTO3GUI2020.ViewModel.Implementation.Common;
-using VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle;
 using VECTO3GUI2020.ViewModel.Interfaces;
 using VECTO3GUI2020.ViewModel.Interfaces.Document;
 using VECTO3GUI2020.ViewModel.MultiStage.Interfaces;
@@ -130,13 +129,11 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 
         #region Commands
 
-		private ICommand _saveVifCommand;
-
 		public ICommand SaveVIFCommand
 		{
 			get
 			{
-				return _saveVifCommand ?? new RelayCommand(() => {
+				return new RelayCommand(() => {
 					if (_manufacturingStageViewModel.Vehicle is IMultistageVehicleViewModel vehicleViewModel)
 					{
 						if (vehicleViewModel.HasErrors) {
@@ -237,7 +234,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		}
 
 
-		public ICommand SaveAsJSONCommand => _saveAsJsonCommand ?? new RelayCommand(
+		public ICommand SaveAsJSONCommand => new RelayCommand(
 			() => { SaveAsJSONExecute(null); },
 			() => VehicleInputDataFilePath != null
 		);
@@ -312,8 +309,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		private readonly IJobListViewModel _jobListViewModel;
 		private readonly IList<string> _invalidEntries;
 		private readonly ISimulatorFactoryFactory _simFactoryFactory;
-		private IRelayCommand _saveAsJsonCommand;
-
+		
 
 		public string VehicleInputDataFilePath
 		{
@@ -321,7 +317,6 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 			set
 			{
 				ManufacturingStageViewModel.VehicleInputDataFilePath = value;
-				_saveAsJsonCommand?.NotifyCanExecuteChanged();
 				OnPropertyChanged();
 			}
 		}
@@ -364,12 +359,14 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 
 		public bool SimulateResultingVIF => throw new NotImplementedException();
 
-		#endregion
+        public string MonitoringData => _manufacturingStageViewModel.Vehicle.VehicleMonitoringData;
 
-		#region Implementation of IDeclarationInputDataProvider
+        #endregion
+
+        #region Implementation of IDeclarationInputDataProvider
 
 
-		public IDeclarationMultistageJobInputData JobInputData => _jobInputData;
+        public IDeclarationMultistageJobInputData JobInputData => _jobInputData;
 
 		IDeclarationJobInputData IDeclarationInputDataProvider.JobInputData => throw new NotImplementedException();
 
@@ -421,10 +418,10 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 
 		public bool Exempted => _exempted;
 
+        
 
-
-		#endregion
-	}
+        #endregion
+    }
 
 	public class NullSumWriter : SummaryDataContainer
 	{

@@ -31,6 +31,7 @@
 
 using System.Xml;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader;
 
@@ -111,11 +112,17 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 		IXMLAngledriveInputData CreateAngledriveData(
 			string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
 
-		IXMLEngineDeclarationInputData CreateEngineData(
+        IXMLAngledriveInputData CreateAngledriveData(
+            string version, int axleNumber, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
+
+        IXMLEngineDeclarationInputData CreateEngineData(
 			string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
 
 		IXMLRetarderInputData CreateRetarderData(
 			string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
+
+		IXMLRetarderInputData CreateRetarderData(
+            string version, int axleNumber, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
 
 		IXMLAuxiliariesDeclarationInputData CreateAuxiliariesData(
 			string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
@@ -160,17 +167,17 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 			string version, IXMLDeclarationInputData inputData, XmlNode baseNode, bool allowDeprecated);
 
 		IXMLDeclarationPrimaryVehicleBusInputDataReader CreatePrimaryVehicleBusInputReader(
-			string version, IXMLPrimaryVehicleBusInputData inputData, XmlNode baseNode);
+			string version, IXMLPrimaryVehicleBusInputData inputData, XmlNode baseNode, bool allowDeprecated);
 
 		IXMLDeclarationMultistageVehicleInputDataReader CreateMultistageInputReader(string version,
-			IXMLMultistageInputDataProvider inputData, XmlNode baseNode);
+			IXMLMultistageInputDataProvider inputData, XmlNode baseNode, bool allowDeprecated);
 
 
 		IXMLJobDataReader CreateJobReader(
 			string version, IXMLDeclarationJobInputData jobData, XmlNode jobNode, bool allowDeprecated);
 		
 		IXMLMultistageJobReader CreateMultistageJobReader(
-			string version, IXMLDeclarationMultistageJobInputData inputData, XmlNode baseNode);
+			string version, IXMLDeclarationMultistageJobInputData inputData, XmlNode baseNode, bool allowDeprecated);
 
 		IXMLJobDataReader CreatePrimaryVehicleJobReader(
 			string version, IXMLPrimaryVehicleBusJobInputData busJobData, XmlNode jobNode);
@@ -190,14 +197,21 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 		IXMLAxleReader CreateAxleReader(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentsNode);
 		IXMLGearboxReader CreateGearboxReader(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentsNode);
 		IXMLAuxiliaryReader CreateAuxiliariesReader(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentsNode);
-
 		
 		IXMLApplicationInformationData CreateApplicationInformationReader(string version, XmlNode applicationNode);
 
 		IXMLResultsInputData CreateResultsInputDataReader(string version, XmlNode resultsNode);
 
+		IXMLMultistageReader CreateMultistageDataReader(string version, IXMLMultistageEntryInputDataProvider multistageData, XmlNode node, bool allowDeprecated);
 
-		IXMLMultistageReader CreateMultistageDataReader(string version, IXMLMultistageEntryInputDataProvider multistageData, XmlNode node);
-	}
+		IXMLFuelCellDeclarationInputData CreateFuelCellInputData(string version, XmlNode componentNode, string sourceFile);
+
+		IXMLFuelCellSystemDeclarationInputData CreateFuelCellSystemInputData(string version, XmlNode componentNode, string sourceFile);
+
+        IXMLAxlePowertrainDeclarationInputData CreateAxlePowertrainInputData(
+			string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
+
+        IXMLMonitoringReader CreateMonitoringReader(string version, IXMLDeclarationVehicleData vehicle, XmlNode monitoringNode);
+    }
 
 }

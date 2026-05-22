@@ -33,9 +33,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Xml;
-using System.Xml.Linq;
 using Newtonsoft.Json;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
@@ -239,7 +236,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 		public bool OffVehicleCharging { get; internal set; }
 
-		public class ADASData
+        public Kilogram H2StorageUsableCapacity { get; internal set; }
+
+        public class ADASData
 		{
 			public bool EngineStopStart { get; internal set; }
 			public EcoRollType EcoRoll { get; internal set; }

@@ -1,4 +1,4 @@
-﻿using TUGraz.VectoCommon.BusAuxiliaries;
+﻿using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing
@@ -8,6 +8,8 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing
         IFuelProperties Fuel { get; }
         KilogramPerWattSecond EngineLineCorrectionFactor { get; }
         KilogramPerWattSecond VehicleLine { get; }
+        KilogramPerWattSecond FuelCellLine { get; }
+
         KilogramPerSecond FC_ESS_H { get; }
         KilogramPerSecond FC_ESS_CORR_H { get; }
         KilogramPerSecond FC_BusAux_PS_CORR_H { get; }

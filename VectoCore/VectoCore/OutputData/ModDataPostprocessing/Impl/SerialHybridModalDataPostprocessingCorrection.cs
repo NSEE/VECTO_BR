@@ -1,11 +1,11 @@
 ﻿using System.Linq;
-using TUGraz.VectoCommon.BusAuxiliaries;
-using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
 {
@@ -13,7 +13,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
     {
         #region Overrides of ModalDataPostprocessingCorrection
 
-        protected override CorrectedModalData DoApplyCorrection(IModalDataContainer modData, VectoRunData runData)
+        protected override ICorrectedModalData DoApplyCorrection(IModalDataContainer modData, VectoRunData runData)
         {
             var r = base.DoApplyCorrection(modData, runData);
 
@@ -22,9 +22,8 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
 
             if (runData.OVCMode == OvcHevMode.ChargeDepleting && runData.Mission != null) {
                 var vehicleOperation = DeclarationData.VehicleOperation.LookupVehicleOperation(runData.Mission.BusParameter?.BusGroup ?? runData.VehicleData.VehicleClass, runData.Mission.MissionType);
-                (_, _, etaChtBatWeighted) =
-                    DeclarationData.CalculateChargingEfficiencyOVCHEV(runData.MaxChargingPower, vehicleOperation,
-                        runData.BatteryData);
+                etaChtBatWeighted =
+                    DeclarationData.CalculateChargingEfficiencyOVCHEV(runData, vehicleOperation).EtaChargingWeighted;
                 electricEnergyConsumption = -modData.TimeIntegral<WattSecond>(ModalResultField.P_reess_int);
             }
 
@@ -74,7 +73,7 @@ namespace TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl
                                 runData.EngineData.IdleSpeed) *
                             engFuel.FuelConsumptionCorrectionFactor;
 
-            var elPowerGenerated = modData.TimeIntegral<WattSecond>(string.Format(ModalResultField.P_EM_electricMotor_el_.GetCaption(), PowertrainPosition.GEN));
+            var elPowerGenerated = modData.TimeIntegral<WattSecond>(string.Format(ModalResultField.P_EM_electricMotor_el_.GetCaption(), PowertrainPosition.GEN, Constants.NOT_IN_AXLE_POWERTRAIN.FormatAxleNumber()));
             var fcGenCharging = modData.TotalFuelConsumption(ModalResultField.FCFinal, fuel);
             var socCorr = elPowerGenerated.IsEqual(0)
                 ? (runData.GenSet.GenSetCharacteristics.OptimalPoint.FuelConsumption /

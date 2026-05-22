@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -66,7 +65,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 
 	public class XMLMultistageBusReport: IXMLMultistepIntermediateReport 
 	{
-		protected XNamespace tns = "urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1";
+		protected XNamespace tns = XMLDefinitions.VEHICLE_INTERIM_FILE_TARGET_VERSION;
 		protected XNamespace di = "http://www.w3.org/2000/09/xmldsig#";
 		protected XNamespace xsi = XNamespace.Get("http://www.w3.org/2001/XMLSchema-instance");
 
@@ -76,8 +75,8 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 		protected XNamespace v10 = "urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0";
 		
 		private XElement _primaryVehicle;
-		private List<XElement> _manufacturingStages;
-		private List<XAttribute> _namespaceAttributes;
+		private List<XElement> _manufacturingStages = new List<XElement>();
+		private List<XAttribute> _namespaceAttributes = new List<XAttribute>();
 		
 		private IPrimaryVehicleInformationInputDataProvider _primaryVehicleInputData;
 		private IList<IManufacturingStageInputData> _manufacturingStageInputData;
@@ -90,8 +89,6 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 		public XMLMultistageBusReport()
 		{
 			throw new VectoException("do not use anymore!");
-			_manufacturingStages = new List<XElement>();
-			_namespaceAttributes = new List<XAttribute>();
 		}
 		
 		public virtual void Initialize(VectoRunData modelData)
