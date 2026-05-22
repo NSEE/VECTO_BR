@@ -1,20 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
-using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Declaration.IterativeRunStrategies;
 using TUGraz.VectoCore.Models.Simulation.Data;
-using TUGraz.VectoCore.OutputData;
 // ReSharper disable ConvertToNullCoalescingCompoundAssignment
 
 namespace TUGraz.VectoCore.Models.Simulation.Impl
 {
-    public interface IFollowUpRunCreator
+	public class PreRunOptions
 	{
-		bool RunAgain(Action<VectoRunData> runAgainAction, IVectoRun run, Action beforeNextRun);
+		/// <summary>
+		/// Determines if the Mod data should be written for this iteration AND if an entry should be added to the sumfile
+		/// default true
+		/// </summary>
+		public bool WriteModAndSumData { get; set; } = true;
+	}
+
+
+
+
+	public interface IFollowUpRunCreator
+	{
+		bool RunAgain(Action<VectoRunData> runAgainAction, IVectoRun run, Action<PreRunOptions> beforeNextRun);
 
 		// in case a follow-up run is indicated by RunAgain, this property needs to provide the Powertrain builder to create the 
 		// follow-up run
@@ -26,7 +32,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 	{
 		#region Implementation of IFollowUpRunCreator
 
-		public bool RunAgain(Action<VectoRunData> runAgainAction, IVectoRun run, Action beforeNextRun)
+		public bool RunAgain(Action<VectoRunData> runAgainAction, IVectoRun run, Action<PreRunOptions> beforeNextRun)
 		{
 			return false;
 		}
@@ -62,8 +68,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		/// <param name="runAgainAction"></param>
 		/// <param name="run"></param>
 		/// <return>true if the run is executed again, false otherwise</return>
-		public bool RunAgain(Action<VectoRunData> runAgainAction, IVectoRun run, Action beforeNextRun)
+		public bool RunAgain(Action<VectoRunData> runAgainAction, IVectoRun run, Action<PreRunOptions> beforeNextRun)
 		{
+
+			
 			var modalDataContainer = run.GetContainer().ModalData;
 			var vectoRunData = run.GetContainer().RunData;
 			if (!_strategy.RunAgain(_iteration, modalDataContainer, vectoRunData)) {
@@ -74,7 +82,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 	
 			Log.Info(string.Format("Run {0} again!", run.RunName));
 
-			beforeNextRun();
+			var options = _strategy.GetPreRunOptions(_iteration);
+			beforeNextRun(options);
 
 			vectoRunData.ModFileSuffix = _originalModfileSuffix + (_iteration + 1);
 			_strategy.UpdateRunData(_iteration, modalDataContainer, vectoRunData);

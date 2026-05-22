@@ -30,10 +30,8 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
-using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
@@ -42,29 +40,36 @@ using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
-using TUGraz.VectoCore.Models.SimulationComponent.Data;
-using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl.Shiftstrategies;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class CycleGearbox : AbstractGearbox<CycleGearbox.CycleGearboxState>
+	public class CycleGearbox : AbstractGearbox<CycleGearbox.CycleGearboxState>, ITypedGearbox
 	{
 		/// <summary>
 		/// True if gearbox is disengaged (no gear is set).
 		/// </summary>
-		protected internal Second Disengaged;
+		protected internal Second DisengagedTstmp;
+
+		public override bool Disengaged
+		{
+			get { return DisengagedTstmp != null; }
+			set {}
+		}
 
 		protected internal readonly TorqueConverterWrapper TorqueConverter;
 
-		public CycleGearbox(IVehicleContainer container, VectoRunData runData)
-			: base(container)
+		public CycleGearbox(IVehicleContainer container, int axleNumber)
+			: base(container, axleNumber)
 		{
 			if (!ModelData.Type.AutomaticTransmission()) {
 				return;
 			}
+
+			var runData = container.RunData;
 
 			// Because APTN gearbox does not have a torque converter.
 			if (ModelData.Type == GearboxType.APTN) {
@@ -78,10 +83,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			var strategy = new CycleShiftStrategy(container);
 
-			
 			TorqueConverter = new TorqueConverterWrapper(runData.Cycle.Entries.All(x => x.EngineSpeed != null),
 				new CycleTorqueConverter(container, ModelData.TorqueConverterData),
-				new TorqueConverter(this, strategy, container, ModelData.TorqueConverterData, runData));
+				new TorqueConverter(this, strategy, container, ModelData.TorqueConverterData, runData, Constants.NOT_IN_AXLE_POWERTRAIN));
 			if (TorqueConverter == null) {
 				throw new VectoException("Torque Converter required for AT transmission!");
 			}
@@ -223,7 +227,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			bool dryRun)
 		{
-			Disengaged = null;
+			DisengagedTstmp = null;
 
 			Gear = new GearshiftPosition(GetGearFromCycle(), !GetTCActiveFromCycle());
 
@@ -327,8 +331,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			bool dryRun)
 		{
-			if (Disengaged == null) {
-				Disengaged = absTime;
+			if (DisengagedTstmp == null) {
+				DisengagedTstmp = absTime;
 			}
 
 			var avgOutAngularVelocity = (PreviousState.OutAngularVelocity + outAngularVelocity) / 2.0;
@@ -439,19 +443,19 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var avgOutAngularSpeed = (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
 			var inPower = CurrentState.InTorque * avgInAngularSpeed;
 			var outPower = CurrentState.OutTorque * avgOutAngularSpeed;
-			container[ModalResultField.Gear] = Disengaged != null ? 0 : Gear.Gear;
-			container[ModalResultField.P_gbx_loss] = inPower - outPower;
-			container[ModalResultField.P_gbx_inertia] = CurrentState.InertiaTorqueLossOut * avgOutAngularSpeed;
-			container[ModalResultField.P_gbx_in] = inPower;
-			container[ModalResultField.n_gbx_out_avg] = (PreviousState.OutAngularVelocity +
+			container[ModalResultField.Gear, AxleNumber.FormatAxleNumber()] = DisengagedTstmp != null ? 0 : Gear.Gear;
+			container[ModalResultField.P_gbx_loss, AxleNumber.FormatAxleNumber()] = inPower - outPower;
+			container[ModalResultField.P_gbx_inertia, AxleNumber.FormatAxleNumber()] = CurrentState.InertiaTorqueLossOut * avgOutAngularSpeed;
+			container[ModalResultField.P_gbx_in, AxleNumber.FormatAxleNumber()] = inPower;
+			container[ModalResultField.n_gbx_out_avg, AxleNumber.FormatAxleNumber()] = (PreviousState.OutAngularVelocity +
 														CurrentState.OutAngularVelocity) / 2.0;
-			container[ModalResultField.n_gbx_in_avg] = avgInAngularSpeed;
-			container[ModalResultField.T_gbx_out] = CurrentState.OutTorque;
-			container[ModalResultField.T_gbx_in] = CurrentState.InTorque;
+			container[ModalResultField.n_gbx_in_avg, AxleNumber.FormatAxleNumber()] = avgInAngularSpeed;
+			container[ModalResultField.T_gbx_out, AxleNumber.FormatAxleNumber()] = CurrentState.OutTorque;
+			container[ModalResultField.T_gbx_in, AxleNumber.FormatAxleNumber()] = CurrentState.InTorque;
 
 			if (ModelData.Type.AutomaticTransmission()) {
-				container[ModalResultField.TC_Locked] = !CurrentState.TorqueConverterActive;
-				container[ModalResultField.P_gbx_shift_loss] = CurrentState.PowershiftLosses == null
+				container[ModalResultField.TC_Locked, AxleNumber.FormatAxleNumber()] = !CurrentState.TorqueConverterActive;
+				container[ModalResultField.P_gbx_shift_loss, AxleNumber.FormatAxleNumber()] = CurrentState.PowershiftLosses == null
 					? 0.SI<Watt>()
 					: CurrentState.PowershiftLosses * avgInAngularSpeed;
 			}
@@ -494,7 +498,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public override GearshiftPosition NextGear
 		{
 			get {
-				if (Disengaged == null) {
+				if (DisengagedTstmp == null) {
 					return Gear;
 				}
 
@@ -527,7 +531,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public override Second TractionInterruption
 		{
 			get {
-				if (Disengaged == null) {
+				if (DisengagedTstmp == null) {
 					return ModelData.TractionInterruption;
 				}
 
@@ -546,7 +550,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						continue;
 					}
 
-					return entry.Time - Disengaged;
+					return entry.Time - DisengagedTstmp;
 				}
 
 				return ModelData.TractionInterruption;
@@ -581,49 +585,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			public WattSecond PowershiftLosses { get; set; }
 		}
 
-		public class CycleShiftStrategy : BaseShiftStrategy
-		{
-			public CycleShiftStrategy(IVehicleContainer dataBus) : base(dataBus) { }
-
-			public override IGearbox Gearbox { get; set; }
-
-			protected override bool DoCheckShiftRequired(Second absTime, Second dt, NewtonMeter outTorque,
-				PerSecond outAngularVelocity, NewtonMeter inTorque, PerSecond inAngularVelocity, GearshiftPosition gear,
-				Second lastShiftTime, IResponse response)
-			{
-				return false;
-			}
-
-			public override GearshiftPosition InitGear(Second absTime, Second dt, NewtonMeter torque, PerSecond outAngularVelocity)
-			{
-				throw new NotImplementedException();
-			}
-
-			public override GearshiftPosition Engage(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity)
-			{
-				throw new NotImplementedException();
-			}
-
-			public override void Disengage(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity)
-			{
-				throw new NotImplementedException();
-			}
-
-			public override GearshiftPosition NextGear => throw new NotImplementedException();
-
-			public override ShiftPolygon ComputeDeclarationShiftPolygon(
-				GearboxType gearboxType, int i, EngineFullLoadCurve engineDataFullLoadCurve, IList<ITransmissionInputData> gearboxGears,
-				CombustionEngineData engineData, double axlegearRatio, Meter dynamicTyreRadius, ElectricMotorData electricMotorData = null)
-			{
-				return null;
-			}
-
-			public override ShiftPolygon ComputeDeclarationExtendedShiftPolygon(
-				GearboxType gearboxType, int i, EngineFullLoadCurve engineDataFullLoadCurve, IList<ITransmissionInputData> gearboxGears,
-				CombustionEngineData engineData, double axlegearRatio, Meter dynamicTyreRadius, ElectricMotorData electricMotorData = null)
-			{
-				return null;
-			}
-		}
+		
 	}
 }

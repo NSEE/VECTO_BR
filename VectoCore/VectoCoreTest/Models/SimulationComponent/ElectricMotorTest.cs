@@ -1,25 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
-using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
-
 
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 {
@@ -27,7 +27,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 	[Parallelizable(ParallelScope.All)]
 	public class ElectricMotorTest
 	{
-		public const string MotorFile = @"TestData/Hybrids/ElectricMotor/GenericEMotor.vem";
+        private StandardKernel _kernel;
+
+        public const string MotorFile = @"TestData/Hybrids/ElectricMotor/GenericEMotor.vem";
 		public const string MotorFile_v2 = @"TestData/Hybrids/ElectricMotor/GenericEMotorV2.vem";
 		public const string BatFile = @"TestData/Hybrids/Battery/GenericBattery.vbat";
 
@@ -35,11 +37,13 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 
 		[TestCase(1),
 		TestCase(2),
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void ElectricMotorModelDataTest(int count)
 		{
@@ -82,7 +86,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		 TestCase(600, 100, -7292.591952),
 		 TestCase(600, 300, -21459.016866),
 		 TestCase(800, -100, 7174.730264),
-		 TestCase(800, -300, 22354.108093)]
+		 TestCase(800, -300, 22354.108093),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void ElectricMotorOnlyRequestTest(double speed, double torque, double expectedBatteryPower)
 		{
 			var container = new MockVehicleContainer();
@@ -130,7 +135,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		 TestCase(600, 100, -7653.267447),
 		 TestCase(600, 300, -22631.653148),
 		 TestCase(800, -100, 6785.258050),
-		 TestCase(800, -300, 21273.378603)]
+		 TestCase(800, -300, 21273.378603),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void ElectricMotorOnlyRequestTestMechLoss(double speed, double torque, double expectedBatteryPower)
 		{
 			var container = new MockVehicleContainer();
@@ -176,7 +182,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		TestCase(600, 100, 100, 5367.264248),
 		TestCase(600, 300, -50, -3925.642046),
 		TestCase(800, -100, 200, 14907.629627),
-		TestCase(800, -300, 200, 14907.629627),]
+		TestCase(800, -300, 200, 14907.629627),
+		Category(Definitions.TESTCASE_MIGRATED),]
 		public void ElectricMotorAssistingRequestTest(double speed, double torque, double electricTorque, double expectedBatteryPower)
 		{
 			var container = new MockVehicleContainer();
@@ -227,7 +234,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		TestCase(600, 100, 100, 5075.160087),
 		TestCase(600, 300, -50, -4102.198874),
 		TestCase(800, -100, 200, 14165.993213),
-		TestCase(800, -300, 200, 14165.993213),]
+		TestCase(800, -300, 200, 14165.993213),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void ElectricMotorAssistingRequestTestMechLoss(double speed, double torque, double electricTorque, double expectedBatteryPower)
 		{
 			var container = new MockVehicleContainer();
@@ -271,7 +279,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			Assert.IsTrue(response.ElectricSystem.ConsumerPower.Value() < response.ElectricMotor.ElectricMotorPowerMech.Value());
 		}
 
-		[TestCase(800, 300)]
+		[TestCase(800, 300),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void ElectricMotorWithBatteryIdlingRequestTest(double speed, double torque)
 		{
 			var container = new MockVehicleContainer();
@@ -333,8 +342,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		TestCase(0.5, 600, 100, -7292.591952, 65.92202),
 		TestCase(0.5, 600, 300, -21459.016866, 591.97964),
 		TestCase(0.5, 800, -100, 7174.730264, 61.59876),
-		TestCase(0.5, 800, -300, 22354.108093, 577.346990)
-		]
+		TestCase(0.5, 800, -300, 22354.108093, 577.346990),
+		Category(Definitions.TESTCASE_MIGRATED)
+        ]
 		public void ElectricMotorOnlyWithBatteryRequestTest(double initialSoc, double speed, double torque, double expectedBatteryPower, double expectedBatteryLoss)
 		{
 			var container = new MockVehicleContainer();
@@ -385,7 +395,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		}
 
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestElectricMotorThermalDeRating()
 		{
 			var initialSoc = 0.8;
@@ -419,14 +430,18 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			var runData = new VectoRunData() {
 				JobName = "EM-Derating",
-				ElectricMachinesData = data
+				ElectricMachinesSinglePwt = data
 			};
 
-			var modData = new ModalDataContainer(runData, new FileOutputWriter("debug.csv"), null);
+			var kernel = new StandardKernel(new VectoNinjectModule());
+			var modData = kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, new FileOutputWriter("debug.csv"), null, null) as ModalDataContainer;
+			Assert.NotNull(modData);
+			modData.WriteModalResults = true;
+
 			//modData.AddElectricMotor(PowertrainPosition.HybridP2);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			
-			var container = VehicleContainer.CreateVehicleContainer(null, modData, null);
+			var container = _kernel.Get<IPowertrainBuilder>().Build(null, modData, null);
 			new EngineOnlyGearboxInfo(container);
 
 			var battery = new Battery(container, batteryData.Batteries.First().Item2);
@@ -498,6 +513,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 		[TestCase(0.95, 1000, 1000, 1052.63157894),   // case EM drag: EM torque is lower than DT torque
 		 TestCase(0.95, 1000, -1000, -950), // case EM drive: DT torque is lower than EM torque
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void TestADCEfficiencyMapLookupFWD(double eff, double emSpeed, double emTorque, double expectedDTTorque)
 		{
@@ -514,6 +530,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 		[TestCase(0.95, 1000, 1000, 950),   // case EM drag: EM torque is lower than DT torque
 		TestCase(0.95, 1000, -1000, -1052.63157894), // case EM drive: DT torque is lower than EM torque
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void TestADCEfficiencyMapLookupBWD(double eff, double dtSpeed, double dtTorque, double expectedEMTorque)
 		{
@@ -530,6 +547,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 		[TestCase(1000, 1000, 1050),
 		TestCase(1000, -1000, -950),
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void TestADCEfficiencyMapLookupFWD(double emSpeed, double emTorque, double expectedDTTorque)
 		{
@@ -553,7 +571,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		}
 
 		[TestCase(1000, 1000, 952.380952),
-		TestCase(1000, -1000, -1052.6315789),
+		TestCase(1000, -1000, -1052.6315789), 
+		Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void TestADCEfficiencyMapLookupBWD(double dtSpeed, double dtTorque, double expectedEMTorque)
 		{

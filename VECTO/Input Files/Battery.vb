@@ -9,6 +9,7 @@ Imports TUGraz.VectoCommon.InputData
 Imports TUGraz.VectoCommon.Models
 Imports TUGraz.VectoCommon.Utils
 Imports TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery
+Imports TUGraz.VectoCore.OutputData.FileIO
 Imports TUGraz.VectoCore.Utils
 
 <CustomValidation(GetType(Battery), "ValidateBattery")>
@@ -72,8 +73,6 @@ Public Class Battery
     End Function
 
     Public Shared Function ValidateBattery(battery As Battery, validationContext As ValidationContext) As ValidationResult
-        Dim batterData As BatteryData
-
         Dim modeService As VectoValidationModeServiceContainer =
                 TryCast(validationContext.GetService(GetType(VectoValidationModeServiceContainer)),
                         VectoValidationModeServiceContainer)
@@ -173,7 +172,7 @@ Public Class Battery
 
     Public ReadOnly Property Manufacturer As String Implements IComponentInputData.Manufacturer
         Get
-
+            Return Nothing
         End Get
     End Property
 
@@ -220,6 +219,12 @@ Public Class Battery
     Public ReadOnly Property MaxSOC As Double? Implements IBatteryPackDeclarationInputData.MaxSOC
         Get
             Return BatMaxSoc / 100.0
+        End Get
+    End Property
+
+    Public ReadOnly Property DeteriorationPerformanceRatio As Double? Implements IBatteryPackDeclarationInputData.DeteriorationPerformanceRatio
+        Get
+            Return Nothing
         End Get
     End Property
 

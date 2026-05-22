@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Moq;
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
@@ -19,8 +19,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
-using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
-using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing.Impl;
@@ -33,7 +32,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 	public class ModDataPostprocessingTest
 	{
 		private double busAuxAlternatorEff = 0.753;
-		private AmpereSecond BatCapacity = 10000.SI<AmpereSecond>();
+        private AmpereSecond BatCapacity = 10000.SI<AmpereSecond>();
 		const double dcdc_efficiency = 0.926;
 		const double UF_ESS_Driving = 0.821;
 		const double UF_ESS_Standstill = 0.753;
@@ -42,22 +41,27 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 		private const PowertrainPosition emPos = PowertrainPosition.HybridP2;
 
+		private const int _axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN;
+
+		private StandardKernel _kernel;
+
 		[OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestAuxESSStandstill_ModDataCorrection()
 		{
 			var runData = GetRunData();
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null) as ModalDataContainer;
+			modData.WriteModalResults = true;
 
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
@@ -210,15 +214,15 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestAuxESSDriving_ModDataCorrection()
 		{
 			var runData = GetRunData();
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
@@ -371,15 +375,15 @@ namespace TUGraz.VectoCore.Tests.Reports
 			Assert.AreEqual(fcModSum + fcEssDrivingOff + fcEssDrivingOn, f.FcFinal.Value(), 1e-6);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestAuxESSEngineStart_ModDataCorrection()
 		{
 			var runData = GetRunData();
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
@@ -538,15 +542,17 @@ namespace TUGraz.VectoCore.Tests.Reports
 			Assert.AreEqual(fcModSum + fcEssStandStillOff + fcEssStandStillOn + fcEngineStart, f.FcFinal.Value(), 1e-6);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestBusAuxPsESSStandstill_ModDataCorrection()
 		{
 			var runData = GetRunData(true);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
+
+			var em = runData.GetEMData().First();
 
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
@@ -554,7 +560,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			modData.Data.CreateColumns(ModalResults.WheelSignals);
 			modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
 			modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
-			modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesData.FirstOrDefault().Item1, null, ModalResults.ElectricMotorSignals);
+			modData.Data.CreateElectricMotorColumns(em.Item1.Position, em.Item1.AxleNumber, ModalResults.ElectricMotorSignals);
 			modData.Data.CreateColumns(ModalResults.BatterySignals);
 
 			var fuel = runData.EngineData.Fuels[0];
@@ -760,15 +766,17 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestBusAuxPsESSDriving_ModDataCorrection()
 		{
 			var runData = GetRunData(true);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
+
+			var em = runData.GetEMData().First();
 
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
@@ -776,7 +784,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			modData.Data.CreateColumns(ModalResults.WheelSignals);
 			modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
 			modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
-			modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesData.FirstOrDefault().Item1, null, ModalResults.ElectricMotorSignals);
+			modData.Data.CreateElectricMotorColumns(em.Item1.Position, em.Item1.AxleNumber, ModalResults.ElectricMotorSignals);
 			modData.Data.CreateColumns(ModalResults.BatterySignals);
 
 			var fuel = runData.EngineData.Fuels[0];
@@ -991,6 +999,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 		TestCase(500, 0, 4000, AlternatorType.None),
 		TestCase(500, 500, 4000, AlternatorType.None),
 		TestCase(500, 0, 550, AlternatorType.None),
+			Category(Definitions.TESTCASE_MIGRATED)
 		]
 		public void TestBusAuxSmartES_ModDataCorrection(double p_es_cons, double p_es_gen, double p_es_smartgen,
 			AlternatorType alternatorType)
@@ -998,9 +1007,9 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData(true, alternatorType: alternatorType);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name + $"_{p_es_cons}_{p_es_gen}_{p_es_smartgen}";
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
+
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
 			modData.Data.CreateColumns(ModalResults.DriverSignals);
@@ -1202,16 +1211,17 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestBusAuxDCDCMissingConventional_ModDataCorrection()
 		{
 			var runData = GetRunData(true, alternatorType: AlternatorType.None);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
-			//modData.AddElectricMotor(emPos);
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
+
+			var em = runData.GetEMData().First();
 
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
             modData.Data.CreateCombustionEngineColumns(runData);
@@ -1219,7 +1229,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			modData.Data.CreateColumns(ModalResults.WheelSignals);
 			modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
 			modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
-			modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesData.FirstOrDefault().Item1, null, ModalResults.ElectricMotorSignals);
+			modData.Data.CreateElectricMotorColumns(em.Item1.Position, em.Item1.AxleNumber, ModalResults.ElectricMotorSignals);
 			modData.Data.CreateColumns(ModalResults.BatterySignals);
 			var fuel = runData.EngineData.Fuels[0];
 
@@ -1263,9 +1273,9 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData[ModalResultField.P_busAux_PS_generated_dragOnly] = 0.SI<Watt>();
 				modData[ModalResultField.P_busAux_PS_generated_alwaysOn] = 0.SI<Watt>();
 
-				modData[ModalResultField.P_EM_electricMotor_el_, emPos] = 120.SI<Watt>() * emEff;
-				modData[ModalResultField.P_EM_mech_, emPos] = 120.SI<Watt>();
-				modData[ModalResultField.EM_Off_, emPos] = 0.SI<Scalar>();
+				modData[ModalResultField.P_EM_electricMotor_el_, emPos, _axleNumber] = 120.SI<Watt>() * emEff;
+				modData[ModalResultField.P_EM_mech_, emPos, _axleNumber] = 120.SI<Watt>();
+				modData[ModalResultField.EM_Off_, emPos, _axleNumber] = 0.SI<Scalar>();
 
 				// WHR
 				modData[ModalResultField.P_WHR_el_corr] = 0.SI<Watt>();
@@ -1301,9 +1311,9 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData[ModalResultField.P_busAux_PS_generated_dragOnly] = 0.SI<Watt>();
 				modData[ModalResultField.P_busAux_PS_generated_alwaysOn] = 0.SI<Watt>();
 
-				modData[ModalResultField.P_EM_electricMotor_el_, emPos] = 120.SI<Watt>() * emEff;
-				modData[ModalResultField.P_EM_mech_, emPos] = 120.SI<Watt>();
-				modData[ModalResultField.EM_Off_, emPos] = 0.SI<Scalar>();
+				modData[ModalResultField.P_EM_electricMotor_el_, emPos, _axleNumber] = 120.SI<Watt>() * emEff;
+				modData[ModalResultField.P_EM_mech_, emPos, _axleNumber] = 120.SI<Watt>();
+				modData[ModalResultField.EM_Off_, emPos, _axleNumber] = 0.SI<Scalar>();
 
 				// WHR
 				modData[ModalResultField.P_WHR_el_corr] = 0.SI<Watt>();
@@ -1344,9 +1354,9 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData[ModalResultField.P_busAux_PS_generated_dragOnly] = 0.SI<Watt>();
 				modData[ModalResultField.P_busAux_PS_generated_alwaysOn] = 0.SI<Watt>();
 
-				modData[ModalResultField.P_EM_electricMotor_el_, emPos] = 120.SI<Watt>() * emEff;
-				modData[ModalResultField.P_EM_mech_, emPos] = 120.SI<Watt>();
-				modData[ModalResultField.EM_Off_, emPos] = 0.SI<Scalar>();
+				modData[ModalResultField.P_EM_electricMotor_el_, emPos, _axleNumber] = 120.SI<Watt>() * emEff;
+				modData[ModalResultField.P_EM_mech_, emPos, _axleNumber] = 120.SI<Watt>();
+				modData[ModalResultField.EM_Off_, emPos, _axleNumber] = 0.SI<Scalar>();
 
 				// WHR
 				modData[ModalResultField.P_WHR_el_corr] = 0.SI<Watt>();
@@ -1392,17 +1402,17 @@ namespace TUGraz.VectoCore.Tests.Reports
 			Assert.AreEqual(fcModSum + fcDCDCMissing, f.FcFinal.Value(), 1e-6);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestBusAuxDCDCMissingHEV_ModDataCorrection()
 		{
 			var runData = GetRunData(true, alternatorType: AlternatorType.Smart);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
-			//modData.AddElectricMotor(emPos);
+			var em = runData.GetEMData().First();
 
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
@@ -1410,7 +1420,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			modData.Data.CreateColumns(ModalResults.WheelSignals);
 			modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
 			modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
-			modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesData.FirstOrDefault().Item1, null, ModalResults.ElectricMotorSignals);
+			modData.Data.CreateElectricMotorColumns(em.Item1.Position, em.Item1.AxleNumber, ModalResults.ElectricMotorSignals);
 			modData.Data.CreateColumns(ModalResults.BatterySignals);
 
 			var fuel = runData.EngineData.Fuels[0];
@@ -1455,9 +1465,9 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData[ModalResultField.P_busAux_PS_generated_dragOnly] = 0.SI<Watt>();
 				modData[ModalResultField.P_busAux_PS_generated_alwaysOn] = 0.SI<Watt>();
 
-				modData[ModalResultField.P_EM_electricMotor_el_, emPos] = 120.SI<Watt>() * emEff;
-				modData[ModalResultField.P_EM_mech_, emPos] = 120.SI<Watt>();
-				modData[ModalResultField.EM_Off_, emPos] = 0.SI<Scalar>();
+				modData[ModalResultField.P_EM_electricMotor_el_, emPos, _axleNumber] = 120.SI<Watt>() * emEff;
+				modData[ModalResultField.P_EM_mech_, emPos, _axleNumber] = 120.SI<Watt>();
+				modData[ModalResultField.EM_Off_, emPos, _axleNumber] = 0.SI<Scalar>();
 
 				// WHR
 				modData[ModalResultField.P_WHR_el_corr] = 0.SI<Watt>();
@@ -1493,9 +1503,9 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData[ModalResultField.P_busAux_PS_generated_dragOnly] = 0.SI<Watt>();
 				modData[ModalResultField.P_busAux_PS_generated_alwaysOn] = 0.SI<Watt>();
 
-				modData[ModalResultField.P_EM_electricMotor_el_, emPos] = 120.SI<Watt>() * emEff;
-				modData[ModalResultField.P_EM_mech_, emPos] = 120.SI<Watt>();
-				modData[ModalResultField.EM_Off_, emPos] = 0.SI<Scalar>();
+				modData[ModalResultField.P_EM_electricMotor_el_, emPos, _axleNumber] = 120.SI<Watt>() * emEff;
+				modData[ModalResultField.P_EM_mech_, emPos, _axleNumber] = 120.SI<Watt>();
+				modData[ModalResultField.EM_Off_, emPos, _axleNumber] = 0.SI<Scalar>();
 
 				// WHR
 				modData[ModalResultField.P_WHR_el_corr] = 0.SI<Watt>();
@@ -1536,9 +1546,9 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData[ModalResultField.P_busAux_PS_generated_dragOnly] = 0.SI<Watt>();
 				modData[ModalResultField.P_busAux_PS_generated_alwaysOn] = 0.SI<Watt>();
 
-				modData[ModalResultField.P_EM_electricMotor_el_, emPos] = 120.SI<Watt>() * emEff;
-				modData[ModalResultField.P_EM_mech_, emPos] = 120.SI<Watt>();
-				modData[ModalResultField.EM_Off_, emPos] = 0.SI<Scalar>();
+				modData[ModalResultField.P_EM_electricMotor_el_, emPos, _axleNumber] = 120.SI<Watt>() * emEff;
+				modData[ModalResultField.P_EM_mech_, emPos, _axleNumber] = 120.SI<Watt>();
+				modData[ModalResultField.EM_Off_, emPos, _axleNumber] = 0.SI<Scalar>();
 
 				// WHR
 				modData[ModalResultField.P_WHR_el_corr] = 0.SI<Watt>();
@@ -1590,9 +1600,10 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData(true);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
+
+			var em = runData.GetEMData().First();
 
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
@@ -1600,7 +1611,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			modData.Data.CreateColumns(ModalResults.WheelSignals);
 			modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
 			modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
-			modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesData.FirstOrDefault().Item1, null, ModalResults.ElectricMotorSignals);
+			modData.Data.CreateElectricMotorColumns(em.Item1.Position, em.Item1.AxleNumber, ModalResults.ElectricMotorSignals);
 			modData.Data.CreateColumns(ModalResults.BatterySignals);
 
 			var fuel = runData.EngineData.Fuels[0];
@@ -1806,22 +1817,25 @@ namespace TUGraz.VectoCore.Tests.Reports
 		[TestCase(0.5), // lower actual average air demand
 		TestCase(0.7),  // no difference in air demand
 		TestCase(0.8),  // higher actual average air demand
+			Category(Definitions.TESTCASE_MIGRATED)
                  ]
 		public void TestBusAuxPSDemand_ModDataCorrection(double nlConsumedCorrected)
 		{
 			var runData = GetRunData(true);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name + $"_{nlConsumedCorrected}";
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
+
+			var em = runData.GetEMData().First();
+
 			modData.Data.CreateCombustionEngineColumns(runData);
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateColumns(ModalResults.DriverSignals);
 			modData.Data.CreateColumns(ModalResults.WheelSignals);
 			modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
 			modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
-			modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesData.FirstOrDefault().Item1, null, ModalResults.ElectricMotorSignals);
+			modData.Data.CreateElectricMotorColumns(em.Item1.Position, em.Item1.AxleNumber, ModalResults.ElectricMotorSignals);
 			modData.Data.CreateColumns(ModalResults.BatterySignals);
 
 			var fuel = runData.EngineData.Fuels[0];
@@ -1999,15 +2013,15 @@ namespace TUGraz.VectoCore.Tests.Reports
 			Assert.AreEqual(fcModSum + fcPSAir + fcPSICEOffDriving + fcESS, f.FcFinal.Value(), 1e-6);
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestWHRElTruckAlternator_ModDataCorrection()
 		{
 			var runData = GetRunData();
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
@@ -2129,24 +2143,25 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestWHRElBusAuxAlternator_ModDataCorrection()
 		{
 			var runData = GetRunData(true, alternatorType: AlternatorType.Conventional);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
-			//modData.AddElectricMotor(emPos);
+			var em = runData.GetEMData().First();
+
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
 			modData.Data.CreateColumns(ModalResults.DriverSignals);
 			modData.Data.CreateColumns(ModalResults.WheelSignals);
 			modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
 			modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
-			modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesData.FirstOrDefault().Item1, null, ModalResults.ElectricMotorSignals);
+			modData.Data.CreateElectricMotorColumns(em.Item1.Position, em.Item1.AxleNumber, ModalResults.ElectricMotorSignals);
 			modData.Data.CreateColumns(ModalResults.BatterySignals);
 
 			var fuel = runData.EngineData.Fuels[0];
@@ -2190,8 +2205,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData[ModalResultField.P_busAux_PS_generated_dragOnly] = 0.SI<Watt>();
 				modData[ModalResultField.P_busAux_PS_generated_alwaysOn] = 0.SI<Watt>();
 
-				modData[ModalResultField.P_EM_electricMotor_el_, emPos] = 120.SI<Watt>() * emEff;
-				modData[ModalResultField.P_EM_mech_, emPos] = 120.SI<Watt>();
+				modData[ModalResultField.P_EM_electricMotor_el_, emPos, _axleNumber] = 120.SI<Watt>() * emEff;
+				modData[ModalResultField.P_EM_mech_, emPos, _axleNumber] = 120.SI<Watt>();
 
 
 				// WHR
@@ -2233,8 +2248,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData[ModalResultField.P_busAux_PS_generated_dragOnly] = 0.SI<Watt>();
 				modData[ModalResultField.P_busAux_PS_generated_alwaysOn] = 0.SI<Watt>();
 
-				modData[ModalResultField.P_EM_electricMotor_el_, emPos] = 120.SI<Watt>() * emEff;
-				modData[ModalResultField.P_EM_mech_, emPos] = 120.SI<Watt>();
+				modData[ModalResultField.P_EM_electricMotor_el_, emPos, _axleNumber] = 120.SI<Watt>() * emEff;
+				modData[ModalResultField.P_EM_mech_, emPos, _axleNumber] = 120.SI<Watt>();
 
 				// WHR
 				modData[ModalResultField.P_WHR_el_corr] = P_WHR;
@@ -2283,24 +2298,25 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 		}
 
-		[TestCase()]
+		[TestCase(),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestWHRElBusAuxNoAlternator_ModDataCorrection()
 		{
 			var runData = GetRunData(true, alternatorType: AlternatorType.Smart);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
-			//modData.AddElectricMotor(emPos);
+			var em = runData.GetEMData().First();
+
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
 			modData.Data.CreateColumns(ModalResults.DriverSignals);
 			modData.Data.CreateColumns(ModalResults.WheelSignals);
 			modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
 			modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
-			modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesData.FirstOrDefault().Item1, null, ModalResults.ElectricMotorSignals);
+			modData.Data.CreateElectricMotorColumns(em.Item1.Position, em.Item1.AxleNumber, ModalResults.ElectricMotorSignals);
 			modData.Data.CreateColumns(ModalResults.BatterySignals);
 
 			var fuel = runData.EngineData.Fuels[0];
@@ -2344,9 +2360,9 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData[ModalResultField.P_busAux_PS_generated_dragOnly] = 0.SI<Watt>();
 				modData[ModalResultField.P_busAux_PS_generated_alwaysOn] = 0.SI<Watt>();
 
-				modData[ModalResultField.P_EM_electricMotor_el_, emPos] = 120.SI<Watt>() * emEff;
-				modData[ModalResultField.P_EM_mech_, emPos] = 120.SI<Watt>();
-				modData[ModalResultField.EM_Off_, emPos] = 0.SI<Scalar>();
+				modData[ModalResultField.P_EM_electricMotor_el_, emPos, _axleNumber] = 120.SI<Watt>() * emEff;
+				modData[ModalResultField.P_EM_mech_, emPos, _axleNumber] = 120.SI<Watt>();
+				modData[ModalResultField.EM_Off_, emPos, _axleNumber] = 0.SI<Scalar>();
 
 
 				// WHR
@@ -2388,9 +2404,9 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData[ModalResultField.P_busAux_PS_generated_dragOnly] = 0.SI<Watt>();
 				modData[ModalResultField.P_busAux_PS_generated_alwaysOn] = 0.SI<Watt>();
 
-				modData[ModalResultField.P_EM_electricMotor_el_, emPos] = 120.SI<Watt>() * emEff;
-				modData[ModalResultField.P_EM_mech_, emPos] = 120.SI<Watt>();
-				modData[ModalResultField.EM_Off_, emPos] = 0.SI<Scalar>();
+				modData[ModalResultField.P_EM_electricMotor_el_, emPos, _axleNumber] = 120.SI<Watt>() * emEff;
+				modData[ModalResultField.P_EM_mech_, emPos, _axleNumber] = 120.SI<Watt>();
+				modData[ModalResultField.EM_Off_, emPos, _axleNumber] = 0.SI<Scalar>();
 
 				// WHR
 				modData[ModalResultField.P_WHR_el_corr] = P_WHR;
@@ -2439,15 +2455,15 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void TestWHRMech_ModDataCorrection()
 		{
 			var runData = GetRunData();
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
 
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
@@ -2576,17 +2592,18 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var runData = GetRunData(true, alternatorType: AlternatorType.Smart);
 			runData.JobName = new StackTrace().GetFrame(0).GetMethod().Name;
 			var writer = new FileOutputWriter(".");
-			var modData = new ModalDataContainer(runData, writer, null) {
-				WriteModalResults = true
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, writer, null, null);
+			modData.WriteModalResults = true;
+
+			var em = runData.GetEMData().First();
+
 			modData.Data.CreateColumns(ModalResults.DistanceCycleSignals);
 			modData.Data.CreateCombustionEngineColumns(runData);
 			modData.Data.CreateColumns(ModalResults.DriverSignals);
 			modData.Data.CreateColumns(ModalResults.BusAuxiliariesSignals);
 			modData.Data.CreateColumns(ModalResults.DCDCConverterSignals);
 			modData.Data.CreateColumns(ModalResults.BatterySignals);
-			modData.Data.CreateElectricMotorColumns(runData.ElectricMachinesData.First().Item1, null, ModalResults.ElectricMotorSignals);
-			//modData.AddElectricMotor(emPos);
+			modData.Data.CreateElectricMotorColumns(em.Item1.Position, em.Item1.AxleNumber, ModalResults.ElectricMotorSignals);
 
 			var fuel = runData.EngineData.Fuels[0];
 
@@ -2633,9 +2650,9 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData[ModalResultField.P_busAux_PS_generated_dragOnly] = 0.SI<Watt>();
 				modData[ModalResultField.P_busAux_PS_generated_alwaysOn] = 0.SI<Watt>();
 
-				modData[ModalResultField.P_EM_electricMotor_el_, emPos] = 120.SI<Watt>() * emEff;
-				modData[ModalResultField.P_EM_mech_, emPos] = 120.SI<Watt>();
-				modData[ModalResultField.EM_Off_, emPos] = 0.SI<Scalar>();
+				modData[ModalResultField.P_EM_electricMotor_el_, emPos, _axleNumber] = 120.SI<Watt>() * emEff;
+				modData[ModalResultField.P_EM_mech_, emPos, _axleNumber] = 120.SI<Watt>();
+				modData[ModalResultField.EM_Off_, emPos, _axleNumber] = 0.SI<Scalar>();
 
 				modData[ModalResultField.P_reess_int] = P_bat;
 				modData[ModalResultField.P_reess_terminal] = P_bat * (P_bat < 0 ? batEff : 1/batEff);
@@ -2685,9 +2702,9 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData[ModalResultField.P_busAux_PS_generated_dragOnly] = 0.SI<Watt>();
 				modData[ModalResultField.P_busAux_PS_generated_alwaysOn] = 0.SI<Watt>();
 
-				modData[ModalResultField.P_EM_electricMotor_el_, emPos] = -120.SI<Watt>() / emEff;
-				modData[ModalResultField.P_EM_mech_, emPos] = -120.SI<Watt>();
-				modData[ModalResultField.EM_Off_, emPos] = 0.SI<Scalar>();
+				modData[ModalResultField.P_EM_electricMotor_el_, emPos, _axleNumber] = -120.SI<Watt>() / emEff;
+				modData[ModalResultField.P_EM_mech_, emPos, _axleNumber] = -120.SI<Watt>();
+				modData[ModalResultField.EM_Off_, emPos, _axleNumber] = 0.SI<Scalar>();
 
 				modData[ModalResultField.P_reess_int] = P_bat;
 				modData[ModalResultField.P_reess_terminal] = P_bat * (P_bat < 0 ? batEff : 1 / batEff);
@@ -2802,7 +2819,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 						CurbMass = 14000.SI<Kilogram>()
 					}
 				};
-				retVal.ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
+				retVal.ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>() {
 					Tuple.Create(emPos, new ElectricMotorData() { Overload = new OverloadData() {OverloadBuffer = 0.SI<Joule>()}})
 				};
 			}

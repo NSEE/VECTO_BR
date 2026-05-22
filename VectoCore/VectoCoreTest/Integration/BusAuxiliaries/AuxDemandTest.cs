@@ -30,23 +30,26 @@
 */
 
 using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.InputData.FileIO.JSON;
+using TUGraz.VectoCore.InputData.Reader.ComponentData;
+using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics;
+using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules.Electrics;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.Tests.Utils;
-using System.IO;
-using TUGraz.VectoCommon.BusAuxiliaries;
-using TUGraz.VectoCore.InputData.FileIO.JSON;
-using TUGraz.VectoCore.InputData.Reader.ComponentData;
-using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics;
-using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules.Electrics;
-using TUGraz.VectoCore.Models.Declaration;
+using MockDriver = TUGraz.VectoCore.Tests.Utils.MockDriver;
 
 namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 {
@@ -54,21 +57,24 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 	[Parallelizable(ParallelScope.All)]
 	public class AuxDemandTest
 	{
-		[OneTimeSetUp]
+        private static StandardKernel _kernel = new StandardKernel(new VectoNinjectModule());
+
+        [OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-		}
+        }
 
 		[TestCase(12000, 1256, 148, 148, 5649.8149)]
 		[TestCase(12000, 1256, -45, -30, 8516.9257)]
-		[TestCase(15700, 1319, -45.79263, -24.0441, 8656.7333)]
+		[TestCase(15700, 1319, -45.79263, -24.0441, 8656.7333),
+		Category(Definitions.TESTCASE_MIGRATED)]
 		public void AuxDemandtest(double vehicleWeight, double engineSpeedRpm, double driveLinePower, double internalPower,
 			double expectedPowerDemand)
 		{
 			var busAux = CreateBusAuxAdapterForTesting(vehicleWeight, out var driver);
 
-			var engineDrivelinePower = (driveLinePower * 1000).SI<Watt>();
+            var engineDrivelinePower = (driveLinePower * 1000).SI<Watt>();
 			var engineSpeed = engineSpeedRpm.RPMtoRad();
 			busAux.Initialize(engineDrivelinePower / engineSpeed, engineSpeed);
 
@@ -77,7 +83,8 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 			Assert.AreEqual(expectedPowerDemand, (torque * engineSpeed).Value(), 1e-2);
 		}
 
-		[TestCase]
+		[TestCase,
+		Category(Definitions.DUPLICATE)]
 		public void AuxFCConsumptionTest()
 		{
 			var driveLinePower = 148;
@@ -153,10 +160,11 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 					CurbMass = vehicleMass.SI<Kilogram>()
 				}
 			};
-			var vehicle = VehicleContainer.CreateVehicleContainer(runData, new MockModalDataContainer(), null);
+			var vehicle = _kernel.Get<IPowertrainBuilder>().Build(runData, new MockModalDataContainer(), null);
             var engine = new CombustionEngine(vehicle, modelData);
 			//new Vehicle(vehicle, new VehicleData());
 			driver = new MockDriver(vehicle) { VehicleStopped = false, DriverBehavior = DrivingBehavior.Braking, DrivingAction = DrivingAction.Brake };
+			//driver = null;
 			var gbx = new MockGearbox(vehicle) { Gear = new GearshiftPosition(1) };
 			var brakes = new MockBrakes(vehicle);
 			var veh = new MockVehicle(vehicle) { MyVehicleSpeed = 50.KMPHtoMeterPerSecond() };
@@ -166,7 +174,9 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 				? new SimpleBattery(vehicle, auxConfig.ElectricalUserInputsConfig.ElectricStorageCapacity, auxConfig.ElectricalUserInputsConfig.StoredEnergyEfficiency)
 				: (ISimpleBattery)new NoBattery(vehicle);
 			busAux.ElectricStorage = electricStorage;
-			return busAux;
+			var str = JsonConvert.SerializeObject(auxConfig);
+
+            return busAux;
 		}
 	}
 }

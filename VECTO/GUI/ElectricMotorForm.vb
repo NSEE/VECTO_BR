@@ -199,12 +199,12 @@ Public Class ElectricMotorForm
         tbOvlTimeHi.Text = voltageLevelHigh.OverloadTime.Value().ToGUIFormat()
         tbContTqHi.Text = voltageLevelHigh.ContinuousTorque.ToGUIFormat()
         tbRatedSpeedHi.Text = voltageLevelHigh.ContinuousTorqueSpeed.AsRPM.ToGUIFormat()
-        tbMaxTorqueHi.Text = GetRelativePath(voltageLevelHigh.FullLoadCurve.Source, basePath)
+        tbMaxTorqueHi.Text = GetRelativePath(voltageLevelHigh.FullLoadCurve.First().LoadCurve.Source, basePath)
         tbMapHi.Text = GetRelativePath(voltageLevelHigh.PowerMap.First().PowerMap.Source, basePath) 
         tbVoltageHi.Text = voltageLevelHigh.VoltageLevel.Value().ToGUIFormat()
 
 
-        tbMaxTorqueLow.Text = GetRelativePath(voltageLevelLow.FullLoadCurve.Source, basePath)
+        tbMaxTorqueLow.Text = GetRelativePath(voltageLevelLow.FullLoadCurve.First().LoadCurve.Source, basePath)
         tbMapLow.Text = GetRelativePath(voltageLevelLow.PowerMap.First().PowerMap.Source, basePath)
         tbVoltageLow.Text = voltageLevelLow.VoltageLevel.Value().ToGUIFormat()
         
@@ -511,7 +511,7 @@ Public Class ElectricMotorForm
 
         OpenWithToolStripMenuItem.Text = "Open with " & Cfg.OpenCmdName
 
-        CmOpenFile.Show(Windows.Forms.Cursor.Position)
+        CmOpenFile.Show(System.Windows.Forms.Cursor.Position)
     End Sub
 
     Private Sub OpenWithToolStripMenuItem_Click(sender As Object, e As EventArgs) _

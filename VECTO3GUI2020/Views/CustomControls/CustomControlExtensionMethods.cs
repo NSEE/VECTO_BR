@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Net.NetworkInformation;
 using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using TUGraz.VectoCommon.Exceptions;
@@ -17,7 +12,6 @@ namespace VECTO3GUI2020.Views.CustomControls
     public static class CustomControlExtensionMethods
     {
 
-		private static string unresolved = "unresolved";
 		private static string _suffix = "_"; //used to mark properties;
 
 		/// <summary>
@@ -37,7 +31,6 @@ namespace VECTO3GUI2020.Views.CustomControls
 			if (propertyName == null || binding == null) {
 				var status = binding?.Status;
 				throw new VectoException("Could not resolve binding");
-				return name;
 			}
 
 			foreach (var resourceManager in resourceManagers) {

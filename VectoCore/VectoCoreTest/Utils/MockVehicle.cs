@@ -37,18 +37,21 @@ using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
+using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
-	public class MockVehicle : VectoSimulationComponent, IVehicle, IFvInPort, IDriverDemandOutPort, IMileageCounter
+    public class MockVehicle : VectoSimulationComponent, IVehicle, IFvInPort, IDriverDemandOutPort, IMileageCounter
 	{
 		internal MeterPerSecond MyVehicleSpeed;
 		internal IFvOutPort NextComponent;
 
 		internal RequestData LastRequest = new RequestData();
 
-		public MockVehicle(IVehicleContainer cockpit) : base(cockpit)
+		public MockVehicle(IVehicleContainer cockpit) : base(cockpit, Constants.NOT_IN_AXLE_POWERTRAIN)
 		{
 		}
 
@@ -78,9 +81,9 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public CubicMeter CargoVolume { get;  set; }
 
-		public Newton AirDragResistance(MeterPerSecond previousVelocity, MeterPerSecond nextVelocity)
+		public AirDragLossResult AirDragResistance(MeterPerSecond previousVelocity, MeterPerSecond nextVelocity)
 		{
-			return 0.SI<Newton>();
+			return new AirDragLossResult(0.SI<Watt>(), 0.SI<SquareMeter>(), (previousVelocity + nextVelocity) / 2.0);
 		}
 
 		public Newton RollingResistance(Radian gradient)

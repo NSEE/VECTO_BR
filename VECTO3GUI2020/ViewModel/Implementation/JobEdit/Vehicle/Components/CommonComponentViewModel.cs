@@ -3,7 +3,6 @@ using System;
 using System.Diagnostics;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
-using VECTO3GUI2020.Helper;
 using VECTO3GUI2020.ViewModel.Implementation.Common;
 using VECTO3GUI2020.ViewModel.Interfaces.JobEdit.Vehicle.Components;
 
@@ -80,7 +79,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components
 				_certificationNumber = inputData.CertificationNumber;
 				_digestValue = inputData.DigestValue;
 	
-			} catch (Exception e){
+			} catch (Exception){
 				//TODO ignoring for now
 			}
 		}

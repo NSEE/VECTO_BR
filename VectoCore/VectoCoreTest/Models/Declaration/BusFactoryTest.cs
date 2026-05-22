@@ -2,19 +2,15 @@
 using System.Linq;
 using Ninject;
 using NUnit.Framework;
-using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
-using TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common;
-using TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformationFile.CustomerInformationFile_0_9.ResultWriter;
-using TUGraz.VectoCore.Tests.Models.Simulation;
-using TUGraz.VectoCore.Utils;
-using TUGraz.VectoCore.Utils.Ninject;
 
 namespace TUGraz.VectoCore.Tests.Models.Declaration
 {
@@ -60,7 +56,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 				//? new XMLDeclarationInputDataProvider(relativeJobPath, true)
 				: JSONInputDataFactory.ReadJsonJob(jobFile);
 			var sumContainer = new SummaryDataContainer(writer);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, writer, null, null, false);
 			factory.WriteModalResults = true;
 			factory.SumData = sumContainer; //ActualModalData = true,
 			factory.Validate = false;
@@ -92,8 +88,8 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 				? xmlInputReader.CreateDeclaration(jobFile)
 				//? new XMLDeclarationInputDataProvider(relativeJobPath, true)
 				: JSONInputDataFactory.ReadJsonJob(jobFile);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
-			factory.WriteModalResults = true; //ActualModalData = true,
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, inputData, writer, null, null, false);
+            factory.WriteModalResults = true; //ActualModalData = true,
 			factory.Validate = false;
 
 			var jobContainer = new JobContainer(new SummaryDataContainer(writer));

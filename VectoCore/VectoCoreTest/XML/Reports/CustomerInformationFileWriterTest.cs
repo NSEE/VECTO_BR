@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
-using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
-using TUGraz.VectoCore.OutputData.XML;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformationFile;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.CustomerInformationFile.CustomerInformationFile_0_9.CustomerInformationFile;
-using TUGraz.VectoCore.OutputData.XML.DeclarationReports.ManufacturerReport;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Tests.XML.Reports
@@ -34,6 +28,7 @@ namespace TUGraz.VectoCore.Tests.XML.Reports
 			var ihpc = (dataProvider.JobInputData.Vehicle.Components?.ElectricMachines?.Entries)?.Count(electric =>
 				electric.ElectricMachine.IHPCType != "None") > 0;
 			var iepc = (dataProvider.JobInputData.Vehicle.Components?.IEPC != null);
+
 			var report = _cifFactory.GetCustomerReport(
 				dataProvider.JobInputData.Vehicle.VehicleCategory,
 				dataProvider.JobInputData.JobType,
@@ -57,13 +52,15 @@ namespace TUGraz.VectoCore.Tests.XML.Reports
 			var ihpc = (dataProvider.JobInputData.PrimaryVehicle.Vehicle.Components?.ElectricMachines?.Entries)?.Count(electric =>
 				electric.ElectricMachine.IHPCType != "None") > 0;
 			var iepc = (dataProvider.JobInputData.PrimaryVehicle.Vehicle.Components?.IEPC != null);
+
 			var report = _cifFactory.GetCustomerReport(
 				dataProvider.JobInputData.ConsolidateManufacturingStage.Vehicle.VehicleCategory,
 				dataProvider.JobInputData.JobType,
 				arch,
-				dataProvider.JobInputData.PrimaryVehicle.Vehicle.ExemptedVehicle,
+                dataProvider.JobInputData.PrimaryVehicle.Vehicle.ExemptedVehicle,
 				iepc,
 				ihpc);
+
 			return report;
 		}
 

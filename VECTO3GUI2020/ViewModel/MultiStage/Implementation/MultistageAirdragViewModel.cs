@@ -1,33 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Schema;
 using CommunityToolkit.Mvvm.Input;
-using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
-using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.InputData.FileIO.XML;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory;
-using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Utils;
-using VECTO3GUI2020.Helper;
 using VECTO3GUI2020.Ninject;
-using VECTO3GUI2020.Properties;
-using VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components;
 using VECTO3GUI2020.ViewModel.Interfaces.JobEdit.Vehicle.Components;
 using VECTO3GUI2020.ViewModel.MultiStage.Interfaces;
 using ViewModelBase = VECTO3GUI2020.ViewModel.Implementation.Common.ViewModelBase;
-using XmlDocumentType = System.Xml.XmlDocumentType;
 
 namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 {
@@ -107,25 +94,18 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		}
 
 
-		#region Commands
+        #region Commands
 
+        private Dictionary<string, string> _validationErrors = new Dictionary<string, string>();
 
-
-		private ICommand _loadAirdragFileCommand;
-		private ICommand _removeAirdragDataCommand;
-
-
-
-		private Dictionary<string, string> _validationErrors;
-
-		private IAirdragDeclarationInputData _consolidatedAirdragInputData;
+        private IAirdragDeclarationInputData _consolidatedAirdragInputData;
 		private string _airdragFilePath;
 		private readonly IMultistageDependencies _dependencies;
 		private bool _showConsolidatedData = true;
 
 		public ICommand LoadAirdragFileCommand
 		{
-			get => _loadAirdragFileCommand ?? new RelayCommand(LoadAirdragFileCommandExecute, () => true);
+			get => new RelayCommand(LoadAirdragFileCommandExecute, () => true);
 		}
 
 		public void LoadAirdragFileCommandExecute()
@@ -218,7 +198,7 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		}
 
 		public ICommand RemoveAirdragDataCommand{
-			get => _removeAirdragDataCommand ?? new RelayCommand(() => {
+			get => new RelayCommand(() => {
 				RemoveAirdragComponent();
 				OnPropertyChanged(nameof(AirdragFilePath));
 			},  () => AirDragViewModel != null);
@@ -271,6 +251,15 @@ namespace VECTO3GUI2020.ViewModel.MultiStage.Implementation
 		public SquareMeter TransferredAirDragArea => _airdragViewModel.TransferredAirDragArea;
 
 		public SquareMeter AirDragArea_0 => _airdragViewModel.AirDragArea_0;
-		public XmlNode XMLSource { get; }
+
+		public string LicenseNumberCFDMethod => _airdragViewModel.LicenseNumberCFDMethod;
+
+		public SquareMeter DeltaCdxA_CFD => _airdragViewModel.DeltaCdxA_CFD;
+
+		public SquareMeter DeltaCdxA_declared => _airdragViewModel.DeltaCdxA_declared;
+
+		public SquareMeter DeltaTransferredCdxA => _airdragViewModel.DeltaTransferredCdxA;
+
+        public XmlNode XMLSource { get; }
 	}
 }

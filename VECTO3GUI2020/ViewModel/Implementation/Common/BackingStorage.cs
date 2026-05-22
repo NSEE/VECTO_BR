@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using TUGraz.VectoCommon.Utils;
 
 namespace VECTO3GUI2020.ViewModel.Implementation.Common
 {
@@ -108,7 +107,7 @@ namespace VECTO3GUI2020.ViewModel.Implementation.Common
 
 			try {
 				_equalityComparers[propertyName] = CreateEqualityComparer(propertyType);
-			} catch (Exception ex) {
+			} catch (Exception) {
 				// TODO;
 			}
 			

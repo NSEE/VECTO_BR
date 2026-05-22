@@ -18,10 +18,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 		private IDeclarationReport _currentStageDeclarationReport;
 		private IVTPReport _currentStageVTPReport;
 		protected readonly IXMLDeclarationReportFactory _xmlDeclarationReportFactory;
-		private IVIFReportFactory _vifFactory;
-		private IManufacturerReportFactory _mrfFactory;
-
-		
 
 		public SimulatorFactoryDeclaration(IInputDataProvider dataProvider, 
 			IOutputDataWriter writer,
@@ -35,7 +31,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 			IVectoRunDataFactoryFactory runDataFactoryFactory,
 			IPowertrainBuilder ptBuilder,
 			IModalDataFactory modDataFactory
-        ) : base(ExecutionMode.Declaration, writer, validate, ptBuilder, modDataFactory)
+		) : base(ExecutionMode.Declaration, writer, validate, ptBuilder, modDataFactory)
 		{
 			_xmlInputDataReader = xmlInputDataReader;
 			_simFactoryFactory = simulatorFactoryFactory;
@@ -50,12 +46,12 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 
 			UpdateCurrentStage();
 
-
-
 			_simulate = CanBeSimulated(dataProvider);
 			if (_simulate) {
 				RunDataFactory = runDataFactoryFactory.CreateDeclarationRunDataFactory(_currentStageInputData, _currentStageDeclarationReport,
 					_currentStageVTPReport);
+
+				RunDataFactory.CompletedVehicle = _followUpSimulatorFactoryCreator?.CompletedVehicle;
 			} else {
 				System.Diagnostics.Debug.Assert(_followUpSimulatorFactoryCreator == null,
 					"We should not create a followupSimulator factory if we aren't simulating anything in this step");
@@ -90,7 +86,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory
 			IVectoRunDataFactoryFactory runDataFactoryFactory,
 			IPowertrainBuilder ptBuilder,
 			IModalDataFactory modDataFactory
-        ) : this(
+		) : this(
 			dataProvider: dataProvider,
 			declarationReport: null,
 			writer: writer,

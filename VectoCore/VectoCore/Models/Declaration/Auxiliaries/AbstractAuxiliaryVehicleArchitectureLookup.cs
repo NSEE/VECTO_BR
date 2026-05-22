@@ -22,6 +22,11 @@ namespace TUGraz.VectoCore.Models.Declaration.Auxiliaries
 				{VectoSimulationJobType.ConventionalVehicle, "conventional"},
 				{VectoSimulationJobType.IEPC_S, "s-hev"},
 				{VectoSimulationJobType.IEPC_E, "pev"},
+				{VectoSimulationJobType.FCHV, "pev"},
+				{VectoSimulationJobType.FCHV_IEPC, "pev"},
+				{VectoSimulationJobType.Multiple_PEV, "pev"},
+				{VectoSimulationJobType.Multiple_FCHV, "pev"},
+				{VectoSimulationJobType.Multiple_SHEV, "s-hev" }
 			};
 
 		protected override string ErrorMessage =>

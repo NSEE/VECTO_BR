@@ -17,7 +17,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Speci
 	{
 		public abstract class CompletedBusDeclarationBase : AbstractSimulationDataAdapter, ISpecificCompletedBusDeclarationDataAdapter
         {
-			protected readonly IAirdragDataAdapter _airdragDataAdapter = new CompletedBusSpecificAirdragDataAdapter();
+			protected virtual IAirdragDataAdapter AirdragDataAdapter => new CompletedBusSpecificAirdragDataAdapter();
 
 			protected virtual IVehicleDataAdapter VehicleDataAdapter { get; } = new CompletedBusSpecificVehicleDataAdapter();
 
@@ -40,20 +40,20 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Speci
 			}
 
 			public virtual IList<VectoRunData.AuxData> CreateAuxiliaryData(IAuxiliariesDeclarationInputData auxData, IBusAuxiliariesDeclarationData busAuxData,
-				MissionType missionType, VehicleClass vehicleClass, Meter vehicleLength, int? numSteeredAxles, VectoSimulationJobType jobType)
+				MissionType missionType, VehicleClass vehicleClass, Meter vehicleLength, int? numSteeredAxles, VectoSimulationJobType jobType, bool batteryOnlyHybridMode)
 			{
 				return AuxDataAdapter.CreateAuxiliaryData(auxData, busAuxData, missionType, vehicleClass,
-					vehicleLength, numSteeredAxles, jobType);
+					vehicleLength, numSteeredAxles, jobType, batteryOnlyHybridMode);
 			}
 
-			public virtual AirdragData CreateAirdragData(IVehicleDeclarationInputData completedVehicle, Mission mission)
+			public virtual AirdragData CreateAirdragData(IVehicleDeclarationInputData completedVehicle, Mission mission,
+				Segment segment, OvcHevMode ovcMode)
 			{
-				return _airdragDataAdapter.CreateAirdragData(completedVehicle, mission);
+				return AirdragDataAdapter.CreateAirdragData(completedVehicle, mission, segment, ovcMode);
 			}
 
-			
-			#endregion
-		}
+            #endregion
+        }
 
 
         public class Conventional : CompletedBusDeclarationBase { }
@@ -98,11 +98,45 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.CompletedBus.Speci
         
 		public class PEV_E_IEPC : BatteryElectric { }
 
-		public class Exempted : CompletedBusDeclarationBase
+		public abstract class FCHV : BatteryElectric { }
+
+		public class FCHV_F2 : FCHV { }
+
+        public class FCHV_F3 : FCHV { }
+
+        public class FCHV_F4 : FCHV { }
+
+        public class FCHV_IEPC : FCHV { }
+
+		public abstract class MultiplePowertrains : CompletedBusDeclarationBase
+		{
+			protected override ICompletedBusAuxiliaryDataAdapter AuxDataAdapter => null;
+        }
+
+		public class MultiplePEV : MultiplePowertrains
+		{
+            protected override ICompletedBusAuxiliaryDataAdapter AuxDataAdapter { get; } = new SpecificCompletedPEVBusAuxiliaryDataAdapter();
+        }
+
+		public class MultipleFCHV : MultiplePEV { }
+
+		public class MultipleSHEV : MultiplePowertrains
+		{
+            protected override ICompletedBusAuxiliaryDataAdapter AuxDataAdapter { get; } = new SpecificCompletedBusAuxiliaryDataAdapter();
+        }
+
+        public class Exempted : CompletedBusDeclarationBase
 		{
 			protected override IVehicleDataAdapter VehicleDataAdapter { get; } =
 				new ExemptedCompletedBusSpecificVehicleDataAdapter();
 
+			#region Overrides of CompletedBusDeclarationBase
+
+			protected override IAirdragDataAdapter AirdragDataAdapter => null;
+
+			protected override ICompletedBusAuxiliaryDataAdapter AuxDataAdapter => null;
+
+			#endregion
 		}
 	}
 }

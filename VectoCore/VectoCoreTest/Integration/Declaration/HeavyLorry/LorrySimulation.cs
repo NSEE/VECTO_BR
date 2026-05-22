@@ -3,24 +3,19 @@
 //#define singlethreaded
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml.Linq;
 using System.Xml.Schema;
-using Moq;
 using Ninject;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -28,7 +23,6 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.FileIO.XML;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
@@ -36,11 +30,10 @@ using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
-using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.OutputData.XML;
-using TUGraz.VectoCore.Tests.Models.Simulation;
 using TUGraz.VectoCore.Tests.TestUtils;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
@@ -202,8 +195,8 @@ public class LorrySimulation
 		dataProvider = _xmlReader.CreateDeclaration(filePath);
 		fileWriter = new FileOutputWriter(filePath);
 
-		var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
-		sumWriter = new SummaryDataContainer(fileWriter);
+		var runsFactory = Kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, fileWriter, null, null, false);
+        sumWriter = new SummaryDataContainer(fileWriter);
 		runsFactory.SumData = sumWriter;
 		return runsFactory;
 	}
@@ -232,7 +225,7 @@ public class LorrySimulation
 
 		var columnsWithoutUnitHashSet = new HashSet<string>();
 		foreach (var col in columnsWithoutUnit) {
-			var emPositions = run.GetContainer().PowertrainInfo.ElectricMotorPositions;
+			var emPositions = run.GetContainer().ElectricMotorsInfo.Select(x => x.Position);
 			foreach (var emPosition in emPositions) {
 				columnsWithoutUnitHashSet.Add(string.Format(col, emPosition.GetLabel()));
 			}
@@ -299,8 +292,8 @@ public class LorrySimulation
 	public void AssertVSUMElectricMotorFields(string vsumFileName, VectoRunData runData)
 	{
 		var sumData = VectoCSVFile.Read(vsumFileName, false, true);
-		var em_positions = runData.ElectricMachinesData.Select(em => em.Item1);
-		foreach (var em_pos in runData.ElectricMachinesData.Select(e => e.Item1)) {
+		var em_positions = runData.ElectricMachinesSinglePwt.Select(em => em.Item1);
+		foreach (var em_pos in runData.ElectricMachinesSinglePwt.Select(e => e.Item1)) {
 			Tuple<string, Type>[] columns;
 			if (em_pos == PowertrainPosition.IEPC) {
 				columns = SummaryDataContainer.IEPCColumns;
@@ -326,8 +319,8 @@ public class LorrySimulation
 		{
 
 			var gbxTimeShareFields = new List<string> { };
-			if (runData.GearboxData?.Gears != null && runData.GearboxData.Gears.Count > 0) {
-				for (var i = 0; i <= runData.GearboxData.Gears.Count; i++) {
+			if (runData.GearboxSinglePwt?.Gears != null && runData.GearboxSinglePwt.Gears.Count > 0) {
+				for (var i = 0; i <= runData.GearboxSinglePwt.Gears.Count; i++) {
 					gbxTimeShareFields.Add(string.Format(SumDataFields.TIME_SHARE_PER_GEAR_FORMAT, i));
 				}
 
@@ -344,8 +337,6 @@ public class LorrySimulation
 				Assert.IsFalse(tableData.Columns.Contains(name), name);
 			}
 		}
-
-		void AssertOrder(TableData tableData, List<string> ordered) { }
 
 		void SearchForPattern(TableData tableData, List<string> pattern)
 		{
@@ -799,7 +790,7 @@ public class LorrySimulation
 			var rd = run.GetContainer().RunData;
 			// PEV with APT-S or APT-P transmission are simulated as APT-N
 			return rd.VehicleData.InputData.Components.GearboxInputData == null ||
-					rd.GearboxData.Type.IsOneOf(GearboxType.AMT, GearboxType.APTN);
+					rd.GearboxSinglePwt.Type.IsOneOf(GearboxType.AMT, GearboxType.APTN);
 		}));
 
 		var run = runs.Single(run => {
@@ -844,13 +835,14 @@ public class LorrySimulation
 
 	[TestCase(@"HeavyLorry/PEV/Group5_ PEV_IEPC_E-EffCorrection.xml", 413.75, -1396.825, -61756.61)]
 	[TestCase(@"HeavyLorry/PEV/Group5_ PEV_IEPC_E-EffCorrection.xml", 827.50, 161.085, 13679.79)]
+	[Category(Definitions.TESTCASE_MIGRATED)]
     public void TestIEPC_EfficiencyCorrection(string jobFile, double rpm, double tq, double expectedPel)
 	{
 		var jobContainer = GetJobContainer(jobFile, null, out var fileWriter, out var runs, out var sumDataContainer,
 			out var inputProvider);
 		var run = runs.First().GetContainer().RunData;
 
-		var iepc = run.ElectricMachinesData.First().Item2 as IEPCElectricMotorData;
+		var iepc = run.ElectricMachinesSinglePwt.First().Item2 as IEPCElectricMotorData;
 		Assert.IsNotNull(iepc);
 		var voltageLevel = iepc.EfficiencyData.VoltageLevels.First() as IEPCVoltageLevelData;
 		Assert.IsNotNull(voltageLevel);
@@ -887,13 +879,14 @@ public class LorrySimulation
 
 	[TestCase(@"HeavyLorry/P-HEV/Group5_HEV_P2_EM-EffCorrection.xml", 25, -1050, -2804.993)]
 	[TestCase(@"HeavyLorry/P-HEV/Group5_HEV_P2_EM-EffCorrection.xml", 255, 1050, 27477.94)]
+	[Category(Definitions.TESTCASE_MIGRATED)]
 	public void TestEM_EfficiencyCorrection(string jobFile, double rpm, double tq, double expectedPel)
 	{
 		var jobContainer = GetJobContainer(jobFile, null, out var fileWriter, out var runs, out var sumDataContainer,
 			out var inputProvider);
 		var run = runs.First().GetContainer().RunData;
 
-		var em = run.ElectricMachinesData.First().Item2;
+		var em = run.ElectricMachinesSinglePwt.First().Item2;
 		Assert.IsNotNull(em);
 		var voltageLevel = em.EfficiencyData.VoltageLevels.First();
 		Assert.IsNotNull(voltageLevel);
@@ -979,8 +972,8 @@ public class LorrySimulation
 			GetJobContainer(withPTOTransmission, null, out var fileWriterPto, out var runsPto, out _, false);
 		var jobContainer =
 			GetJobContainer(withoutPTOTransmission, null, out var fileWriter, out var runs, out _, false);
-		runsPto.ForEach(r => Assert.NotNull(r.GetContainer().RunData.PTO));
-		runs.ForEach(r => Assert.Null(r.GetContainer().RunData.PTO));
+		runsPto.ForEach(r => Assert.NotNull(r.GetContainer().RunData.PTOSinglePwt));
+		runs.ForEach(r => Assert.Null(r.GetContainer().RunData.PTOSinglePwt));
 		//var ptoPath = Path.Combine(BASE_DIR, withoutPTOTransmission);
 		//var noPtoPath = Path.Combine(BASE_DIR, withoutPTOTransmission);
 		//var ptoXDoc = XDocument.Load(ptoPath);
@@ -1129,9 +1122,8 @@ public class LorrySimulation
 		}
 
 		var fileWriter = new FileOutputWriter(path);
-		var runsFactory = SimulatorFactory.CreateSimulatorFactory(executionMode, inputData, fileWriter,
-			writeReports ? null : new NullDeclarationReport()); //, writeReports ? null : new NullDeclarationReport());
-		DisableIterativeRuns(runsFactory);
+		var runsFactory = Kernel.Get<ISimulatorFactoryFactory>().Factory(executionMode, inputData, fileWriter, writeReports ? null : new NullDeclarationReport(), null, false);
+        DisableIterativeRuns(runsFactory);
 		runsFactory.WriteModalResults = true;
 		var sumWriter = new SummaryDataContainer(fileWriter); //new MockSumWriter();
 
@@ -1298,7 +1290,7 @@ public class LorrySimulation
 			VectoSimulationJobType.IEPC_E);
 		var ng = vehicle.Components?.EngineInputData?.EngineModes.Any(e =>
 			e.Fuels.Any(f => f.FuelType.IsOneOf(FuelType.LPGPI, FuelType.NGCI, FuelType.NGPI))) ?? false;
-		var ovcHev = vehicle.OvcHev;
+		var ovcHev = vehicle.OVC;
 		Segment segment;
 		try {
 			segment = DeclarationData.TruckSegments.Lookup(
@@ -1349,10 +1341,9 @@ public class LorrySimulation
 		var dataProvider = _xmlReader.CreateDeclaration(filePath);
 		inputData = dataProvider;
 		fileWriter = new FileOutputWriter(filePath);
-		var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter,
-			writeReports ? null : new NullDeclarationReport());
-		//runsFactory.ActualModalData = true;
-		runsFactory.SerializeVectoRunData = true;
+		var runsFactory = Kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Declaration, dataProvider, fileWriter, writeReports ? null : new NullDeclarationReport(), null, false);
+        //runsFactory.ActualModalData = true;
+        runsFactory.SerializeVectoRunData = true;
 		runsFactory.WriteModalResults = true;
 		var sumWriter = new SummaryDataContainer(fileWriter);
 
@@ -1368,7 +1359,7 @@ public class LorrySimulation
 
 		TestContext.WriteLine(string.Join("\n", runs.Select(r => r.CycleName + "_" + r.RunSuffix)));
 
-		if (dataProvider.JobInputData.Vehicle.OvcHev) {
+		if (dataProvider.JobInputData.Vehicle.OVC) {
 			Assert.AreEqual(runs.Count(r => r.GetContainer().RunData.OVCMode == OvcHevMode.ChargeDepleting),
 				runs.Count(r => r.GetContainer().RunData.OVCMode == OvcHevMode.ChargeSustaining));
 		}
@@ -1407,7 +1398,7 @@ public class LorrySimulation
 	//runs.First().GetContainer().PowertrainInfo.ElectricMotorPositions;
 	public void AssertSHEV_PEV_Conditioning(DataRow modDataRow, IVectoRun run)
 	{
-		var electricMotorPositions = run.GetContainer().PowertrainInfo.ElectricMotorPositions;
+		var electricMotorPositions = run.GetContainer().ElectricMotorsInfo.Select(x => x.Position);
 		var position = electricMotorPositions.Single(e => e != PowertrainPosition.GEN);
 
 		var hasGen = electricMotorPositions.Any(e => e == PowertrainPosition.GEN);
@@ -1427,6 +1418,7 @@ public class LorrySimulation
 		if (EMOn(prevRow, position) || (hasGen && EMOn(prevRow, PowertrainPosition.GEN))) {
 			var cond = DeclarationData.Conditioning.LookupPowerDemand(
 				run.GetContainer().RunData.VehicleData.VehicleClass,
+				run.GetContainer().RunData.JobType,
 				run.GetContainer().RunData.Mission.MissionType);
 			var condMod = modDataRow.Field<Watt>("P_aux_COND_el [kW]");
 			Assert.IsTrue(cond.IsEqual(condMod), $"expected {cond} got {condMod} at {time}");

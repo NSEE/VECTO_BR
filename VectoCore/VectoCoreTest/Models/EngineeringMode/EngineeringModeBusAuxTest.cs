@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using Ninject;
@@ -14,9 +13,6 @@ using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
-using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
-using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.PrimaryBus;
-using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents.AuxiliaryDataAdapter;
 using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.Models.BusAuxiliaries;
@@ -34,19 +30,17 @@ using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.Battery;
-using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
-using TUGraz.VectoCore.Tests.Models.SimulationComponent;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
-using ElectricSystem = TUGraz.VectoCore.Models.SimulationComponent.ElectricSystem;
-using Wheels = TUGraz.VectoCore.Models.SimulationComponent.Impl.Wheels;
+using ElectricSystem = TUGraz.VectoCore.Models.SimulationComponent.Impl.ElectricSystem;
 
 namespace TUGraz.VectoCore.Tests.Models.EngineeringMode
 {
-	[TestFixture]
+    [TestFixture]
 	[Parallelizable(ParallelScope.All)]
 	public class EngineeringModeBusAuxTest
 	{
@@ -133,7 +127,7 @@ namespace TUGraz.VectoCore.Tests.Models.EngineeringMode
 				: JSONInputDataFactory.ReadJsonJob(jobFile);
 
 			var sumContainer = new SummaryDataContainer(writer);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, writer);
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputData, writer, null, null, false);
 			factory.WriteModalResults = true;
 			factory.SumData = sumContainer; //ActualModalData = true,
 			factory.Validate = false;
@@ -841,7 +835,7 @@ namespace TUGraz.VectoCore.Tests.Models.EngineeringMode
 
 		public const string EngineFileHigh = @"TestData/Components/24t Coach_high.veng";
 
-		public static MockVehicleContainer CreatePowerTrain(AlternatorType alternatorType, double initialSoC,
+		public MockVehicleContainer CreatePowerTrain(AlternatorType alternatorType, double initialSoC,
 			double? reessSoC, bool connectEsToReess)
 		{
 			//var gearboxData = CreateGearboxData();
@@ -857,7 +851,7 @@ namespace TUGraz.VectoCore.Tests.Models.EngineeringMode
 				JobRunId = 0,
 				VehicleData = vehicleData,
 				EngineData = engineData,
-				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+				ElectricMachinesSinglePwt = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
 				SimulationType = SimulationType.DistanceCycle,
 				Cycle = cycleData,
 				BusAuxiliaries = CreateBusAuxData(alternatorType, vehicleData, connectEsToReess),
@@ -865,9 +859,8 @@ namespace TUGraz.VectoCore.Tests.Models.EngineeringMode
 			};
 
 
-			var modData = new ModalDataContainer(runData, null, null) {
-				WriteModalResults = false
-			};
+			var modData = _kernel.Get<IModalDataFactory>().CreateModDataContainer(runData, null, null, null);
+			modData.WriteModalResults = false;
 
 			var container = new MockVehicleContainer() {
 				CycleData = new CycleData() { LeftSample = cycleData.Entries.First() },
@@ -894,7 +887,6 @@ namespace TUGraz.VectoCore.Tests.Models.EngineeringMode
 
 			if (reessSoC.HasValue) {
 				// hybrid powertrain
-				var packCount = 2;
 				runData.BatteryData = new BatterySystemData() {
 					Batteries = new List<Tuple<int, BatteryData>>() {
 						Tuple.Create(0, new BatteryData() {

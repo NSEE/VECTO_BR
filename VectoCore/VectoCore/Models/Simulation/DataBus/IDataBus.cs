@@ -29,11 +29,15 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
+using System.Collections.Generic;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCore.Models.Simulation.DataBus
 {
@@ -48,11 +52,17 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		IMileageCounter MileageCounter { get; }
 
-		IGearboxInfo GearboxInfo { get; }
+		IGearboxInfo GearboxInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 
-		IGearboxControl GearboxCtl { get; }
+		IList<IGearboxInfo> GearboxesInfo {  get; }
 
-		IAxlegearInfo AxlegearInfo { get; }
+		IGearboxControl GearboxCtl(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
+
+		IList<IGearboxControl> GearboxesCtl { get; }
+
+		IAxlegearInfo AxlegearInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
+
+		IList<IAxlegearInfo> AxlegearsInfo { get; }
 
 		IEngineInfo EngineInfo { get; }
 
@@ -60,8 +70,11 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		IVehicleInfo VehicleInfo { get; }
 
+		IClutchInfo ClutchInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 
-		IClutchInfo ClutchInfo { get; }
+		IList<IClutchInfo> ClutchesInfo { get; }
+
+		IRetarder Retarder(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);	
 
 		IBrakes Brakes { get; }
 
@@ -71,15 +84,23 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		IDrivingCycleInfo DrivingCycleInfo { get; }
 
-		IElectricMotorInfo ElectricMotorInfo(PowertrainPosition pos);
+		IElectricMotorInfo ElectricMotorInfo(PowertrainPosition position, int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
+
+        IList<IElectricMotorInfo> ElectricMotorsInfo { get; }
 
 		IRESSInfo BatteryInfo { get; }
 
 		IElectricSystemInfo ElectricSystemInfo { get; }
 
-		ITorqueConverterInfo TorqueConverterInfo { get; }
+		IElectricSystemInfo JunctionBox {  get; }
 
-		ITorqueConverterControl TorqueConverterCtl { get; }
+		ITorqueSplitter TorqueSplitter { get; }
+
+		IWheelEnd WheelEnd { get; }
+
+		ITorqueConverterInfo TorqueConverterInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
+
+		ITorqueConverterControl TorqueConverterCtl(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
 
 		IPowertainInfo PowertrainInfo { get; }
 
@@ -87,11 +108,14 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		IHybridControllerCtl HybridControllerCtl { get; }
 
-		IAngledriveInfo AngledriveInfo { get; }
+		IAngledriveInfo AngledriveInfo(int axleNumber = Constants.NOT_IN_AXLE_POWERTRAIN);
+
+        IList<IAngledriveInfo> AngledrivesInfo { get; }
 
 		IDCDCConverter DCDCConverter { get; }
 
-		WHRCharger WHRCharger { get; }
+		IWHRCharger WHRCharger { get; }
+
 		bool IsTestPowertrain { get; }
 	}
 
@@ -103,8 +127,6 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		bool HasGearbox { get; }
 
-		PowertrainPosition[] ElectricMotorPositions { get; }
-
-		VectoSimulationJobType VehicleArchitecutre { get; }
+		VectoSimulationJobType VehicleArchitecture { get; }
 	}
 }

@@ -31,8 +31,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
@@ -48,18 +46,17 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	/// <summary>
-	///     Class representing one Distance Based Driving Cycle
-	/// </summary>
-	public sealed class DistanceBasedDrivingCycle : StatefulProviderComponent
+    /// <summary>
+    ///     Class representing one Distance Based Driving Cycle
+    /// </summary>
+    public sealed class DistanceBasedDrivingCycle : StatefulProviderComponent
 		<DistanceBasedDrivingCycle.DrivingCycleState, ISimulationOutPort, IDrivingCycleInPort, IDrivingCycleOutPort>,
-		IDrivingCycle, ISimulationOutPort, IDrivingCycleInPort, IDisposable, IUpdateable, IResetableVectoSimulationComponent
+		IDistanceBasedDrivingCycle, ISimulationOutPort, IDrivingCycleInPort, IDisposable, IUpdateable, IResetableVectoSimulationComponent
 	{
 		private const double LookaheadTimeSafetyMargin = 1.5;
 		internal readonly IDrivingCycleData Data;
 		internal DrivingCycleEnumerator CycleIntervalIterator;
 		private bool _intervalProlonged;
-		internal IIdleControllerSwitcher IdleController;
 		private Meter CycleEndDistance;
 
 		
@@ -70,7 +67,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		private DrivingCycleData.DrivingCycleEntry Right => CycleIntervalIterator.RightSample;
 
-		public DistanceBasedDrivingCycle(IVehicleContainer container, IDrivingCycleData cycle) : base(container)
+		public IIdleControllerSwitcher IdleController { get; set; }
+
+        public DistanceBasedDrivingCycle(IVehicleContainer container, IDrivingCycleData cycle) : 
+			base(container, Constants.NOT_IN_AXLE_POWERTRAIN)
 		{
 			Data = cycle;
 			CycleIntervalIterator = new DrivingCycleEnumerator(Data);
@@ -108,8 +108,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			};
 			CurrentState = PreviousState.Clone();
 
-			StartSpeed = container.RunData.GearshiftParameters?.StartSpeed;
-			StartAcceleration = container.RunData.GearshiftParameters?.StartAcceleration;
+			StartSpeed = container.RunData.GearshiftParametersSinglePwt?.StartSpeed;
+			StartAcceleration = container.RunData.GearshiftParametersSinglePwt?.StartAcceleration;
+
+			if (container.RunData.AxlePowertrains.Count() > 0)
+			{
+				var gearParams = container.RunData.AxlePowertrains.First(x => x.GearshiftParameters != null).GearshiftParameters;
+				
+				StartSpeed = gearParams.StartSpeed;
+				StartAcceleration = gearParams.StartAcceleration;
+			}
 		}
 
 		public IResponse Initialize()
@@ -309,7 +317,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			CurrentState.WaitTime = PreviousState.WaitTime + dt;
 			CurrentState.Gradient = ComputeGradient(0.SI<Meter>());
 			CurrentState.VehicleTargetSpeed = Left.VehicleTargetSpeed;
-			
+			CurrentState.SimulationDistance = 0.SI<Meter>();
 
 			return NextComponent.Request(absTime, dt, Left.VehicleTargetSpeed, CurrentState.Gradient);
 		}
@@ -331,6 +339,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			CurrentState.SimulationDistance = ds;
 			CurrentState.VehicleTargetSpeed = Left.VehicleTargetSpeed;
 			CurrentState.Gradient = ComputeGradient(ds);
+			CurrentState.Highway = Left.Highway; // && Right.Highway;
 
 			var retVal = NextComponent.Request(absTime, ds, CurrentState.VehicleTargetSpeed, CurrentState.Gradient);
 			if (retVal is ResponseFailTimeInterval r) { 
@@ -356,6 +365,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				? (Math.Tan(CurrentState.Gradient.Value()) * 100).SI<Scalar>()
 				: null;
 			container[ModalResultField.altitude] = CurrentState.Altitude;
+			container[ModalResultField.Highway] = CurrentState.Highway ? 1 : 0;
 
 			if (IdleController != null) {
 				IdleController.CommitSimulationStep(time, simulationInterval, container);
@@ -602,6 +612,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			public bool RequestToNextSamplePointDone;
 
 			public Meter SimulationDistance;
+
+			public bool Highway;
 		}
 
 		public void Dispose()

@@ -32,13 +32,14 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
-using TUGraz.VectoCore.Models.SimulationComponent;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing;
 
 namespace TUGraz.VectoCore.OutputData
@@ -51,7 +52,7 @@ namespace TUGraz.VectoCore.OutputData
 
 	public interface IModalDataFactory
 	{
-		IModalDataContainer CreateModDataContainer(VectoRunData runData, IModalDataWriter writer, Action<ModalDataContainer> addReportResult, IModalDataFilter[] filter);
+		IModalDataContainer CreateModDataContainer(VectoRunData runData, IModalDataWriter writer, Action<IModalDataContainer> addReportResult, IModalDataFilter[] filter);
 	}
 
     public interface IModalDataContainer
@@ -67,9 +68,11 @@ namespace TUGraz.VectoCore.OutputData
 
 		object this[ModalResultField key, IFuelProperties fuel] { get; set; }
 
-		object this[ModalResultField key, PowertrainPosition pos] { get; set; }
+		object this[ModalResultField key, PowertrainPosition pos, int axleNumber] { get; set; }
 
-		object this[ModalResultField key, int? pos] { get; set; }
+		object this[ModalResultField key, int? idx] { get; set; }
+
+		object this[ModalResultField key, string arg] { get; set; }
 
 		/// <summary>
 		/// Indexer for auxiliary fields of the DataWriter.
@@ -94,15 +97,20 @@ namespace TUGraz.VectoCore.OutputData
 
 		IEnumerable<T> GetValues<T>(ModalResultField key);
 
-		IEnumerable<T> GetValues<T>(DataColumn col);
+		IEnumerable<T> GetValues<T>(ModalResultField field, string arg);
+
+        IEnumerable<T> GetValues<T>(DataColumn col);
 
 		IEnumerable<T> GetValues<T>(Func<DataRow, T> selectorFunc);
 
 		Dictionary<string, DataColumn> Auxiliaries { get; }
 
-		T TimeIntegral<T>(ModalResultField field, Func<SI, bool> filter = null) where T : SIBase<T>;
+		T TimeIntegral<T>(ModalResultField field, int axleNumber, Func<SI, bool> filter = null) where T : SIBase<T>;
 
-		T TimeIntegral<T>(string field, Func<SI, bool> filter = null) where T : SIBase<T>;
+        T TimeIntegral<T>(ModalResultField field, Func<SI, bool> filter = null) where T : SIBase<T>;
+
+        T TimeIntegral<T>(string field, Func<SI, bool> filter = null) where T : SIBase<T>;
+
 
 		void SetDataValue(string fieldName, object value);
 
@@ -123,10 +131,12 @@ namespace TUGraz.VectoCore.OutputData
 
 		void Reset(bool clearColumns = false);
 		
-		string GetColumnName(PowertrainPosition pos, ModalResultField mrf);
+		string GetColumnName(PowertrainPosition pos, int axleNumber, ModalResultField mrf);
+
+		string GetColumnName(ModalResultField mrf, string arg);
 
 
-		Second Duration { get; }
+        Second Duration { get; }
 
 		Meter Distance { get; }
 
@@ -139,20 +149,25 @@ namespace TUGraz.VectoCore.OutputData
 		bool HasCombustionEngine { get; }
 		bool HasGearbox { get; }
 		bool HasAxlegear { get; }
-		WattSecond TotalElectricMotorWorkDrive(PowertrainPosition emPos);
-		WattSecond TotalElectricMotorWorkRecuperate(PowertrainPosition emPos);
-		WattSecond TotalElectricMotorMotWorkDrive(PowertrainPosition emPos);
-		WattSecond TotalElectricMotorMotWorkRecuperate(PowertrainPosition emPos);
-		PerSecond ElectricMotorAverageSpeed(PowertrainPosition emPos);
-		double ElectricMotorEfficiencyDrive(PowertrainPosition emPos);
-		double ElectricMotorEfficiencyGenerate(PowertrainPosition emPos);
-		double ElectricMotorMotEfficiencyDrive(PowertrainPosition emPos);
-		double ElectricMotorMotEfficiencyGenerate(PowertrainPosition emPos);
-		WattSecond ElectricMotorOffLosses(PowertrainPosition emPos);
-		WattSecond ElectricMotorLosses(PowertrainPosition emPos);
-		WattSecond ElectricMotorMotLosses(PowertrainPosition emPos);
-		WattSecond ElectricMotorTransmissionLosses(PowertrainPosition emPos);
-		ICorrectedModalData CorrectedModalData { get; }
+		WattSecond TotalElectricMotorWorkDrive(PowertrainPosition emPos, int axleNumber);
+		WattSecond TotalElectricMotorWorkRecuperate(PowertrainPosition emPos, int axleNumber);
+		WattSecond TotalElectricMotorMotWorkDrive(PowertrainPosition emPos, int axleNumber);
+		WattSecond TotalElectricMotorMotWorkRecuperate(PowertrainPosition emPos, int axleNumber);
+		PerSecond ElectricMotorAverageSpeed(PowertrainPosition emPos, int axleNumber);
+		double ElectricMotorEfficiencyDrive(PowertrainPosition emPos, int axleNumber);
+		double ElectricMotorEfficiencyGenerate(PowertrainPosition emPos, int axleNumber);
+		double ElectricMotorMotEfficiencyDrive(PowertrainPosition emPos, int axleNumber);
+		double ElectricMotorMotEfficiencyGenerate(PowertrainPosition emPos, int axleNumber);
+		WattSecond ElectricMotorOffLosses(PowertrainPosition emPos, int axleNumber);
+		WattSecond ElectricMotorLosses(PowertrainPosition emPos, int axleNumber);
+		WattSecond ElectricMotorMotLosses(PowertrainPosition emPos, int axleNumber);
+		WattSecond ElectricMotorTransmissionLosses(PowertrainPosition emPos, int axleNumber);
+		ICorrectedModalData CorrectedModalData { get; } 
+		ModalResults Data { get; }
+		string RunName { get; }
+		IModalDataPostProcessor PostProcessingCorrection { set; }
+		KilogramPerWattSecond FuelCellLine { get; }
+		bool HasBattery { get; }
 		void RegisterComponent(VectoSimulationComponent component);
 		bool ContainsColumn(string modalResultField);
 	}

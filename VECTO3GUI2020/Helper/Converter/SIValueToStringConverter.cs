@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices;
 using System.Windows.Data;
 using TUGraz.VectoCommon.Utils;
-using VECTO3GUI2020.Util;
 using SIUtils = VECTO3GUI2020.Util.SIUtils;
 
 namespace VECTO3GUI2020.Helper.Converter
@@ -14,8 +10,8 @@ namespace VECTO3GUI2020.Helper.Converter
 	{
 		private SI _si;
 		private ConvertedSI _convertedSI;
-		private Type _sourceType;
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			if (value == null) {
 				return value;
@@ -54,7 +50,7 @@ namespace VECTO3GUI2020.Helper.Converter
 
 				}
 			}
-			catch (Exception e) {
+			catch (Exception) {
 				return value;
 			}
 

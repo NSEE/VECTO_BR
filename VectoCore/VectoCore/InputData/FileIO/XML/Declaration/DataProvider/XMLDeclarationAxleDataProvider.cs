@@ -53,6 +53,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		protected bool? _twinTyre;
 		protected AxleType? _axleType;
 		private bool? _steered;
+		private int? _axleNumber;
 
 		public XMLDeclarationAxleDataProviderV10(IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile)
 			: base(componentNode, sourceFile)
@@ -68,7 +69,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public virtual ITyreDeclarationInputData Tyre => _tyre ?? (_tyre = Reader.Tyre);
 
-		public bool Steered =>
+		public virtual int AxleNumber => _axleNumber ?? (_axleNumber = int.Parse(GetAttribute(BaseNode, "axleNumber"))).Value;
+
+		public virtual NewtonMeter WheelEndFriction => null;
+
+		public virtual string WheelEndCertificationNumber => null;
+
+        public bool Steered =>
 			_steered ?? (_steered = XmlConvert.ToBoolean(GetString(XMLNames.AxleWheels_Axles_Axle_Steered))).Value;
 
 		#endregion
@@ -109,4 +116,28 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
 	}
+
+	public class XMLDeclarationAxleDataProviderV27 : XMLDeclarationAxleDataProviderV20
+	{ 
+		public new static XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V27;
+
+		public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+
+		static XMLDeclarationAxleDataProviderV27()
+		{
+			NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V27;
+		}
+
+		public XMLDeclarationAxleDataProviderV27(IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile)
+			: base(vehicle, componentNode, sourceFile) 
+		{ }
+
+		public override NewtonMeter WheelEndFriction => 
+			GetNode(XMLNames.AxleWheels_Axles_Axle_Friction, BaseNode, false)?.InnerText.ToDouble().SI<NewtonMeter>();
+
+        public override string WheelEndCertificationNumber => GetNode("WheelEnd/CertificationNumber".Split('/'), BaseNode, false)?.InnerText;
+
+        protected override XNamespace SchemaNamespace => NAMESPACE_URI;
+	}
+
 }

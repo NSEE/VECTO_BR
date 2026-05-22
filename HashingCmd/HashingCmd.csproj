@@ -2,9 +2,13 @@
   <PropertyGroup>
     <RootNamespace>HashingCmd</RootNamespace>
     <AssemblyName>hashingcmd</AssemblyName>
-    <TargetFrameworks>net48;net6.0</TargetFrameworks>
+    <TargetFrameworks>net48;net6.0;net8.0</TargetFrameworks>
 
     <OutputType>Exe</OutputType>
+
+    <Configurations>Debug;Release</Configurations>
+	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+	<CheckEolTargetFramework>false</CheckEolTargetFramework>
   </PropertyGroup>
 
   <ItemGroup>

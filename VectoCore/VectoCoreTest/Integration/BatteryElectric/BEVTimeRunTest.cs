@@ -4,12 +4,14 @@ using System.IO;
 using System.Linq;
 using Ninject;
 using NUnit.Framework;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
+using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Ninject;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
-using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
-using TUGraz.VectoCore.Models.Simulation;
 
 namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 {
@@ -17,6 +19,8 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
     [Parallelizable(ParallelScope.All)]
     public class BEVTimeRunTest 
     {
+        private StandardKernel _kernel;
+
         private const string E2_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericVehicleE2/BEV_ENG.vecto";
         private const string E3_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericVehicleE3/BEV_ENG.vecto";
         private const string E4_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericVehicleE4/BEV_ENG.vecto";
@@ -26,17 +30,12 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
         private const string IEPC3X_WHEEL2_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericIEPC/IEPC_Gbx3Speed-Whl2\IEPC_ENG_Gbx3Whl2.vecto";
         private const string IEPC1X_WHEEL1_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericIEPC/IEPC_Gbx1Speed-Whl1/IEPC_ENG_Gbx1Whl1.vecto";
 
-		protected IPowertrainBuilder _powertrainBuilder;
-		private IModalDataFactory _modDataFactory;
-
 		[OneTimeSetUp]
         public void Init()
         {
             Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-			var kernel = new StandardKernel(new VectoNinjectModule());
-			_powertrainBuilder = kernel.Get<IPowertrainBuilder>();
-			_modDataFactory = kernel.Get<IModalDataFactory>();
-		}
+            _kernel = new StandardKernel(new VectoNinjectModule());
+        }
 
         [Category("JRC")]
 		[Category("Integration")]
@@ -181,7 +180,8 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 			string outputFile = InputDataHelper.CreateUniqueSubfolder(jobFile);
 			var writer = new FileOutputWriter(outputFile);
 
-			var factory = new SimulatorFactoryEngineering(inputProvider, writer, false, _powertrainBuilder, _modDataFactory) { WriteModalResults = true };
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputProvider, writer, null, null, false);
+            factory.WriteModalResults = true;
 			factory.SumData = new SummaryDataContainer(writer);
 
 			var run = factory.SimulationRuns().ToArray()[cycleIdx];
@@ -206,7 +206,8 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 			string outputFile = InputDataHelper.CreateUniqueSubfolder(jobFile);
 			var writer = new FileOutputWriter(outputFile);
 
-			var factory = new SimulatorFactoryEngineering(inputProvider, writer, false, _powertrainBuilder, _modDataFactory) { WriteModalResults = true };
+			var factory = _kernel.Get<ISimulatorFactoryFactory>().Factory(ExecutionMode.Engineering, inputProvider, writer, null, null, false);
+            factory.WriteModalResults = true;
 			factory.SumData = new SummaryDataContainer(writer);
 
 			var run = factory.SimulationRuns().ToArray()[cycleIdx];

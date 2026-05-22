@@ -33,19 +33,26 @@ using System.Linq;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
+using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
+	public interface IPWheelCycle : IDriverInfo, IVehicleInfo, ITnInProvider
+    {
+
+	}
+
 	/// <summary>
 	/// Driving Cycle for the PWheel driving cycle.
 	/// </summary>
-	public class PWheelCycle : PowertrainDrivingCycle, IDriverInfo, IVehicleInfo
+	public class PWheelCycle : PowertrainDrivingCycle, IPWheelCycle
 	{
 		protected bool FirstRun = true;
 		protected readonly VectoRunData RunData;
@@ -63,17 +70,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected virtual void InitializeCycleData()
 		{
 			FirstRun = false;
-			var gearRatios = (RunData.GearboxData != null) 
-				? RunData.GearboxData.Gears.ToDictionary(g => g.Key, g => g.Value.Ratio)
+			var gearRatios = (RunData.GearboxSinglePwt != null) 
+				? RunData.GearboxSinglePwt.Gears.ToDictionary(g => g.Key, g => g.Value.Ratio)
 				: new System.Collections.Generic.Dictionary<uint, double>() { { 0, 1 } };
 
 			// just to ensure that null-gear has ratio 1
 			gearRatios[0] = 1;
-			var axleRatio = (RunData.AxleGearData != null) ? RunData.AxleGearData.AxleGear.Ratio : 1;
+			var axleRatio = (RunData.AxleGearSinglePwt != null) ? RunData.AxleGearSinglePwt.AxleGear.Ratio : 1;
 
 			/* For BEVs, ratioADC must participate in the calculation of the wheel angular velocity. */
-			var emData = ((RunData.ElectricMachinesData != null) && (RunData.ElectricMachinesData.Count > 0)) 
-				? RunData.ElectricMachinesData.First().Item2 
+			var emData = ((RunData.ElectricMachinesSinglePwt != null) && (RunData.ElectricMachinesSinglePwt.Count > 0)) 
+				? RunData.ElectricMachinesSinglePwt.First().Item2 
 				: null;
 
 			var ratioADC = (RunData.JobType == VectoSimulationJobType.BatteryElectricVehicle) ? emData.RatioADC : 1;
@@ -91,9 +98,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public override IResponse Initialize()
 		{
-			if ((RunData.JobType == VectoSimulationJobType.BatteryElectricVehicle) && (DataBus.GearboxCtl != null)) {
-				DataBus.GearboxCtl.GearShiftTriggered -= GearShiftTriggered;
-				DataBus.GearboxCtl.GearShiftTriggered += GearShiftTriggered;
+			if ((RunData.JobType == VectoSimulationJobType.BatteryElectricVehicle) && (DataBus.GearboxesCtl.Count() > 0)) {
+				DataBus.GearboxesCtl.First().GearShiftTriggered -= GearShiftTriggered;
+				DataBus.GearboxesCtl.First().GearShiftTriggered += GearShiftTriggered;
             }
 
 			if (FirstRun) {
@@ -159,7 +166,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public CubicMeter CargoVolume => RunData.VehicleData.CargoVolume;
 
-		public Newton AirDragResistance(MeterPerSecond previousVelocity, MeterPerSecond nextVelocity)
+		public AirDragLossResult AirDragResistance(MeterPerSecond previousVelocity, MeterPerSecond nextVelocity)
 		{
 			throw new System.NotImplementedException();
 		}
@@ -203,7 +210,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DriverBehavior = DrivingBehavior.Braking;
 			}
 			else {
-				DrivingAction = DataBus.GearboxInfo.GearEngaged(DataBus.AbsTime) ? DrivingAction.Accelerate : DrivingAction.Roll;
+				DrivingAction = DataBus.GearboxesInfo.First(x => x.AxleNumber == AxleNumber).GearEngaged(DataBus.AbsTime) 
+					? DrivingAction.Accelerate 
+					: DrivingAction.Roll;
+
 				DriverBehavior = DrivingBehavior.Driving;
 			}
 		}

@@ -2,24 +2,20 @@
   <PropertyGroup>
     <Title>Vehicle Energy Consumption Calculation TOol: VectoCommon</Title>
     <Description>Provides Vecto models and utils.</Description>
+    <Configurations>Debug;Release</Configurations>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup>
     <RootNamespace>TUGraz.VectoCommon</RootNamespace>
     <AssemblyName>VectoCommon</AssemblyName>
-    <TargetFrameworks>net48;net6.0</TargetFrameworks>
+    <TargetFrameworks>net48;net6.0;net8.0</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Ninject" Version="3.3.6" />
-    <PackageReference Include="Ninject.Extensions.ContextPreservation" Version="3.3.1" />
-    <PackageReference Include="Ninject.Extensions.Factory" Version="3.3.3" />
     <PackageReference Include="NLog" Version="4.7.13" />
-  </ItemGroup>
-
-
-  <ItemGroup Condition="'$(TargetFramework)'=='net48'">
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 
@@ -33,5 +29,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>XMLNames.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+	<None Include="README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>

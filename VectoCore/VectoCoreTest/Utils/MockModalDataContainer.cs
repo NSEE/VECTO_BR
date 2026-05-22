@@ -38,11 +38,12 @@ using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
-using TUGraz.VectoCore.Models.SimulationComponent;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.ModDataPostprocessing;
 using TUGraz.VectoCore.Utils;
@@ -130,7 +131,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 			}
 		}
 
-		public object this[ModalResultField key, PowertrainPosition pos]
+		public object this[ModalResultField key, PowertrainPosition pos, int axleNumber]
 		{
 			get => throw new NotImplementedException();
 			set => throw new NotImplementedException();
@@ -156,6 +157,12 @@ namespace TUGraz.VectoCore.Tests.Utils
 					CurrentRow[col] = value;
 				}
 			}
+		}
+
+		public object this[ModalResultField key, string arg]
+		{
+			get => throw new NotImplementedException();
+			set => throw new NotImplementedException();
 		}
 
 		public object this[string auxId]
@@ -195,7 +202,15 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public IEnumerable<T> GetValues<T>(Func<DataRow, T> selectorFunc) => 
 			throw new NotImplementedException();
 
-		public T TimeIntegral<T>(ModalResultField field, Func<SI, bool> filter = null) where T : SIBase<T> => 
+        public IEnumerable<T> GetValues<T>(ModalResultField field, string arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T TimeIntegral<T>(ModalResultField field, Func<SI, bool> filter = null) where T : SIBase<T> => 
+			throw new NotImplementedException();
+
+		public T TimeIntegral<T>(ModalResultField field, int axleNumber, Func<SI, bool> filter = null) where T : SIBase<T> =>
 			throw new NotImplementedException();
 
 		public T TimeIntegral<T>(string field, Func<SI, bool> filter = null) where T : SIBase<T> => 
@@ -236,12 +251,17 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 
 
-		public string GetColumnName(PowertrainPosition pos, ModalResultField mrf)
+		public string GetColumnName(PowertrainPosition pos, int axleNumber, ModalResultField mrf)
 		{
-			return string.Format(mrf.GetCaption(), pos.GetName());
+			return string.Format(mrf.GetCaption(), pos.GetName(), axleNumber.FormatAxleNumber());
 		}
 
-		public void Reset(bool clearColumns = false){}
+        public string GetColumnName(ModalResultField mrf, string arg)
+        {
+            return string.Format(mrf.GetCaption(), arg);
+        }
+
+        public void Reset(bool clearColumns = false){}
 
 
 		public Second Duration => null;
@@ -273,73 +293,82 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public bool HasCombustionEngine { get; set; }
 		public bool HasGearbox { get; set; }
 
-		public WattSecond TotalElectricMotorWorkDrive(PowertrainPosition emPos)
+		public WattSecond TotalElectricMotorWorkDrive(PowertrainPosition emPos, int axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public WattSecond TotalElectricMotorWorkRecuperate(PowertrainPosition emPos)
+		public WattSecond TotalElectricMotorWorkRecuperate(PowertrainPosition emPos, int axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public WattSecond TotalElectricMotorMotWorkDrive(PowertrainPosition emPos)
+		public WattSecond TotalElectricMotorMotWorkDrive(PowertrainPosition emPos, int axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public WattSecond TotalElectricMotorMotWorkRecuperate(PowertrainPosition emPos)
+		public WattSecond TotalElectricMotorMotWorkRecuperate(PowertrainPosition emPos, int axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public PerSecond ElectricMotorAverageSpeed(PowertrainPosition emPos)
+		public PerSecond ElectricMotorAverageSpeed(PowertrainPosition emPos, int axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public double ElectricMotorEfficiencyDrive(PowertrainPosition emPos)
+		public double ElectricMotorEfficiencyDrive(PowertrainPosition emPos, int axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public double ElectricMotorEfficiencyGenerate(PowertrainPosition emPos)
+		public double ElectricMotorEfficiencyGenerate(PowertrainPosition emPos, int axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public double ElectricMotorMotEfficiencyDrive(PowertrainPosition emPos)
+		public double ElectricMotorMotEfficiencyDrive(PowertrainPosition emPos, int axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public double ElectricMotorMotEfficiencyGenerate(PowertrainPosition emPos)
+		public double ElectricMotorMotEfficiencyGenerate(PowertrainPosition emPos, int axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public WattSecond ElectricMotorOffLosses(PowertrainPosition emPos)
+		public WattSecond ElectricMotorOffLosses(PowertrainPosition emPos, int axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public WattSecond ElectricMotorLosses(PowertrainPosition emPos)
+		public WattSecond ElectricMotorLosses(PowertrainPosition emPos, int axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public WattSecond ElectricMotorMotLosses(PowertrainPosition emPos)
+		public WattSecond ElectricMotorMotLosses(PowertrainPosition emPos, int axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public WattSecond ElectricMotorTransmissionLosses(PowertrainPosition emPos)
+		public WattSecond ElectricMotorTransmissionLosses(PowertrainPosition emPos, int axleNumber)
 		{
 			throw new NotImplementedException();
 		}
 
 		public ICorrectedModalData CorrectedModalData { get; }
 		public bool HasAxlegear { get; set; }
+
+		public IModalDataPostProcessor PostProcessingCorrection
+		{
+			set => throw new NotImplementedException();
+		}
+
+		public KilogramPerWattSecond FuelCellLine => throw new NotImplementedException();
+
+		public bool HasBattery => throw new NotImplementedException();
 
 		public void RegisterComponent(VectoSimulationComponent component)
 		{
@@ -372,5 +401,5 @@ namespace TUGraz.VectoCore.Tests.Utils
 			CurrentRow[ModalResultField.simulationInterval.GetName()] = simulationInterval;
 			CommitSimulationStep();
 		}
-	}
+    }
 }

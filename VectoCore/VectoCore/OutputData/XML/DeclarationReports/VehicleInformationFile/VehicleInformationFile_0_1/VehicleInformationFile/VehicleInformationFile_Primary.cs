@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TUGraz.VectoCommon.InputData;
+﻿using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.OutputData.XML.DeclarationReports.Common;
 
 namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile.VehicleInformationFile_0_1.VIFReport
 {
 	internal abstract class VehicleInformationFile_PrimaryStep : AbstractVehicleInformationFile
 	{
-		private string _outputDataType;
-
 		public VehicleInformationFile_PrimaryStep(IVIFReportFactory vifFactory, IResultsWriterFactory resultFactory) : base(vifFactory, resultFactory)
 		{
 			_tns = VIF;
@@ -19,9 +12,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 
 		#region Overrides of AbstractVIFReport
 
-		public override string OutputDataType => _outputDataType;
-
-		
+		public override string OutputDataType => null;
 
 		#endregion
 	}
@@ -83,6 +74,76 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationF
 		protected override void InitializeVehicleData(IDeclarationInputDataProvider inputData)
 		{
 			Vehicle = _vifFactory.GetHevIepcSVehicleType().GetElement(inputData);
+		}
+	}
+
+	internal class Multiple_SHEV_PrimaryBus_VIF : VehicleInformationFile_PrimaryStep
+	{
+        public Multiple_SHEV_PrimaryBus_VIF(IVIFReportFactory vifFactory, IResultsWriterFactory resultFactory) : base(vifFactory, resultFactory) { }
+
+        protected override void InitializeVehicleData(IDeclarationInputDataProvider inputData)
+        {
+            Vehicle = _vifFactory.GetMultipleSHEVVehicleType().GetElement(inputData);
+        }
+    }
+
+	internal class Multiple_PEV_PrimaryBus_VIF : VehicleInformationFile_PrimaryStep
+	{
+        public Multiple_PEV_PrimaryBus_VIF(IVIFReportFactory vifFactory, IResultsWriterFactory resultFactory) : base(vifFactory, resultFactory) { }
+
+        protected override void InitializeVehicleData(IDeclarationInputDataProvider inputData)
+        {
+            Vehicle = _vifFactory.GetMultiplePEVVehicleType().GetElement(inputData);
+        }
+    }
+
+    internal class Multiple_FCHV_PrimaryBus_VIF : VehicleInformationFile_PrimaryStep
+	{
+        public Multiple_FCHV_PrimaryBus_VIF(IVIFReportFactory vifFactory, IResultsWriterFactory resultFactory) : base(vifFactory, resultFactory) { }
+
+        protected override void InitializeVehicleData(IDeclarationInputDataProvider inputData)
+        {
+            Vehicle = _vifFactory.GetMultipleFCHVVehicleType().GetElement(inputData);
+        }
+    }
+
+	internal class FCHV_F2_PrimaryBus_VIF : VehicleInformationFile_PrimaryStep
+	{
+		public FCHV_F2_PrimaryBus_VIF(IVIFReportFactory vifFactory, IResultsWriterFactory resultFactory) : base(vifFactory, resultFactory) { }
+
+		protected override void InitializeVehicleData(IDeclarationInputDataProvider inputData)
+		{
+			Vehicle = _vifFactory.Get_FCHV_F2_VehicleType().GetElement(inputData);
+		}
+	}
+
+	internal class FCHV_F3_PrimaryBus_VIF : VehicleInformationFile_PrimaryStep
+	{
+		public FCHV_F3_PrimaryBus_VIF(IVIFReportFactory vifFactory, IResultsWriterFactory resultFactory) : base(vifFactory, resultFactory) { }
+
+		protected override void InitializeVehicleData(IDeclarationInputDataProvider inputData)
+		{
+			Vehicle = _vifFactory.Get_FCHV_F3_VehicleType().GetElement(inputData);
+		}
+	}
+
+	internal class FCHV_F4_PrimaryBus_VIF : VehicleInformationFile_PrimaryStep
+	{
+		public FCHV_F4_PrimaryBus_VIF(IVIFReportFactory vifFactory, IResultsWriterFactory resultFactory) : base(vifFactory, resultFactory) { }
+
+		protected override void InitializeVehicleData(IDeclarationInputDataProvider inputData)
+		{
+			Vehicle = _vifFactory.Get_FCHV_F4_VehicleType().GetElement(inputData);
+		}
+	}
+
+	internal class FCHV_IEPC_PrimaryBus_VIF : VehicleInformationFile_PrimaryStep
+	{
+		public FCHV_IEPC_PrimaryBus_VIF(IVIFReportFactory vifFactory, IResultsWriterFactory resultFactory) : base(vifFactory, resultFactory) { }
+
+		protected override void InitializeVehicleData(IDeclarationInputDataProvider inputData)
+		{
+			Vehicle = _vifFactory.Get_FCHV_IEPC_VehicleType().GetElement(inputData);
 		}
 	}
 

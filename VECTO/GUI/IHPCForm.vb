@@ -43,7 +43,7 @@ Public Class IHPCForm
         tbOverloadTime1.Text = voltageLevel.OverloadTime.ToGUIFormat()
         tbOverloadTorque1.Text = voltageLevel.OverloadTorque.ToGUIFormat()
         tbOverloadTorqueSpeed1.Text = voltageLevel.OverloadTestSpeed.AsRPM.ToGUIFormat()
-        tbFLCurve1.Text = GetRelativePath(voltageLevel.FullLoadCurve.Source, path.GetDirectoryName(_ihpcFilePath))
+        tbFLCurve1.Text = GetRelativePath(voltageLevel.FullLoadCurve.First().LoadCurve.Source, Path.GetDirectoryName(_ihpcFilePath))
         SetPowerMapEntries(_lvPowerMap1, voltageLevel.PowerMap)
 
     End Sub
@@ -56,7 +56,7 @@ Public Class IHPCForm
         tbOverloadTime2.Text = voltageLevel.OverloadTime.ToGUIFormat()
         tbOverloadTorque2.Text = voltageLevel.OverloadTorque.ToGUIFormat()
         tbOverloadTorqueSpeed2.Text = voltageLevel.OverloadTestSpeed.AsRPM.ToGUIFormat()
-        tbFLCurve2.Text = GetRelativePath(voltageLevel.FullLoadCurve.Source, Path.GetDirectoryName(_ihpcFilePath))
+        tbFLCurve2.Text = GetRelativePath(voltageLevel.FullLoadCurve.First().LoadCurve.Source, Path.GetDirectoryName(_ihpcFilePath))
         SetPowerMapEntries(_lvPowerMap2, voltageLevel.PowerMap)
 
     End Sub
@@ -622,7 +622,7 @@ Public Class IHPCForm
 
         OpenWithToolStripMenuItem.Text = "Open with " & Cfg.OpenCmdName
 
-        CmOpenFile.Show(Windows.Forms.Cursor.Position)
+        CmOpenFile.Show(System.Windows.Forms.Cursor.Position)
     End Sub
 
     Private Sub OpenWithToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenWithToolStripMenuItem.Click

@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
-using Ninject;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.InputData.Reader.ComponentData;
-using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
-using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
-using TUGraz.VectoCore.Utils;
 using static TUGraz.VectoCommon.InputData.VectoSimulationJobType;
 
 namespace TUGraz.VectoCore.InputData.Reader.Impl
@@ -76,7 +70,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			return GetNextRun();
 		}
 
-		public IInputDataProvider DataProvider => InputDataProvider;
+        public IVehicleDeclarationInputData CompletedVehicle { get; set; }
+
+        public IInputDataProvider DataProvider => InputDataProvider;
 
 		protected abstract IEnumerable<VectoRunData> GetNextRun();
 
@@ -99,9 +95,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		/// <summary>
 		/// Super caps are not allowed for ovc hevs or pevs
 		/// </summary>
-		protected void CheckSuperCap(IVehicleDeclarationInputData vehicle)
+		protected virtual void CheckSuperCap(IVehicleDeclarationInputData vehicle)
 		{
-			if (vehicle.VehicleType == VectoSimulationJobType.BatteryElectricVehicle || vehicle.OvcHev) {
+			if (vehicle.VehicleType == VectoSimulationJobType.BatteryElectricVehicle || vehicle.OVC) {
 				if (vehicle.Components.ElectricStorage.ElectricStorageElements.Any(e =>
 						e.REESSPack.StorageType == REESSType.SuperCap)) {
 					throw new VectoException("Super caps are not allowed for OVC-HEVs or PEVs");

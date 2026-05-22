@@ -65,8 +65,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 	public interface IDrivingCycleData
 	{
 		List<DrivingCycleData.DrivingCycleEntry> Entries { get; }
+
 		string Name { get; }
+		
 		CycleType CycleType { get; }
+		
 		void Finish();
 	}
 
@@ -158,6 +161,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 				THCMassFlow = entry.THCMassFlow;
 				PMNumberFlow = entry.PMNumberFlow;
 				CO2MassFlow = entry.CO2MassFlow;
+				OBFCMMileage = entry.OBFCMMileage;
+				OBFCMFuelConsumptionMassFlow = entry.OBFCMFuelConsumptionMassFlow;
+				OBFCMFuelConsumptionVolumeFlow = entry.OBFCMFuelConsumptionVolumeFlow;
+				OBFCMMass = entry.OBFCMMass;
 			}
 
 			/// <summary>
@@ -289,6 +296,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			public PerSecond WheelSpeedRight;
 
 			public bool VTPPSCompressorActive;
+
+			public Meter OBFCMMileage;
+			
+			public Dictionary<FuelType, KilogramPerSecond> OBFCMFuelConsumptionMassFlow;
+			
+			public Dictionary<FuelType, LiterPerSecond> OBFCMFuelConsumptionVolumeFlow;
+			
+			public Kilogram OBFCMMass;
 
 			// road sweeper application
 			public Watt PTOPowerDemandDuringDrive;
