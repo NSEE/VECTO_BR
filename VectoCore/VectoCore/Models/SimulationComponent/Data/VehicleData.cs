@@ -33,6 +33,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+
+
+
 using Newtonsoft.Json;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
@@ -114,7 +117,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		/// (+ Curb mass of Standard-Body if it has one)
 		/// (+ Curb mass of Trailer if it has one)
 		/// </summary>
-		[Required, SIRange(500, 40000, emsMission: false),
+		[Required, SIRange(500, 90000, emsMission: false),
 		SIRange(0, 60000, emsMission: true)]
 		public Kilogram CurbMass { get; internal set; }
 
@@ -124,7 +127,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		/// </summary>
 		public Kilogram BodyAndTrailerMass { get; internal set; }
 
-		[Required, SIRange(0, 40000, emsMission: false),
+		[Required, SIRange(0, 90000, emsMission: false),
 		SIRange(0, 60000, emsMission: true)]
 		public Kilogram Loading { get; internal set; }
 
@@ -138,7 +141,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		/// The Gross Vehicle mass of the Vehicle.
 		/// </summary>
 		[Required,
-		SIRange(3500, 40000, ExecutionMode.Declaration, emsMission: false),
+		SIRange(3500, 90000, ExecutionMode.Declaration, emsMission: false),
 		SIRange(0, 60000, ExecutionMode.Declaration, emsMission: true),
 		SIRange(0, 1000000, ExecutionMode.Engineering)]
 		public Kilogram GrossVehicleMass { get; internal set; }
@@ -146,7 +149,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		/// <summary>
 		/// The Gross Vehicle mass of the Trailer (if the vehicle has one).
 		/// </summary>
-		[Required, SIRange(0, 40000, emsMission: false),
+		[Required, SIRange(0, 90000, emsMission: false),
 		SIRange(0, 60000, emsMission: true)]
 		public Kilogram TrailerGrossVehicleMass { get; internal set; }
 
@@ -235,10 +238,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		public bool VocationalVehicle { get; internal set; }
 
 		public bool OffVehicleCharging { get; internal set; }
+		
+		public Kilogram H2StorageUsableCapacity { get; internal set; }
 
-        public Kilogram H2StorageUsableCapacity { get; internal set; }
-
-        public class ADASData
+		public class ADASData
 		{
 			public bool EngineStopStart { get; internal set; }
 			public EcoRollType EcoRoll { get; internal set; }

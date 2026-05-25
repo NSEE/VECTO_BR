@@ -901,7 +901,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			public const string FuelEfficiencyClass = "X";
 			public const double TyreTestLoad = 37500;
 
-			public const bool TwinTyres = false;
+			public const bool TwinTyres = true;
 
 			//public const string WheelsType = "385/65 R 22.5";
 		}

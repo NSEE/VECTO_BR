@@ -37,9 +37,9 @@ namespace TUGraz.VectoCore.Configuration
 	public static class Constants
 	{
 		public const string NOT_AVAILABLE = "N/A";
-        public const int NOT_IN_AXLE_POWERTRAIN = -1;
+		public const int NOT_IN_AXLE_POWERTRAIN = -1;
 
-        public static Second DefaultPowerShiftTime = 0.8.SI<Second>();
+		public static Second DefaultPowerShiftTime = 0.8.SI<Second>();
 		public const double RPMToRad = 2 * Math.PI / 60;
 		public const double Kilo = 1000;
 		public const double MeterPerSecondToKMH = 3.6;
@@ -268,9 +268,9 @@ namespace TUGraz.VectoCore.Configuration
 			public const string Json = ".json";
 
 			public const string IEPCDataFile = ".viepc";
-
+			
 			public const string FuelCellComponentFile = ".vfcc";
-
+			
 		}
 
 		public static class SimulationSettings
@@ -342,7 +342,7 @@ namespace TUGraz.VectoCore.Configuration
 
 			public static readonly Meter GearboxLookaheadForAccelerationEstimation = 100.SI<Meter>();
 
-			public static readonly Kilogram MaximumGrossVehicleMass = 40000.SI<Kilogram>();
+			public static readonly Kilogram MaximumGrossVehicleMass = 90000.SI<Kilogram>();
 			public static readonly Kilogram MaximumGrossVehicleMassOVCHev_NaturalGas = 41000.SI<Kilogram>();
 			public static readonly Kilogram MaximumGrossVehicleMassPEV = 42000.SI<Kilogram>();
 			public static readonly Kilogram MaximumGrossVehicleMassEMS = 60000.SI<Kilogram>();
