@@ -32,6 +32,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
@@ -77,9 +78,13 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		public IEnumerable<AxleConfiguration> GetAxleConfigurations(VehicleCategory vehCat)
 		{
-			return _segmentTable.AsEnumerable().Where(row => row.Field<string>("valid") == "1" && row.Field<string>("vehiclecategory") == vehCat.ToString())
-								.Select(row => AxleConfigurationHelper.Parse(row.Field<string>("axleconf."))).Distinct();
-		}
+            return _segmentTable.AsEnumerable()
+				 .Where(row => row.Field<string>("valid") == "1" && row.Field<string>("vehiclecategory") == vehCat.ToString())
+				.Select(row => AxleConfigurationHelper.Parse(row.Field<string>("axleconf.")))
+				.Where(axle => axle == AxleConfiguration.AxleConfig_6x2 || axle == AxleConfiguration.AxleConfig_6x4)
+				.Distinct();
+        }
+
 
 		public Segment Lookup(VehicleCategory vehicleCategory, bool isBatteryElectric,
 			AxleConfiguration axleConfiguration,
@@ -142,12 +147,12 @@ namespace TUGraz.VectoCore.Models.Declaration
 				var errorMessage = string.Format(
 					ErrorMessage, vehicleCategory, axleConfiguration.GetName(),
 					grossVehicleMassRating);
-
+				
 				if (throwExceptionOnFailure)
 				{
-                    Log.Fatal(errorMessage);
-                    throw new VectoException(errorMessage, e);
-                }
+					Log.Fatal(errorMessage);
+					throw new VectoException(errorMessage, e);
+				}
 			}
 
 			return row;

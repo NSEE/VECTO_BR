@@ -342,7 +342,7 @@ namespace TUGraz.VectoCore.Configuration
 
 			public static readonly Meter GearboxLookaheadForAccelerationEstimation = 100.SI<Meter>();
 
-			public static readonly Kilogram MaximumGrossVehicleMass = 40000.SI<Kilogram>();
+			public static readonly Kilogram MaximumGrossVehicleMass = 90000.SI<Kilogram>();
 			public static readonly Kilogram MaximumGrossVehicleMassOVCHev_NaturalGas = 41000.SI<Kilogram>();
 			public static readonly Kilogram MaximumGrossVehicleMassPEV = 42000.SI<Kilogram>();
 			public static readonly Kilogram MaximumGrossVehicleMassEMS = 60000.SI<Kilogram>();
