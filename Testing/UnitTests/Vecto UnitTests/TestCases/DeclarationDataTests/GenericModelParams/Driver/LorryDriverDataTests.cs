@@ -50,7 +50,7 @@ public class LorryDriverDataTests
 
         Assert.AreEqual(50.KMPHtoMeterPerSecond(), driverData.PCC.MinSpeed);
         Assert.AreEqual(5.KMPHtoMeterPerSecond(), driverData.PCC.OverspeedUseCase3);
-        Assert.AreEqual(80.KMPHtoMeterPerSecond(), driverData.PCC.PCCEnableSpeed);
+        Assert.AreEqual(60.KMPHtoMeterPerSecond(), driverData.PCC.PCCEnableSpeed);
         Assert.AreEqual(1500.SI<Meter>(), driverData.PCC.PreviewDistanceUseCase1);
         Assert.AreEqual(1000.SI<Meter>(), driverData.PCC.PreviewDistanceUseCase2);
         Assert.AreEqual(8.KMPHtoMeterPerSecond(), driverData.PCC.UnderSpeed);
