@@ -51,7 +51,7 @@ public class DriverDataTest
 		Assert.AreEqual(0.8, driverData.EngineStopStart.UtilityFactorDriving);
 		Assert.AreEqual(0.8, driverData.EngineStopStart.UtilityFactorDriving);
 
-		Assert.AreEqual(60.KMPHtoMeterPerSecond(), driverData.EcoRoll.MinSpeed);
+		Assert.AreEqual(40.KMPHtoMeterPerSecond(), driverData.EcoRoll.MinSpeed);
 		Assert.AreEqual(0.SI<MeterPerSquareSecond>(), driverData.EcoRoll.AccelerationLowerLimit);
 		Assert.AreEqual(0.1.SI<MeterPerSquareSecond>(), driverData.EcoRoll.AccelerationUpperLimit);
 		Assert.AreEqual(2.SI<Second>(), driverData.EcoRoll.ActivationPhaseDuration);
@@ -59,7 +59,7 @@ public class DriverDataTest
 
 		Assert.AreEqual(50.KMPHtoMeterPerSecond(), driverData.PCC.MinSpeed);
 		Assert.AreEqual(5.KMPHtoMeterPerSecond(), driverData.PCC.OverspeedUseCase3);
-		Assert.AreEqual(80.KMPHtoMeterPerSecond(), driverData.PCC.PCCEnableSpeed);
+		Assert.AreEqual(60.KMPHtoMeterPerSecond(), driverData.PCC.PCCEnableSpeed);
 		Assert.AreEqual(1500.SI<Meter>(), driverData.PCC.PreviewDistanceUseCase1);
 		Assert.AreEqual(1000.SI<Meter>(), driverData.PCC.PreviewDistanceUseCase2);
 		Assert.AreEqual(8.KMPHtoMeterPerSecond(), driverData.PCC.UnderSpeed);
@@ -155,7 +155,7 @@ public class DriverDataTest
 
 		Assert.AreEqual(50.KMPHtoMeterPerSecond(), driverData.PCC.MinSpeed);
 		Assert.AreEqual(5.KMPHtoMeterPerSecond(), driverData.PCC.OverspeedUseCase3);
-		Assert.AreEqual(80.KMPHtoMeterPerSecond(), driverData.PCC.PCCEnableSpeed);
+		Assert.AreEqual(60.KMPHtoMeterPerSecond(), driverData.PCC.PCCEnableSpeed);
 		Assert.AreEqual(1500.SI<Meter>(), driverData.PCC.PreviewDistanceUseCase1);
 		Assert.AreEqual(1000.SI<Meter>(), driverData.PCC.PreviewDistanceUseCase2);
 		Assert.AreEqual(8.KMPHtoMeterPerSecond(), driverData.PCC.UnderSpeed);
@@ -223,7 +223,7 @@ public class DriverDataTest
 
         Assert.AreEqual(50.KMPHtoMeterPerSecond(), driverData.PCC.MinSpeed);
         Assert.AreEqual(5.KMPHtoMeterPerSecond(), driverData.PCC.OverspeedUseCase3);
-        Assert.AreEqual(80.KMPHtoMeterPerSecond(), driverData.PCC.PCCEnableSpeed);
+        Assert.AreEqual(60.KMPHtoMeterPerSecond(), driverData.PCC.PCCEnableSpeed);
         Assert.AreEqual(1500.SI<Meter>(), driverData.PCC.PreviewDistanceUseCase1);
         Assert.AreEqual(1000.SI<Meter>(), driverData.PCC.PreviewDistanceUseCase2);
         Assert.AreEqual(8.KMPHtoMeterPerSecond(), driverData.PCC.UnderSpeed);
@@ -292,7 +292,7 @@ public class DriverDataTest
 
         Assert.AreEqual(50.KMPHtoMeterPerSecond(), driverData.PCC.MinSpeed);
         Assert.AreEqual(5.KMPHtoMeterPerSecond(), driverData.PCC.OverspeedUseCase3);
-        Assert.AreEqual(80.KMPHtoMeterPerSecond(), driverData.PCC.PCCEnableSpeed);
+        Assert.AreEqual(60.KMPHtoMeterPerSecond(), driverData.PCC.PCCEnableSpeed);
         Assert.AreEqual(1500.SI<Meter>(), driverData.PCC.PreviewDistanceUseCase1);
         Assert.AreEqual(1000.SI<Meter>(), driverData.PCC.PreviewDistanceUseCase2);
         Assert.AreEqual(8.KMPHtoMeterPerSecond(), driverData.PCC.UnderSpeed);
