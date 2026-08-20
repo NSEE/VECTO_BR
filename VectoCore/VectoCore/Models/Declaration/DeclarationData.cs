@@ -874,25 +874,25 @@ namespace TUGraz.VectoCore.Models.Declaration
 				return new EngineStopStartBus(jobType, compressorDrive, arch);
 			}
 
-			public static class EcoRoll
-			{
-				public static readonly MeterPerSecond MinSpeed = 60.KMPHtoMeterPerSecond();
-				public static readonly Second ActivationDelay = 2.SI<Second>();
-				public static readonly MeterPerSecond UnderspeedThreshold = 0.KMPHtoMeterPerSecond();
+            public static class EcoRoll
+            {
+                public static readonly MeterPerSecond MinSpeed = 40.KMPHtoMeterPerSecond();
+                public static readonly Second ActivationDelay = 2.SI<Second>();
+                public static readonly MeterPerSecond UnderspeedThreshold = 0.KMPHtoMeterPerSecond();
 
-				public static readonly MeterPerSquareSecond AccelerationLowerLimit = 0.SI<MeterPerSquareSecond>();
-				public static readonly MeterPerSquareSecond AccelerationUpperLimit = 0.1.SI<MeterPerSquareSecond>();
-			}
+                public static readonly MeterPerSquareSecond AccelerationLowerLimit = 0.SI<MeterPerSquareSecond>();
+                public static readonly MeterPerSquareSecond AccelerationUpperLimit = 0.1.SI<MeterPerSquareSecond>();
+            }
 
-			public static class PCC
-			{
-				public static readonly MeterPerSecond PCCEnableSpeed = 80.KMPHtoMeterPerSecond();
-				public static readonly MeterPerSecond MinSpeed = 50.KMPHtoMeterPerSecond();
-				public static readonly Meter PreviewDistanceUseCase1 = 1500.SI<Meter>();
-				public static readonly Meter PreviewDistanceUseCase2 = 1000.SI<Meter>();
-				public static readonly MeterPerSecond Underspeed = 8.KMPHtoMeterPerSecond();
-				public static readonly MeterPerSecond OverspeedUseCase3 = 5.KMPHtoMeterPerSecond();
-			}
+            public static class PCC
+            {
+                public static readonly MeterPerSecond PCCEnableSpeed = 60.KMPHtoMeterPerSecond();
+                public static readonly MeterPerSecond MinSpeed = 50.KMPHtoMeterPerSecond();
+                public static readonly Meter PreviewDistanceUseCase1 = 1500.SI<Meter>();
+                public static readonly Meter PreviewDistanceUseCase2 = 1000.SI<Meter>();
+                public static readonly MeterPerSecond Underspeed = 8.KMPHtoMeterPerSecond();
+                public static readonly MeterPerSecond OverspeedUseCase3 = 5.KMPHtoMeterPerSecond();
+            }
 		}
 
 		public static class Trailer
@@ -901,7 +901,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			public const string FuelEfficiencyClass = "X";
 			public const double TyreTestLoad = 37500;
 
-			public const bool TwinTyres = false;
+			public const bool TwinTyres = true;
 
 			//public const string WheelsType = "385/65 R 22.5";
 		}

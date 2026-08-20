@@ -113,8 +113,11 @@ Public Class VehicleForm
 
 		CbRtType.DataSource = EnumHelper.GetKeyValuePairs(Of RetarderType)(Function(t) t.GetLabel()).ToDataView()
 
-		If (Not Cfg.DeclMode) Then
+		If Not Cfg.DeclMode Then
 			CbAxleConfig.DataSource = EnumHelper.GetKeyValuePairs(Of AxleConfiguration)(Function(t) t.GetName())
+			If CbAxleConfig.Items.Count > 0 Then
+				CbAxleConfig.SelectedIndex = 0
+			End If
 		End If
 
 		cbEcoRoll.DataSource = EnumHelper.GetKeyValuePairs(Of EcoRollType)(Function(t) t.GetName())
@@ -130,12 +133,14 @@ Public Class VehicleForm
 		If (Cfg.DeclMode) Then
 			CbCat.DataSource = EnumHelper.GetKeyValuePairs(Of VehicleCategory)(
 				Function(t) t.GetLabel(),
-				Function(x) x.IsOneOf(VehicleCategory.Van, VehicleCategory.RigidTruck, VehicleCategory.Tractor))
+				Function(x) x = VehicleCategory.Tractor)
 		Else
 			CbCat.DataSource = EnumHelper.GetKeyValuePairs(Of VehicleCategory)(Function(t) t.GetLabel())
 		End If
 
-
+		If CbCat.Items.Count > 0 Then
+			CbCat.SelectedIndex = 0
+		End If
 
 		cbAngledriveType.DataSource = EnumHelper.GetKeyValuePairs(Of AngledriveType)(Function(t) t.GetLabel())
 
@@ -182,6 +187,10 @@ Public Class VehicleForm
 	'Set HDVclasss
 	Private Sub SetHdVclass()
 		If String.IsNullOrEmpty(TbMassMass.Text) OrElse Not IsNumeric(TbMassMass.Text) Then
+			TbHDVclass.Text = "-"
+			Exit Sub
+		End If
+		If CbAxleConfig.Items.Count = 0 Then
 			TbHDVclass.Text = "-"
 			Exit Sub
 		End If
@@ -384,7 +393,9 @@ Public Class VehicleForm
 
 		TbMassMass.Text = ""
 		TbMassExtra.Text = ""
+		If CbAxleConfig.Items.Count > 0 Then
 		CbAxleConfig.SelectedIndex = 0
+		End If
 
 		cbPcc.SelectedIndex = 0
 
@@ -1427,9 +1438,18 @@ Public Class VehicleForm
 #Region "Axle Configuration"
 	Private Sub SetAxleConfigOptions()
 		If Cfg.DeclMode Then
-			CbAxleConfig.DataSource = DeclarationData.TruckSegments.GetAxleConfigurations(CType(CbCat.SelectedValue, VehicleCategory)) _
-				.Cast(Of AxleConfiguration) _
-				.Select(Function(category) New With {.Key = category, .Value = category.GetName()}).ToList()
+			' Pega apenas 6x2 e 6x4
+			Dim configs = DeclarationData.TruckSegments.GetAxleConfigurations(CType(CbCat.SelectedValue, VehicleCategory)) _
+						 .Where(Function(c) c = AxleConfiguration.AxleConfig_6x2 OrElse c = AxleConfiguration.AxleConfig_6x4) _
+						 .Select(Function(category) New With {.Key = category, .Value = category.GetName()}) _
+						.ToList()
+
+			CbAxleConfig.DataSource = configs
+
+			' Proteção para evitar erro de SelectedIndex
+			If configs.Count > 0 Then
+				CbAxleConfig.SelectedIndex = 0
+			End If
 		End If
 	End Sub
 
