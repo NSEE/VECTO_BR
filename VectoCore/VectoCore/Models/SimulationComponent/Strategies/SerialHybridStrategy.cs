@@ -1,0 +1,944 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics;
+using TUGraz.VectoCore.Models.Connector.Ports.Impl;
+using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.OutputData;
+using TUGraz.VectoCore.Utils;
+
+namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
+{
+	public class SerialHybridStrategyBatteryOnly : SerialHybridStrategy
+	{
+		public SerialHybridStrategyBatteryOnly(VectoRunData runData, IVehicleContainer container) : base(runData, container) { }
+
+		#region Overrides of AbstractSerialHybridStrategy
+
+		protected override StateMachineState GetStateAccelerate(DrivetrainDemand drivetrainDemand, GenSetOperatingPoint maxPowerGenset, Second dt)
+		{
+			return StateMachineState.Acc_S0;
+		}
+
+		#endregion
+
+    }
+
+    // =======================================================================
+
+    public class SerialHybridStrategyBatteryOnlyAT : SerialHybridStrategyAT
+	{
+		public SerialHybridStrategyBatteryOnlyAT(VectoRunData runData, IVehicleContainer container) : base(runData, container) { }
+
+		#region Overrides of AbstractSerialHybridStrategy
+
+		protected override StateMachineState GetStateAccelerate(DrivetrainDemand drivetrainDemand, GenSetOperatingPoint maxPowerGenset, Second dt)
+		{
+			return StateMachineState.Acc_S0;
+		}
+
+		#endregion
+	}
+    // =======================================================================
+
+    public class SerialHybridStrategyAT : AbstractSerialHybridStrategy
+	{
+		public SerialHybridStrategyAT(VectoRunData runData, IVehicleContainer container) : base(runData, container) { }
+
+		#region Overrides of AbstractSerialHybridStrategy<ATGearbox>
+
+		protected override DrivetrainDemand GetDrivetrainPowerDemand(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, GenSetOperatingPoint maxPowerGenset)
+		{
+			TestPowertrain.UpdateComponents();
+
+			if (TestPowertrain.Gearboxes.FirstOrDefault() != null) {
+				var gearboxInfo = DataBus.GearboxesInfo.FirstOrDefault() as IAPTNGearbox 
+					?? throw new VectoException("AT Gearbox Required!");
+				var currentGear = DataBus.VehicleInfo.VehicleStopped ? gearboxInfo.NextGear : gearboxInfo.Gear;
+				TestPowertrain.Gearboxes.First().SetDisengaged = gearboxInfo.Disengaged;
+				TestPowertrain.Gearboxes.First().SetDisengageGearbox = (gearboxInfo as IGearboxInfo).DisengageGearbox;
+				TestPowertrain.Gearboxes.First().SetGear = currentGear;
+				TestPowertrain.Gearboxes.First().SetNextGear = gearboxInfo.NextGear;
+			}
+			TestPowertrain.Vehicle.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
+			TestPowertrain.Charger.UpdateFrom(maxPowerGenset);
+			TestPowertrain.HybridController.Initialize(Controller.PreviousState.OutTorque, Controller.PreviousState.OutAngularVelocity);
+			TestPowertrain.Gearboxes.FirstOrDefault()?.UpdateFrom(DataBus.GearboxesInfo.FirstOrDefault());
+			
+			TestPowertrain.Brakes.BrakePower = DataBus.Brakes.BrakePower;
+			TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).UpdateFrom(DataBus.GetElectricMotors()
+				.Single(e => e.Position == TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).Position));
+
+            var testResponse = TestPowertrain.HybridController.NextComponent.Request(absTime, dt, outTorque, outAngularVelocity, false);
+			TestPowertrain.HybridController.ApplyStrategySettings(new HybridStrategyResponse {
+				CombustionEngineOn = false, 
+				MechanicalAssistPower = new Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>> {
+					{ EmPosition, Tuple.Create(testResponse.ElectricMotor.AvgDrivetrainSpeed, -testResponse.ElectricMotor.TorqueRequest) }
+				}
+			});
+			var testResponse2 = TestPowertrain.HybridController.NextComponent.Request(absTime, dt, outTorque, outAngularVelocity, false);
+			return new DrivetrainDemand {
+				AvgEmDrivetrainSpeed = testResponse2.ElectricMotor.AvgDrivetrainSpeed,
+				EmTorqueDemand = testResponse2.ElectricMotor.TorqueRequest,
+				ElectricPowerDemand = testResponse2.ElectricSystem.ConsumerPower,
+				Response = testResponse2
+			};
+		}
+		
+		#endregion
+	}
+
+	// =======================================================================
+
+
+	public class SerialHybridStrategy : AbstractSerialHybridStrategy
+	{
+
+		public SerialHybridStrategy(VectoRunData runData, IVehicleContainer container) : base(runData, container) { }
+
+		protected override DrivetrainDemand GetDrivetrainPowerDemand(Second absTime, Second dt, NewtonMeter outTorque,
+				PerSecond outAngularVelocity, GenSetOperatingPoint maxPowerGenset)
+		{
+			TestPowertrain.UpdateComponents();
+
+			if (TestPowertrain.Gearboxes.FirstOrDefault() != null) {
+				var g = DataBus.GearboxesInfo.FirstOrDefault();
+				if (!(g is IAMTGearbox || g is IPEVGearbox || g is IIEPCGearbox)) {
+					throw new VectoException("AMT Gearbox Required!");
+				}
+				TestPowertrain.Gearboxes.First().SetDisengaged = g.Disengaged;
+				TestPowertrain.Gearboxes.First().SetDisengageGearbox = g.DisengageGearbox;
+				TestPowertrain.Gearboxes.First().SetGear = DataBus.VehicleInfo.VehicleStopped || g.Disengaged ? g.NextGear : g.Gear;
+				TestPowertrain.Gearboxes.First().SetNextGear = g.NextGear;
+			}
+
+			TestPowertrain.Vehicle.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
+			TestPowertrain.Charger.UpdateFrom(maxPowerGenset);
+			TestPowertrain.HybridController.Initialize(Controller.PreviousState.OutTorque, Controller.PreviousState.OutAngularVelocity);
+			TestPowertrain.Gearboxes.FirstOrDefault()?.UpdateFrom(DataBus.GearboxesInfo.FirstOrDefault());
+
+			TestPowertrain.Brakes.BrakePower = DataBus.Brakes.BrakePower;
+			TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).UpdateFrom(DataBus.GetElectricMotors()
+				.Single(e => e.Position == TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).Position));
+
+
+			var testResponse = TestPowertrain.HybridController.NextComponent.Request(absTime, dt, outTorque, outAngularVelocity, false);
+			TestPowertrain.HybridController.ApplyStrategySettings(new HybridStrategyResponse {
+				CombustionEngineOn = false,
+				MechanicalAssistPower = new Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>> {
+					{ EmPosition, Tuple.Create(testResponse.ElectricMotor.AvgDrivetrainSpeed, -testResponse.ElectricMotor.TorqueRequest) }
+				}
+			});
+			var testResponse2 = TestPowertrain.HybridController.NextComponent.Request(absTime, dt, outTorque, outAngularVelocity, false);
+			return new DrivetrainDemand {
+				AvgEmDrivetrainSpeed = testResponse2.ElectricMotor.AvgDrivetrainSpeed,
+				EmTorqueDemand = testResponse2.ElectricMotor.TorqueRequest,
+				ElectricPowerDemand = testResponse2.ElectricSystem.ConsumerPower,
+				Response = testResponse2
+			};
+		}
+
+	}
+
+	// =======================================================================
+
+	public abstract class AbstractSerialHybridStrategy : LoggingObject, IHybridControlStrategy
+	{
+
+		public enum StateMachineState
+		{
+			Undefined,
+			Acc_S0 = 10, // GEN = 0
+			Acc_S1 = 11, // P_GEN = P_opt, SoC <= SoC_min && P_demand < P_opt || SoC >= SoC_min && SoC <= SoC_target && P_demand <= P_opt
+			Acc_S2 = 12, // P_GEN = P_max, SoC <= S
+			Acc_S3 = 13, // P_GEN = P_max, P_drive = P_GEN
+
+			Brake_S0 = -10,
+			Brake_S1 = -11,
+			Brake_S2 = -12,
+		}
+
+		public enum GensetState
+		{
+			Off = 1,
+			OptimalPoint,
+			MaximalPoint,
+			OptimalPointDeRated,
+			MaximalPointDeRated,
+		}
+
+		protected VectoRunData ModelData;
+		protected IDataBus DataBus;
+
+		protected HybridStrategyParameters StrategyParameters;
+
+		//protected Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>> ElectricMotorsOff;
+
+		protected StrategyState CurrentState = new StrategyState();
+		protected StrategyState PreviousState = new StrategyState();
+
+		protected ITestPowertrain TestPowertrain;
+		protected ITestGenset TestGenSet;
+		protected GenSetCharacteristics GenSetCharacteristics;
+
+		protected PowertrainPosition EmPosition;
+
+		protected DryRunSolutionState DryRunSolution { get; set; }
+
+		public VelocityRollingLookup VelocityDropData { get; }
+
+        public AbstractSerialHybridStrategy(VectoRunData runData, IVehicleContainer container)
+		{
+			DataBus = container;
+			ModelData = runData;
+			if (ModelData.ElectricMachinesSinglePwt.Select(x => x.Item1).Where(x => x != PowertrainPosition.GEN).Distinct().Count() > 1) {
+				throw new VectoException("More than one electric motors are currently not supported");
+			}
+			StrategyParameters = ModelData.HybridStrategyParameters;
+			if (StrategyParameters == null) {
+				throw new VectoException("Model parameters for hybrid strategy required!");
+			}
+
+			//ElectricMotorsOff = ModelData.ElectricMachinesData
+			//	.Select(x => new KeyValuePair<PowertrainPosition, NewtonMeter>(x.Item1, null))
+			//	.ToDictionary(x => x.Key, x => new Tuple<PerSecond, NewtonMeter>(null, x.Value));
+
+			var emDtData = runData.GetEMData().First(x => x.Item1.Position != PowertrainPosition.GEN).Item2;
+			var minGensetPower = emDtData.EfficiencyData.VoltageLevels.First().FullLoadCurve.MaxPower * StrategyParameters.GensetMinOptPowerFactor;
+
+			GenSetCharacteristics = new GenSetCharacteristics(minGensetPower);
+			runData.GenSet = new VectoRunData.GenSetData() { GenSetCharacteristics = GenSetCharacteristics };
+
+			TestPowertrain = container.SimplePowertrainBuilder.CreateTestPowertrain(container, true);
+			
+			TestGenSet = container.SimplePowertrainBuilder.CreateTestGenset(container);
+
+			container.AddPreprocessor(new GensetPreprocessor(GenSetCharacteristics, TestGenSet, runData.EngineData,
+				runData.ElectricMachinesSinglePwt.FirstOrDefault(x => x.Item1 == PowertrainPosition.GEN)?.Item2, container));
+		}
+
+
+		public virtual IHybridStrategyResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
+		{
+			EmPosition = DataBus.ElectricMotorsInfo.FirstOrDefault(x => x.Position != PowertrainPosition.GEN).Position;
+
+			var retVal = new HybridStrategyResponse() { MechanicalAssistPower = new Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>>() };
+
+			foreach (var em in ModelData.ElectricMachinesSinglePwt) {
+				retVal.MechanicalAssistPower[em.Item1] = null;
+			}
+
+			GenSetCharacteristics.ContinuousTorque = ModelData.ElectricMachinesSinglePwt
+				.FirstOrDefault(x => x.Item1 == EmPosition)?.Item2.Overload.ContinuousTorque ?? 0.SI<NewtonMeter>();
+
+			PreviousState.AngularVelocity = outAngularVelocity;
+			PreviousState.SMState = DataBus.BatteryInfo.StateOfCharge > StrategyParameters.TargetSoC
+				? StateMachineState.Acc_S0
+				: DataBus.BatteryInfo.StateOfCharge > StrategyParameters.MinSoC
+					? StateMachineState.Acc_S1
+					: StateMachineState.Acc_S2;
+			CurrentState.SMState = PreviousState.SMState;
+			return retVal;
+		}
+
+		public virtual IHybridStrategyResponse Request(Second absTime, Second dt, NewtonMeter outTorque,
+			PerSecond outAngularVelocity,
+			bool dryRun)
+		{
+
+			if (DryRunSolution != null && DryRunSolution.DrivingAction != DataBus.DriverInfo.DrivingAction) {
+				DryRunSolution = null;
+			}
+
+			if (dryRun && DryRunSolution != null && DryRunSolution.DrivingAction == DataBus.DriverInfo.DrivingAction) {
+				var tmp = new HybridStrategyResponse() {
+					SimulationInterval = dt,
+					CombustionEngineOn = DryRunSolution.GenSet.ICEOn,
+					MechanicalAssistPower = DryRunSolution.Settings,
+					GenSetSpeed = DryRunSolution.GenSet.ICESpeed,
+				};
+				return tmp;
+			}
+			var gensetDeRated = DataBus.ElectricMotorsInfo.First(x => x.Position == PowertrainPosition.GEN).DeRatingActive;
+
+			var maxPowerGenset = gensetDeRated
+				? ApproachGensetOperatingPoint(absTime, dt, GenSetCharacteristics.MaxPowerDeRated,
+					GensetState.MaximalPointDeRated)
+				: ApproachGensetOperatingPoint(absTime, dt, GenSetCharacteristics.MaxPower, GensetState.MaximalPoint); //GetMaxElectricPowerGenerated(absTime, dt, TODO);
+
+			var drivetrainDemand = GetDrivetrainPowerDemand(absTime, dt, outTorque, outAngularVelocity, maxPowerGenset);
+			var emResponse = drivetrainDemand.Response.ElectricMotor;
+
+			switch (DataBus.DriverInfo.DrivingAction) {
+				case DrivingAction.Halt:
+				case DrivingAction.Roll:
+				case DrivingAction.Coast:
+				case DrivingAction.Accelerate:
+					CurrentState.SMState = GetStateAccelerate(drivetrainDemand, maxPowerGenset, dt);
+					break;
+				case DrivingAction.Brake:
+					CurrentState.SMState = GetStateBrake(drivetrainDemand);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+
+			GenSetOperatingPoint genSetOperatingPoint;
+			var emTorque = GetMechanicalAssistPower(absTime, dt, emResponse.TorqueRequest, emResponse, emResponse.AngularVelocity /* potentially not correct! */);
+			GensetState gensetState;
+
+			switch (CurrentState.SMState) {
+				case StateMachineState.Acc_S0:
+					genSetOperatingPoint = GensetOff;
+					gensetState = GensetState.Off;
+					// update drivetrain demand if genset uses a different operating point - we are above target SoC, battery might get full
+					var tmp = GensetOff;
+					tmp.ElectricPower = 0.SI<Watt>();
+					drivetrainDemand = GetDrivetrainPowerDemand(absTime, dt, outTorque, outAngularVelocity, tmp);
+					emResponse = drivetrainDemand.Response.ElectricMotor;
+					//emTorque = (-emResponse.TorqueRequest).LimitTo(emResponse.MaxDriveTorque ?? 0.SI<NewtonMeter>(),
+					//	emResponse.MaxRecuperationTorque ?? 0.SI<NewtonMeter>());
+					emTorque = GetMechanicalAssistPower(absTime, dt, emResponse.TorqueRequest, emResponse, emResponse.AngularVelocity /* potentially not correct! */);
+					break;
+				case StateMachineState.Acc_S1:
+					var optimalPoint = gensetDeRated ?
+						GenSetCharacteristics.OptimalPointDeRated
+						: GenSetCharacteristics.OptimalPoint;
+					gensetState = gensetDeRated ?
+						GensetState.OptimalPointDeRated
+						: GensetState.OptimalPoint;
+					if (drivetrainDemand.Response.ElectricSystem.MaxPowerDrag.IsSmallerOrEqual(0)) {
+						genSetOperatingPoint = GensetOff;
+						gensetState = GensetState.Off;
+						break;
+					}
+
+					genSetOperatingPoint = ApproachGensetOperatingPoint(absTime, dt, optimalPoint, gensetState);
+					break;
+				case StateMachineState.Acc_S2:
+					gensetState = gensetDeRated ?
+						GensetState.MaximalPointDeRated
+						: GensetState.MaximalPoint;
+					if (drivetrainDemand.Response.ElectricSystem.MaxPowerDrag.IsSmallerOrEqual(0)) {
+						genSetOperatingPoint = GensetOff;
+						gensetState = GensetState.Off;
+						break;
+					}
+					genSetOperatingPoint = MaxGensetPower(absTime, dt, drivetrainDemand, maxPowerGenset, gensetState);
+					break;
+				case StateMachineState.Acc_S3:
+					gensetState = gensetDeRated ?
+						GensetState.MaximalPointDeRated
+						: GensetState.MaximalPoint;
+					genSetOperatingPoint = MaxGensetPower(absTime, dt, drivetrainDemand, maxPowerGenset, gensetState);
+					emTorque = TestPowertrain.GetElectricMotor(Constants.NOT_IN_AXLE_POWERTRAIN).GetTorqueForElectricPower(
+						DataBus.BatteryInfo.InternalVoltage, drivetrainDemand.Response.ElectricSystem.MaxPowerDrive,
+						drivetrainDemand.Response.ElectricMotor.AngularVelocity, dt, DataBus.GearboxesInfo.FirstOrDefault()?.Gear ?? new GearshiftPosition(0), dryRun);
+					if (emTorque == null) {
+						emTorque = -emResponse.MaxDriveTorque;
+					} else {
+						// multiply with -1 here because the following method again changes the sign...
+						emTorque *= -1;
+					}
+					emTorque = GetMechanicalAssistPower(absTime, dt, emTorque, emResponse, emResponse.AngularVelocity /* potentially not correct! */);
+					break;
+				case StateMachineState.Brake_S0:
+				case StateMachineState.Brake_S1:
+				case StateMachineState.Brake_S2:
+					if (DataBus.BatteryInfo.StateOfCharge >= StrategyParameters.TargetSoC) {
+						genSetOperatingPoint = GensetOff;
+						gensetState = GensetState.Off;
+						break;
+					}
+
+					var optimalPointBr = gensetDeRated ?
+						GenSetCharacteristics.OptimalPointDeRated
+						: GenSetCharacteristics.OptimalPoint;
+					gensetState = DataBus.EngineInfo.EngineOn
+						? (gensetDeRated
+							? GensetState.OptimalPointDeRated
+							: GensetState.OptimalPoint)
+						: GensetState.Off;
+
+					genSetOperatingPoint = DataBus.EngineInfo.EngineOn ? ApproachGensetOperatingPoint(absTime, dt, optimalPointBr, gensetState) : GensetOff;
+
+					// update drivetrain demand if genset uses a different operating point - we are above target SoC, battery might get full
+					var tmpBr = GensetOff;
+					tmpBr.ElectricPower = 0.SI<Watt>();
+					drivetrainDemand = GetDrivetrainPowerDemand(absTime, dt, outTorque, outAngularVelocity, tmpBr);
+					emResponse = drivetrainDemand.Response.ElectricMotor;
+
+					emTorque = GetMechanicalAssistPower(absTime, dt, emResponse.TorqueRequest, emResponse, emResponse.AngularVelocity);
+
+					if (emTorque != null && genSetOperatingPoint.ElectricPower != null && (genSetOperatingPoint.ElectricPower + drivetrainDemand.ElectricPowerDemand).IsGreater(drivetrainDemand.Response.ElectricSystem.MaxPowerDrag)) {
+						// em recuperates and genset is still on, but battery cannot be charged with both (probably full) - switch off genset.
+						gensetState = GensetState.Off;
+						genSetOperatingPoint = GensetOff;
+					}
+
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+
+			var setting = new Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>>() {
+					{
+						EmPosition,
+						Tuple.Create(drivetrainDemand.AvgEmDrivetrainSpeed, emTorque)
+					}, {
+						PowertrainPosition.GEN,
+						Tuple.Create(genSetOperatingPoint.AvgEmDrivetrainSpeed, genSetOperatingPoint.ICETorque)
+					},
+				}
+				;
+
+			DryRunSolution = new DryRunSolutionState(DataBus.DriverInfo.DrivingAction, setting, genSetOperatingPoint);
+
+
+
+			var retVal = new HybridStrategyResponse() {
+				SimulationInterval = dt,
+				CombustionEngineOn = genSetOperatingPoint.ICEOn,
+				MechanicalAssistPower = setting,
+				GenSetSpeed = genSetOperatingPoint.ICESpeed
+			};
+
+			CurrentState.Response = retVal;
+			CurrentState.GensetState = gensetState;
+			return retVal;
+		}
+
+		protected abstract DrivetrainDemand GetDrivetrainPowerDemand(Second absTime, Second dt, NewtonMeter outTorque,
+			PerSecond outAngularVelocity, GenSetOperatingPoint maxPowerGenset);
+
+		protected virtual NewtonMeter GetMechanicalAssistPower(Second absTime, Second dt, NewtonMeter emOutTorque, ElectricMotorResponse emResponse, PerSecond currOutAngularVelocity)
+		{
+			if (!DataBus.GearboxesInfo.First().GearEngaged(absTime) && DataBus.DriverInfo.DrivingAction == DrivingAction.Roll) {
+				var em = DataBus.ElectricMotorsInfo.First(x => x.Position == EmPosition);
+				var avgSpeed = (em.ElectricMotorSpeed + currOutAngularVelocity) / 2;
+				var inertiaTorqueLoss = avgSpeed.IsEqual(0)
+					? 0.SI<NewtonMeter>()
+					: Formulas.InertiaPower(currOutAngularVelocity, em.ElectricMotorSpeed, ModelData.ElectricMachinesSinglePwt.First(x => x.Item1 == EmPosition).Item2.Inertia, dt) / avgSpeed;
+				//var dragTorque = ElectricMotorData.DragCurve.Lookup()
+				return (-inertiaTorqueLoss); //.LimitTo(maxDriveTorque, maxRecuperationTorque);
+			}
+
+			if (DataBus.DriverInfo.DrivingAction == DrivingAction.Coast ||
+				DataBus.DriverInfo.DrivingAction == DrivingAction.Roll) {
+				return null;
+			}
+
+			if (DataBus.DriverInfo.DrivingAction != DrivingAction.Halt && DataBus.VehicleInfo.VehicleSpeed.IsSmallerOrEqual(ModelData.GearboxSinglePwt?.DisengageWhenHaltingSpeed ?? Constants.SimulationSettings.ATGearboxDisengageWhenHaltingSpeed) && emOutTorque.IsSmaller(0)) {
+				return null;
+			}
+
+			if (DataBus.DriverInfo.DrivingAction == DrivingAction.Brake && emResponse.MaxRecuperationTorque == null) {
+				// cannot recuperate any more...
+				return null;
+			}
+
+			return (-emOutTorque).LimitTo(emResponse.MaxDriveTorque ?? 0.SI<NewtonMeter>(),
+				emResponse.MaxRecuperationTorque ?? 0.SI<NewtonMeter>());
+		}
+
+		#region Implementation of IHybridControlStrategy
+
+		protected GenSetOperatingPoint MaxGensetPower(Second absTime, Second dt,
+			DrivetrainDemand drivetrainDemand,
+			GenSetOperatingPoint maxPowerGenset, GensetState gensetState)
+		{
+			var electricPowerDemand = drivetrainDemand.ElectricPowerDemand;
+
+			var gensetLimit = DataBus.ElectricMotorsInfo.First(x => x.Position == PowertrainPosition.GEN).DeRatingActive
+				? GenSetCharacteristics.MaxPowerDeRated
+				: GenSetCharacteristics.MaxPower;
+			if (maxPowerGenset.ElectricPower.IsSmaller(gensetLimit.ElectricPower)) {
+				gensetLimit = maxPowerGenset;
+			}
+
+			return ApproachGensetOperatingPoint(absTime, dt, gensetLimit, gensetState);
+
+		}
+
+		public GenSetOperatingPoint GensetOff => new
+			GenSetOperatingPoint {
+			ICEOn = false,
+			ICESpeed = ModelData.EngineData.IdleSpeed,
+			ICETorque = null,
+			EMTorque = null
+		};
+
+		public GenSetOperatingPoint GensetIdle => new GenSetOperatingPoint() {
+			ICEOn = true,
+			ICESpeed = ModelData.EngineData.IdleSpeed,
+			ICETorque = 0.SI<NewtonMeter>(),
+			EMTorque = null,
+		};
+
+
+		public class DrivetrainDemand
+		{
+			public PerSecond AvgEmDrivetrainSpeed { get; set; }
+			public NewtonMeter EmTorqueDemand { get; set; }
+
+			public Watt ElectricPowerDemand { get; set; }
+			public IResponse Response { get; set; }
+		}
+
+		protected virtual StateMachineState GetStateAccelerate(DrivetrainDemand drivetrainDemand,
+	GenSetOperatingPoint maxPowerGenset, Second dt)
+		{
+			var reqBatteryPower = maxPowerGenset.ElectricPower + drivetrainDemand.ElectricPowerDemand;
+			if (DataBus.BatteryInfo.StateOfCharge.IsEqual(StrategyParameters.MinSoC, 0.01) && reqBatteryPower < 0 &&
+				drivetrainDemand.ElectricPowerDemand < drivetrainDemand.Response.ElectricSystem.MaxPowerDrive) {
+				return StateMachineState.Acc_S3;
+			}
+
+			var optimalGensetPoint = DataBus.ElectricMotorsInfo.First(x => x.Position == PowertrainPosition.GEN).DeRatingActive
+				? GenSetCharacteristics.OptimalPointDeRated
+				: GenSetCharacteristics.OptimalPoint;
+			switch (PreviousState.SMState) {
+				case StateMachineState.Brake_S0:
+				case StateMachineState.Acc_S0:
+					if (DataBus.BatteryInfo.StateOfCharge < StrategyParameters.MinSoC) {
+						return -drivetrainDemand.ElectricPowerDemand <
+								optimalGensetPoint.ElectricPower
+							? StateMachineState.Acc_S1
+							: StateMachineState.Acc_S2;
+					}
+
+					break;
+				case StateMachineState.Brake_S1:
+				case StateMachineState.Acc_S1:
+					if (/*DataBus.BatteryInfo.StateOfCharge >= StrategyParameters.MinSoC &&*/
+						DataBus.BatteryInfo.StateOfCharge < StrategyParameters.MinSoC
+						&& -drivetrainDemand.ElectricPowerDemand >
+						optimalGensetPoint.ElectricPower) {
+						return StateMachineState.Acc_S2;
+					}
+
+					if (DataBus.BatteryInfo.StateOfCharge >= StrategyParameters.TargetSoC) {
+						return StateMachineState.Acc_S0;
+					}
+
+					break;
+				case StateMachineState.Brake_S2:
+				case StateMachineState.Acc_S2:
+					if (DataBus.BatteryInfo.StateOfCharge > StrategyParameters.MinSoC) {
+						return StateMachineState.Acc_S1;
+					}
+					if (DataBus.BatteryInfo.StateOfCharge < StrategyParameters.MinSoC &&
+						-drivetrainDemand.ElectricPowerDemand < optimalGensetPoint.ElectricPower) {
+						return StateMachineState.Acc_S1;
+					}
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+
+			return PreviousState.SMState;
+		}
+
+		protected virtual StateMachineState GetStateBrake(DrivetrainDemand drivetrainDemand)
+		{
+			switch (PreviousState.SMState) {
+				case StateMachineState.Acc_S0:
+					return StateMachineState.Brake_S0;
+				case StateMachineState.Acc_S1:
+					return StateMachineState.Brake_S1;
+				case StateMachineState.Acc_S2:
+					return StateMachineState.Brake_S2;
+				case StateMachineState.Acc_S3:
+					return StateMachineState.Brake_S2;
+				case StateMachineState.Brake_S0:
+					break;
+				case StateMachineState.Brake_S1:
+					break;
+				case StateMachineState.Brake_S2:
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+
+			return PreviousState.SMState;
+		}
+
+
+		protected GenSetOperatingPoint ApproachGensetOperatingPoint(Second absTime, Second dt, GenSetOperatingPoint op,
+			GensetState gensetState)
+		{
+			TestGenSet.CombustionEngine.Initialize(
+				(DataBus.EngineInfo as CombustionEngine).PreviousState.EngineTorque,
+				(DataBus.EngineInfo as CombustionEngine).PreviousState.EngineSpeed);
+			(TestGenSet.CombustionEngine as CombustionEngine).PreviousState.EngineOn = //true;
+				(DataBus.EngineInfo as CombustionEngine).PreviousState.EngineOn;
+			(TestGenSet.CombustionEngine as CombustionEngine).PreviousState.EnginePower =
+				(DataBus.EngineInfo as CombustionEngine).PreviousState.EnginePower;
+			(TestGenSet.CombustionEngine as CombustionEngine).PreviousState.dt = (DataBus.EngineInfo as CombustionEngine).PreviousState.dt;
+			(TestGenSet.CombustionEngine as CombustionEngine).PreviousState.EngineSpeed =
+				(DataBus.EngineInfo as CombustionEngine).PreviousState.EngineSpeed;
+			(TestGenSet.CombustionEngine as CombustionEngine).PreviousState.EngineTorque =
+				(DataBus.EngineInfo as CombustionEngine).PreviousState.EngineTorque;
+			(TestGenSet.CombustionEngine as CombustionEngine).PreviousState.EngineTorqueOut =
+				(DataBus.EngineInfo as CombustionEngine).PreviousState.EngineTorqueOut;
+			(TestGenSet.CombustionEngine as CombustionEngine).PreviousState.DynamicFullLoadTorque =
+				(DataBus.EngineInfo as CombustionEngine).PreviousState.DynamicFullLoadTorque;
+
+			switch (TestGenSet.EngineAux) {
+				case EngineAuxiliary engineAux:
+					engineAux.PreviousState.AngularSpeed =
+						((DataBus.EngineInfo as CombustionEngine).EngineAux as EngineAuxiliary).PreviousState
+						.AngularSpeed;
+					break;
+				case BusAuxiliariesAdapter busAux:
+					busAux.PreviousState.AngularSpeed =
+						((DataBus.EngineInfo as CombustionEngine).EngineAux as BusAuxiliariesAdapter).PreviousState
+						.AngularSpeed;
+					if (busAux.ElectricStorage is SimpleBattery bat) {
+						bat.SOC = ((DataBus.EngineInfo as CombustionEngine).EngineAux as BusAuxiliariesAdapter)
+							.ElectricStorage
+							.SOC;
+					}
+
+					break;
+			}
+			var emGen = DataBus.ElectricMotorsInfo.First(x => x.Position == PowertrainPosition.GEN) as ElectricMotor;
+			TestGenSet.EM_ThermalBuffer = emGen.ThermalBuffer;
+			TestGenSet.EM_DeRatingActive = emGen.DeRatingActive;
+			TestGenSet.EM_DrivetrainSpeed = emGen.PreviousState.DrivetrainSpeed;
+			TestGenSet.EM_Speed = emGen.PreviousState.EMSpeed;
+
+			if (TestPowertrain.BatterySystem is BatterySystem bs) {
+				var batSystem = DataBus.BatteryInfo as BatterySystem;
+				foreach (var bsKey in batSystem.Batteries.Keys) {
+					for (var i = 0; i < batSystem.Batteries[bsKey].Batteries.Count; i++) {
+						bs.Batteries[bsKey].Batteries[i]
+							.Initialize(batSystem.Batteries[bsKey].Batteries[i].StateOfCharge);
+					}
+				}
+				bs.PreviousState.PulseDuration =
+					(DataBus.BatteryInfo as BatterySystem).PreviousState.PulseDuration;
+				bs.PreviousState.PowerDemand = (DataBus.BatteryInfo as BatterySystem).PreviousState.PowerDemand;
+			}
+
+			var iceSpeed = op.ICESpeed;
+			var emTqDt = op.ICETorque;
+
+			TestGenSet.ElectricMotorCtl.EMTorque = emTqDt;
+			var r1 = TestGenSet.ElectricMotor.Request(absTime, dt, 0.SI<NewtonMeter>(), iceSpeed, false);
+
+			if (op.EMTorque != null && !op.EMTorque.IsBetween(r1.ElectricMotor.MaxDriveTorque ?? 0.SI<NewtonMeter>(),
+				r1.ElectricMotor.MaxRecuperationTorque ?? 0.SI<NewtonMeter>())) {
+				emTqDt = emTqDt.LimitTo(r1.ElectricMotor.MaxDriveTorque ?? 0.SI<NewtonMeter>(),
+					r1.ElectricMotor.MaxRecuperationTorque ?? 0.SI<NewtonMeter>());
+				TestGenSet.ElectricMotorCtl.EMTorque = emTqDt;
+				r1 = TestGenSet.ElectricMotor.Request(absTime, dt, 0.SI<NewtonMeter>(), iceSpeed, false);
+			}
+
+			if (r1 is ResponseOverload || r1 is ResponseUnderload) {
+				var rampUp = PreviousState.ICEOn && PreviousState.Response.GenSetSpeed.IsSmaller(op.ICESpeed) || (!PreviousState.ICEOn && DataBus.EngineInfo.EngineSpeed.IsSmaller(op.ICESpeed));
+				var rampDown = PreviousState.ICEOn && PreviousState.Response.GenSetSpeed.IsGreater(op.ICESpeed);
+				// increase/decrease ICE speed in case of under- or overload, keeping EM torque constant (or EM off in case ICE was off before)
+				//emTqDt = DataBus.EngineInfo.EngineOn
+				//	? PreviousState.Response?.MechanicalAssistPower[PowertrainPosition.GEN].Item2 == null ? null :
+				//	VectoMath.Min(op.ICETorque,
+				//		PreviousState.Response?.MechanicalAssistPower[PowertrainPosition.GEN].Item2)
+				//	: null;
+				emTqDt = DataBus.EngineInfo.EngineOn
+					? op.ICETorque
+					: null;
+
+				if (emTqDt == null || !op.ICETorque.IsEqual(emTqDt)) {
+					TestGenSet.ElectricMotorCtl.EMTorque = emTqDt;
+					r1 = TestGenSet.ElectricMotor.Request(absTime, dt, 0.SI<NewtonMeter>(), iceSpeed, false);
+				}
+				if (rampUp && r1 is ResponseOverload) {
+					emTqDt = null;
+					TestGenSet.ElectricMotorCtl.EMTorque = emTqDt;
+					r1 = TestGenSet.ElectricMotor.Request(absTime, dt, 0.SI<NewtonMeter>(), iceSpeed, false);
+				}
+				if (r1 is ResponseOverload ovl && (!op.ICESpeed.IsEqual(iceSpeed) || rampUp)) {
+					(emTqDt, iceSpeed, r1) = SearchICESpeed(absTime, dt, iceSpeed, emTqDt, ovl.Delta, true);
+				}
+
+				//if (r1 is ResponseOverload ovl3 && !op.EMTorque.IsEqual(emTqDt)) {
+				//	(emTqDt, iceSpeed, r1) = SearchICESpeed(absTime, dt, iceSpeed, emTqDt, ovl3.Delta, true);
+				//}
+
+				if (r1 is ResponseUnderload udl) {
+					(emTqDt, iceSpeed, r1) = SearchICESpeed(absTime, dt, iceSpeed, emTqDt, udl.Delta, false);
+				}
+
+				if (r1 is ResponseOverload ovl2 && op.ICESpeed.IsEqual(iceSpeed)) {
+					(emTqDt, iceSpeed, r1) = SearchEMTorque(absTime, dt, iceSpeed, r1.Engine.DynamicFullLoadTorque * 0.1, ovl2.Delta);
+				}
+
+				if (rampUp && r1 is ResponseSuccess && r1.Engine.TotalTorqueDemand.IsSmaller(r1.Engine.DynamicFullLoadTorque)) {
+					TestGenSet.ElectricMotorCtl.EMTorque = r1.Engine.DynamicFullLoadTorque * 0.1;
+					var tmp = TestGenSet.ElectricMotor.Request(absTime, dt, 0.SI<NewtonMeter>(), iceSpeed, true) as ResponseDryRun;
+					(emTqDt, iceSpeed, r1) = SearchEMTorque(absTime, dt, iceSpeed, r1.Engine.DynamicFullLoadTorque * 0.1, tmp.DeltaFullLoad);
+				}
+
+				if (r1 is ResponseSuccess && emTqDt != null && !emTqDt.IsBetween(
+					r1.ElectricMotor.MaxDriveTorque ?? 0.SI<NewtonMeter>(),
+					r1.ElectricMotor.MaxRecuperationTorque ?? 0.SI<NewtonMeter>())) {
+					emTqDt = emTqDt.LimitTo(
+						r1.ElectricMotor.MaxDriveTorque ?? 0.SI<NewtonMeter>(),
+						r1.ElectricMotor.MaxRecuperationTorque ?? 0.SI<NewtonMeter>());
+					TestGenSet.ElectricMotorCtl.EMTorque = emTqDt;
+					r1 = TestGenSet.ElectricMotor.Request(absTime, dt, 0.SI<NewtonMeter>(), iceSpeed, false);
+				}
+			}
+
+			return new GenSetOperatingPoint() {
+				ICEOn = true,
+				ElectricPower = r1.ElectricSystem.ConsumerPower,
+				ICETorque = emTqDt,
+				ICESpeed = iceSpeed,
+				AvgEmDrivetrainSpeed = r1.ElectricMotor.AvgDrivetrainSpeed,
+				EMTorque = r1.ElectricMotor.TorqueRequestEmMap
+			};
+		}
+
+		protected (NewtonMeter, PerSecond, IResponse) SearchICESpeed(Second absTime, Second dt, PerSecond iceSpeed,
+			NewtonMeter emTqDt, Watt delta, bool searchFullLoad)
+		{
+			var tmpEmTqDt = emTqDt;
+			var tqDt = emTqDt;
+			if (delta == null) {
+				TestGenSet.ElectricMotorCtl.EMTorque = emTqDt;
+				var tmp = TestGenSet.ElectricMotor.Request(absTime, dt, 0.SI<NewtonMeter>(), iceSpeed, true) as ResponseDryRun;
+				delta = tmp.DeltaFullLoad;
+			}
+
+			var origIceSpeed = iceSpeed;
+			iceSpeed = SearchAlgorithm.Search(iceSpeed, delta, iceSpeed * 0.01,
+				getYValue: r => {
+					var dryRun = r as ResponseDryRun;
+					return searchFullLoad ? dryRun.DeltaFullLoad : dryRun.DeltaDragLoad;
+				},
+				evaluateFunction: x => {
+					var tmp = TestGenSet.ElectricMotor.Request(absTime, dt, 0.SI<NewtonMeter>(), x, true);
+					tmpEmTqDt = tqDt?.LimitTo(tmp.ElectricMotor.MaxDriveTorque ?? 0.SI<NewtonMeter>(),
+						tmp.ElectricMotor.MaxRecuperationTorque ?? 0.SI<NewtonMeter>());
+					TestGenSet.ElectricMotorCtl.EMTorque = tmpEmTqDt;
+					return TestGenSet.ElectricMotor.Request(absTime, dt, 0.SI<NewtonMeter>(), x, true);
+				},
+				criterion: r => {
+					var dryRun = r as ResponseDryRun;
+					return searchFullLoad ? dryRun.DeltaFullLoad.Value() : dryRun.DeltaDragLoad.Value();
+				},
+				searcher: this);
+			if (!iceSpeed.IsBetween(DataBus.EngineInfo.EngineIdleSpeed, DataBus.EngineInfo.EngineN95hSpeed)) {
+				iceSpeed = SearchAlgorithm.Search(origIceSpeed, delta, origIceSpeed * 0.01,
+					getYValue: r => {
+						var dryRun = r as ResponseDryRun;
+						return searchFullLoad ? dryRun.DeltaFullLoad : dryRun.DeltaDragLoad;
+					},
+					evaluateFunction: x => {
+						var tmp = TestGenSet.ElectricMotor.Request(absTime, dt, 0.SI<NewtonMeter>(), x, true);
+						tmpEmTqDt = tqDt?.LimitTo(tmp.ElectricMotor.MaxDriveTorque ?? 0.SI<NewtonMeter>(),
+							tmp.ElectricMotor.MaxRecuperationTorque ?? 0.SI<NewtonMeter>());
+						TestGenSet.ElectricMotorCtl.EMTorque = tmpEmTqDt;
+						return TestGenSet.ElectricMotor.Request(absTime, dt, 0.SI<NewtonMeter>(), x, true);
+					},
+					criterion: r => {
+						var dryRun = r as ResponseDryRun;
+						return searchFullLoad ? dryRun.DeltaFullLoad.Value() : dryRun.DeltaDragLoad.Value();
+					},
+					searcher: this, forceLineSearch: true);
+            }
+			if (!iceSpeed.IsBetween(DataBus.EngineInfo.EngineIdleSpeed, DataBus.EngineInfo.EngineN95hSpeed)) {
+				throw new VectoException("failed to find ICE speed for GenSet");
+			}
+			emTqDt = tmpEmTqDt;
+			TestGenSet.ElectricMotorCtl.EMTorque = emTqDt;
+			var r1 = TestGenSet.ElectricMotor.Request(absTime, dt, 0.SI<NewtonMeter>(), iceSpeed, false);
+			return (tqDt, iceSpeed, r1);
+		}
+
+		protected (NewtonMeter, PerSecond, IResponse) SearchEMTorque(Second absTime, Second dt, PerSecond iceSpeed, NewtonMeter emTqDt, Watt delta)
+		{
+			var tqDt = SearchAlgorithm.Search(emTqDt, delta, emTqDt * 0.1,
+				getYValue: r => {
+					var dryRun = r as ResponseDryRun;
+					return dryRun.DeltaFullLoad;
+				},
+				evaluateFunction:
+				x => {
+					TestGenSet.ElectricMotorCtl.EMTorque = x;
+					return TestGenSet.ElectricMotor.Request(absTime, dt, 0.SI<NewtonMeter>(), iceSpeed, true);
+				},
+				criterion: r => {
+					var dryRun = r as ResponseDryRun;
+					return dryRun.DeltaFullLoad.Value();
+				},
+				searcher: this);
+			TestGenSet.ElectricMotorCtl.EMTorque = emTqDt;
+			var r1 = TestGenSet.ElectricMotor.Request(absTime, dt, 0.SI<NewtonMeter>(), iceSpeed, false);
+
+			if (emTqDt != null && !emTqDt.IsBetween(r1.ElectricMotor.MaxDriveTorque ?? 0.SI<NewtonMeter>(),
+				r1.ElectricMotor.MaxRecuperationTorque ?? 0.SI<NewtonMeter>())) {
+				emTqDt = emTqDt.LimitTo(r1.ElectricMotor.MaxDriveTorque ?? 0.SI<NewtonMeter>(),
+					r1.ElectricMotor.MaxRecuperationTorque ?? 0.SI<NewtonMeter>());
+				TestGenSet.ElectricMotorCtl.EMTorque = emTqDt;
+				r1 = TestGenSet.ElectricMotor.Request(absTime, dt, 0.SI<NewtonMeter>(), iceSpeed, false);
+			}
+
+			return (tqDt, iceSpeed, r1);
+		}
+
+
+		public IResponse AmendResponse(IResponse response, Second absTime, Second dt, NewtonMeter outTorque,
+			PerSecond outAngularVelocity, bool dryRun)
+		{
+			return response;
+		}
+
+		public void CommitSimulationStep(Second time, Second simulationInterval)
+		{
+			CurrentState.ICEOn = DataBus.EngineCtl.CombustionEngineOn;
+			PreviousState = CurrentState;
+			CurrentState = new StrategyState();
+
+			AllowEmergencyShift = false;
+		}
+
+		public IHybridController Controller { get; set; }
+		public PerSecond MinICESpeed { get; }
+		public bool AllowEmergencyShift { get; set; }
+		public void WriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
+		{
+			container[ModalResultField.HybridStrategyState] = (int)CurrentState.SMState;
+		}
+
+		public void OperatingpointChangedDuringRequest(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
+			bool dryRun, IResponse retVal)
+		{
+
+		}
+
+		public void RepeatDrivingAction(Second absTime)
+		{
+
+		}
+
+		#endregion
+
+		public class StrategyState
+		{
+			public PerSecond AngularVelocity { get; set; }
+			public HybridStrategyResponse Response { get; set; }
+			//public List<HybridResultEntry> Evaluations;
+			//public HybridResultEntry Solution { get; set; }
+
+			//public bool GearboxEngaged { get; set; }
+
+			//public Second ICEStartTStmp { get; set; }
+
+			//public Second GearshiftTriggerTstmp { get; set; }
+			//public NewtonMeter MaxGbxTq { get; set; }
+			public bool ICEOn { get; set; }
+
+			public StateMachineState SMState { get; set; }
+
+			public GensetState GensetState { get; set; }
+		}
+
+		public class DryRunSolutionState
+		{
+			public DryRunSolutionState(DrivingAction drivingAction, Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>> settings, GenSetOperatingPoint genSet)
+			{
+				DrivingAction = drivingAction;
+				Settings = settings;
+				GenSet = genSet;
+			}
+
+
+			public DrivingAction DrivingAction { get; }
+
+			public GenSetOperatingPoint GenSet { get; }
+
+			public Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>> Settings { get; }
+		}
+	}
+
+	public class GenSetCharacteristics : LoggingObject
+	{
+		public Dictionary<Watt, List<GenSetOperatingPoint>> OptimalPoints = new Dictionary<Watt, List<GenSetOperatingPoint>>();
+
+		public GenSetOperatingPoint MaxPower;
+
+		public GenSetOperatingPoint MaxPowerDeRated;
+		private GenSetOperatingPoint _optimalPoint;
+		private GenSetOperatingPoint _optimalPointDerated;
+		private Watt MinGensetPower;
+
+		public GenSetCharacteristics(Watt minGensetPower)
+		{
+			MinGensetPower = minGensetPower;
+		}
+
+		public GenSetOperatingPoint OptimalPoint
+		{
+			get {
+				if (_optimalPoint == null) {
+					var tmp = OptimalPoints.Values.SelectMany(x => x).Where(x => x.ElectricPower > MinGensetPower).ToArray();
+					if (!tmp.Any()) {
+						Log.Error($"No GenSet operating point with a power greater than {MinGensetPower} found!");
+					}
+					_optimalPoint = tmp.MinBy(x => x.FuelConsumption / x.ElectricPower);
+				}
+
+				return _optimalPoint;
+			}
+		}
+
+		public GenSetOperatingPoint OptimalPointDeRated
+		{
+			get {
+				if (_optimalPointDerated == null) {
+					var tmp = OptimalPoints.Values.SelectMany(x => x).Where(x => x.EMTorque.IsSmaller(ContinuousTorque)).Where(x => x.ElectricPower > MinGensetPower).ToArray();
+					if (!tmp.Any()) {
+						Log.Warn($"No de-rated GenSet operating point with a power greater than {MinGensetPower} found! Ignoring min power threshold");
+						tmp = OptimalPoints.Values.SelectMany(x => x)
+							.Where(x => x.EMTorque.IsSmaller(ContinuousTorque)).ToArray();
+
+					}
+
+					_optimalPointDerated = tmp.MinBy(x => x.FuelConsumption / x.ElectricPower);
+				}
+
+				return _optimalPointDerated;
+			}
+		}
+
+		public NewtonMeter ContinuousTorque { get; set; }
+	}
+
+	public class GenSetOperatingPoint
+	{
+		public bool ICEOn;
+
+		public Watt ElectricPower;
+
+		public PerSecond ICESpeed;
+
+		public NewtonMeter ICETorque;
+
+		public KilogramPerSecond FuelConsumption;
+
+		public PerSecond AvgEmDrivetrainSpeed;
+
+		public NewtonMeter EMTorque;
+	}
+}

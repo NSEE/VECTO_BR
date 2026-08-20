@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>DeclarationCycleZip</RootNamespace>
+    <AssemblyName>DeclarationCycleZip</AssemblyName>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+    <Configurations>Debug;Release</Configurations>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\VectoCommon\VectoCommon\VectoCommon.csproj" />
+    <ProjectReference Include="..\..\VectoCore\VectoCore\VectoCore.csproj" />
+  </ItemGroup>
+</Project>

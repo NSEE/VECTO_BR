@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>VectoHashingTest</RootNamespace>
+    <AssemblyName>VectoHashingTest</AssemblyName>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+    <Configurations>Debug;Release</Configurations>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\VectoCore\VectoCore\VectoCore.csproj" />
+    <ProjectReference Include="..\VectoCommon\VectoCommon.csproj" />
+    <ProjectReference Include="..\VectoHashing\VectoHashing.csproj" />
+</ItemGroup>
+
+  <ItemGroup>
+    <None Include="Testdata\**\*.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="TestData\**\*.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
