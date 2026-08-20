@@ -113,7 +113,7 @@ Public Class VehicleForm
 
 		CbRtType.DataSource = EnumHelper.GetKeyValuePairs(Of RetarderType)(Function(t) t.GetLabel()).ToDataView()
 
-		If (Not Cfg.DeclMode) Then
+		If Not Cfg.DeclMode Then
 			CbAxleConfig.DataSource = EnumHelper.GetKeyValuePairs(Of AxleConfiguration)(Function(t) t.GetName())
 			If CbAxleConfig.Items.Count > 0 Then
 				CbAxleConfig.SelectedIndex = 0
@@ -138,9 +138,9 @@ Public Class VehicleForm
 			CbCat.DataSource = EnumHelper.GetKeyValuePairs(Of VehicleCategory)(Function(t) t.GetLabel())
 		End If
 
-			If CbCat.Items.Count > 0 Then
-				CbCat.SelectedIndex = 0
-			End If
+		If CbCat.Items.Count > 0 Then
+			CbCat.SelectedIndex = 0
+		End If
 
 		cbAngledriveType.DataSource = EnumHelper.GetKeyValuePairs(Of AngledriveType)(Function(t) t.GetLabel())
 
@@ -190,12 +190,10 @@ Public Class VehicleForm
 			TbHDVclass.Text = "-"
 			Exit Sub
 		End If
-		
 		If CbAxleConfig.Items.Count = 0 Then
 			TbHDVclass.Text = "-"
 			Exit Sub
 		End If
-		
 		Dim vehC As VehicleCategory = CType(CbCat.SelectedValue, VehicleCategory)
 		Dim axlC As AxleConfiguration = CType(CbAxleConfig.SelectedValue, AxleConfiguration)
 		Dim maxMass As Kilogram = (TbMassMass.Text.ToDouble(0) * 1000).SI(Of Kilogram)()
@@ -396,7 +394,7 @@ Public Class VehicleForm
 		TbMassMass.Text = ""
 		TbMassExtra.Text = ""
 		If CbAxleConfig.Items.Count > 0 Then
-			CbAxleConfig.SelectedIndex = 0
+		CbAxleConfig.SelectedIndex = 0
 		End If
 
 		cbPcc.SelectedIndex = 0
