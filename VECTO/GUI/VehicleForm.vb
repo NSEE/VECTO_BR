@@ -1064,7 +1064,11 @@ Public Class VehicleForm
 			tcVehicleComponents.SelectedTab = tpGeneral
 			Return False
 		End If
-		If Not Cfg.DeclMode AndAlso ((relCheck < 1) Or (relCheck > 1)) Then
+		
+		Const tolerance As Double = 10E-10
+		
+		'If Not Cfg.DeclMode AndAlso ((relCheck < 1) Or (relCheck > 1)) Then
+		If Not Cfg.DeclMode AndAlso Math.Abs(relCheck - 1) > tolerance Then
 			MsgBox("Relative Weight distribution on axle does not sum to 1")
 			tcVehicleComponents.SelectedTab = tpGeneral
 			Return False
