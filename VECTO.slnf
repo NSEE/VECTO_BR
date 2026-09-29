@@ -1,0 +1,35 @@
+{
+  "solution": {
+    "path": "VECTO.sln",
+    "projects": [
+      "VECTO\\VECTO.vbproj",
+      "VectoCore\\VectoCore\\VectoCore.csproj",
+      "VECTOAux\\VectoAuxiliariesTests\\VectoAuxiliariesTests.vbproj",
+      "VectoCore\\VectoCoreTest\\VectoCoreTest.csproj",
+      "VectoConsole\\VectoConsole.csproj",
+      "Tools\\GraphDrawer\\GraphDrawer.csproj",
+      "Tools\\DeclarationCycleZip\\DeclarationCycleZip.csproj",
+      "Tools\\LicenceHeader\\LicenceHeader.csproj",
+      "VectoCommon\\VectoCommon\\VectoCommon.csproj",
+      "VectoCore\\ModelbasedTests\\ModelbasedTests.csproj",
+      "VectoCommon\\VectoHashing\\VectoHashing.csproj",
+      "VectoCommon\\VectoHashingTest\\VectoHashingTest.csproj",
+      "HashingTool\\HashingTool.csproj",
+      "HashingCmd\\HashingCmd.csproj",
+      "VECTO3GUI2020\\VECTO3GUI2020.csproj",
+      "Vecto3GUI2020Test\\Vecto3GUI2020Test.csproj",
+      "Tools\\VECTOStart\\VECTOStart.csproj",
+      "Tools\\VECTOConsoleStart\\VECTOConsoleStart.csproj",
+      "Tools\\HashingToolStart\\HashingToolStart.csproj",
+      "Tools\\HashingCmdStart\\HashingCmdStart.csproj",
+      "Tools\\VECTOMultistepStart\\VECTOMultistep.csproj",
+      "VectoCommon\\VectoCommonTests\\VectoCommonTests.csproj",
+      "Testing\\UnitTests\\Vecto UnitTests\\VECTO UnitTests.csproj",
+      "XMLConverterLibrary\\XMLConverterLibrary.csproj",
+      "XMLConverterLibraryTests\\XMLConverterLibraryTests.csproj",
+      "XMLConverterCmdLine\\XMLConverterCmdLine.csproj",
+      "Tools\\XMLConverterCmdLineStart\\XMLConverterCmdLineStart.csproj",
+      "Testing\\IntegrationTests\\VECTO IntegrationTests\\VECTO IntegrationTests.csproj"
+    ]
+  }
+}
