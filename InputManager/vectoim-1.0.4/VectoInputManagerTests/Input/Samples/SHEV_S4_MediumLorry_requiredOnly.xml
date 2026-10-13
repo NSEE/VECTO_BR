@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="2.0" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v3.0">
+  <Vehicle xsi:type="Vehicle_HEV-Sx_MediumLorryDeclarationType" id="a" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7">
+    <Manufacturer>TU Graz</Manufacturer>
+    <ManufacturerAddress>Inffeldgasse 19</ManufacturerAddress>
+    <Model>HEV Heavy Lorry Px</Model>
+    <VIN>1234</VIN>
+    <Date>2017-01-01T00:00:00Z</Date>
+    <SimulationToolLicenseNumber>x</SimulationToolLicenseNumber>
+    <LegislativeCategory>N2</LegislativeCategory>
+    <ChassisConfiguration>Tractor</ChassisConfiguration>
+    <AxleConfiguration>4x2</AxleConfiguration>
+    <CorrectedActualMass>3500</CorrectedActualMass>
+    <TechnicalPermissibleMaximumLadenMass>7100</TechnicalPermissibleMaximumLadenMass>
+    <IdlingSpeed>650</IdlingSpeed>
+    <RetarderType>None</RetarderType>
+    <AngledriveType>None</AngledriveType>
+    <ZeroEmissionVehicle>true</ZeroEmissionVehicle>
+    <ArchitectureID>S4</ArchitectureID>
+    <OVC>true</OVC>
+    <BatteryOnlyMode>true</BatteryOnlyMode>
+    <DynamicChargingTechnology>Wireless</DynamicChargingTechnology>
+    <ADAS>
+      <EngineStopStart>true</EngineStopStart>
+      <PredictiveCruiseControl>1,2,3</PredictiveCruiseControl>
+    </ADAS>
+    <Components xsi:type="Components_HEV-S4_LorryType">
+      <Engine>
+        <Data xmlns:q1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xsi:type="q1:EngineDataDeclarationType" id="ENG-gooZah3D" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+          <q1:Manufacturer>Generic Engine Manufacturer</q1:Manufacturer>
+          <q1:Model>Generic 40t Long Haul Truck Engine</q1:Model>
+          <q1:CertificationNumber>e12*0815/8051*2017/05E0000*00</q1:CertificationNumber>
+          <q1:Date>2017-02-15T11:00:00Z</q1:Date>
+          <q1:AppVersion>VectoEngine x.y</q1:AppVersion>
+          <q1:Displacement>12730</q1:Displacement>
+          <q1:IdlingSpeed>560</q1:IdlingSpeed>
+          <q1:RatedSpeed>2200</q1:RatedSpeed>
+          <q1:RatedPower>380000</q1:RatedPower>
+          <q1:MaxEngineTorque>2300</q1:MaxEngineTorque>
+          <q1:WHTCUrban>1.0097</q1:WHTCUrban>
+          <q1:WHTCRural>1.0035</q1:WHTCRural>
+          <q1:WHTCMotorway>1.0200</q1:WHTCMotorway>
+          <q1:BFColdHot>1.0000</q1:BFColdHot>
+          <q1:CFRegPer>1.0000</q1:CFRegPer>
+          <q1:CFNCV>1.0000</q1:CFNCV>
+          <q1:FuelType>Diesel CI</q1:FuelType>
+          <q1:FuelConsumptionMap>
+            <q1:Entry engineSpeed="560.00" torque="-149.00" fuelConsumption="0.00" />
+            <q1:Entry engineSpeed="560.00" torque="1180.00" fuelConsumption="12869.00" />
+            <q1:Entry engineSpeed="2100.00" torque="-320.00" fuelConsumption="0.00" />
+            <q1:Entry engineSpeed="2100.00" torque="1100.00" fuelConsumption="50653.00" />
+          </q1:FuelConsumptionMap>
+          <q1:FullLoadAndDragCurve>
+            <q1:Entry engineSpeed="560.00" maxTorque="1180.00" dragTorque="-149.00" />
+            <q1:Entry engineSpeed="1800.00" maxTorque="1800.00" dragTorque="-300.00" />
+            <q1:Entry engineSpeed="2100.00" maxTorque="1100.00" dragTorque="-320.00" />
+          </q1:FullLoadAndDragCurve>
+        </Data>
+        <Signature xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+          <Reference URI="#ENG-gooZah3D" xmlns="http://www.w3.org/2000/09/xmldsig#">
+            <Transforms>
+              <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+              <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+            </Transforms>
+            <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+            <DigestValue>ZsvrIHxjl5WfNOesJ/1/VAhs63GG7Lv/NR3HaakdJxA=</DigestValue>
+          </Reference>
+        </Signature>
+      </Engine>
+      <ElectricMachineGEN>
+        <PowertrainPosition>GEN</PowertrainPosition>
+        <Count>1</Count>
+        <ElectricMachineSystem>
+          <Data xsi:type="ElectricMachineSystemMeasuredDataDeclarationType" id="EM-1234" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+            <Manufacturer>a</Manufacturer>
+            <Model>a</Model>
+            <CertificationNumber>token</CertificationNumber>
+            <Date>2017-01-01T00:00:00Z</Date>
+            <AppVersion>aaaaa</AppVersion>
+            <ElectricMachineType>ASM</ElectricMachineType>
+            <CertificationMethod>Measured</CertificationMethod>
+            <R85RatedPower>50000</R85RatedPower>
+            <RotationalInertia>0.10</RotationalInertia>
+            <DcDcConverterIncluded>true</DcDcConverterIncluded>
+            <IHPCType>None</IHPCType>
+            <VoltageLevel>
+              <Voltage>400</Voltage>
+              <ContinuousTorque>200.00</ContinuousTorque>
+              <TestSpeedContinuousTorque>2000.00</TestSpeedContinuousTorque>
+              <OverloadTorque>400.00</OverloadTorque>
+              <TestSpeedOverloadTorque>2000.00</TestSpeedOverloadTorque>
+              <OverloadDuration>30.00</OverloadDuration>
+              <MaxTorqueCurve>
+                <Entry outShaftSpeed="0.00" maxTorque="450.00" minTorque="-450.00" />
+                <Entry outShaftSpeed="4000.00" maxTorque="100.00" minTorque="-100.00" />
+              </MaxTorqueCurve>
+              <PowerMap>
+                <Entry outShaftSpeed="0.00" torque="400.00" electricPower="1000.00" />
+                <Entry outShaftSpeed="0.00" torque="-400.00" electricPower="-1000.00" />
+                <Entry outShaftSpeed="4000.00" torque="4000.00" electricPower="20000.00" />
+                <Entry outShaftSpeed="4000.00" torque="-4000.00" electricPower="-20000.00" />
+              </PowerMap>
+            </VoltageLevel>
+            <VoltageLevel>
+              <Voltage>600</Voltage>
+              <ContinuousTorque>200.00</ContinuousTorque>
+              <TestSpeedContinuousTorque>2000.00</TestSpeedContinuousTorque>
+              <OverloadTorque>400.00</OverloadTorque>
+              <TestSpeedOverloadTorque>2000.00</TestSpeedOverloadTorque>
+              <OverloadDuration>30.00</OverloadDuration>
+              <MaxTorqueCurve>
+                <Entry outShaftSpeed="0.00" maxTorque="450.00" minTorque="-450.00" />
+                <Entry outShaftSpeed="4000.00" maxTorque="100.00" minTorque="-100.00" />
+              </MaxTorqueCurve>
+              <PowerMap>
+                <Entry outShaftSpeed="0.00" torque="400.00" electricPower="1000.00" />
+                <Entry outShaftSpeed="0.00" torque="-400.00" electricPower="-1000.00" />
+                <Entry outShaftSpeed="4000.00" torque="4000.00" electricPower="20000.00" />
+                <Entry outShaftSpeed="4000.00" torque="-4000.00" electricPower="-20000.00" />
+              </PowerMap>
+            </VoltageLevel>
+            <DragCurve>
+              <Entry outShaftSpeed="0.00" dragTorque="10.00" />
+              <Entry outShaftSpeed="4000.00" dragTorque="30.00" />
+            </DragCurve>
+            <Conditioning>
+              <Entry coolantTempInlet="30" coolingPower="5000" />
+            </Conditioning>
+          </Data>
+          <Signature xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+            <Reference URI="#EM-1234" xmlns="http://www.w3.org/2000/09/xmldsig#">
+              <Transforms>
+                <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+              </Transforms>
+              <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+              <DigestValue>ZUZEXNolQ1fX6DSEq+Chtxzam+X3e9nrw2frZnbK2dw=</DigestValue>
+            </Reference>
+          </Signature>
+        </ElectricMachineSystem>
+      </ElectricMachineGEN>
+      <ElectricEnergyStorage>
+        <Battery>
+          <StringID>0</StringID>
+          <REESS>
+            <Data xsi:type="BatterySystemDataType" id="BAT-asdf" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+              <Manufacturer>a</Manufacturer>
+              <Model>a</Model>
+              <CertificationNumber>token</CertificationNumber>
+              <Date>2017-01-01T00:00:00Z</Date>
+              <AppVersion>aaaaa</AppVersion>
+              <CertificationMethod>Measured</CertificationMethod>
+              <BatteryType>HPBS</BatteryType>
+              <RatedCapacity>72.00</RatedCapacity>
+              <ConnectorsSubsystemsIncluded>true</ConnectorsSubsystemsIncluded>
+              <JunctionboxIncluded>true</JunctionboxIncluded>
+              <TestingTemperature>20</TestingTemperature>
+              <OCV>
+                <Entry SoC="0" OCV="620.00" />
+                <Entry SoC="100" OCV="640.00" />
+              </OCV>
+              <InternalResistance>
+                <Entry SoC="0" R_2="10.00" R_10="11.00" R_20="12.00" />
+                <Entry SoC="100" R_2="12.00" R_10="14.00" R_20="16.00" />
+              </InternalResistance>
+              <CurrentLimits>
+                <Entry SoC="0" maxChargingCurrent="50.00" maxDischargingCurrent="0.00" />
+                <Entry SoC="100" maxChargingCurrent="0.00" maxDischargingCurrent="50.00" />
+              </CurrentLimits>
+            </Data>
+            <Signature xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+              <Reference URI="#BAT-asdf" xmlns="http://www.w3.org/2000/09/xmldsig#">
+                <Transforms>
+                  <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                  <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                </Transforms>
+                <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                <DigestValue>22QLOYTZK+bUIolzdEzc3Ut0wPIOXEBdWv72ST0Zbyw=</DigestValue>
+              </Reference>
+            </Signature>
+          </REESS>
+          <SOCmin>20.0</SOCmin>
+          <SOCmax>80.0</SOCmax>
+        </Battery>
+        <Battery>
+          <StringID>1</StringID>
+          <REESS>
+            <Data xsi:type="BatterySystemDataType" id="BAT-asdf" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+              <Manufacturer>a</Manufacturer>
+              <Model>a</Model>
+              <CertificationNumber>token</CertificationNumber>
+              <Date>2017-01-01T00:00:00Z</Date>
+              <AppVersion>aaaaa</AppVersion>
+              <CertificationMethod>Measured</CertificationMethod>
+              <BatteryType>HPBS</BatteryType>
+              <RatedCapacity>72.00</RatedCapacity>
+              <ConnectorsSubsystemsIncluded>true</ConnectorsSubsystemsIncluded>
+              <JunctionboxIncluded>true</JunctionboxIncluded>
+              <TestingTemperature>20</TestingTemperature>
+              <OCV>
+                <Entry SoC="0" OCV="620.00" />
+                <Entry SoC="100" OCV="640.00" />
+              </OCV>
+              <InternalResistance>
+                <Entry SoC="0" R_2="10.00" R_10="11.00" R_20="12.00" />
+                <Entry SoC="100" R_2="12.00" R_10="14.00" R_20="16.00" />
+              </InternalResistance>
+              <CurrentLimits>
+                <Entry SoC="0" maxChargingCurrent="50.00" maxDischargingCurrent="0.00" />
+                <Entry SoC="100" maxChargingCurrent="0.00" maxDischargingCurrent="50.00" />
+              </CurrentLimits>
+            </Data>
+            <Signature xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+              <Reference URI="#BAT-asdf" xmlns="http://www.w3.org/2000/09/xmldsig#">
+                <Transforms>
+                  <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                  <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                </Transforms>
+                <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                <DigestValue>22QLOYTZK+bUIolzdEzc3Ut0wPIOXEBdWv72ST0Zbyw=</DigestValue>
+              </Reference>
+            </Signature>
+          </REESS>
+          <SOCmin>20.0</SOCmin>
+          <SOCmax>80.0</SOCmax>
+        </Battery>
+      </ElectricEnergyStorage>
+      <ElectricMachine>
+        <PowertrainPosition>2</PowertrainPosition>
+        <Count>1</Count>
+        <ElectricMachineSystem>
+          <Data xsi:type="ElectricMachineSystemMeasuredDataDeclarationType" id="EM-1234" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+            <Manufacturer>a</Manufacturer>
+            <Model>a</Model>
+            <CertificationNumber>token</CertificationNumber>
+            <Date>2017-01-01T00:00:00Z</Date>
+            <AppVersion>aaaaa</AppVersion>
+            <ElectricMachineType>ASM</ElectricMachineType>
+            <CertificationMethod>Measured</CertificationMethod>
+            <R85RatedPower>50000</R85RatedPower>
+            <RotationalInertia>0.10</RotationalInertia>
+            <DcDcConverterIncluded>true</DcDcConverterIncluded>
+            <IHPCType>None</IHPCType>
+            <VoltageLevel>
+              <Voltage>400</Voltage>
+              <ContinuousTorque>200.00</ContinuousTorque>
+              <TestSpeedContinuousTorque>2000.00</TestSpeedContinuousTorque>
+              <OverloadTorque>400.00</OverloadTorque>
+              <TestSpeedOverloadTorque>2000.00</TestSpeedOverloadTorque>
+              <OverloadDuration>30.00</OverloadDuration>
+              <MaxTorqueCurve>
+                <Entry outShaftSpeed="0.00" maxTorque="450.00" minTorque="-450.00" />
+                <Entry outShaftSpeed="4000.00" maxTorque="100.00" minTorque="-100.00" />
+              </MaxTorqueCurve>
+              <PowerMap>
+                <Entry outShaftSpeed="0.00" torque="400.00" electricPower="1000.00" />
+                <Entry outShaftSpeed="0.00" torque="-400.00" electricPower="-1000.00" />
+                <Entry outShaftSpeed="4000.00" torque="4000.00" electricPower="20000.00" />
+                <Entry outShaftSpeed="4000.00" torque="-4000.00" electricPower="-20000.00" />
+              </PowerMap>
+            </VoltageLevel>
+            <VoltageLevel>
+              <Voltage>600</Voltage>
+              <ContinuousTorque>200.00</ContinuousTorque>
+              <TestSpeedContinuousTorque>2000.00</TestSpeedContinuousTorque>
+              <OverloadTorque>400.00</OverloadTorque>
+              <TestSpeedOverloadTorque>2000.00</TestSpeedOverloadTorque>
+              <OverloadDuration>30.00</OverloadDuration>
+              <MaxTorqueCurve>
+                <Entry outShaftSpeed="0.00" maxTorque="450.00" minTorque="-450.00" />
+                <Entry outShaftSpeed="4000.00" maxTorque="100.00" minTorque="-100.00" />
+              </MaxTorqueCurve>
+              <PowerMap>
+                <Entry outShaftSpeed="0.00" torque="400.00" electricPower="1000.00" />
+                <Entry outShaftSpeed="0.00" torque="-400.00" electricPower="-1000.00" />
+                <Entry outShaftSpeed="4000.00" torque="4000.00" electricPower="20000.00" />
+                <Entry outShaftSpeed="4000.00" torque="-4000.00" electricPower="-20000.00" />
+              </PowerMap>
+            </VoltageLevel>
+            <DragCurve>
+              <Entry outShaftSpeed="0.00" dragTorque="10.00" />
+              <Entry outShaftSpeed="4000.00" dragTorque="30.00" />
+            </DragCurve>
+            <Conditioning>
+              <Entry coolantTempInlet="30" coolingPower="5000" />
+            </Conditioning>
+          </Data>
+          <Signature xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+            <Reference URI="#EM-1234" xmlns="http://www.w3.org/2000/09/xmldsig#">
+              <Transforms>
+                <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+              </Transforms>
+              <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+              <DigestValue>ZUZEXNolQ1fX6DSEq+Chtxzam+X3e9nrw2frZnbK2dw=</DigestValue>
+            </Reference>
+          </Signature>
+        </ElectricMachineSystem>
+        <P2.5GearRatios>
+          <Ratio gear="1">1.000</Ratio>
+          <Ratio gear="2">2.000</Ratio>
+        </P2.5GearRatios>
+      </ElectricMachine>
+      <AxleWheels>
+        <Data xsi:type="AxleWheelsDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+          <Axles>
+            <Axle xsi:type="AxleDataDeclarationType" axleNumber="1">
+              <AxleType>VehicleNonDriven</AxleType>
+              <TwinTyres>false</TwinTyres>
+              <Steered>true</Steered>
+              <Tyre>
+                <Data xsi:type="TyreDataDeclarationType" id="WHL-5432198760-315-70-R22.5">
+                  <Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+                  <Model>Generic Wheel</Model>
+                  <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+                  <Date>2017-01-11T14:00:00Z</Date>
+                  <AppVersion>Tyre Generation App 1.0</AppVersion>
+                  <Dimension>315/70 R22.5</Dimension>
+                  <RRCDeclared>0.0055</RRCDeclared>
+                  <FzISO>31300</FzISO>
+                </Data>
+                <Signature>
+                  <Reference URI="#WHL-5432198760-315-70-R22.5" xmlns="http://www.w3.org/2000/09/xmldsig#">
+                    <Transforms>
+                      <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                      <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                    </Transforms>
+                    <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                    <DigestValue>A/sq1ng4cqeOyauDUqUEnonRSPch3VCqZDX9Pf3tW1Q=</DigestValue>
+                  </Reference>
+                </Signature>
+              </Tyre>
+            </Axle>
+            <Axle xsi:type="AxleDataDeclarationType" axleNumber="2">
+              <AxleType>VehicleDriven</AxleType>
+              <TwinTyres>true</TwinTyres>
+              <Steered>false</Steered>
+              <Tyre>
+                <Data xsi:type="TyreDataDeclarationType" id="WHL-5432198760-315-70-R22.5">
+                  <Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+                  <Model>Generic Wheel</Model>
+                  <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+                  <Date>2017-01-11T14:00:00Z</Date>
+                  <AppVersion>Tyre Generation App 1.0</AppVersion>
+                  <Dimension>315/70 R22.5</Dimension>
+                  <RRCDeclared>0.0063</RRCDeclared>
+                  <FzISO>31300</FzISO>
+                </Data>
+                <Signature>
+                  <Reference URI="#WHL-5432198760-315-70-R22.5" xmlns="http://www.w3.org/2000/09/xmldsig#">
+                    <Transforms>
+                      <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                      <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                    </Transforms>
+                    <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                    <DigestValue>z+KDXmc5MIezM6RVgfYax5J9Efi0ghciG2/wLLmWaBk=</DigestValue>
+                  </Reference>
+                </Signature>
+              </Tyre>
+            </Axle>
+          </Axles>
+        </Data>
+      </AxleWheels>
+      <Auxiliaries>
+        <Data>
+          <Fan>
+            <Technology>Hydraulic driven - Constant displacement pump</Technology>
+          </Fan>
+          <SteeringPump>
+            <Technology axleNumber="1">Electric driven pump</Technology>
+          </SteeringPump>
+          <ElectricSystem>
+            <Technology>Standard technology - LED headlights, all</Technology>
+          </ElectricSystem>
+          <PneumaticSystem>
+            <Technology>Medium Supply 2-stage</Technology>
+          </PneumaticSystem>
+          <HVAC>
+            <Technology>Default</Technology>
+          </HVAC>
+        </Data>
+      </Auxiliaries>
+    </Components>
+  </Vehicle>
+</VectoInputDeclaration>

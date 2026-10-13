@@ -1,0 +1,8 @@
+Battery Type,DCIR,Specific resistance
+HEBS,Ri2,210
+HEBS,Ri10,240
+HEBS,Ri20,270 
+HEBS,Ri120,390
+HPBS,Ri2,40
+HPBS,Ri10,45
+HPBS,Ri20,50

@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "VectoInputManager": {
+      "commandName": "Project",
+      //"commandLineArgs": "--docs job -i Conventional_HeavyLorry.xml -o 2.xml -t vehicle",
+      //"commandLineArgs": "job -o 2.0a.xml -i 2.0.xml",
+      "commandLineArgs": "sv IEPC.json -o IEPC.xml",
+      //"commandLineArgs": "job -i 1.0.xml -x 2./",
+      "workingDirectory": "d:\\x"
+    }
+  }
+}

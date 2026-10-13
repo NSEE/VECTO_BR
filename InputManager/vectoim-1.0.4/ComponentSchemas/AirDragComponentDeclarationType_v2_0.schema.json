@@ -1,0 +1,263 @@
+{
+  "$id": "AirDragComponentDeclarationType_v2_0",
+  "type": "object",
+  "properties": {
+    "Data": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$id": "AirDragDataDeclarationType_v1_0",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P240",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P241",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P268",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P243",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P244",
+              "type": "string",
+              "minLength": 5
+            },
+            "CdxA_0": {
+              "description": "P245 - [m²]",
+              "type": "number"
+            },
+            "TransferredCdxA": {
+              "description": "P246 - [m²]",
+              "type": "number"
+            },
+            "DeclaredCdxA": {
+              "description": "P146 - [m²] Drag coefficient * Cross Sectional Area (Truck &amp; Trailer)",
+              "type": "number"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "AirDragDataDeclarationType_v1_0"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "CdxA_0",
+            "TransferredCdxA",
+            "DeclaredCdxA",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "AirDragDataDeclarationType_v2_0",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P240",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P241",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P268",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P243",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P244",
+              "type": "string",
+              "minLength": 5
+            },
+            "CdxA_0": {
+              "description": "P245 - [m²]",
+              "type": "number"
+            },
+            "TransferredCdxA": {
+              "description": "P246 - [m²]",
+              "type": "number"
+            },
+            "DeclaredCdxA": {
+              "description": "P146 - [m²] Drag coefficient * Cross Sectional Area (Truck &amp; Trailer)",
+              "type": "number"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "AirDragDataDeclarationType_v2_0"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "CdxA_0",
+            "TransferredCdxA",
+            "DeclaredCdxA",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "AirDragDataDeclarationType_v2_6",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P240",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P241",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P268",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P243",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P244",
+              "type": "string",
+              "minLength": 5
+            },
+            "CdxA_0": {
+              "description": "P245 - [m²]",
+              "type": "number"
+            },
+            "DeltaCdxA_CFD": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "LicenseNumberCFDMethod": {
+              "description": "P562",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "DeltaCdxA_declared": {
+              "description": "P563 - [m²]",
+              "type": "number"
+            },
+            "DeltaTransferredCdxA": {
+              "description": "P564 - [m²]",
+              "type": "string"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "AirDragDataDeclarationType_v2_6"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "CdxA_0",
+            "LicenseNumberCFDMethod",
+            "DeltaCdxA_declared",
+            "DeltaTransferredCdxA",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "AirDragModifiedUseStandardValueType_v2_4",
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "AirDragModifiedUseStandardValueType_v2_4"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "AirDragModifiedUseStandardValueType_v2_7",
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "AirDragModifiedUseStandardValueType_v2_7"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "$type"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "Data"
+  ]
+}

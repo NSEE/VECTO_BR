@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration
+	xmlns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.2"
+	xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0"
+	xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3"
+	xmlns:v2.6="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6"
+	xmlns:di="http://www.w3.org/2000/09/xmldsig#"
+	schemaVersion="2.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
+	<AirDrag>
+		<v2.0:Data id="CabinX23h" xsi:type="v2.6:AirDragDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6">
+			<Manufacturer>Generic Manufacturer</Manufacturer>
+			<Model>Generic Model</Model>
+			<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+			<Date>2017-03-24T15:00:00Z</Date>
+			<AppVersion>Vecto AirDrag x.y</AppVersion>
+			<CdxA_0>4.31</CdxA_0>
+			<DeltaCdxA_CFD>4.31</DeltaCdxA_CFD>
+			<LicenseNumberCFDMethod>Method 4.31</LicenseNumberCFDMethod>
+			<DeltaCdxA_declared>4.31</DeltaCdxA_declared>
+			<DeltaTransferredCdxA>4.31</DeltaTransferredCdxA>
+		</v2.0:Data>
+	</AirDrag>
+</VectoInputDeclaration>

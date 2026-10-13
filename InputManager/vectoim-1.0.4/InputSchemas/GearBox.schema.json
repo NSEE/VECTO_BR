@@ -1,0 +1,121 @@
+{
+  "definitions": {
+    "GearComponent": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "Number": {
+          "description": "Gear number",
+          "type": "integer",
+          "minimum": 1.0,
+          "maximum": 20.0
+        },
+        "Ratio": {
+          "description": "Gear ratio",
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 20.0
+        },
+        "DirectGear": {
+          "description": "Direct gear",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "Number",
+        "Ratio",
+        "DirectGear"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "Component": {
+      "type": "string",
+      "enum": [
+        "GearBox"
+      ]
+    },
+    "TMaxIn": {
+      "description": "Maximum allowed input torque [Nm]",
+      "type": "number",
+      "minimum": 100.0,
+      "maximum": 50000.0
+    },
+    "TransmissionType": {
+      "description": "Transmission type",
+      "type": "string",
+      "enum": [
+        "SMT",
+        "AMT",
+        "APT_S",
+        "APT_P",
+        "APT_N",
+        "IHPC_Type_1"
+      ]
+    },
+    "ContainsAngleDrive": {
+      "description": "Contains angle drive",
+      "type": "boolean"
+    },
+    "SpeedPoints": {
+      "description": "List of speed setpoints [rpm]",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "number"
+      },
+      "minItems": 2
+    },
+    "TorquePoints": {
+      "description": "List of torque setpoints [Nm]",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "number"
+      },
+      "minItems": 2
+    },
+    "Gear": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/GearComponent"
+      }
+    },
+    "Manufacturer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "Model": {
+      "type": "string",
+      "minLength": 1
+    },
+    "CertificationNumber": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "Component",
+    "TMaxIn",
+    "TransmissionType",
+    "ContainsAngleDrive",
+    "SpeedPoints",
+    "TorquePoints",
+    "Gear",
+    "Manufacturer",
+    "Model",
+    "CertificationNumber"
+  ]
+}

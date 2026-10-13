@@ -1,0 +1,644 @@
+{
+  "$id": "REESSBatteryTypeREESS_v2_4",
+  "type": "object",
+  "properties": {
+    "Data": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$id": "BatterySystemDataType_v2_3",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P511 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P512 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P513 - [-]",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P514 - [-]",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P515 - [-]",
+              "type": "string",
+              "minLength": 5
+            },
+            "CertificationMethod": {
+              "description": "P517 - enum",
+              "type": "string",
+              "enum": [
+                "Measured",
+                "Standard_values"
+              ]
+            },
+            "BatteryType": {
+              "description": "P518 - enum",
+              "type": "string",
+              "enum": [
+                "HPBS",
+                "HEBS"
+              ]
+            },
+            "RatedCapacity": {
+              "description": "P519 - [Ah]",
+              "type": "number"
+            },
+            "ConnectorsSubsystemsIncluded": {
+              "description": "P520 - bool",
+              "type": "boolean"
+            },
+            "JunctionboxIncluded": {
+              "description": "P516 - bool",
+              "type": "boolean"
+            },
+            "TestingTemperature": {
+              "description": "P521 - [°C]",
+              "type": "integer"
+            },
+            "OCV": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[BatterySystemOCVEntryType_v2_3]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "BatterySystemOCVEntryType_v2_3",
+                    "type": "object",
+                    "properties": {
+                      "SoC": {
+                        "description": "P522 - [%]",
+                        "type": "integer",
+                        "minimum": 0.0,
+                        "maximum": 100.0
+                      },
+                      "OCV": {
+                        "description": "P523 - [V]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "SoC",
+                      "OCV"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "InternalResistance": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[BatterySystemInternalResistanceEntryType_v2_3]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "BatterySystemInternalResistanceEntryType_v2_3",
+                    "type": "object",
+                    "properties": {
+                      "SoC": {
+                        "description": "P524 - [%]",
+                        "type": "integer",
+                        "minimum": 0.0,
+                        "maximum": 100.0
+                      },
+                      "R_2": {
+                        "description": "P525 - [mOhm]",
+                        "type": "number"
+                      },
+                      "R_10": {
+                        "description": "P526 - [mOhm]",
+                        "type": "number"
+                      },
+                      "R_20": {
+                        "description": "P527 - [mOhm]",
+                        "type": "number"
+                      },
+                      "R_120": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "SoC",
+                      "R_2",
+                      "R_10",
+                      "R_20"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "CurrentLimits": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[BatterySystemCurrentLimitsEntryType_v2_3]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "BatterySystemCurrentLimitsEntryType_v2_3",
+                    "type": "object",
+                    "properties": {
+                      "SoC": {
+                        "description": "P529 - [%]",
+                        "type": "integer",
+                        "minimum": 0.0,
+                        "maximum": 100.0
+                      },
+                      "maxChargingCurrent": {
+                        "description": "P530 - A]",
+                        "type": "number"
+                      },
+                      "maxDischargingCurrent": {
+                        "description": "P531 - [A]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "SoC",
+                      "maxChargingCurrent",
+                      "maxDischargingCurrent"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "BatterySystemDataType_v2_3"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "CertificationMethod",
+            "BatteryType",
+            "RatedCapacity",
+            "ConnectorsSubsystemsIncluded",
+            "JunctionboxIncluded",
+            "TestingTemperature",
+            "OCV",
+            "InternalResistance",
+            "CurrentLimits",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "BatterySystemStandardValuesDataType_v2_3",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P511 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P512 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P513 - [-]",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P514 - [-]",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P515 - [-]",
+              "type": "string",
+              "minLength": 5
+            },
+            "CertificationMethod": {
+              "description": "P517 - enum",
+              "type": "string",
+              "enum": [
+                "Measured",
+                "Standard_values"
+              ]
+            },
+            "BatteryType": {
+              "description": "P518 - enum",
+              "type": "string",
+              "enum": [
+                "HPBS",
+                "HEBS"
+              ]
+            },
+            "RatedCapacity": {
+              "description": "P519 - [Ah]",
+              "type": "number"
+            },
+            "OCV": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[BatterySystemOCVEntryType_v2_3]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "BatterySystemOCVEntryType_v2_3",
+                    "type": "object",
+                    "properties": {
+                      "SoC": {
+                        "description": "P522 - [%]",
+                        "type": "integer",
+                        "minimum": 0.0,
+                        "maximum": 100.0
+                      },
+                      "OCV": {
+                        "description": "P523 - [V]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "SoC",
+                      "OCV"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "InternalResistance": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[BatterySystemInternalResistanceEntryType_v2_3]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "BatterySystemInternalResistanceEntryType_v2_3",
+                    "type": "object",
+                    "properties": {
+                      "SoC": {
+                        "description": "P524 - [%]",
+                        "type": "integer",
+                        "minimum": 0.0,
+                        "maximum": 100.0
+                      },
+                      "R_2": {
+                        "description": "P525 - [mOhm]",
+                        "type": "number"
+                      },
+                      "R_10": {
+                        "description": "P526 - [mOhm]",
+                        "type": "number"
+                      },
+                      "R_20": {
+                        "description": "P527 - [mOhm]",
+                        "type": "number"
+                      },
+                      "R_120": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "SoC",
+                      "R_2",
+                      "R_10",
+                      "R_20"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "CurrentLimits": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[BatterySystemCurrentLimitsEntryType_v2_3]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "BatterySystemCurrentLimitsEntryType_v2_3",
+                    "type": "object",
+                    "properties": {
+                      "SoC": {
+                        "description": "P529 - [%]",
+                        "type": "integer",
+                        "minimum": 0.0,
+                        "maximum": 100.0
+                      },
+                      "maxChargingCurrent": {
+                        "description": "P530 - A]",
+                        "type": "number"
+                      },
+                      "maxDischargingCurrent": {
+                        "description": "P531 - [A]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "SoC",
+                      "maxChargingCurrent",
+                      "maxDischargingCurrent"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "BatterySystemStandardValuesDataType_v2_3"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "CertificationMethod",
+            "BatteryType",
+            "RatedCapacity",
+            "OCV",
+            "InternalResistance",
+            "CurrentLimits",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "BatterySystemStandardValuesDataType_v2_6",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P511 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P512 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P513 - [-]",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P514 - [-]",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P515 - [-]",
+              "type": "string",
+              "minLength": 5
+            },
+            "CertificationMethod": {
+              "description": "P517 - enum",
+              "type": "string",
+              "enum": [
+                "Measured",
+                "Standard_values"
+              ]
+            },
+            "BatteryType": {
+              "description": "P518 - enum",
+              "type": "string",
+              "enum": [
+                "HPBS",
+                "HEBS"
+              ]
+            },
+            "RatedCapacity": {
+              "description": "P519 - [Ah]",
+              "type": "number"
+            },
+            "OCV": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[BatterySystemOCVEntryType_v2_3]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "BatterySystemOCVEntryType_v2_3",
+                    "type": "object",
+                    "properties": {
+                      "SoC": {
+                        "description": "P522 - [%]",
+                        "type": "integer",
+                        "minimum": 0.0,
+                        "maximum": 100.0
+                      },
+                      "OCV": {
+                        "description": "P523 - [V]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "SoC",
+                      "OCV"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "InternalResistance": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[BatterySystemInternalResistanceEntryType_v2_3]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "BatterySystemInternalResistanceEntryType_v2_3",
+                    "type": "object",
+                    "properties": {
+                      "SoC": {
+                        "description": "P524 - [%]",
+                        "type": "integer",
+                        "minimum": 0.0,
+                        "maximum": 100.0
+                      },
+                      "R_2": {
+                        "description": "P525 - [mOhm]",
+                        "type": "number"
+                      },
+                      "R_10": {
+                        "description": "P526 - [mOhm]",
+                        "type": "number"
+                      },
+                      "R_20": {
+                        "description": "P527 - [mOhm]",
+                        "type": "number"
+                      },
+                      "R_120": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "SoC",
+                      "R_2",
+                      "R_10",
+                      "R_20"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "CurrentLimits": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[BatterySystemCurrentLimitsEntryType_v2_3]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "BatterySystemCurrentLimitsEntryType_v2_3",
+                    "type": "object",
+                    "properties": {
+                      "SoC": {
+                        "description": "P529 - [%]",
+                        "type": "integer",
+                        "minimum": 0.0,
+                        "maximum": 100.0
+                      },
+                      "maxChargingCurrent": {
+                        "description": "P530 - A]",
+                        "type": "number"
+                      },
+                      "maxDischargingCurrent": {
+                        "description": "P531 - [A]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "SoC",
+                      "maxChargingCurrent",
+                      "maxDischargingCurrent"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "BatterySystemStandardValuesDataType_v2_6"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "CertificationMethod",
+            "BatteryType",
+            "RatedCapacity",
+            "OCV",
+            "InternalResistance",
+            "CurrentLimits",
+            "id",
+            "$type"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "Data"
+  ]
+}

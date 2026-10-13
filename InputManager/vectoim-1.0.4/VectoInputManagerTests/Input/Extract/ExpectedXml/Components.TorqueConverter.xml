@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="2.2" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.2">
+  <TorqueConverter>
+    <Data xmlns:q1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xsi:type="q1:TorqueConverterDataDeclarationType" id="TQ-1234" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+      <q1:Manufacturer>Some Manufacturer</q1:Manufacturer>
+      <q1:Model>Some Model</q1:Model>
+      <q1:CertificationNumber>e12*0815/8051*2017/05E0000*00</q1:CertificationNumber>
+      <q1:Date>2017-02-15T11:00:00Z</q1:Date>
+      <q1:AppVersion>TC CalcApp 123</q1:AppVersion>
+      <q1:CertificationMethod>Standard values</q1:CertificationMethod>
+      <q1:Characteristics>
+        <q1:Entry speedRatio="0.0000" torqueRatio="1.00" inputTorqueRef="300.00" />
+        <q1:Entry speedRatio="0.5000" torqueRatio="1.00" inputTorqueRef="200.00" />
+        <q1:Entry speedRatio="0.9000" torqueRatio="0.90" inputTorqueRef="200.00" />
+      </q1:Characteristics>
+    </Data>
+    <Signature xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+      <Reference URI="#TQ-1234" xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <Transforms>
+          <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <DigestValue>P8mKieew0dWJFSIPapRXdUf2FsYG4ONvolD5kjkYEkw=</DigestValue>
+      </Reference>
+    </Signature>
+  </TorqueConverter>
+</VectoInputDeclaration>

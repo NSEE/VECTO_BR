@@ -1,0 +1,9 @@
+{
+  "Component": "TC",
+  "RatedSpeed": 2200.0,
+  "MaxTorque": 1666.0,
+  "Manufacturer": "Example Manufacturer",
+  "Model": "Example Model",
+  "CertificationNumber": "EX1234567890",
+  "$schema": "https://code.europa.eu/vecto/guests/vecto-sim-harry/-/raw/vectoinputmanager/VectoInputManager/Schemas/TC.schema.json"
+}

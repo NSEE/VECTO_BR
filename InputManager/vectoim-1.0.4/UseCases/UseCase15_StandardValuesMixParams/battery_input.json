@@ -1,0 +1,12 @@
+{
+  "$schema": "https://code.europa.eu/vecto/guests/vecto-sim-harry/-/raw/vectoinputmanager/VectoInputManager/InputSchemas/Battery.schema.json",
+  "Component": "Battery",
+  "CellCapacity": 100.0,
+  "CellsInSeries": 15,
+  "CellsInParallel": 4,
+  "NominalVoltage": 3.7,
+  "BatteryType": "HPBS",
+  "Manufacturer": "Example Manufacturer",
+  "Model": "Example Model",
+  "CertificationNumber": "EX1234567890"
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="2.0" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v3.0">
+  <Vehicle xsi:type="Vehicle_Exempted_PrimaryBusDeclarationType" id="VEH-1234567890" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7">
+    <Manufacturer>Some Manufacturer</Manufacturer>
+    <ManufacturerAddress>Infinite Loop 1</ManufacturerAddress>
+    <Model>Sample Bus Model</Model>
+    <VIN>VEH-1234567890</VIN>
+    <Date>2020-01-09T11:00:00Z</Date>
+    <SimulationToolLicenseNumber>x</SimulationToolLicenseNumber>
+    <LegislativeCategory>M3</LegislativeCategory>
+    <ChassisConfiguration>Bus</ChassisConfiguration>
+    <AxleConfiguration>6x2</AxleConfiguration>
+    <Articulated>false</Articulated>
+    <TechnicalPermissibleMaximumLadenMass>15400</TechnicalPermissibleMaximumLadenMass>
+    <ZeroEmissionVehicle>true</ZeroEmissionVehicle>
+    <SumNetPower>350000</SumNetPower>
+    <Technology>FCV Article 9 exempted</Technology>
+    <MonitoringData>
+      <VectoLicenseNbr>##VECTO_LICENSE_NUMBER##</VectoLicenseNbr>
+      <Vehicle>
+        <Make>##VEHICLE_MAKE##</Make>
+      </Vehicle>
+    </MonitoringData>
+  </Vehicle>
+</VectoInputDeclaration>

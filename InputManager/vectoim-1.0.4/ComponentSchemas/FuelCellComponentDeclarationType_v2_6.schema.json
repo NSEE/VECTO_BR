@@ -1,0 +1,113 @@
+{
+  "$id": "FuelCellComponentDeclarationType_v2_6",
+  "type": "object",
+  "properties": {
+    "Data": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$id": "FuelCellDataDeclarationType_v2_6",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P566 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P567 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P568 - [-]",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P569 - [-]",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P570 - [-]",
+              "type": "string",
+              "minLength": 5
+            },
+            "CertificationMethod": {
+              "description": "P571 - [-]",
+              "type": "string",
+              "enum": [
+                "Measured",
+                "Standard_values"
+              ]
+            },
+            "FCSRatedPower": {
+              "description": "P572 - kW",
+              "type": "integer"
+            },
+            "FuelCellPowerOutputConsumptionMap": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[FuelCellOutputPowerConsumptionEntryType_v2_6]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "FuelCellOutputPowerConsumptionEntryType_v2_6",
+                    "type": "object",
+                    "properties": {
+                      "powerOutput": {
+                        "description": "P573 - [kW]",
+                        "type": "number"
+                      },
+                      "fuelConsumption": {
+                        "description": "P574 - [g/h]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "powerOutput",
+                      "fuelConsumption"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "FuelCellDataDeclarationType_v2_6"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "CertificationMethod",
+            "FCSRatedPower",
+            "FuelCellPowerOutputConsumptionMap",
+            "id",
+            "$type"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "Data"
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "type": "object",
+  "properties": {
+    "Component": {
+      "type": "string",
+      "enum": [
+        "Axle"
+      ]
+    },
+    "Ratio": {
+      "description": "Ratio",
+      "type": "number",
+      "minimum": 0.5,
+      "maximum": 30.0
+    },
+    "LineType": {
+      "description": "Line Type",
+      "type": "string",
+      "enum": [
+        "Single_reduction_axle",
+        "Single_portal_axle",
+        "Hub_reduction_axle",
+        "Single_reduction_tandem_axle",
+        "Hub_reduction_tandem_axle"
+      ]
+    },
+    "SpeedPoints": {
+      "description": "List of speed setpoints [rpm]",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "number"
+      },
+      "minItems": 2
+    },
+    "TorquePoints": {
+      "description": "List of torque setpoints [Nm]",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "number"
+      },
+      "minItems": 2
+    },
+    "Manufacturer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "Model": {
+      "type": "string",
+      "minLength": 1
+    },
+    "CertificationNumber": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "Component",
+    "Ratio",
+    "LineType",
+    "SpeedPoints",
+    "TorquePoints",
+    "Manufacturer",
+    "Model",
+    "CertificationNumber"
+  ]
+}

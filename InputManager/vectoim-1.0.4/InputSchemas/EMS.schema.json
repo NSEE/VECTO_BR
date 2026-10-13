@@ -1,0 +1,141 @@
+{
+  "definitions": {
+    "MaxTorqueCurveEntry": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "OutShaftSpeed": {
+          "description": "Output shaft speed [1/min]",
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 30000.0
+        },
+        "MaxTorque": {
+          "description": "Maximum torque [Nm]",
+          "type": "number",
+          "minimum": -50000.0,
+          "maximum": 50000.0
+        },
+        "MinTorque": {
+          "description": "Minimum torque [Nm]",
+          "type": "number",
+          "minimum": -50000.0,
+          "maximum": 50000.0
+        }
+      },
+      "required": [
+        "OutShaftSpeed",
+        "MaxTorque",
+        "MinTorque"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "Component": {
+      "type": "string",
+      "enum": [
+        "EMS"
+      ]
+    },
+    "ElectricMachineType": {
+      "description": "Electric machine type",
+      "type": "string",
+      "enum": [
+        "ASM",
+        "ESM",
+        "PSM",
+        "RM"
+      ]
+    },
+    "R85RatedPower": {
+      "description": "R85 rated power [W]",
+      "type": "integer",
+      "minimum": 1000.0,
+      "maximum": 1000000.0
+    },
+    "RotationalInertia": {
+      "description": "Rotational inertia [kg·m²]",
+      "type": "number",
+      "minimum": 0.001,
+      "maximum": 10.0
+    },
+    "DcDcConverterIncluded": {
+      "description": "DC-DC converter included",
+      "type": "boolean"
+    },
+    "ContinuousTorque": {
+      "description": "Continuous torque [Nm]",
+      "type": "number",
+      "minimum": 1.0,
+      "maximum": 50000.0
+    },
+    "TestSpeedContinuousTorque": {
+      "description": "Test speed for continuous torque [1/min]",
+      "type": "number",
+      "minimum": 1.0,
+      "maximum": 30000.0
+    },
+    "OverloadTorque": {
+      "description": "Overload torque [Nm]",
+      "type": "number",
+      "minimum": 1.0,
+      "maximum": 50000.0
+    },
+    "TestSpeedOverloadTorque": {
+      "description": "Test speed for overload torque [1/min]",
+      "type": "number",
+      "minimum": 1.0,
+      "maximum": 30000.0
+    },
+    "OverloadDuration": {
+      "description": "Overload duration [s]",
+      "type": "number",
+      "minimum": 1.0,
+      "maximum": 300.0
+    },
+    "MaxTorqueCurve": {
+      "description": "Maximum torque curve entries",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/MaxTorqueCurveEntry"
+      },
+      "minItems": 2
+    },
+    "Manufacturer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "Model": {
+      "type": "string",
+      "minLength": 1
+    },
+    "CertificationNumber": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "Component",
+    "ElectricMachineType",
+    "R85RatedPower",
+    "RotationalInertia",
+    "DcDcConverterIncluded",
+    "ContinuousTorque",
+    "TestSpeedContinuousTorque",
+    "OverloadTorque",
+    "TestSpeedOverloadTorque",
+    "OverloadDuration",
+    "MaxTorqueCurve",
+    "Manufacturer",
+    "Model",
+    "CertificationNumber"
+  ]
+}

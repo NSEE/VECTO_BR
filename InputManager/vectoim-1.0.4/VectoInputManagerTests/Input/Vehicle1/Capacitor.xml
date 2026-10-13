@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="2.2" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.2">
+  <CapacitorSystem>
+    <Data xmlns:q1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6" xsi:type="q1:CapacitorSystemDataType" id="capacitor-10" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+      <q1:Manufacturer>Example Manufacturer</q1:Manufacturer>
+      <q1:Model>Example Model</q1:Model>
+      <q1:CertificationNumber>EX1234567890</q1:CertificationNumber>
+      <q1:Date>2025-09-30T18:37:48Z</q1:Date>
+      <q1:AppVersion>XMLCreator-0.2.1</q1:AppVersion>
+      <q1:CertificationMethod>Standard values</q1:CertificationMethod>
+      <q1:Capacitance>3000.00</q1:Capacitance>
+      <q1:InternalResistance>3.75</q1:InternalResistance>
+      <q1:MinVoltage>1.22</q1:MinVoltage>
+      <q1:MaxVoltage>2.70</q1:MaxVoltage>
+      <q1:MaxChargingCurrent>15000.00</q1:MaxChargingCurrent>
+      <q1:MaxDischargingCurrent>15000.00</q1:MaxDischargingCurrent>
+    </Data>
+    <Signature xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+      <Reference URI="#capacitor-10" xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <Transforms>
+          <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <DigestValue>EKj7yU+lc+aqEbYK0aO05pFxTgv8GY2RqQMBI7drE+E=</DigestValue>
+      </Reference>
+    </Signature>
+  </CapacitorSystem>
+</VectoInputDeclaration>
+<!-- Input data:
+{
+  "Component": "Capacitor",
+  "MaxVoltage": 2.7,
+  "Capacitance": 3000.0,
+  "CellNumberInSeries": 1,
+  "Manufacturer": "Example Manufacturer",
+  "Model": "Example Model",
+  "CertificationNumber": "EX1234567890"
+}
+-->

@@ -1,0 +1,18 @@
+{
+  "$id": "TestComponentDeclaration",
+  "type": "object",
+  "properties": {
+    "DeltaCdxA_CFD": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "Value": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "Value"
+  ]
+}

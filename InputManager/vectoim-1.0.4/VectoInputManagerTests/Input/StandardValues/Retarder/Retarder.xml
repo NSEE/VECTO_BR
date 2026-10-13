@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="2.2" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.2">
+  <Retarder>
+    <Data xsi:type="RetarderDataDeclarationType" id="retarder-1" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+      <Manufacturer>Example Manufacturer</Manufacturer>
+      <Model>Example Model</Model>
+      <CertificationNumber>EX1234567890</CertificationNumber>
+      <Date>2026-02-16T17:40:36Z</Date>
+      <AppVersion>vectoim-0.9.8</AppVersion>
+      <CertificationMethod>Standard values</CertificationMethod>
+      <RetarderLossMap>
+        <Entry retarderSpeed="200.00" torqueLoss="6.69" />
+        <Entry retarderSpeed="400.00" torqueLoss="6.76" />
+        <Entry retarderSpeed="600.00" torqueLoss="6.88" />
+        <Entry retarderSpeed="900.00" torqueLoss="7.15" />
+        <Entry retarderSpeed="1200.00" torqueLoss="7.52" />
+        <Entry retarderSpeed="1600.00" torqueLoss="8.18" />
+        <Entry retarderSpeed="2000.00" torqueLoss="9.04" />
+        <Entry retarderSpeed="2500.00" torqueLoss="10.37" />
+        <Entry retarderSpeed="3000.00" torqueLoss="12.00" />
+        <Entry retarderSpeed="3500.00" torqueLoss="13.93" />
+        <Entry retarderSpeed="4000.00" torqueLoss="16.15" />
+        <Entry retarderSpeed="4500.00" torqueLoss="18.67" />
+        <Entry retarderSpeed="5000.00" torqueLoss="21.48" />
+      </RetarderLossMap>
+    </Data>
+    <Signature xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+      <Reference URI="#retarder-1" xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <Transforms>
+          <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <DigestValue>/qminI580coxPfoS7iH6PHJQl2cteWYgQXC/orsplG8=</DigestValue>
+      </Reference>
+    </Signature>
+  </Retarder>
+</VectoInputDeclaration>
+<!-- Input data:
+{
+  "Component": "Retarder",
+  "Type": "Hydrodynamic",
+  "StepUpRatio": 1.5,
+  "Manufacturer": "Example Manufacturer",
+  "Model": "Example Model",
+  "CertificationNumber": "EX1234567890"
+}
+-->

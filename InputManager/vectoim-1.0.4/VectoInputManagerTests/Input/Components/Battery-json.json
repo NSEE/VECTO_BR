@@ -1,0 +1,70 @@
+{
+  "$schema": "https://code.europa.eu/vecto/guests/vecto-sim-harry/-/raw/vectoinputmanager/VectoInputManager/ComponentSchemas/BatteryComponentDeclarationType_v2_3.schema.json",
+  "$type": "BatteryComponentDeclarationType_v2_3",
+  "Data": {
+    "$type": "BatterySystemDataType_v2_3",
+    "Manufacturer": "a",
+    "Model": "a",
+    "CertificationNumber": "token",
+    "Date": "2017-01-01T00:00:00Z",
+    "AppVersion": "aaaaa",
+    "CertificationMethod": "Measured",
+    "BatteryType": "HPBS",
+    "RatedCapacity": 324.0,
+    "ConnectorsSubsystemsIncluded": true,
+    "JunctionboxIncluded": true,
+    "TestingTemperature": 20,
+    "OCV": {
+      "$type": "[BatterySystemOCVEntryType_v2_3]",
+      "$values": [
+        {
+          "$type": "BatterySystemOCVEntryType_v2_3",
+          "SoC": 0,
+          "OCV": 673.5
+        },
+        {
+          "$type": "BatterySystemOCVEntryType_v2_3",
+          "SoC": 100,
+          "OCV": 750.2
+        }
+      ]
+    },
+    "InternalResistance": {
+      "$type": "[BatterySystemInternalResistanceEntryType_v2_3]",
+      "$values": [
+        {
+          "$type": "BatterySystemInternalResistanceEntryType_v2_3",
+          "SoC": 0,
+          "R_2": 10.0,
+          "R_10": 11.0,
+          "R_20": 12.0
+        },
+        {
+          "$type": "BatterySystemInternalResistanceEntryType_v2_3",
+          "SoC": 100,
+          "R_2": 12.0,
+          "R_10": 14.0,
+          "R_20": 16.0
+        }
+      ]
+    },
+    "CurrentLimits": {
+      "$type": "[BatterySystemCurrentLimitsEntryType_v2_3]",
+      "$values": [
+        {
+          "$type": "BatterySystemCurrentLimitsEntryType_v2_3",
+          "SoC": 0,
+          "maxChargingCurrent": 500.0,
+          "maxDischargingCurrent": 500.0
+        },
+        {
+          "$type": "BatterySystemCurrentLimitsEntryType_v2_3",
+          "SoC": 100,
+          "maxChargingCurrent": 500.0,
+          "maxDischargingCurrent": 500.0
+        }
+      ]
+    },
+    "id": "BAT-asdf"
+  }
+}

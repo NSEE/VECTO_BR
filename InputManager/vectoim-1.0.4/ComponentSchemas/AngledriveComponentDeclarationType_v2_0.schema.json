@@ -1,0 +1,332 @@
+{
+  "$id": "AngledriveComponentDeclarationType_v2_0",
+  "type": "object",
+  "properties": {
+    "Data": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$id": "ADCDataDeclarationType_v2_3",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P220 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P221 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P265 - [-]",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P223 - [-]",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P224 - [-]",
+              "type": "string",
+              "minLength": 5
+            },
+            "Ratio": {
+              "description": "P176 - [-]",
+              "type": "number"
+            },
+            "CertificationMethod": {
+              "description": "P258 - enum",
+              "type": "string",
+              "enum": [
+                "Option_1",
+                "Option_2",
+                "Option_3",
+                "Standard_values"
+              ]
+            },
+            "TorqueLossMap": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[AngledriveLossMapEntryType_v2_0]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "AngledriveLossMapEntryType_v2_0",
+                    "type": "object",
+                    "properties": {
+                      "inputSpeed": {
+                        "description": "P173 - [1/min]",
+                        "type": "number"
+                      },
+                      "inputTorque": {
+                        "description": "P174 - [Nm]",
+                        "type": "number"
+                      },
+                      "torqueLoss": {
+                        "description": "P175 - [Nm]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "inputSpeed",
+                      "inputTorque",
+                      "torqueLoss"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "ADCDataDeclarationType_v2_3"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "Ratio",
+            "CertificationMethod",
+            "TorqueLossMap",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "AngledriveDataDeclarationType_v1_0",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P220",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P221",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P265",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P223",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P224",
+              "type": "string",
+              "minLength": 5
+            },
+            "Ratio": {
+              "description": "P176 - [-]",
+              "type": "number"
+            },
+            "CertificationMethod": {
+              "description": "P258 - [-]",
+              "type": "string",
+              "enum": [
+                "Option_1",
+                "Option_2",
+                "Option_3",
+                "Standard_values"
+              ]
+            },
+            "TorqueLossMap": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[AngledriveLossMapEntryType_v1_0]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "AngledriveLossMapEntryType_v1_0",
+                    "type": "object",
+                    "properties": {
+                      "inputSpeed": {
+                        "description": "P173 - [1/min]",
+                        "type": "number"
+                      },
+                      "inputTorque": {
+                        "description": "P174 - [Nm]",
+                        "type": "number"
+                      },
+                      "torqueLoss": {
+                        "description": "P175 - [Nm]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "inputSpeed",
+                      "inputTorque",
+                      "torqueLoss"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "AngledriveDataDeclarationType_v1_0"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "Ratio",
+            "CertificationMethod",
+            "TorqueLossMap",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "AngledriveDataDeclarationType_v2_0",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P220",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P221",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P265",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P223",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P224",
+              "type": "string",
+              "minLength": 5
+            },
+            "Ratio": {
+              "description": "P176 - [-]",
+              "type": "number"
+            },
+            "CertificationMethod": {
+              "description": "P258 - [-]",
+              "type": "string",
+              "enum": [
+                "Option_1",
+                "Option_2",
+                "Option_3",
+                "Standard_values"
+              ]
+            },
+            "TorqueLossMap": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[AngledriveLossMapEntryType_v2_0]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "AngledriveLossMapEntryType_v2_0",
+                    "type": "object",
+                    "properties": {
+                      "inputSpeed": {
+                        "description": "P173 - [1/min]",
+                        "type": "number"
+                      },
+                      "inputTorque": {
+                        "description": "P174 - [Nm]",
+                        "type": "number"
+                      },
+                      "torqueLoss": {
+                        "description": "P175 - [Nm]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "inputSpeed",
+                      "inputTorque",
+                      "torqueLoss"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "AngledriveDataDeclarationType_v2_0"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "Ratio",
+            "CertificationMethod",
+            "TorqueLossMap",
+            "id",
+            "$type"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "Data"
+  ]
+}

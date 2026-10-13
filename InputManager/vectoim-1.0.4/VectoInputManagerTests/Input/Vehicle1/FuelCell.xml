@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="2.2" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.2">
+  <FuelCell>
+    <Data xsi:type="FuelCellDataDeclarationType" id="fuelcell-11" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6">
+      <Manufacturer>FC1</Manufacturer>
+      <Model>Example Model</Model>
+      <CertificationNumber>EX1234567890</CertificationNumber>
+      <Date>2025-09-30T18:37:48Z</Date>
+      <AppVersion>XMLCreator-0.2.1</AppVersion>
+      <CertificationMethod>Standard values</CertificationMethod>
+      <FCSRatedPower>999</FCSRatedPower>
+      <FuelCellPowerOutputConsumptionMap>
+        <Entry powerOutput="1.00" fuelConsumption="817.44" />
+        <Entry powerOutput="5.00" fuelConsumption="818.33" />
+        <Entry powerOutput="10.00" fuelConsumption="818.11" />
+        <Entry powerOutput="12.50" fuelConsumption="818.24" />
+        <Entry powerOutput="15.00" fuelConsumption="818.18" />
+        <Entry powerOutput="20.00" fuelConsumption="1108.65" />
+        <Entry powerOutput="25.00" fuelConsumption="1408.72" />
+        <Entry powerOutput="30.00" fuelConsumption="1719.20" />
+        <Entry powerOutput="35.00" fuelConsumption="2040.02" />
+        <Entry powerOutput="40.00" fuelConsumption="2372.01" />
+        <Entry powerOutput="45.00" fuelConsumption="2715.75" />
+        <Entry powerOutput="50.00" fuelConsumption="3072.51" />
+        <Entry powerOutput="55.00" fuelConsumption="3441.80" />
+        <Entry powerOutput="60.00" fuelConsumption="3824.90" />
+        <Entry powerOutput="65.00" fuelConsumption="4222.61" />
+        <Entry powerOutput="70.00" fuelConsumption="4636.79" />
+        <Entry powerOutput="75.00" fuelConsumption="5066.43" />
+        <Entry powerOutput="80.00" fuelConsumption="5513.44" />
+        <Entry powerOutput="85.00" fuelConsumption="5978.90" />
+        <Entry powerOutput="90.00" fuelConsumption="6465.52" />
+        <Entry powerOutput="95.00" fuelConsumption="6971.62" />
+        <Entry powerOutput="100.00" fuelConsumption="7500.00" />
+      </FuelCellPowerOutputConsumptionMap>
+    </Data>
+    <Signature xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6">
+      <Reference URI="#fuelcell-11" xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <Transforms>
+          <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <DigestValue>vGMp6riaMWLcOz5OrNRhHApPkvSAhHJM3jLUuztb/G8=</DigestValue>
+      </Reference>
+    </Signature>
+  </FuelCell>
+</VectoInputDeclaration>
+<!-- Input data:
+{
+  "Component": "FuelCell",
+  "FCSRatedPower": 100,
+  "Manufacturer": "Example Manufacturer",
+  "Model": "Example Model",
+  "CertificationNumber": "EX1234567890"
+}
+-->

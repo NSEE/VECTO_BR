@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="2.2" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.2">
+  <AirDrag>
+    <Data xsi:type="AirDragDataDeclarationType" id="CabinX23h" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+      <Manufacturer>Generic Manufacturer</Manufacturer>
+      <Model>Generic Model</Model>
+      <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+      <Date>2017-03-24T15:00:00Z</Date>
+      <AppVersion>Vecto AirDrag x.y</AppVersion>
+      <CdxA_0>4.31</CdxA_0>
+      <TransferredCdxA>4.31</TransferredCdxA>
+      <DeclaredCdxA>4.31</DeclaredCdxA>
+    </Data>
+    <Signature xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+      <Reference URI="#CabinX23h" xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <Transforms>
+          <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <DigestValue>v36SkHKUdL/ha7LE3hmtQXAQIZlD+psHPSDs65n0PNA=</DigestValue>
+      </Reference>
+    </Signature>
+  </AirDrag>
+</VectoInputDeclaration>

@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="2.2" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.2">
+  <BatterySystem>
+    <Data xmlns:q1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6" xsi:type="q1:BatterySystemStandardValuesDataType" id="battery-9" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+      <q1:Manufacturer>Example Manufacturer</q1:Manufacturer>
+      <q1:Model>Example Model</q1:Model>
+      <q1:CertificationNumber>EX1234567890</q1:CertificationNumber>
+      <q1:Date>2025-10-02T20:06:31Z</q1:Date>
+      <q1:AppVersion>XMLCreator-0.7.0</q1:AppVersion>
+      <q1:CertificationMethod>Standard values</q1:CertificationMethod>
+      <q1:BatteryType>HPBS</q1:BatteryType>
+      <q1:RatedCapacity>360.00</q1:RatedCapacity>
+      <q1:OCV>
+        <q1:Entry SoC="0" OCV="3.26" />
+        <q1:Entry SoC="10" OCV="3.48" />
+        <q1:Entry SoC="50" OCV="3.70" />
+        <q1:Entry SoC="90" OCV="3.92" />
+        <q1:Entry SoC="100" OCV="4.14" />
+      </q1:OCV>
+      <q1:InternalResistance>
+        <q1:Entry SoC="0" R_2="1.67" R_10="1.88" R_20="2.08" />
+        <q1:Entry SoC="100" R_2="1.67" R_10="1.88" R_20="2.08" />
+      </q1:InternalResistance>
+      <q1:CurrentLimits>
+        <q1:Entry SoC="0" maxChargingCurrent="3240.00" maxDischargingCurrent="0.00" />
+        <q1:Entry SoC="30" maxChargingCurrent="3240.00" maxDischargingCurrent="18000.00" />
+        <q1:Entry SoC="80" maxChargingCurrent="3240.00" maxDischargingCurrent="18000.00" />
+        <q1:Entry SoC="100" maxChargingCurrent="0.00" maxDischargingCurrent="18000.00" />
+      </q1:CurrentLimits>
+    </Data>
+    <Signature xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+      <Reference URI="#battery-9" xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <Transforms>
+          <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <DigestValue>vnlkjj45IxjWuiECcV+3tCsd6UKc0pMKQe6YrTqTg6w=</DigestValue>
+      </Reference>
+    </Signature>
+  </BatterySystem>
+</VectoInputDeclaration>
+<!-- Input data:
+{
+  "Component": "Battery",
+  "CellCapacity": 100.0,
+  "CellsInSeries": 15,
+  "CellsInParallel": 4,
+  "NominalVoltage": 3.7,
+  "BatteryType": "HPBS",
+  "Manufacturer": "Example Manufacturer",
+  "Model": "Example Model",
+  "CertificationNumber": "EX1234567890",
+  "$schema": "https://code.europa.eu/vecto/guests/vecto-sim-harry/-/raw/vectoinputmanager/VectoInputManager/Schemas/Battery.schema.json"
+}
+-->

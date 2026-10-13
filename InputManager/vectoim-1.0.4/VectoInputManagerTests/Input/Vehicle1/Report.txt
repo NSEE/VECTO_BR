@@ -1,0 +1,29 @@
+=== VEHICLE COMPONENTS ===
+Components.FuelCellSystem[0].FuelCell             -> FuelCell.xml
+Components.ElectricEnergyStorage.Battery[0].REESS -> Battery0.json
+Components.ElectricMachine.ElectricMachineSystem  -> * Not Changed
+Components.Gearbox                                -> GearBox.xml
+Components.TorqueConverter                        -> TorqueConverter.xml
+Components.Angledrive                             -> Angledrive.xml
+Components.Axlegear                               -> Axle.xml
+Components.AxleWheels.Data.Axles[0].Tyre          -> Tyre1.xml
+Components.AxleWheels.Data.Axles[1].Tyre          -> Tyre2.xml
+Components.AirDrag                                -> * Not Changed
+
+=== XML VALIDATION ===
+Vehicle XML is INVALID.
+The 'urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7:Model' element is invalid - The value '' is invalid according to its datatype 'urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0:ModelType' - The actual length is less than the MinLength value.
+XML file does not validate against a supported version of DeclarationJobData
+no schema found
+
+=== UNUSED COMPONENT FILES ===
+Capacitor.xml
+
+=== INPUT FILE SIGNATURE ERRORS ===
+The following signature errors were found in the input XML files.
+- Components.FuelCellSystem[0].FuelCell - Signature does not match computed hash
+- Components.ElectricMachine.ElectricMachineSystem - Signature does not match computed hash
+- Components.AxleWheels.Data.Axles[0].Tyre - Signature does not match computed hash
+- Components.AxleWheels.Data.Axles[1].Tyre - Signature does not match computed hash
+- Components.AirDrag - Signature does not match computed hash
+

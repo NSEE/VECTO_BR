@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="2.2" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.2">
+  <TorqueConverter>
+    <Data xsi:type="TorqueConverterDataDeclarationType" id="tc-2" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+      <Manufacturer>Example Manufacturer</Manufacturer>
+      <Model>Example Model</Model>
+      <CertificationNumber>EX1234567890</CertificationNumber>
+      <Date>2025-10-02T20:06:31Z</Date>
+      <AppVersion>XMLCreator-0.7.0</AppVersion>
+      <CertificationMethod>Standard values</CertificationMethod>
+      <Characteristics>
+        <Entry speedRatio="0.0000" torqueRatio="1.80" inputTorqueRef="561.98" />
+        <Entry speedRatio="0.6000" torqueRatio="1.23" inputTorqueRef="449.59" />
+        <Entry speedRatio="0.9000" torqueRatio="0.95" inputTorqueRef="280.99" />
+        <Entry speedRatio="1.0000" torqueRatio="0.95" inputTorqueRef="0.00" />
+      </Characteristics>
+    </Data>
+    <Signature xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+      <Reference URI="#tc-2" xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <Transforms>
+          <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <DigestValue>CZykKMBxLGBmQlCa36XVgjs4enfFlNkts3/QcetqQvU=</DigestValue>
+      </Reference>
+    </Signature>
+  </TorqueConverter>
+</VectoInputDeclaration>
+<!-- Input data:
+{
+  "Component": "TC",
+  "RatedSpeed": 2200.0,
+  "MaxTorque": 1666.0,
+  "Manufacturer": "Example Manufacturer",
+  "Model": "Example Model",
+  "CertificationNumber": "EX1234567890",
+  "$schema": "https://code.europa.eu/vecto/guests/vecto-sim-harry/-/raw/vectoinputmanager/VectoInputManager/Schemas/TC.schema.json"
+}
+-->

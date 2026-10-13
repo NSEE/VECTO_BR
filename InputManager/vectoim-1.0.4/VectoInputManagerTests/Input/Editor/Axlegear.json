@@ -1,0 +1,81 @@
+{
+  "$schema": "AxlegearComponentDeclarationType_v2_0.schema.json",
+  "$type": "AxlegearComponentDeclarationType_v2_0",
+  "Data": {
+    "$type": "AxlegearDataDeclarationType_v2_0",
+    "Manufacturer": "Generic Gearbox Manufacturer",
+    "Model": "Generic 40t Long Haul Truck AxleGear",
+    "CertificationNumber": "e12*0815/8051*2017/05E0000*00",
+    "Date": "2017-01-11T11:00:00Z",
+    "AppVersion": "3.0.1",
+    "LineType": "Single_portal_axle",
+    "Ratio": 2.640,
+    "CertificationMethod": "Standard_values",
+    "TorqueLossMap": {
+      "$type": "[AxlegearTorqueLossMapEntryType_v1_0]",
+      "$values": [
+        {
+          "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+          "inputSpeed": 0.00,
+          "inputTorque": -50000.00,
+          "torqueLoss": 1500.00
+        },
+        {
+          "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+          "inputSpeed": 0.00,
+          "inputTorque": -200.00,
+          "torqueLoss": 6.00
+        },
+        {
+          "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+          "inputSpeed": 0.00,
+          "inputTorque": 0.00,
+          "torqueLoss": 6.00
+        },
+        {
+          "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+          "inputSpeed": 0.00,
+          "inputTorque": 200.00,
+          "torqueLoss": 6.00
+        },
+        {
+          "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+          "inputSpeed": 0.00,
+          "inputTorque": 50000.00,
+          "torqueLoss": 1500.00
+        },
+        {
+          "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+          "inputSpeed": 5000.00,
+          "inputTorque": -50000.00,
+          "torqueLoss": 1500.00
+        },
+        {
+          "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+          "inputSpeed": 5000.00,
+          "inputTorque": -1253.00,
+          "torqueLoss": 37.50
+        },
+        {
+          "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+          "inputSpeed": 5000.00,
+          "inputTorque": 0.00,
+          "torqueLoss": 37.50
+        },
+        {
+          "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+          "inputSpeed": 5000.00,
+          "inputTorque": 1253.00,
+          "torqueLoss": 37.50
+        },
+        {
+          "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+          "inputSpeed": 5000.00,
+          "inputTorque": 50000.00,
+          "torqueLoss": 1500.00
+        }
+      ]
+    },
+    "id": "AXL-EC3ohnoh"
+  }
+}

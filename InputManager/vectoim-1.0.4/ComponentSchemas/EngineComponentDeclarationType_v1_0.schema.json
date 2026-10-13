@@ -1,0 +1,204 @@
+{
+  "$id": "EngineComponentDeclarationType_v1_0",
+  "type": "object",
+  "properties": {
+    "Data": {
+      "$id": "EngineDataDeclarationType_v1_0",
+      "description": "Engine Component",
+      "type": "object",
+      "properties": {
+        "Manufacturer": {
+          "description": "P200",
+          "type": "string",
+          "minLength": 1
+        },
+        "Model": {
+          "description": "P201",
+          "type": "string",
+          "minLength": 1
+        },
+        "CertificationNumber": {
+          "description": "P261",
+          "type": "string"
+        },
+        "Date": {
+          "description": "P203",
+          "type": "string",
+          "pattern": ".+T.+Z",
+          "format": "date-time"
+        },
+        "AppVersion": {
+          "description": "P204",
+          "type": "string",
+          "minLength": 5
+        },
+        "Displacement": {
+          "description": "P061 - [cm³]",
+          "type": "integer"
+        },
+        "IdlingSpeed": {
+          "description": "P063 - [1/min]",
+          "type": "integer"
+        },
+        "RatedSpeed": {
+          "description": "P249 - [1/min]",
+          "type": "integer"
+        },
+        "RatedPower": {
+          "description": "P250 - [W]",
+          "type": "integer"
+        },
+        "MaxEngineTorque": {
+          "description": "P259 - [Nm]",
+          "type": "integer"
+        },
+        "WHTCUrban": {
+          "description": "P109 - [-]",
+          "type": "number"
+        },
+        "WHTCRural": {
+          "description": "P110 - [-]",
+          "type": "number"
+        },
+        "WHTCMotorway": {
+          "description": "P111 - [-]",
+          "type": "number"
+        },
+        "BFColdHot": {
+          "description": "P159 - [-]",
+          "type": "number"
+        },
+        "CFRegPer": {
+          "description": "P192 [-]",
+          "type": "number"
+        },
+        "CFNCV": {
+          "description": "P260 - [-]",
+          "type": "number"
+        },
+        "FuelType": {
+          "description": "P193 [enum]",
+          "type": "string",
+          "enum": [
+            "Diesel_CI",
+            "Ethanol_CI",
+            "Petrol_PI",
+            "Ethanol_PI",
+            "LPG",
+            "NG",
+            "LPG_PI",
+            "NG_PI",
+            "NG_CI"
+          ]
+        },
+        "FuelConsumptionMap": {
+          "type": "object",
+          "properties": {
+            "$type": {
+              "type": "string",
+              "const": "[FuelConsumptionEntryType_v1_0]"
+            },
+            "$values": {
+              "type": "array",
+              "items": {
+                "$id": "FuelConsumptionEntryType_v1_0",
+                "type": "object",
+                "properties": {
+                  "engineSpeed": {
+                    "description": "P072 - [1/min]",
+                    "type": "number"
+                  },
+                  "torque": {
+                    "description": "P073 - [Nm]",
+                    "type": "number"
+                  },
+                  "fuelConsumption": {
+                    "description": "P074 - [g/h]",
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "engineSpeed",
+                  "torque",
+                  "fuelConsumption"
+                ]
+              }
+            }
+          },
+          "required": [
+            "$type",
+            "$values"
+          ]
+        },
+        "FullLoadAndDragCurve": {
+          "type": "object",
+          "properties": {
+            "$type": {
+              "type": "string",
+              "const": "[FullLoadAndDragCurveEntryType_v1_0]"
+            },
+            "$values": {
+              "type": "array",
+              "items": {
+                "$id": "FullLoadAndDragCurveEntryType_v1_0",
+                "type": "object",
+                "properties": {
+                  "engineSpeed": {
+                    "description": "P068 - [1/min]",
+                    "type": "number"
+                  },
+                  "maxTorque": {
+                    "description": "P069 - [N]",
+                    "type": "number"
+                  },
+                  "dragTorque": {
+                    "description": "P070 - [N]",
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "engineSpeed",
+                  "maxTorque",
+                  "dragTorque"
+                ]
+              }
+            }
+          },
+          "required": [
+            "$type",
+            "$values"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "Manufacturer",
+        "Model",
+        "CertificationNumber",
+        "Date",
+        "AppVersion",
+        "Displacement",
+        "IdlingSpeed",
+        "RatedSpeed",
+        "RatedPower",
+        "MaxEngineTorque",
+        "WHTCUrban",
+        "WHTCRural",
+        "WHTCMotorway",
+        "BFColdHot",
+        "CFRegPer",
+        "CFNCV",
+        "FuelType",
+        "FuelConsumptionMap",
+        "FullLoadAndDragCurve",
+        "id"
+      ]
+    }
+  },
+  "required": [
+    "Data"
+  ]
+}

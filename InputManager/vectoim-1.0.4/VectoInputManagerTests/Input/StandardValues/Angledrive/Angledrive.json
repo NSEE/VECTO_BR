@@ -1,0 +1,19 @@
+{
+  "Component": "Angledrive",
+  "TMaxIn": 6000.0,
+  "Ratio": 2.345,
+  "SpeedPoints": [
+    0.0,
+    1000.0
+  ],
+  "TorquePoints": [
+    -10000.0,
+    -1000.0,
+    1000.0,
+    0.0
+  ],
+  "Manufacturer": "Example Manufacturer",
+  "Model": "Example Model",
+  "CertificationNumber": "EX1234567890",
+  "$schema": "https://code.europa.eu/vecto/guests/vecto-sim-harry/-/raw/vectoinputmanager/VectoInputManager/Schemas/Angledrive.schema.json"
+}

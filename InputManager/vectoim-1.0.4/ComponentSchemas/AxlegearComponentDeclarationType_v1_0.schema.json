@@ -1,0 +1,119 @@
+{
+  "$id": "AxlegearComponentDeclarationType_v1_0",
+  "type": "object",
+  "properties": {
+    "Data": {
+      "$id": "AxlegearDataDeclarationType_v1_0",
+      "description": "Axlegear Component",
+      "type": "object",
+      "properties": {
+        "Manufacturer": {
+          "description": "P215",
+          "type": "string",
+          "minLength": 1
+        },
+        "Model": {
+          "description": "P216",
+          "type": "string",
+          "minLength": 1
+        },
+        "CertificationNumber": {
+          "description": "P264",
+          "type": "string"
+        },
+        "Date": {
+          "description": "P218",
+          "type": "string",
+          "pattern": ".+T.+Z",
+          "format": "date-time"
+        },
+        "AppVersion": {
+          "description": "P219",
+          "type": "string",
+          "minLength": 5
+        },
+        "LineType": {
+          "description": "P253 - [-]",
+          "type": "string",
+          "enum": [
+            "Single_reduction_axle",
+            "Single_portal_axle",
+            "Hub_reduction_axle",
+            "Single_reduction_tandem_axle",
+            "Hub_reduction_tandem_axle"
+          ]
+        },
+        "Ratio": {
+          "description": "P150 - [-]",
+          "type": "number"
+        },
+        "CertificationMethod": {
+          "description": "P256 - [-]",
+          "type": "string",
+          "enum": [
+            "Measured",
+            "Standard_values"
+          ]
+        },
+        "TorqueLossMap": {
+          "type": "object",
+          "properties": {
+            "$type": {
+              "type": "string",
+              "const": "[AxlegearTorqueLossMapEntryType_v1_0]"
+            },
+            "$values": {
+              "type": "array",
+              "items": {
+                "$id": "AxlegearTorqueLossMapEntryType_v1_0",
+                "type": "object",
+                "properties": {
+                  "inputSpeed": {
+                    "description": "P151 - [1/min]",
+                    "type": "number"
+                  },
+                  "inputTorque": {
+                    "description": "P152 - [Nm]",
+                    "type": "number"
+                  },
+                  "torqueLoss": {
+                    "description": "P153 - [Nm]",
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "inputSpeed",
+                  "inputTorque",
+                  "torqueLoss"
+                ]
+              }
+            }
+          },
+          "required": [
+            "$type",
+            "$values"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "Manufacturer",
+        "Model",
+        "CertificationNumber",
+        "Date",
+        "AppVersion",
+        "LineType",
+        "Ratio",
+        "CertificationMethod",
+        "TorqueLossMap",
+        "id"
+      ]
+    }
+  },
+  "required": [
+    "Data"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "Manufacturer": "XXX",
+  "Components": {
+    "Axlegear": {
+      "Data": {
+        "Ratio": 3.64,
+        "TorqueLossMap": {
+          "$values": [
+            {
+              "torqueLoss": 15.0
+            },
+            {
+              "torqueLoss": 62.0
+            },
+            {
+              "torqueLoss": 61.0
+            }
+          ]
+        }
+      }
+    },
+    "Retarder": {
+      "Data": {
+        "CertificationMethod": "Measured",
+        "RetarderLossMap": {
+          "$values": [
+            {
+              "retarderSpeed": 42.0,
+              "torqueLoss": 42.0
+            },
+            {
+              "$crop": true
+            }
+          ]
+        }
+      }
+    },
+    "AirDrag": {
+      "Data": {
+        "CdxA_0": 1.0
+      }
+    }
+  }
+}

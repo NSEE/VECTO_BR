@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tns:VectoInputDeclaration
+schemaVersion="2.0"
+xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3"
+xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.1"
+xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0"
+xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3"
+xmlns:v2.6="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6"
+xmlns:di="http://www.w3.org/2000/09/xmldsig#"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
+    <tns:CapacitorSystem xsi:type="CapacitorSystemComponentDeclarationType">
+        <Data xsi:type="v2.6:CapacitorSystemDataType">
+            <v2.6:Manufacturer>a</v2.6:Manufacturer>
+            <v2.6:Model>a</v2.6:Model>
+            <v2.6:CertificationNumber>token</v2.6:CertificationNumber>
+            <v2.6:Date>2021-11-18T14:14:06.0791626Z</v2.6:Date>
+            <v2.6:AppVersion>aaaaa</v2.6:AppVersion>
+            <v2.6:CertificationMethod>Measured</v2.6:CertificationMethod>
+            <v2.6:Capacitance>1.00</v2.6:Capacitance>
+            <v2.6:InternalResistance>23.45</v2.6:InternalResistance>
+            <v2.6:MinVoltage>3.55</v2.6:MinVoltage>
+            <v2.6:MaxVoltage>30.45</v2.6:MaxVoltage>
+            <v2.6:MaxChargingCurrent>100.00</v2.6:MaxChargingCurrent>
+            <v2.6:MaxDischargingCurrent>99.45</v2.6:MaxDischargingCurrent>
+            <v2.6:TestingTemperature>30</v2.6:TestingTemperature>
+        </Data>
+    </tns:CapacitorSystem>
+</tns:VectoInputDeclaration>

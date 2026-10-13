@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2021 (x64) (http://www.altova.com) by Markus Quaritsch (Technische Universität Graz) -->
+<xs:schema xmlns:t2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:Trailer:v2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vectoParam="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:v2.5="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.5" xmlns:t1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:Trailer:v1.0" targetNamespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:Trailer:v2.0" elementFormDefault="qualified" attributeFormDefault="unqualified" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" schemaLocation="VectoDeclarationDefinitions.1.0.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" schemaLocation="VectoDeclarationDefinitions.2.0.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" schemaLocation="VectoDeclarationDefinitions.2.1.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.5" schemaLocation="VectoDeclarationDefinitions.2.5.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:Trailer:v1.0" schemaLocation="VectoDeclarationDefinitions.Trailer.1.0.xsd"/>
+	<xs:simpleType name="CertifiedAerodynamicReductionType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="CertifiedAerodynamicReduction">032</vectoParam:parameterId>
+					<vectoParam:unit>%</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+			<xs:documentation>T032 - [%]</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2">
+			<xs:minInclusive value="0.00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="CertifiedAeroDataDeclarationType">
+		<xs:complexContent>
+			<xs:extension base="t1.0:AbstractCertifiedAeroDataDeclarationType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>T028 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>T029 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
+						<xs:annotation>
+							<xs:documentation>T030 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>T031 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AeroReductionYawAngle0" type="t2.0:CertifiedAerodynamicReductionType">
+						<xs:annotation>
+							<xs:documentation>T032 - [%]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AeroReductionYawAngle3" type="t2.0:CertifiedAerodynamicReductionType">
+						<xs:annotation>
+							<xs:documentation>T032 - [%]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AeroReductionYawAngle6" type="t2.0:CertifiedAerodynamicReductionType">
+						<xs:annotation>
+							<xs:documentation>T032 - [%]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AeroReductionYawAngle9" type="t2.0:CertifiedAerodynamicReductionType">
+						<xs:annotation>
+							<xs:documentation>T032 - [%]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ApplicableVehicleGroups">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ApplicableVehicleGroup" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>T033 - [-]</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:minLength value="1"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

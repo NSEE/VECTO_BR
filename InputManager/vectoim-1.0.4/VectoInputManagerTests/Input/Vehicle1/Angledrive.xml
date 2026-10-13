@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="2.2" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.2">
+  <Angledrive>
+    <Data xsi:type="AngledriveDataDeclarationType" id="angledrive-5" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+      <Manufacturer>Example Manufacturer</Manufacturer>
+      <Model>Example Model</Model>
+      <CertificationNumber>EX1234567890</CertificationNumber>
+      <Date>2025-09-30T18:37:47Z</Date>
+      <AppVersion>XMLCreator-0.2.1</AppVersion>
+      <Ratio>2.345</Ratio>
+      <CertificationMethod>Standard values</CertificationMethod>
+      <TorqueLossMap>
+        <Entry inputSpeed="0.00" inputTorque="-10000.00" torqueLoss="430.00" />
+        <Entry inputSpeed="1000.00" inputTorque="-10000.00" torqueLoss="460.00" />
+        <Entry inputSpeed="0.00" inputTorque="-1000.00" torqueLoss="70.00" />
+        <Entry inputSpeed="1000.00" inputTorque="-1000.00" torqueLoss="100.00" />
+        <Entry inputSpeed="0.00" inputTorque="0.00" torqueLoss="30.00" />
+        <Entry inputSpeed="1000.00" inputTorque="0.00" torqueLoss="60.00" />
+        <Entry inputSpeed="0.00" inputTorque="1000.00" torqueLoss="70.00" />
+        <Entry inputSpeed="1000.00" inputTorque="1000.00" torqueLoss="100.00" />
+      </TorqueLossMap>
+    </Data>
+    <Signature xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+      <Reference URI="#angledrive-5" xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <Transforms>
+          <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <DigestValue>0rx6Qi1BrEjGh0NCbBvSP9w9BVHeigI3zb3HsnjV5WU=</DigestValue>
+      </Reference>
+    </Signature>
+  </Angledrive>
+</VectoInputDeclaration>
+<!-- Input data:
+{
+  "Component": "Angledrive",
+  "TMaxIn": 6000.0,
+  "Ratio": 2.345,
+  "SpeedPoints": [
+    0.0,
+    1000.0
+  ],
+  "TorquePoints": [
+    -10000.0,
+    -1000.0,
+    1000.0,
+    0.0
+  ],
+  "Manufacturer": "Example Manufacturer",
+  "Model": "Example Model",
+  "CertificationNumber": "EX1234567890"
+}
+-->

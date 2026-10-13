@@ -1,0 +1,112 @@
+{
+  "$id": "Vehicle_Exempted_MediumLorryDeclarationType_v2_4",
+  "type": "object",
+  "properties": {
+    "Manufacturer": {
+      "description": "P235 - [-]",
+      "type": "string",
+      "minLength": 1
+    },
+    "ManufacturerAddress": {
+      "description": "P252 - [-]",
+      "type": "string"
+    },
+    "Model": {
+      "description": "P236 - [-]",
+      "type": "string",
+      "minLength": 1
+    },
+    "VIN": {
+      "description": "P238 - [-]",
+      "type": "string",
+      "minLength": 1
+    },
+    "Date": {
+      "description": "P239 - [-]",
+      "type": "string",
+      "pattern": ".+T.+Z",
+      "format": "date-time"
+    },
+    "LegislativeCategory": {
+      "description": "P251 - enum",
+      "type": "string",
+      "enum": [
+        "N2"
+      ]
+    },
+    "ChassisConfiguration": {
+      "description": "P036 - enum",
+      "type": "string",
+      "enum": [
+        "Tractor",
+        "Rigid_Lorry",
+        "Van"
+      ]
+    },
+    "AxleConfiguration": {
+      "description": "P037 - enum",
+      "type": "string",
+      "enum": [
+        "Item4x2",
+        "Item4x4",
+        "Item6x2",
+        "Item6x4",
+        "Item6x6",
+        "Item8x2",
+        "Item8x4",
+        "Item8x6",
+        "Item8x8"
+      ]
+    },
+    "CorrectedActualMass": {
+      "description": "P038 - [kg]",
+      "type": "integer"
+    },
+    "TechnicalPermissibleMaximumLadenMass": {
+      "description": "P041 - [kg]",
+      "type": "integer"
+    },
+    "ZeroEmissionVehicle": {
+      "description": "P269 - bool",
+      "type": "boolean"
+    },
+    "SumNetPower": {
+      "description": "P331 - [W]",
+      "type": "integer"
+    },
+    "Technology": {
+      "description": "P332 - enum",
+      "type": "string",
+      "enum": [
+        "HEV_Article_9_exempted",
+        "PEV_Article_9_exempted",
+        "HV_Article_9_exempted",
+        "FCV_Article_9_exempted",
+        "H2_ICE_Article_9_exempted",
+        "Dual_fuel_vehicle_Article_9_exempted",
+        "In_motion_charging_Article_9_exempted",
+        "Multiple_powertrains_Article_9_exempted"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "Manufacturer",
+    "ManufacturerAddress",
+    "Model",
+    "VIN",
+    "Date",
+    "LegislativeCategory",
+    "ChassisConfiguration",
+    "AxleConfiguration",
+    "CorrectedActualMass",
+    "TechnicalPermissibleMaximumLadenMass",
+    "ZeroEmissionVehicle",
+    "SumNetPower",
+    "Technology",
+    "id"
+  ]
+}

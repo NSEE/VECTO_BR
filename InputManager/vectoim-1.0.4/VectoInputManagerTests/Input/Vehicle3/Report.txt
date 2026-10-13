@@ -1,0 +1,33 @@
+=== VEHICLE COMPONENTS ===
+Components.FuelCellSystem[0].FuelCell                          -> * Not Changed
+Components.ElectricEnergyStorage.Battery[0].REESS              -> * Not Changed
+Components.Powertrain[0].ElectricMachine.ElectricMachineSystem -> * Not Changed
+Components.Powertrain[0].ElectricMachine.ADC                   -> * Not Changed
+Components.Powertrain[0].Gearbox                               -> * Not Changed
+Components.Powertrain[0].TorqueConverter                       -> * Not Changed
+Components.Powertrain[0].Angledrive                            -> * Not Changed
+Components.Powertrain[0].Retarder                              -> * Not Changed
+Components.Powertrain[0].Axlegear                              -> * Not Changed
+Components.Powertrain[1].IEPC                                  -> * Not Changed
+Components.Powertrain[1].Retarder                              -> * Not Changed
+Components.Powertrain[1].Axlegear                              -> components.powertrain[1].axlegear.xml
+Components.AxleWheels.Data.Axles[0].Tyre                       -> * Not Changed
+Components.AxleWheels.Data.Axles[1].Tyre                       -> * Not Changed
+Components.AirDrag                                             -> * Not Changed
+
+=== XML VALIDATION ===
+Vehicle XML is valid.
+
+=== INPUT FILE SIGNATURE ERRORS ===
+The following signature errors were found in the input XML files.
+- Components.FuelCellSystem[0].FuelCell - Signature was corrupted
+- Components.ElectricEnergyStorage.Battery[0].REESS - Signature does not match computed hash
+- Components.Powertrain[0].ElectricMachine.ElectricMachineSystem - Signature was empty
+- Components.Powertrain[0].ElectricMachine.ADC - Signature was empty
+- Components.Powertrain[0].Gearbox - Signature does not match computed hash
+- Components.Powertrain[0].Axlegear - Signature does not match computed hash
+- Components.Powertrain[1].IEPC - Signature was empty
+- Components.AxleWheels.Data.Axles[0].Tyre - Signature does not match computed hash
+- Components.AxleWheels.Data.Axles[1].Tyre - Signature does not match computed hash
+- Components.AirDrag - Signature does not match computed hash
+

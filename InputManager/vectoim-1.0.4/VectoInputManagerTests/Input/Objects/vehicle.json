@@ -1,0 +1,394 @@
+{
+  "$schema": "https://code.europa.eu/vecto/guests/vecto-sim-harry/-/raw/xmlcreator/XMLCreator/VehicleSchemas/Vehicle_IEPC_HeavyLorryDeclarationType_v2_7.schema.json",
+  "$type": "Vehicle_IEPC_HeavyLorryDeclarationType_v2_7",
+  "Manufacturer": "ZZZ",
+  "ManufacturerAddress": "ADDR",
+  "Model": "wef",
+  "VIN": "wef",
+  "Date": "2025-01-01T00:00:00Z",
+  "SimulationToolLicenseNumber": "32",
+  "LegislativeCategory": "N2",
+  "ChassisConfiguration": "Tractor",
+  "AxleConfiguration": "Item4x2",
+  "CorrectedActualMass": 3,
+  "TechnicalPermissibleMaximumLadenMass": 3,
+  "RetarderType": "None",
+  "AngledriveType": "None",
+  "ZeroEmissionVehicle": true,
+  "VocationalVehicle": true,
+  "SleeperCab": true,
+  "VehicleTypeApprovalNumber": "3",
+  "ArchitectureID": "E_IEPC",
+  "OVC": true,
+  "BatteryOnlyMode": true,
+  "DynamicChargingTechnology": "None",
+  "ADAS": null,
+  "Components": {
+    "$type": "Components_IEPC_LorryType_v2_7",
+    "IEPC": {
+      "$type": "IEPCComponentDeclarationType_v2_3",
+      "Data": {
+        "$type": "IEPCMeasuredDataDeclarationType_v2_3",
+        "Manufacturer": null,
+        "Model": null,
+        "CertificationNumber": null,
+        "Date": "0001-01-01T00:00:00Z",
+        "AppVersion": null,
+        "ElectricMachineType": "ASM",
+        "CertificationMethod": "Measured_for_complete_component",
+        "R85RatedPower": 0,
+        "RotationalInertia": 0.0,
+        "DifferentialIncluded": false,
+        "DesignTypeWheelMotor": false,
+        "NrOfDesignTypeWheelMotorMeasured": "Item1",
+        "Gears": {
+          "$type": "IEPCGearsDeclarationType_v2_3",
+          "Gear": {
+            "$type": "[IEPCGearDeclarationType_v2_3]",
+            "$values": []
+          }
+        },
+        "VoltageLevel": {
+          "$type": "[IEPCSystemVoltageLevelMeasuredType_v2_3]",
+          "$values": []
+        },
+        "DragCurve": {
+          "$type": "[IEPCMeasuredDataDeclarationTypeDragCurve_v2_3]",
+          "$values": []
+        },
+        "Conditioning": {
+          "$type": "IEPCMeasuredDataDeclarationTypeConditioning_v2_3",
+          "Entry": {
+            "$type": "IEPCSystemConditioningEntryType_v2_3",
+            "coolantTempInlet": 0,
+            "coolingPower": 0
+          }
+        },
+        "id": "c1"
+      }
+    },
+    "ElectricEnergyStorage": {
+      "$type": "ElectricEnergyStorageType_v2_7",
+      "Capacitor": {
+        "$type": "REESSCapacitorType_v2_4",
+        "Data": {
+          "$type": "CapacitorSystemDataType_v2_3",
+          "Manufacturer": null,
+          "Model": null,
+          "CertificationNumber": null,
+          "Date": "0001-01-01T00:00:00Z",
+          "AppVersion": null,
+          "CertificationMethod": "Measured",
+          "Capacitance": 0.0,
+          "InternalResistance": 0.0,
+          "MinVoltage": 0.0,
+          "MaxVoltage": 0.0,
+          "MaxChargingCurrent": 0.0,
+          "MaxDischargingCurrent": 0.0,
+          "id": "c2"
+        }
+      }
+    },
+    "Retarder": {
+      "$type": "RetarderComponentDeclarationType_v2_0",
+      "Data": {
+        "$type": "RetarderDataDeclarationType_v2_0",
+        "Manufacturer": "Generic Retarder Manufacturer",
+        "Model": "Generic Retarder",
+        "CertificationNumber": "e12*0815/8051*2017/05E0000*00",
+        "Date": "2017-01-11T11:00:00Z",
+        "AppVersion": "3.0.1",
+        "CertificationMethod": "Standard_values",
+        "RetarderLossMap": {
+          "$type": "[RetarderLossmapEntryType_v2_0]",
+          "$values": [
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 0.0,
+              "torqueLoss": 10.0
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 100.0,
+              "torqueLoss": 10.0
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 200.0,
+              "torqueLoss": 10.1
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 300.0,
+              "torqueLoss": 10.2
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 400.0,
+              "torqueLoss": 10.3
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 500.0,
+              "torqueLoss": 10.5
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 600.0,
+              "torqueLoss": 10.7
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 700.0,
+              "torqueLoss": 11.0
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 800.0,
+              "torqueLoss": 11.3
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 900.0,
+              "torqueLoss": 11.6
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 1000.0,
+              "torqueLoss": 12.0
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 1100.0,
+              "torqueLoss": 12.4
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 1200.0,
+              "torqueLoss": 12.9
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 1300.0,
+              "torqueLoss": 13.4
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 1400.0,
+              "torqueLoss": 13.9
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 1500.0,
+              "torqueLoss": 14.5
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 1600.0,
+              "torqueLoss": 15.1
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 1700.0,
+              "torqueLoss": 15.8
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 1800.0,
+              "torqueLoss": 16.5
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 1900.0,
+              "torqueLoss": 17.2
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 2000.0,
+              "torqueLoss": 18.0
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 2100.0,
+              "torqueLoss": 18.8
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 2200.0,
+              "torqueLoss": 19.7
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 2300.0,
+              "torqueLoss": 20.6
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 2400.0,
+              "torqueLoss": 21.5
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 2500.0,
+              "torqueLoss": 22.5
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 2600.0,
+              "torqueLoss": 23.5
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 2700.0,
+              "torqueLoss": 24.6
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 2800.0,
+              "torqueLoss": 25.7
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 2900.0,
+              "torqueLoss": 26.8
+            },
+            {
+              "$type": "RetarderLossmapEntryType_v2_0",
+              "retarderSpeed": 3000.0,
+              "torqueLoss": 28.0
+            }
+          ]
+        },
+        "id": "RET-Shai9imi"
+      }
+    },
+    "Axlegear": {
+      "$type": "AxlegearComponentDeclarationType_v2_0",
+      "Data": {
+        "$type": "AxlegearDataDeclarationType_v2_0",
+        "Manufacturer": "Generic Gearbox Manufacturer",
+        "Model": "Generic 40t Long Haul Truck AxleGear",
+        "CertificationNumber": "e12*0815/8051*2017/05E0000*00",
+        "Date": "2017-01-11T11:00:00Z",
+        "AppVersion": "3.0.1",
+        "LineType": "Single_portal_axle",
+        "Ratio": 2.64,
+        "CertificationMethod": "Standard_values",
+        "TorqueLossMap": {
+          "$type": "[AxlegearTorqueLossMapEntryType_v1_0]",
+          "$values": [
+            {
+              "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+              "inputSpeed": 0.0,
+              "inputTorque": -50000.0,
+              "torqueLoss": 1500.0
+            },
+            {
+              "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+              "inputSpeed": 0.0,
+              "inputTorque": -200.0,
+              "torqueLoss": 6.0
+            },
+            {
+              "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+              "inputSpeed": 0.0,
+              "inputTorque": 0.0,
+              "torqueLoss": 6.0
+            },
+            {
+              "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+              "inputSpeed": 0.0,
+              "inputTorque": 200.0,
+              "torqueLoss": 6.0
+            },
+            {
+              "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+              "inputSpeed": 0.0,
+              "inputTorque": 50000.0,
+              "torqueLoss": 1500.0
+            },
+            {
+              "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+              "inputSpeed": 5000.0,
+              "inputTorque": -50000.0,
+              "torqueLoss": 1500.0
+            },
+            {
+              "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+              "inputSpeed": 5000.0,
+              "inputTorque": -1253.0,
+              "torqueLoss": 37.5
+            },
+            {
+              "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+              "inputSpeed": 5000.0,
+              "inputTorque": 0.0,
+              "torqueLoss": 37.5
+            },
+            {
+              "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+              "inputSpeed": 5000.0,
+              "inputTorque": 1253.0,
+              "torqueLoss": 37.5
+            },
+            {
+              "$type": "AxlegearTorqueLossMapEntryType_v1_0",
+              "inputSpeed": 5000.0,
+              "inputTorque": 50000.0,
+              "torqueLoss": 1500.0
+            }
+          ]
+        },
+        "id": "AXL-EC3ohnoh"
+      }
+    },
+    "AxleWheels": {
+      "$type": "AxleWheelsComponentDeclarationType_v2_0",
+      "Data": {
+        "$type": "AxleWheelsDataDeclarationType_v2_0",
+        "Axles": {
+          "$type": "[AbstractAxleDataDeclarationType_v2_0]",
+          "$values": []
+        }
+      }
+    },
+    "Auxiliaries": {
+      "$type": "AUX_Component_PEV_Lorry_Type_v2_7",
+      "Data": {
+        "$type": "AUX_PEV_LorryDataType_v2_7",
+        "SteeringPump": {
+          "$type": "[AUX_PEV_LorryDataTypeSteeringPumpTechnology_v2_7]",
+          "$values": []
+        },
+        "ElectricSystem": {
+          "$type": "AUX_PEV_LorryDataTypeElectricSystem_v2_7",
+          "Technology": "Standard_technology"
+        },
+        "PneumaticSystem": {
+          "$type": "AUX_PEV_LorryDataTypePneumaticSystem_v2_7",
+          "Technology": "Small"
+        },
+        "HVAC": {
+          "$type": "AUX_PEV_LorryDataTypeHVAC_v2_7",
+          "Technology": "None"
+        }
+      }
+    },
+    "AirDrag": {
+      "$type": "AirDragComponentDeclarationType_v2_0",
+      "Data": {
+        "$type": "AirDragDataDeclarationType_v1_0",
+        "Manufacturer": null,
+        "Model": null,
+        "CertificationNumber": null,
+        "Date": "0001-01-01T00:00:00Z",
+        "AppVersion": null,
+        "CdxA_0": 0.0,
+        "TransferredCdxA": 0.0,
+        "DeclaredCdxA": 0.0,
+        "id": "c3"
+      }
+    }
+  },
+  "id": "a3"
+}

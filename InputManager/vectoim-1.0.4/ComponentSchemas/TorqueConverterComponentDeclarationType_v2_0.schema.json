@@ -1,0 +1,212 @@
+{
+  "$id": "TorqueConverterComponentDeclarationType_v2_0",
+  "type": "object",
+  "properties": {
+    "Data": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$id": "TorqueConverterDataDeclarationType_v1_0",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P210",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P211",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P263",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P213",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P214",
+              "type": "string",
+              "minLength": 5
+            },
+            "CertificationMethod": {
+              "description": "P257 - [-]",
+              "type": "string",
+              "enum": [
+                "Measured",
+                "Standard_values"
+              ]
+            },
+            "Characteristics": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[TorqueConverterCharacteristicsEntryType_v1_0]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "TorqueConverterCharacteristicsEntryType_v1_0",
+                    "type": "object",
+                    "properties": {
+                      "speedRatio": {
+                        "description": "P099 - [-]",
+                        "type": "number"
+                      },
+                      "torqueRatio": {
+                        "description": "P100 - [-]",
+                        "type": "number"
+                      },
+                      "inputTorqueRef": {
+                        "description": "P101 - [-]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "speedRatio",
+                      "torqueRatio",
+                      "inputTorqueRef"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "TorqueConverterDataDeclarationType_v1_0"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "CertificationMethod",
+            "Characteristics",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "TorqueConverterDataDeclarationType_v2_0",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P210",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P211",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P263",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P213",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P214",
+              "type": "string",
+              "minLength": 5
+            },
+            "CertificationMethod": {
+              "description": "P257 - [-]",
+              "type": "string",
+              "enum": [
+                "Measured",
+                "Standard_values"
+              ]
+            },
+            "Characteristics": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[TorqueConverterCharacteristicsEntryType_v1_0]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "TorqueConverterCharacteristicsEntryType_v1_0",
+                    "type": "object",
+                    "properties": {
+                      "speedRatio": {
+                        "description": "P099 - [-]",
+                        "type": "number"
+                      },
+                      "torqueRatio": {
+                        "description": "P100 - [-]",
+                        "type": "number"
+                      },
+                      "inputTorqueRef": {
+                        "description": "P101 - [-]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "speedRatio",
+                      "torqueRatio",
+                      "inputTorqueRef"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "TorqueConverterDataDeclarationType_v2_0"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "CertificationMethod",
+            "Characteristics",
+            "id",
+            "$type"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "Data"
+  ]
+}

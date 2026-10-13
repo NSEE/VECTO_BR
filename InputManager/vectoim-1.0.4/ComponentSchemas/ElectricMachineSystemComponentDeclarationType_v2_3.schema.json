@@ -1,0 +1,882 @@
+{
+  "$id": "ElectricMachineSystemComponentDeclarationType_v2_3",
+  "type": "object",
+  "properties": {
+    "Data": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$id": "ElectricMachineSystemIHPCMeasuredDataDeclarationType_v2_3",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P450 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P451 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P452 - [-]",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P453 - [-]",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P454 - [-]",
+              "type": "string",
+              "minLength": 5
+            },
+            "ElectricMachineType": {
+              "description": "P455 - enum",
+              "type": "string",
+              "enum": [
+                "ASM",
+                "ESM",
+                "PSM",
+                "RM"
+              ]
+            },
+            "CertificationMethod": {
+              "description": "P456 - enum",
+              "type": "string",
+              "enum": [
+                "Measured",
+                "Standard_values"
+              ]
+            },
+            "R85RatedPower": {
+              "description": "P457 - [W]",
+              "type": "integer"
+            },
+            "RotationalInertia": {
+              "description": "P458 - [kgm²]",
+              "type": "number"
+            },
+            "DcDcConverterIncluded": {
+              "description": "P465 - bool",
+              "type": "boolean"
+            },
+            "IHPCType": {
+              "description": "P466 - enum",
+              "type": "string",
+              "enum": [
+                "None",
+                "IHPC_Type_1"
+              ]
+            },
+            "VoltageLevel": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[ElectricMachineSystemIHPCVoltageLevelMeasuredType_v2_3]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "ElectricMachineSystemIHPCVoltageLevelMeasuredType_v2_3",
+                    "type": "object",
+                    "properties": {
+                      "Voltage": {
+                        "description": "P467 - [V]",
+                        "type": "integer"
+                      },
+                      "ContinuousTorque": {
+                        "description": "P459 - [Nm]",
+                        "type": "number"
+                      },
+                      "TestSpeedContinuousTorque": {
+                        "description": "P460 - [1/min]",
+                        "type": "number"
+                      },
+                      "OverloadTorque": {
+                        "description": "P461 - [Nm]",
+                        "type": "number"
+                      },
+                      "TestSpeedOverloadTorque": {
+                        "description": "P462 - [1/min]",
+                        "type": "number"
+                      },
+                      "OverloadDuration": {
+                        "description": "P463 - [s]",
+                        "type": "number"
+                      },
+                      "MaxTorqueCurve": {
+                        "type": "object",
+                        "properties": {
+                          "$type": {
+                            "type": "string",
+                            "const": "[ElectricMachineSystemMaxTorqueEntryType_v2_3]"
+                          },
+                          "$values": {
+                            "type": "array",
+                            "items": {
+                              "$id": "ElectricMachineSystemMaxTorqueEntryType_v2_3",
+                              "type": "object",
+                              "properties": {
+                                "outShaftSpeed": {
+                                  "description": "P408, P468 - [rpm]",
+                                  "type": "number"
+                                },
+                                "maxTorque": {
+                                  "description": "P409, P469 - [Nm]",
+                                  "type": "number"
+                                },
+                                "minTorque": {
+                                  "description": "P210, P470 - [Nm]",
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "outShaftSpeed",
+                                "maxTorque",
+                                "minTorque"
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "$type",
+                          "$values"
+                        ]
+                      },
+                      "PowerMap": {
+                        "type": "object",
+                        "properties": {
+                          "$type": {
+                            "type": "string",
+                            "const": "[ElectricMachineSystemIHPCVoltageLevelMeasuredTypePowerMap_v2_3]"
+                          },
+                          "$values": {
+                            "type": "array",
+                            "items": {
+                              "$id": "ElectricMachineSystemIHPCVoltageLevelMeasuredTypePowerMap_v2_3",
+                              "type": "object",
+                              "properties": {
+                                "Entry": {
+                                  "type": "object",
+                                  "properties": {
+                                    "$type": {
+                                      "type": "string",
+                                      "const": "[ElectricMachineSystemPowerMapEntryType_v2_3]"
+                                    },
+                                    "$values": {
+                                      "type": "array",
+                                      "items": {
+                                        "$id": "ElectricMachineSystemPowerMapEntryType_v2_3",
+                                        "type": "object",
+                                        "properties": {
+                                          "outShaftSpeed": {
+                                            "description": "P473 - [rpm]",
+                                            "type": "number"
+                                          },
+                                          "torque": {
+                                            "description": "P474 - [Nm]",
+                                            "type": "number"
+                                          },
+                                          "electricPower": {
+                                            "description": "P475 - [W]",
+                                            "type": "number"
+                                          }
+                                        },
+                                        "required": [
+                                          "outShaftSpeed",
+                                          "torque",
+                                          "electricPower"
+                                        ]
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "$type",
+                                    "$values"
+                                  ]
+                                },
+                                "gear": {
+                                  "type": "integer"
+                                }
+                              },
+                              "required": [
+                                "Entry",
+                                "gear"
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "$type",
+                          "$values"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "Voltage",
+                      "ContinuousTorque",
+                      "TestSpeedContinuousTorque",
+                      "OverloadTorque",
+                      "TestSpeedOverloadTorque",
+                      "OverloadDuration",
+                      "MaxTorqueCurve",
+                      "PowerMap"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "DragCurve": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[ElectricMachineSystemDragTorqueEntryType_v2_3]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "ElectricMachineSystemDragTorqueEntryType_v2_3",
+                    "type": "object",
+                    "properties": {
+                      "outShaftSpeed": {
+                        "description": "P471 - [rpm]",
+                        "type": "number"
+                      },
+                      "dragTorque": {
+                        "description": "P472 - [Nm]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "outShaftSpeed",
+                      "dragTorque"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "Conditioning": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[ElectricMachineSystemConditioningEntryType_v2_3]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "ElectricMachineSystemConditioningEntryType_v2_3",
+                    "type": "object",
+                    "properties": {
+                      "coolantTempInlet": {
+                        "description": "P476 - [°C]",
+                        "type": "integer"
+                      },
+                      "coolingPower": {
+                        "description": "P477 - [W]",
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "coolantTempInlet",
+                      "coolingPower"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "ElectricMachineSystemIHPCMeasuredDataDeclarationType_v2_3"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "ElectricMachineType",
+            "CertificationMethod",
+            "R85RatedPower",
+            "RotationalInertia",
+            "DcDcConverterIncluded",
+            "IHPCType",
+            "VoltageLevel",
+            "DragCurve",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "ElectricMachineSystemMeasuredDataDeclarationType_v2_3",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P450 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P451 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P452 - [-]",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P453 - [-]",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P454 - [-]",
+              "type": "string",
+              "minLength": 5
+            },
+            "ElectricMachineType": {
+              "description": "P455 - enum",
+              "type": "string",
+              "enum": [
+                "ASM",
+                "ESM",
+                "PSM",
+                "RM"
+              ]
+            },
+            "CertificationMethod": {
+              "description": "P456 - enum",
+              "type": "string",
+              "enum": [
+                "Measured",
+                "Standard_values"
+              ]
+            },
+            "R85RatedPower": {
+              "description": "P457 - [W]",
+              "type": "integer"
+            },
+            "RotationalInertia": {
+              "description": "P458 - [kgm²]",
+              "type": "number"
+            },
+            "DcDcConverterIncluded": {
+              "description": "P465 - bool",
+              "type": "boolean"
+            },
+            "IHPCType": {
+              "description": "P466 - enum",
+              "type": "string",
+              "enum": [
+                "None",
+                "IHPC_Type_1"
+              ]
+            },
+            "VoltageLevel": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[ElectricMachineSystemVoltageLevelMeasuredType_v2_3]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "ElectricMachineSystemVoltageLevelMeasuredType_v2_3",
+                    "type": "object",
+                    "properties": {
+                      "Voltage": {
+                        "description": "P467 - [V]",
+                        "type": "integer"
+                      },
+                      "ContinuousTorque": {
+                        "description": "P459 - [Nm]",
+                        "type": "number"
+                      },
+                      "TestSpeedContinuousTorque": {
+                        "description": "P460 - [1/min]",
+                        "type": "number"
+                      },
+                      "OverloadTorque": {
+                        "description": "P461 - [Nm]",
+                        "type": "number"
+                      },
+                      "TestSpeedOverloadTorque": {
+                        "description": "P462 - [1/min]",
+                        "type": "number"
+                      },
+                      "OverloadDuration": {
+                        "description": "P463 - [s]",
+                        "type": "number"
+                      },
+                      "MaxTorqueCurve": {
+                        "type": "object",
+                        "properties": {
+                          "$type": {
+                            "type": "string",
+                            "const": "[ElectricMachineSystemMaxTorqueEntryType_v2_3]"
+                          },
+                          "$values": {
+                            "type": "array",
+                            "items": {
+                              "$id": "ElectricMachineSystemMaxTorqueEntryType_v2_3",
+                              "type": "object",
+                              "properties": {
+                                "outShaftSpeed": {
+                                  "description": "P408, P468 - [rpm]",
+                                  "type": "number"
+                                },
+                                "maxTorque": {
+                                  "description": "P409, P469 - [Nm]",
+                                  "type": "number"
+                                },
+                                "minTorque": {
+                                  "description": "P210, P470 - [Nm]",
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "outShaftSpeed",
+                                "maxTorque",
+                                "minTorque"
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "$type",
+                          "$values"
+                        ]
+                      },
+                      "PowerMap": {
+                        "type": "object",
+                        "properties": {
+                          "$type": {
+                            "type": "string",
+                            "const": "[ElectricMachineSystemPowerMapEntryType_v2_3]"
+                          },
+                          "$values": {
+                            "type": "array",
+                            "items": {
+                              "$id": "ElectricMachineSystemPowerMapEntryType_v2_3",
+                              "type": "object",
+                              "properties": {
+                                "outShaftSpeed": {
+                                  "description": "P473 - [rpm]",
+                                  "type": "number"
+                                },
+                                "torque": {
+                                  "description": "P474 - [Nm]",
+                                  "type": "number"
+                                },
+                                "electricPower": {
+                                  "description": "P475 - [W]",
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "outShaftSpeed",
+                                "torque",
+                                "electricPower"
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          "$type",
+                          "$values"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "Voltage",
+                      "ContinuousTorque",
+                      "TestSpeedContinuousTorque",
+                      "OverloadTorque",
+                      "TestSpeedOverloadTorque",
+                      "OverloadDuration",
+                      "MaxTorqueCurve",
+                      "PowerMap"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "DragCurve": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[ElectricMachineSystemDragTorqueEntryType_v2_3]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "ElectricMachineSystemDragTorqueEntryType_v2_3",
+                    "type": "object",
+                    "properties": {
+                      "outShaftSpeed": {
+                        "description": "P471 - [rpm]",
+                        "type": "number"
+                      },
+                      "dragTorque": {
+                        "description": "P472 - [Nm]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "outShaftSpeed",
+                      "dragTorque"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "Conditioning": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[ElectricMachineSystemConditioningEntryType_v2_3]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "ElectricMachineSystemConditioningEntryType_v2_3",
+                    "type": "object",
+                    "properties": {
+                      "coolantTempInlet": {
+                        "description": "P476 - [°C]",
+                        "type": "integer"
+                      },
+                      "coolingPower": {
+                        "description": "P477 - [W]",
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "coolantTempInlet",
+                      "coolingPower"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "ElectricMachineSystemMeasuredDataDeclarationType_v2_3"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "ElectricMachineType",
+            "CertificationMethod",
+            "R85RatedPower",
+            "RotationalInertia",
+            "DcDcConverterIncluded",
+            "IHPCType",
+            "VoltageLevel",
+            "DragCurve",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "ElectricMachineSystemStandardValuesDataDeclarationType_v2_3",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P450 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P451 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P452 - [-]",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P453 - [-]",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P454 - [-]",
+              "type": "string",
+              "minLength": 5
+            },
+            "ElectricMachineType": {
+              "description": "P455 - enum",
+              "type": "string",
+              "enum": [
+                "ASM",
+                "ESM",
+                "PSM",
+                "RM"
+              ]
+            },
+            "CertificationMethod": {
+              "description": "P456 - enum",
+              "type": "string",
+              "enum": [
+                "Measured",
+                "Standard_values"
+              ]
+            },
+            "R85RatedPower": {
+              "description": "P457 - [W]",
+              "type": "integer"
+            },
+            "RotationalInertia": {
+              "description": "P458 - [kgm²]",
+              "type": "number"
+            },
+            "DcDcConverterIncluded": {
+              "description": "P465 - bool",
+              "type": "boolean"
+            },
+            "IHPCType": {
+              "description": "P466 - enum",
+              "type": "string",
+              "enum": [
+                "None",
+                "IHPC_Type_1"
+              ]
+            },
+            "VoltageLevel": {
+              "$id": "ElectricMachineSystemVoltageLevelStandardValuesType_v2_3",
+              "type": "object",
+              "properties": {
+                "ContinuousTorque": {
+                  "description": "P459 - [Nm]",
+                  "type": "number"
+                },
+                "TestSpeedContinuousTorque": {
+                  "description": "P460 - [1/min]",
+                  "type": "number"
+                },
+                "OverloadTorque": {
+                  "description": "P461 - [Nm]",
+                  "type": "number"
+                },
+                "TestSpeedOverloadTorque": {
+                  "description": "P462 - [1/min]",
+                  "type": "number"
+                },
+                "OverloadDuration": {
+                  "description": "P463 - [s]",
+                  "type": "number"
+                },
+                "MaxTorqueCurve": {
+                  "type": "object",
+                  "properties": {
+                    "$type": {
+                      "type": "string",
+                      "const": "[ElectricMachineSystemMaxTorqueEntryType_v2_3]"
+                    },
+                    "$values": {
+                      "type": "array",
+                      "items": {
+                        "$id": "ElectricMachineSystemMaxTorqueEntryType_v2_3",
+                        "type": "object",
+                        "properties": {
+                          "outShaftSpeed": {
+                            "description": "P408, P468 - [rpm]",
+                            "type": "number"
+                          },
+                          "maxTorque": {
+                            "description": "P409, P469 - [Nm]",
+                            "type": "number"
+                          },
+                          "minTorque": {
+                            "description": "P210, P470 - [Nm]",
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "outShaftSpeed",
+                          "maxTorque",
+                          "minTorque"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "$type",
+                    "$values"
+                  ]
+                },
+                "PowerMap": {
+                  "type": "object",
+                  "properties": {
+                    "$type": {
+                      "type": "string",
+                      "const": "[ElectricMachineSystemPowerMapEntryType_v2_3]"
+                    },
+                    "$values": {
+                      "type": "array",
+                      "items": {
+                        "$id": "ElectricMachineSystemPowerMapEntryType_v2_3",
+                        "type": "object",
+                        "properties": {
+                          "outShaftSpeed": {
+                            "description": "P473 - [rpm]",
+                            "type": "number"
+                          },
+                          "torque": {
+                            "description": "P474 - [Nm]",
+                            "type": "number"
+                          },
+                          "electricPower": {
+                            "description": "P475 - [W]",
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "outShaftSpeed",
+                          "torque",
+                          "electricPower"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "$type",
+                    "$values"
+                  ]
+                }
+              },
+              "required": [
+                "ContinuousTorque",
+                "TestSpeedContinuousTorque",
+                "OverloadTorque",
+                "TestSpeedOverloadTorque",
+                "OverloadDuration",
+                "MaxTorqueCurve",
+                "PowerMap"
+              ]
+            },
+            "DragCurve": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[ElectricMachineSystemDragTorqueEntryType_v2_3]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "ElectricMachineSystemDragTorqueEntryType_v2_3",
+                    "type": "object",
+                    "properties": {
+                      "outShaftSpeed": {
+                        "description": "P471 - [rpm]",
+                        "type": "number"
+                      },
+                      "dragTorque": {
+                        "description": "P472 - [Nm]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "outShaftSpeed",
+                      "dragTorque"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "ElectricMachineSystemStandardValuesDataDeclarationType_v2_3"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "ElectricMachineType",
+            "CertificationMethod",
+            "R85RatedPower",
+            "RotationalInertia",
+            "DcDcConverterIncluded",
+            "IHPCType",
+            "VoltageLevel",
+            "DragCurve",
+            "id",
+            "$type"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "Data"
+  ]
+}

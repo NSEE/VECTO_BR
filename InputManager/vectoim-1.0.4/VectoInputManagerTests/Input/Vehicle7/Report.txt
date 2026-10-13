@@ -1,0 +1,11 @@
+=== VEHICLE COMPONENTS ===
+Components.Retarder -> Modified
+Components.Axlegear -> Modified
+Components.AirDrag  -> Components.AirDrag.json
+
+=== XML VALIDATION ===
+Vehicle XML is INVALID.
+The element 'Components' in namespace 'urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7' has invalid child element 'Retarder' in namespace 'urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7'. List of possible elements expected: 'Engine' in namespace 'urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7'.
+XML file does not validate against a supported version of DeclarationJobData
+no schema found
+

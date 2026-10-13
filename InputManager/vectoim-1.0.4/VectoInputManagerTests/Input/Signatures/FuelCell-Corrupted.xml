@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="2.2" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.2">
+  <FuelCell>
+    <Data xsi:type="FuelCellDataDeclarationType" id="XXX" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6">
+      <Manufacturer>a</Manufacturer>
+      <Model>a</Model>
+      <CertificationNumber>token</CertificationNumber>
+      <Date>2017-01-01T00:00:00Z</Date>
+      <AppVersion>aaaaa</AppVersion>
+      <CertificationMethod>Measured</CertificationMethod>
+      <FCSRatedPower>100</FCSRatedPower>
+      <FuelCellPowerOutputConsumptionMap>
+        <Entry powerOutput="10.00" fuelConsumption="662.00" />
+        <Entry powerOutput="20.00" fuelConsumption="1001.00" />
+        <Entry powerOutput="35.00" fuelConsumption="1812.50" />
+        <Entry powerOutput="50.00" fuelConsumption="2887.50" />
+        <Entry powerOutput="65.00" fuelConsumption="4069.70" />
+        <Entry powerOutput="85.00" fuelConsumption="5672.00" />
+        <Entry powerOutput="100.00" fuelConsumption="7150.00" />
+      </FuelCellPowerOutputConsumptionMap>
+    </Data>
+    <Signature xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6">
+      <Reference URI="#FuelCell" xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <Transforms>
+          <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <DigestValue>FtIKKt+EQwnJ0HE+mBrPVhZZn82qncLyy30L2+1N8lQ=</DigestValue>
+      </Reference>
+    </Signature>
+  </FuelCell>
+</VectoInputDeclaration>

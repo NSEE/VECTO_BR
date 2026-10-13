@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="2.0" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v3.0">
+  <Vehicle xsi:type="Vehicle_Conventional_CompletedBusDeclarationType" id="Components_Conventional_CompletedBusType_v2_7" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7">
+    <Manufacturer>Manu</Manufacturer>
+    <ManufacturerAddress>ManuAddress</ManufacturerAddress>
+    <VIN>VIN1</VIN>
+    <Date>2024-01-01T00:00:00Z</Date>
+    <SimulationToolLicenseNumber>simmodel</SimulationToolLicenseNumber>
+    <Model>TestModel</Model>
+    <LegislativeCategory>M3</LegislativeCategory>
+    <TechnicalPermissibleMaximumLadenMass>5000</TechnicalPermissibleMaximumLadenMass>
+    <AirdragModifiedMultistep>true</AirdragModifiedMultistep>
+    <ClassBus>I</ClassBus>
+    <NgTankSystem>Compressed</NgTankSystem>
+    <BodyworkCode>CA</BodyworkCode>
+    <LowEntry>true</LowEntry>
+    <DoorDriveTechnology>electric</DoorDriveTechnology>
+    <VehicleDeclarationType>interim</VehicleDeclarationType>
+    <VehicleTypeApprovalNumber>s</VehicleTypeApprovalNumber>
+    <ADAS>
+      <EngineStopStart>true</EngineStopStart>
+      <EcoRollWithoutEngineStop>true</EcoRollWithoutEngineStop>
+      <EcoRollWithEngineStop>true</EcoRollWithEngineStop>
+      <PredictiveCruiseControl>none</PredictiveCruiseControl>
+      <APTEcoRollReleaseLockupClutch>true</APTEcoRollReleaseLockupClutch>
+    </ADAS>
+    <H2StorageUsableCapacity>2.0</H2StorageUsableCapacity>
+    <HydrogenStorageTechnology>Compressed</HydrogenStorageTechnology>
+    <Components>
+      <AirDrag>
+        <Data xmlns:q1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6" xsi:type="q1:AirDragDataDeclarationType" id="c1" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+          <q1:Date>0001-01-01T00:00:00Z</q1:Date>
+          <q1:CdxA_0>0.00</q1:CdxA_0>
+          <q1:DeltaCdxA_declared>0.00</q1:DeltaCdxA_declared>
+        </Data>
+      </AirDrag>
+      <Auxiliaries>
+        <Data>
+          <ElectricSystem>
+            <LEDLights />
+          </ElectricSystem>
+          <HVAC>
+            <HeatPumpTypeDriverCompartment>
+              <Cooling>none</Cooling>
+              <Heating>none</Heating>
+            </HeatPumpTypeDriverCompartment>
+            <HeatPumpTypePassengerCompartment>
+              <Cooling>none</Cooling>
+              <Heating>none</Heating>
+            </HeatPumpTypePassengerCompartment>
+          </HVAC>
+        </Data>
+      </Auxiliaries>
+    </Components>
+  </Vehicle>
+</VectoInputDeclaration>

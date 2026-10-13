@@ -1,0 +1,18 @@
+=== VEHICLE COMPONENTS ===
+Components.ElectricEnergyStorage.Battery[0].REESS              -> * Not Changed
+Components.Powertrain[0].ElectricMachine.ElectricMachineSystem -> Modified
+Components.Powertrain[0].ElectricMachine.ADC                   -> * Not Changed
+Components.Powertrain[0].Axlegear                              -> * Not Changed
+Components.Powertrain[1].ElectricMachine.ElectricMachineSystem -> * Not Changed
+Components.Powertrain[1].ElectricMachine.ADC                   -> * Not Changed
+Components.AxleWheels.Data.Axles[0].Tyre                       -> * Not Changed
+Components.AxleWheels.Data.Axles[1].Tyre                       -> * Not Changed
+Components.AirDrag                                             -> * Not Changed
+
+=== XML VALIDATION ===
+Vehicle XML is valid.
+
+=== INPUT FILE SIGNATURE ERRORS ===
+The following signature errors were found in the input XML files.
+- Components.ElectricEnergyStorage.Battery[0].REESS - Signature does not match computed hash
+

@@ -1,0 +1,148 @@
+{
+  "$id": "Vehicle_Exempted_CompletedBusDeclarationType_v2_7",
+  "description": "Exempted vehicle stage input parts",
+  "type": "object",
+  "properties": {
+    "Manufacturer": {
+      "description": "P235 - [-]",
+      "type": "string",
+      "minLength": 1
+    },
+    "ManufacturerAddress": {
+      "description": "P252 - [-]",
+      "type": "string"
+    },
+    "VIN": {
+      "description": "P238 - [-]",
+      "type": "string",
+      "minLength": 1
+    },
+    "Date": {
+      "description": "P239 - [-]",
+      "type": "string",
+      "pattern": ".+T.+Z",
+      "format": "date-time"
+    },
+    "SimulationToolLicenseNumber": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "Model": {
+      "description": "P236 - [-]",
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "LegislativeCategory": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "M3"
+      ]
+    },
+    "CorrectedActualMass": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "TechnicalPermissibleMaximumLadenMass": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "ClassBus": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "I",
+        "II",
+        "III",
+        "A",
+        "B",
+        "IPlusII",
+        "IIPlusIII"
+      ]
+    },
+    "NumberPassengerSeatsLowerDeck": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "NumberPassengersStandingLowerDeck": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "NumberPassengerSeatsUpperDeck": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "NumberPassengersStandingUpperDeck": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "BodyworkCode": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "CA",
+        "CB",
+        "CC",
+        "CD",
+        "CE",
+        "CF",
+        "CG",
+        "CH",
+        "CI",
+        "CJ"
+      ]
+    },
+    "LowEntry": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "HeightIntegratedBody": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "Manufacturer",
+    "ManufacturerAddress",
+    "VIN",
+    "Date",
+    "SimulationToolLicenseNumber",
+    "Model",
+    "id"
+  ]
+}

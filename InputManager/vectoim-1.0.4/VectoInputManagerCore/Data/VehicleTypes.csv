@@ -1,0 +1,70 @@
+TypeName,Version,Description,Code
+ExemptedVehicleDeclarationType_v2_1,v2.1,Exempted Vehicle,ExemptedVehicle_v2_1
+ExemptedVehicleDeclarationType_v2_2_1,v2.2.1,Exempted Vehicle,ExemptedVehicle_v2_2_1
+Vehicle_Conventional_CompletedBusDeclarationType_v2_4,v2.4,Conventional Vehicle - Completed Bus,ConvCompletedBus_v2_4
+Vehicle_Conventional_CompletedBusDeclarationType_v2_7,v2.7,Conventional Vehicle - Completed Bus,ConvCompletedBus_v2_7
+Vehicle_Conventional_HeavyLorryDeclarationType_v2_4,v2.4,Conventional Vehicle - Heavy Lorry,ConvHeavyLorry_v2_4
+Vehicle_Conventional_HeavyLorryDeclarationType_v2_7,v2.7,Conventional Vehicle - Heavy Lorry,ConvHeavyLorry_v2_7
+Vehicle_Conventional_MediumLorryDeclarationType_v2_4,v2.4,Conventional Vehicle - Medium Lorry,ConvMediumLorry_v2_4
+Vehicle_Conventional_MediumLorryDeclarationType_v2_7,v2.7,Conventional Vehicle - Medium Lorry,ConvMediumLorry_v2_7
+Vehicle_Conventional_PrimaryBusDeclarationType_v2_4,v2.4,Conventional Vehicle - Primary Bus,ConvPrimaryBus_v2_4
+Vehicle_Conventional_PrimaryBusDeclarationType_v2_7,v2.7,Conventional Vehicle - Primary Bus,ConvPrimaryBus_v2_7
+Vehicle_Exempted_CompletedBusDeclarationType_v2_4,v2.4,Exempted Vehicle - Completed Bus,ExemptedCompletedBus_v2_4
+Vehicle_Exempted_CompletedBusDeclarationType_v2_7,v2.7,Exempted Vehicle - Completed Bus,ExemptedCompletedBus_v2_7
+Vehicle_Exempted_HeavyLorryDeclarationType_v2_4,v2.4,Exempted Vehicle - Heavy Lorry,ExemptedHeavyLorry_v2_4
+Vehicle_Exempted_HeavyLorryDeclarationType_v2_7,v2.7,Exempted Vehicle - Heavy Lorry,ExemptedHeavyLorry_v2_7
+Vehicle_Exempted_MediumLorryDeclarationType_v2_4,v2.4,Exempted Vehicle - Medium Lorry,ExemptedMediumLorry_v2_4
+Vehicle_Exempted_MediumLorryDeclarationType_v2_7,v2.7,Exempted Vehicle - Medium Lorry,ExemptedMediumLorry_v2_7
+Vehicle_Exempted_PrimaryBusDeclarationType_v2_4,v2.4,Exempted Vehicle - Primary Bus,ExemptedPrimaryBus_v2_4
+Vehicle_Exempted_PrimaryBusDeclarationType_v2_7,v2.7,Exempted Vehicle - Primary Bus,ExemptedPrimaryBus_v2_7
+Vehicle_FCHV_CompletedBusDeclarationType_v2_7,v2.7,Fuel Cell Hybrid Vehicle - Completed Bus,FCHVCompletedBus_v2_7
+Vehicle_FCHV_Fx_HeavyLorryDeclarationType_v2_7,v2.7,Fuel Cell Hybrid Vehicle - Fuel Cell Variant - Heavy Lorry,FCHVFxHeavyLorry_v2_7
+Vehicle_FCHV_Fx_MediumLorryDeclarationType_v2_7,v2.7,Fuel Cell Hybrid Vehicle - Fuel Cell Variant - Medium Lorry,FCHVFxMediumLorry_v2_7
+Vehicle_FCHV_Fx_PrimaryBusDeclarationType_v2_7,v2.7,Fuel Cell Hybrid Vehicle - Fuel Cell Variant - Primary Bus,FCHVFxPrimaryBus_v2_7
+Vehicle_FCHV_IEPC_HeavyLorryDeclarationType_v2_7,v2.7,Fuel Cell Hybrid Vehicle - IEPC - Heavy Lorry,FCHVIEPCHeavyLorry_v2_7
+Vehicle_FCHV_IEPC_MediumLorryDeclarationType_v2_7,v2.7,Fuel Cell Hybrid Vehicle - IEPC - Medium Lorry,FCHVIEPCMediumLorry_v2_7
+Vehicle_FCHV_IEPC_PrimaryBusDeclarationType_v2_7,v2.7,Fuel Cell Hybrid Vehicle - IEPC - Primary Bus,FCHVIEPCPrimaryBus_v2_7
+Vehicle_HEV_CompletedBusDeclarationType_v2_4,v2.4,Hybrid Electric Vehicle - Completed Bus,HEVCompletedBus_v2_4
+Vehicle_HEV_CompletedBusDeclarationType_v2_7,v2.7,Hybrid Electric Vehicle - Completed Bus,HEVCompletedBus_v2_7
+Vehicle_HEV_IEPC_S_HeavyLorryDeclarationType_v2_4,v2.4,Hybrid Electric Vehicle - IEPC (Series) - Heavy Lorry,HEVIEPCSHeavyLorry_v2_4
+Vehicle_HEV_IEPC_S_HeavyLorryDeclarationType_v2_7,v2.7,Hybrid Electric Vehicle - IEPC (Series) - Heavy Lorry,HEVIEPCSHeavyLorry_v2_7
+Vehicle_HEV_IEPC_S_MediumLorryDeclarationType_v2_4,v2.4,Hybrid Electric Vehicle - IEPC (Series) - Medium Lorry,HEVIEPCSMediumLorry_v2_4
+Vehicle_HEV_IEPC_S_MediumLorryDeclarationType_v2_7,v2.7,Hybrid Electric Vehicle - IEPC (Series) - Medium Lorry,HEVIEPCSMediumLorry_v2_7
+Vehicle_HEV_IEPC_S_PrimaryBusDeclarationType_v2_4,v2.4,Hybrid Electric Vehicle - IEPC (Series) - Primary Bus,HEVIEPCSPrimaryBus_v2_4
+Vehicle_HEV_IEPC_S_PrimaryBusDeclarationType_v2_7,v2.7,Hybrid Electric Vehicle - IEPC (Series) - Primary Bus,HEVIEPCSPrimaryBus_v2_7
+Vehicle_HEV_Px_HeavyLorryDeclarationType_v2_4,v2.4,Hybrid Electric Vehicle - Plug-in Variant - Heavy Lorry,HEVPxHeavyLorry_v2_4
+Vehicle_HEV_Px_HeavyLorryDeclarationType_v2_7,v2.7,Hybrid Electric Vehicle - Plug-in Variant - Heavy Lorry,HEVPxHeavyLorry_v2_7
+Vehicle_HEV_Px_MediumLorryDeclarationType_v2_4,v2.4,Hybrid Electric Vehicle - Plug-in Variant - Medium Lorry,HEVPxMediumLorry_v2_4
+Vehicle_HEV_Px_MediumLorryDeclarationType_v2_7,v2.7,Hybrid Electric Vehicle - Plug-in Variant - Medium Lorry,HEVPxMediumLorry_v2_7
+Vehicle_HEV_Px_PrimaryBusDeclarationType_v2_4,v2.4,Hybrid Electric Vehicle - Plug-in Variant - Primary Bus,HEVPxPrimaryBus_v2_4
+Vehicle_HEV_Px_PrimaryBusDeclarationType_v2_7,v2.7,Hybrid Electric Vehicle - Plug-in Variant - Primary Bus,HEVPxPrimaryBus_v2_7
+Vehicle_HEV_Sx_HeavyLorryDeclarationType_v2_4,v2.4,Hybrid Electric Vehicle - Series Variant - Heavy Lorry,HEVSxHeavyLorry_v2_4
+Vehicle_HEV_Sx_HeavyLorryDeclarationType_v2_7,v2.7,Hybrid Electric Vehicle - Series Variant - Heavy Lorry,HEVSxHeavyLorry_v2_7
+Vehicle_HEV_Sx_MediumLorryDeclarationType_v2_4,v2.4,Hybrid Electric Vehicle - Series Variant - Medium Lorry,HEVSxMediumLorry_v2_4
+Vehicle_HEV_Sx_MediumLorryDeclarationType_v2_7,v2.7,Hybrid Electric Vehicle - Series Variant - Medium Lorry,HEVSxMediumLorry_v2_7
+Vehicle_HEV_Sx_PrimaryBusDeclarationType_v2_4,v2.4,Hybrid Electric Vehicle - Series Variant - Primary Bus,HEVSxPrimaryBus_v2_4
+Vehicle_HEV_Sx_PrimaryBusDeclarationType_v2_7,v2.7,Hybrid Electric Vehicle - Series Variant - Primary Bus,HEVSxPrimaryBus_v2_7
+Vehicle_IEPC_CompletedBusDeclarationType_v2_4,v2.4,IEPC Vehicle - Completed Bus,IEPCCompletedBus_v2_4
+Vehicle_IEPC_HeavyLorryDeclarationType_v2_4,v2.4,IEPC Vehicle - Heavy Lorry,IEPCHeavyLorry_v2_4
+Vehicle_IEPC_HeavyLorryDeclarationType_v2_7,v2.7,IEPC Vehicle - Heavy Lorry,IEPCHeavyLorry_v2_7
+Vehicle_IEPC_MediumLorryDeclarationType_v2_4,v2.4,IEPC Vehicle - Medium Lorry,IEPCMediumLorry_v2_4
+Vehicle_IEPC_MediumLorryDeclarationType_v2_7,v2.7,IEPC Vehicle - Medium Lorry,IEPCMediumLorry_v2_7
+Vehicle_IEPC_PrimaryBusDeclarationType_v2_4,v2.4,IEPC Vehicle - Primary Bus,IEPCPrimaryBus_v2_4
+Vehicle_IEPC_PrimaryBusDeclarationType_v2_7,v2.7,IEPC Vehicle - Primary Bus,IEPCPrimaryBus_v2_7
+Vehicle_Multiple_FCHV_HeavyLorryDeclarationType_v2_7,v2.7,Multiple Powertrain Vehicle - Fuel Cell Hybrid - Heavy Lorry,MultiFCHVHeavyLorry_v2_7
+Vehicle_Multiple_FCHV_PrimaryBusDeclarationType_v2_7,v2.7,Multiple Powertrain Vehicle - Fuel Cell Hybrid - Primary Bus,MultiFCHVPrimaryBus_v2_7
+Vehicle_Multiple_PEV_HeavyLorryDeclarationType_v2_7,v2.7,Multiple Powertrain Vehicle - Plug-in Electric - Heavy Lorry,MultiPEVHeavyLorry_v2_7
+Vehicle_Multiple_PEV_PrimaryBusDeclarationType_v2_7,v2.7,Multiple Powertrain Vehicle - Plug-in Electric - Primary Bus,MultiPEVPrimaryBus_v2_7
+Vehicle_Multiple_SHEV_HeavyLorryDeclarationType_v2_7,v2.7,Multiple Powertrain Vehicle - Series Hybrid Electric - Heavy Lorry,MultiSHEVHeavyLorry_v2_7
+Vehicle_Multiple_SHEV_PrimaryBusDeclarationType_v2_7,v2.7,Multiple Powertrain Vehicle - Series Hybrid Electric - Primary Bus,MultiSHEVPrimaryBus_v2_7
+Vehicle_PEV_CompletedBusDeclarationType_v2_4,v2.4,Pure Electric Vehicle - Completed Bus,PEVCompletedBus_v2_4
+Vehicle_PEV_CompletedBusDeclarationType_v2_7,v2.7,Pure Electric Vehicle - Completed Bus,PEVCompletedBus_v2_7
+Vehicle_PEV_HeavyLorryDeclarationType_v2_4,v2.4,Pure Electric Vehicle - Heavy Lorry,PEVHeavyLorry_v2_4
+Vehicle_PEV_HeavyLorryDeclarationType_v2_7,v2.7,Pure Electric Vehicle - Heavy Lorry,PEVHeavyLorry_v2_7
+Vehicle_PEV_MediumLorryDeclarationType_v2_4,v2.4,Pure Electric Vehicle - Medium Lorry,PEVMediumLorry_v2_4
+Vehicle_PEV_MediumLorryDeclarationType_v2_7,v2.7,Pure Electric Vehicle - Medium Lorry,PEVMediumLorry_v2_7
+Vehicle_PEV_PrimaryBusDeclarationType_v2_4,v2.4,Pure Electric Vehicle - Primary Bus,PEVPrimaryBus_v2_4
+Vehicle_PEV_PrimaryBusDeclarationType_v2_7,v2.7,Pure Electric Vehicle - Primary Bus,PEVPrimaryBus_v2_7
+VehicleDeclarationType_v1_0,v1.0,Vehicle,Vehicle_v1_0
+VehicleDeclarationType_v2_0,v2.0,Vehicle,Vehicle_v2_0
+VehicleDeclarationType_v2_1,v2.1,Vehicle,Vehicle_v2_1

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tns:VectoInputDeclaration
+xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3"
+xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.1"
+xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0"
+xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3"
+xmlns:v2.6="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6"
+xmlns:di="http://www.w3.org/2000/09/xmldsig#"
+schemaVersion="2.0"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
+	<tns:IEPC xsi:type="v2.3:IEPCComponentDeclarationType">
+		<Data xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xsi:type="v2.6:IEPCStandardValuesDataDeclarationType" id="IEPC-asdf" xmlns:v2.9="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.9">
+			<v2.6:Manufacturer>a</v2.6:Manufacturer>
+			<v2.6:Model>a</v2.6:Model>
+			<v2.6:CertificationNumber>token</v2.6:CertificationNumber>
+			<v2.6:Date>2021-11-18T14:33:55.6801441Z</v2.6:Date>
+			<v2.6:AppVersion>aaaaa</v2.6:AppVersion>
+			<v2.6:ElectricMachineType>ASM</v2.6:ElectricMachineType>
+			<v2.6:CertificationMethod>Standard values for all components</v2.6:CertificationMethod>
+			<v2.6:R85RatedPower>50000</v2.6:R85RatedPower>
+			<v2.6:RotationalInertia>0.10</v2.6:RotationalInertia>
+			<v2.6:DifferentialIncluded>false</v2.6:DifferentialIncluded>
+			<v2.6:DesignTypeWheelMotor>true</v2.6:DesignTypeWheelMotor>
+			<v2.6:Gears xsi:type="v2.6:IEPCGearsDeclarationType">
+				<v2.6:Gear number="1">
+					<v2.6:Ratio>3.000</v2.6:Ratio>
+				</v2.6:Gear>
+				<v2.6:Gear number="2">
+					<v2.6:Ratio>1.000</v2.6:Ratio>
+					<v2.6:MaxOutShaftTorque>2000</v2.6:MaxOutShaftTorque>
+				</v2.6:Gear>
+			</v2.6:Gears>
+			<v2.6:VoltageLevel>
+				<v2.6:ContinuousTorque>200.00</v2.6:ContinuousTorque>
+				<v2.6:TestSpeedContinuousTorque>2000.00</v2.6:TestSpeedContinuousTorque>
+				<v2.6:OverloadTorque>400.00</v2.6:OverloadTorque>
+				<v2.6:TestSpeedOverloadTorque>2000.00</v2.6:TestSpeedOverloadTorque>
+				<v2.6:OverloadDuration>30.00</v2.6:OverloadDuration>
+				<v2.6:MaxTorqueCurve>
+					<v2.6:Entry outShaftSpeed="0.00" maxTorque="450.00" minTorque="-450.00"/>
+					<v2.6:Entry outShaftSpeed="4000.00" maxTorque="100.00" minTorque="-100.00"/>
+				</v2.6:MaxTorqueCurve>
+				<v2.6:PowerMap gear="1">
+					<v2.6:Entry outShaftSpeed="0.00" torque="-400.00" electricPower="-1000.00"/>
+					<v2.6:Entry outShaftSpeed="0.00" torque="400.00" electricPower="1000.00"/>
+					<v2.6:Entry outShaftSpeed="4000.00" torque="-4000.00" electricPower="-20000.00"/>
+					<v2.6:Entry outShaftSpeed="4000.00" torque="4000.00" electricPower="20000.00"/>
+				</v2.6:PowerMap>
+				<v2.6:PowerMap gear="1">
+					<v2.6:Entry outShaftSpeed="0.00" torque="-400.00" electricPower="-1000.00"/>
+					<v2.6:Entry outShaftSpeed="0.00" torque="400.00" electricPower="1000.00"/>
+					<v2.6:Entry outShaftSpeed="4000.00" torque="-4000.00" electricPower="-20000.00"/>
+					<v2.6:Entry outShaftSpeed="4000.00" torque="4000.00" electricPower="20000.00"/>
+				</v2.6:PowerMap>
+			</v2.6:VoltageLevel>
+			<v2.6:DragCurve>
+				<v2.6:Entry outShaftSpeed="0.00" dragTorque="10.00"/>
+				<v2.6:Entry outShaftSpeed="4000.00" dragTorque="30.00"/>
+			</v2.6:DragCurve>
+			<v2.6:DisengagementClutch>true</v2.6:DisengagementClutch>
+		</Data>
+	</tns:IEPC>
+</tns:VectoInputDeclaration>

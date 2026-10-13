@@ -1,0 +1,765 @@
+{
+  "$id": "GearboxComponentDeclarationType_v2_0",
+  "type": "object",
+  "properties": {
+    "Data": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$id": "GearboxDataDeclarationType_v1_0",
+          "description": "Gearbox Component",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P205",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P206",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P262",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P208",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P209",
+              "type": "string",
+              "minLength": 5
+            },
+            "TransmissionType": {
+              "description": "P076 - [-]",
+              "type": "string",
+              "enum": [
+                "SMT",
+                "AMT",
+                "APT_S",
+                "APT_P"
+              ]
+            },
+            "MainCertificationMethod": {
+              "description": "P254 - [-]",
+              "type": "string",
+              "enum": [
+                "Option_1",
+                "Option_2",
+                "Option_3",
+                "Standard_values"
+              ]
+            },
+            "Gears": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[GearDeclarationType_v1_0]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "GearDeclarationType_v1_0",
+                    "type": "object",
+                    "properties": {
+                      "MaxTorque": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ]
+                      },
+                      "MaxSpeed": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ]
+                      },
+                      "TorqueLossMap": {
+                        "$id": "GearDeclarationTypeTorqueLossMap_v1_0",
+                        "type": "object",
+                        "properties": {
+                          "Entry": {
+                            "type": "object",
+                            "properties": {
+                              "$type": {
+                                "type": "string",
+                                "const": "[TorqueLossMapEntryType_v1_0]"
+                              },
+                              "$values": {
+                                "type": "array",
+                                "items": {
+                                  "$id": "TorqueLossMapEntryType_v1_0",
+                                  "type": "object",
+                                  "properties": {
+                                    "inputSpeed": {
+                                      "description": "P096 - [1/min]",
+                                      "type": "number"
+                                    },
+                                    "inputTorque": {
+                                      "description": "P097 - [Nm]",
+                                      "type": "number"
+                                    },
+                                    "torqueLoss": {
+                                      "description": "P098 - [Nm]",
+                                      "type": "number"
+                                    }
+                                  },
+                                  "required": [
+                                    "inputSpeed",
+                                    "inputTorque",
+                                    "torqueLoss"
+                                  ]
+                                }
+                              }
+                            },
+                            "required": [
+                              "$type",
+                              "$values"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "Entry"
+                        ]
+                      },
+                      "Ratio": {
+                        "description": "P078 - [-]",
+                        "type": "number"
+                      },
+                      "number": {
+                        "description": "P199 - [-]",
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "TorqueLossMap",
+                      "Ratio",
+                      "number"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "GearboxDataDeclarationType_v1_0"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "TransmissionType",
+            "MainCertificationMethod",
+            "Gears",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "GearboxDataDeclarationType_v2_0",
+          "description": "Gearbox Component",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P205",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P206",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P262",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P208",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P209",
+              "type": "string",
+              "minLength": 5
+            },
+            "TransmissionType": {
+              "description": "P076 - [-]",
+              "type": "string",
+              "enum": [
+                "SMT",
+                "AMT",
+                "APT_S",
+                "APT_P"
+              ]
+            },
+            "MainCertificationMethod": {
+              "description": "P254 - [-]",
+              "type": "string",
+              "enum": [
+                "Option_1",
+                "Option_2",
+                "Option_3",
+                "Standard_values"
+              ]
+            },
+            "Gears": {
+              "type": "object",
+              "oneOf": [
+                {
+                  "$id": "GearsDeclarationType_v2_0",
+                  "type": "object",
+                  "properties": {
+                    "Gear": {
+                      "type": "object",
+                      "properties": {
+                        "$type": {
+                          "type": "string",
+                          "const": "[GearDeclarationType_v2_0]"
+                        },
+                        "$values": {
+                          "type": "array",
+                          "items": {
+                            "$id": "GearDeclarationType_v2_0",
+                            "type": "object",
+                            "properties": {
+                              "MaxTorque": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "MaxSpeed": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "TorqueLossMap": {
+                                "$id": "GearDeclarationTypeTorqueLossMap_v2_0",
+                                "type": "object",
+                                "properties": {
+                                  "Entry": {
+                                    "type": "object",
+                                    "properties": {
+                                      "$type": {
+                                        "type": "string",
+                                        "const": "[TorqueLossMapEntryType_v2_0]"
+                                      },
+                                      "$values": {
+                                        "type": "array",
+                                        "items": {
+                                          "$id": "TorqueLossMapEntryType_v2_0",
+                                          "type": "object",
+                                          "properties": {
+                                            "inputSpeed": {
+                                              "description": "P096 - [1/min]",
+                                              "type": "number"
+                                            },
+                                            "inputTorque": {
+                                              "description": "P097 - [Nm]",
+                                              "type": "number"
+                                            },
+                                            "torqueLoss": {
+                                              "description": "P098 - [Nm]",
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": [
+                                            "inputSpeed",
+                                            "inputTorque",
+                                            "torqueLoss"
+                                          ]
+                                        }
+                                      }
+                                    },
+                                    "required": [
+                                      "$type",
+                                      "$values"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "Entry"
+                                ]
+                              },
+                              "Ratio": {
+                                "description": "P078 - [-]",
+                                "type": "number"
+                              },
+                              "number": {
+                                "description": "P199 - [-]",
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "TorqueLossMap",
+                              "Ratio",
+                              "number"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "$type",
+                        "$values"
+                      ]
+                    },
+                    "$type": {
+                      "type": "string",
+                      "enum": [
+                        "GearsDeclarationType_v2_0"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "Gear",
+                    "$type"
+                  ]
+                }
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "GearboxDataDeclarationType_v2_0"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "TransmissionType",
+            "MainCertificationMethod",
+            "Gears",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "GearboxDataDeclarationType_v2_3",
+          "description": "Gearbox Component",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P205 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P206 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P262 - [-]",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P208 - [-]",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P209 - [-]",
+              "type": "string",
+              "minLength": 5
+            },
+            "TransmissionType": {
+              "description": "P076 - enum",
+              "type": "string",
+              "enum": [
+                "SMT",
+                "AMT",
+                "APT_S",
+                "APT_P",
+                "APT_N",
+                "IHPC_Type_1"
+              ]
+            },
+            "MainCertificationMethod": {
+              "description": "P254 - enum",
+              "type": "string",
+              "enum": [
+                "Option_1",
+                "Option_2",
+                "Option_3",
+                "Standard_values"
+              ]
+            },
+            "Gears": {
+              "type": "object",
+              "oneOf": [
+                {
+                  "$id": "GearsDeclarationType_v2_0",
+                  "type": "object",
+                  "properties": {
+                    "Gear": {
+                      "type": "object",
+                      "properties": {
+                        "$type": {
+                          "type": "string",
+                          "const": "[GearDeclarationType_v2_0]"
+                        },
+                        "$values": {
+                          "type": "array",
+                          "items": {
+                            "$id": "GearDeclarationType_v2_0",
+                            "type": "object",
+                            "properties": {
+                              "MaxTorque": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "MaxSpeed": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "TorqueLossMap": {
+                                "$id": "GearDeclarationTypeTorqueLossMap_v2_0",
+                                "type": "object",
+                                "properties": {
+                                  "Entry": {
+                                    "type": "object",
+                                    "properties": {
+                                      "$type": {
+                                        "type": "string",
+                                        "const": "[TorqueLossMapEntryType_v2_0]"
+                                      },
+                                      "$values": {
+                                        "type": "array",
+                                        "items": {
+                                          "$id": "TorqueLossMapEntryType_v2_0",
+                                          "type": "object",
+                                          "properties": {
+                                            "inputSpeed": {
+                                              "description": "P096 - [1/min]",
+                                              "type": "number"
+                                            },
+                                            "inputTorque": {
+                                              "description": "P097 - [Nm]",
+                                              "type": "number"
+                                            },
+                                            "torqueLoss": {
+                                              "description": "P098 - [Nm]",
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": [
+                                            "inputSpeed",
+                                            "inputTorque",
+                                            "torqueLoss"
+                                          ]
+                                        }
+                                      }
+                                    },
+                                    "required": [
+                                      "$type",
+                                      "$values"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "Entry"
+                                ]
+                              },
+                              "Ratio": {
+                                "description": "P078 - [-]",
+                                "type": "number"
+                              },
+                              "number": {
+                                "description": "P199 - [-]",
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "TorqueLossMap",
+                              "Ratio",
+                              "number"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "$type",
+                        "$values"
+                      ]
+                    },
+                    "$type": {
+                      "type": "string",
+                      "enum": [
+                        "GearsDeclarationType_v2_0"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "Gear",
+                    "$type"
+                  ]
+                }
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "GearboxDataDeclarationType_v2_3"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "TransmissionType",
+            "MainCertificationMethod",
+            "Gears",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "GearboxFWDDataDeclarationType_v2_3",
+          "description": "Gearbox Component",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P205 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P206 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P262 - [-]",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P208 - [-]",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P209 - [-]",
+              "type": "string",
+              "minLength": 5
+            },
+            "TransmissionType": {
+              "description": "P076 - enum",
+              "type": "string",
+              "enum": [
+                "SMT",
+                "AMT",
+                "APT_S",
+                "APT_P"
+              ]
+            },
+            "MainCertificationMethod": {
+              "description": "P254 - enum",
+              "type": "string",
+              "enum": [
+                "Option_1",
+                "Option_2",
+                "Option_3",
+                "Standard_values"
+              ]
+            },
+            "DifferentialIncluded": {
+              "description": "P353 - [bool]",
+              "type": "boolean"
+            },
+            "AxlegearRatio": {
+              "description": "P150 - [-]",
+              "type": "number"
+            },
+            "Gears": {
+              "type": "object",
+              "oneOf": [
+                {
+                  "$id": "GearsDeclarationType_v2_0",
+                  "type": "object",
+                  "properties": {
+                    "Gear": {
+                      "type": "object",
+                      "properties": {
+                        "$type": {
+                          "type": "string",
+                          "const": "[GearDeclarationType_v2_0]"
+                        },
+                        "$values": {
+                          "type": "array",
+                          "items": {
+                            "$id": "GearDeclarationType_v2_0",
+                            "type": "object",
+                            "properties": {
+                              "MaxTorque": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "MaxSpeed": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "TorqueLossMap": {
+                                "$id": "GearDeclarationTypeTorqueLossMap_v2_0",
+                                "type": "object",
+                                "properties": {
+                                  "Entry": {
+                                    "type": "object",
+                                    "properties": {
+                                      "$type": {
+                                        "type": "string",
+                                        "const": "[TorqueLossMapEntryType_v2_0]"
+                                      },
+                                      "$values": {
+                                        "type": "array",
+                                        "items": {
+                                          "$id": "TorqueLossMapEntryType_v2_0",
+                                          "type": "object",
+                                          "properties": {
+                                            "inputSpeed": {
+                                              "description": "P096 - [1/min]",
+                                              "type": "number"
+                                            },
+                                            "inputTorque": {
+                                              "description": "P097 - [Nm]",
+                                              "type": "number"
+                                            },
+                                            "torqueLoss": {
+                                              "description": "P098 - [Nm]",
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": [
+                                            "inputSpeed",
+                                            "inputTorque",
+                                            "torqueLoss"
+                                          ]
+                                        }
+                                      }
+                                    },
+                                    "required": [
+                                      "$type",
+                                      "$values"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "Entry"
+                                ]
+                              },
+                              "Ratio": {
+                                "description": "P078 - [-]",
+                                "type": "number"
+                              },
+                              "number": {
+                                "description": "P199 - [-]",
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "TorqueLossMap",
+                              "Ratio",
+                              "number"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "$type",
+                        "$values"
+                      ]
+                    },
+                    "$type": {
+                      "type": "string",
+                      "enum": [
+                        "GearsDeclarationType_v2_0"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "Gear",
+                    "$type"
+                  ]
+                }
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "GearboxFWDDataDeclarationType_v2_3"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "TransmissionType",
+            "MainCertificationMethod",
+            "DifferentialIncluded",
+            "AxlegearRatio",
+            "Gears",
+            "id",
+            "$type"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "Data"
+  ]
+}

@@ -1,0 +1,9 @@
+=== VEHICLE COMPONENTS ===
+Components.AirDrag -> AirDrag.xml
+
+=== XML VALIDATION ===
+Vehicle XML is INVALID.
+The element 'HVAC' in namespace 'urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7' has invalid child element 'HeatPumpTypeDriverCompartment' in namespace 'urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7'. List of possible elements expected: 'SystemConfiguration, AuxiliaryHeaterPower, DoubleGlazing, AdjustableAuxiliaryHeater, SeparateAirDistributionDucts' in namespace 'urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7'.
+XML file does not validate against a supported version of DeclarationJobData
+no schema found
+

@@ -1,0 +1,38 @@
+{
+  "type": "object",
+  "properties": {
+    "Component": {
+      "type": "string",
+      "enum": [
+        "FuelCell"
+      ]
+    },
+    "FCSRatedPower": {
+      "description": "Fuel cell system rated power [kW]",
+      "type": "integer",
+      "minimum": 10.0,
+      "maximum": 1000.0
+    },
+    "Manufacturer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "Model": {
+      "type": "string",
+      "minLength": 1
+    },
+    "CertificationNumber": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "Component",
+    "FCSRatedPower",
+    "Manufacturer",
+    "Model",
+    "CertificationNumber"
+  ]
+}

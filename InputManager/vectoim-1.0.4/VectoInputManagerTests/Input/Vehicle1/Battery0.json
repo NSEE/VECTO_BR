@@ -1,0 +1,69 @@
+{
+  "$type": "BatteryComponentDeclarationType_v2_3",
+  "Data": {
+    "$type": "BatterySystemDataType_v2_3",
+    "Manufacturer": "a1",
+    "Model": "a",
+    "CertificationNumber": "token",
+    "Date": "2017-01-01T00:00:00Z",
+    "AppVersion": "aaaaa",
+    "CertificationMethod": "Measured",
+    "BatteryType": "HPBS",
+    "RatedCapacity": 324.00,
+    "ConnectorsSubsystemsIncluded": true,
+    "JunctionboxIncluded": true,
+    "TestingTemperature": 20,
+    "OCV": {
+      "$type": "[BatterySystemOCVEntryType_v2_3]",
+      "$values": [
+        {
+          "$type": "BatterySystemOCVEntryType_v2_3",
+          "SoC": 0,
+          "OCV": 673.50
+        },
+        {
+          "$type": "BatterySystemOCVEntryType_v2_3",
+          "SoC": 100,
+          "OCV": 750.20
+        }
+      ]
+    },
+    "InternalResistance": {
+      "$type": "[BatterySystemInternalResistanceEntryType_v2_3]",
+      "$values": [
+        {
+          "$type": "BatterySystemInternalResistanceEntryType_v2_3",
+          "SoC": 0,
+          "R_2": 10.00,
+          "R_10": 11.00,
+          "R_20": 12.00
+        },
+        {
+          "$type": "BatterySystemInternalResistanceEntryType_v2_3",
+          "SoC": 100,
+          "R_2": 12.00,
+          "R_10": 14.00,
+          "R_20": 16.00
+        }
+      ]
+    },
+    "CurrentLimits": {
+      "$type": "[BatterySystemCurrentLimitsEntryType_v2_3]",
+      "$values": [
+        {
+          "$type": "BatterySystemCurrentLimitsEntryType_v2_3",
+          "SoC": 0,
+          "maxChargingCurrent": 500.00,
+          "maxDischargingCurrent": 500.00
+        },
+        {
+          "$type": "BatterySystemCurrentLimitsEntryType_v2_3",
+          "SoC": 100,
+          "maxChargingCurrent": 500.00,
+          "maxDischargingCurrent": 500.00
+        }
+      ]
+    },
+    "id": "BAT-asdf"
+  }
+}

@@ -1,0 +1,16 @@
+{
+	"Data": {
+		"CertificationMethod": "Measured",
+		"RetarderLossMap": {
+			"$values": [
+				{
+					"retarderSpeed": 42.0,
+					"torqueLoss": 42.0
+				},
+				{
+					"$crop": true
+				}
+			]
+		}
+	}
+}

@@ -1,0 +1,204 @@
+{
+  "$id": "RetarderComponentDeclarationType_v2_0",
+  "type": "object",
+  "properties": {
+    "Data": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$id": "RetarderDataDeclarationType_v1_0",
+          "description": "Retarder Component",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P225",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P226",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P266",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P228",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P229",
+              "type": "string",
+              "minLength": 5
+            },
+            "CertificationMethod": {
+              "description": "P255 - [-]",
+              "type": "string",
+              "enum": [
+                "Measured",
+                "Standard_values"
+              ]
+            },
+            "RetarderLossMap": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[RetarderLossmapEntryType_v1_0]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "RetarderLossmapEntryType_v1_0",
+                    "type": "object",
+                    "properties": {
+                      "retarderSpeed": {
+                        "description": "P057 - [1/min]",
+                        "type": "number"
+                      },
+                      "torqueLoss": {
+                        "description": "P058 - [Nm]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "retarderSpeed",
+                      "torqueLoss"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "RetarderDataDeclarationType_v1_0"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "CertificationMethod",
+            "RetarderLossMap",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "RetarderDataDeclarationType_v2_0",
+          "description": "Retarder Component",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P225",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P226",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P266",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P228",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P229",
+              "type": "string",
+              "minLength": 5
+            },
+            "CertificationMethod": {
+              "description": "P255 - [-]",
+              "type": "string",
+              "enum": [
+                "Measured",
+                "Standard_values"
+              ]
+            },
+            "RetarderLossMap": {
+              "type": "object",
+              "properties": {
+                "$type": {
+                  "type": "string",
+                  "const": "[RetarderLossmapEntryType_v2_0]"
+                },
+                "$values": {
+                  "type": "array",
+                  "items": {
+                    "$id": "RetarderLossmapEntryType_v2_0",
+                    "type": "object",
+                    "properties": {
+                      "retarderSpeed": {
+                        "description": "P057 - [1/min]",
+                        "type": "number"
+                      },
+                      "torqueLoss": {
+                        "description": "P058 - [Nm]",
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "retarderSpeed",
+                      "torqueLoss"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "$type",
+                "$values"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "RetarderDataDeclarationType_v2_0"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "CertificationMethod",
+            "RetarderLossMap",
+            "id",
+            "$type"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "Data"
+  ]
+}

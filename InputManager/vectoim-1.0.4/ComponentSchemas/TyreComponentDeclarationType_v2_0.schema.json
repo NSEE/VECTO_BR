@@ -1,0 +1,812 @@
+{
+  "$id": "TyreComponentDeclarationType_v2_0",
+  "type": "object",
+  "properties": {
+    "Data": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$id": "TyreDataDeclarationType_v1_0",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P230",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P231",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P267",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P233",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P234",
+              "type": "string",
+              "minLength": 5
+            },
+            "Dimension": {
+              "description": "P108 - enum",
+              "type": "string",
+              "enum": [
+                "Item9_R22Period5",
+                "Item9Period00_R20",
+                "Item9Period5_R17Period5",
+                "Item10_R17Period5",
+                "Item10_R22Period5",
+                "Item10Period00_R20",
+                "Item11_R22Period5",
+                "Item11Period00_R20",
+                "Item12_R22Period5",
+                "Item12Period00_R20",
+                "Item12Period00_R24",
+                "Item12Period5_R20",
+                "Item13_R22Period5",
+                "Item14Period00_R20",
+                "Item14Period5_R20",
+                "Item16Period00_R20",
+                "Item205Slash75_R17Period5",
+                "Item215Slash75_R17Period5",
+                "Item225Slash70_R17Period5",
+                "Item225Slash75_R17Period5",
+                "Item235Slash75_R17Period5",
+                "Item245Slash70_R17Period5",
+                "Item245Slash70_R19Period5",
+                "Item255Slash70_R22Period5",
+                "Item265Slash70_R17Period5",
+                "Item265Slash70_R19Period5",
+                "Item275Slash70_R22Period5",
+                "Item275Slash80_R22Period5",
+                "Item285Slash60_R22Period5",
+                "Item285Slash70_R19Period5",
+                "Item295Slash55_R22Period5",
+                "Item295Slash60_R22Period5",
+                "Item295Slash80_R22Period5",
+                "Item305Slash60_R22Period5",
+                "Item305Slash70_R19Period5",
+                "Item305Slash70_R22Period5",
+                "Item305Slash75_R24Period5",
+                "Item315Slash45_R22Period5",
+                "Item315Slash60_R22Period5",
+                "Item315Slash70_R22Period5",
+                "Item315Slash80_R22Period5",
+                "Item325Slash95_R24",
+                "Item335Slash80_R20",
+                "Item355Slash50_R22Period5",
+                "Item365Slash70_R22Period5",
+                "Item365Slash80_R20",
+                "Item365Slash85_R20",
+                "Item375Slash45_R22Period5",
+                "Item375Slash50_R22Period5",
+                "Item375Slash90_R22Period5",
+                "Item385Slash55_R22Period5",
+                "Item385Slash65_R22Period5",
+                "Item395Slash85_R20",
+                "Item425Slash65_R22Period5",
+                "Item495Slash45_R22Period5",
+                "Item525Slash65_R20Period5",
+                "Item11Period00_R16",
+                "Item6Period00_R9",
+                "Item205Slash65_R17Period5",
+                "Item225Slash75_R16C",
+                "Item255Slash100_R16",
+                "Item255Slash60_R19Period5",
+                "Item265Slash55_R19Period5",
+                "Item275Slash60_R19Period5",
+                "Item275Slash80_R20",
+                "Item285Slash65_R16C",
+                "Item295Slash75_R22Period5",
+                "Item325Slash85_R16",
+                "Item435Slash50_R19Period5",
+                "Item435Slash50_R22Period5",
+                "Item445Slash40_R22Period5",
+                "Item445Slash45_R19Period5",
+                "Item445Slash65_R22Period5",
+                "Item445Slash75_R22Period5",
+                "Item455Slash40_R22Period5",
+                "Item455Slash45_R22Period5",
+                "Item475Slash80_R20",
+                "Item7Period00_R16C",
+                "Item7Period50_R15",
+                "Item7Period50_R16",
+                "Item7Period50_R16C",
+                "Item8Period25_R15",
+                "Item8Period25_R16C",
+                "Item8Period5_R17Period5",
+                "Item8_R17Period5",
+                "LT265Slash75_R16",
+                "Item385Slash55_R19Period5",
+                "Item24_R21",
+                "Item205Slash70_R15C",
+                "Item215Slash70_R15C",
+                "Item225Slash70_R15C",
+                "Item185Slash75_R16C",
+                "Item195Slash65_R16C",
+                "Item195Slash75_R16C",
+                "Item205Slash65_R16C",
+                "Item205Slash75_R16C",
+                "Item215Slash65_R16C",
+                "Item215Slash75_R16C",
+                "Item225Slash65_R16C",
+                "Item235Slash65_R16C",
+                "Item215Slash60_R17C",
+                "Item235Slash60_R17C"
+              ]
+            },
+            "RRCDeclared": {
+              "description": "P046 - [-]",
+              "type": "number"
+            },
+            "FzISO": {
+              "description": "P047 - [N]",
+              "type": "integer"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "TyreDataDeclarationType_v1_0"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "Dimension",
+            "RRCDeclared",
+            "FzISO",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "TyreDataDeclarationType_v2_0",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P230",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P231",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P267",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P233",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P234",
+              "type": "string",
+              "minLength": 5
+            },
+            "Dimension": {
+              "description": "P108 - enum",
+              "type": "string",
+              "enum": [
+                "Item9_R22Period5",
+                "Item9Period00_R20",
+                "Item9Period5_R17Period5",
+                "Item10_R17Period5",
+                "Item10_R22Period5",
+                "Item10Period00_R20",
+                "Item11_R22Period5",
+                "Item11Period00_R20",
+                "Item12_R22Period5",
+                "Item12Period00_R20",
+                "Item12Period00_R24",
+                "Item12Period5_R20",
+                "Item13_R22Period5",
+                "Item14Period00_R20",
+                "Item14Period5_R20",
+                "Item16Period00_R20",
+                "Item205Slash75_R17Period5",
+                "Item215Slash75_R17Period5",
+                "Item225Slash70_R17Period5",
+                "Item225Slash75_R17Period5",
+                "Item235Slash75_R17Period5",
+                "Item245Slash70_R17Period5",
+                "Item245Slash70_R19Period5",
+                "Item255Slash70_R22Period5",
+                "Item265Slash70_R17Period5",
+                "Item265Slash70_R19Period5",
+                "Item275Slash70_R22Period5",
+                "Item275Slash80_R22Period5",
+                "Item285Slash60_R22Period5",
+                "Item285Slash70_R19Period5",
+                "Item295Slash55_R22Period5",
+                "Item295Slash60_R22Period5",
+                "Item295Slash80_R22Period5",
+                "Item305Slash60_R22Period5",
+                "Item305Slash70_R19Period5",
+                "Item305Slash70_R22Period5",
+                "Item305Slash75_R24Period5",
+                "Item315Slash45_R22Period5",
+                "Item315Slash60_R22Period5",
+                "Item315Slash70_R22Period5",
+                "Item315Slash80_R22Period5",
+                "Item325Slash95_R24",
+                "Item335Slash80_R20",
+                "Item355Slash50_R22Period5",
+                "Item365Slash70_R22Period5",
+                "Item365Slash80_R20",
+                "Item365Slash85_R20",
+                "Item375Slash45_R22Period5",
+                "Item375Slash50_R22Period5",
+                "Item375Slash90_R22Period5",
+                "Item385Slash55_R22Period5",
+                "Item385Slash65_R22Period5",
+                "Item395Slash85_R20",
+                "Item425Slash65_R22Period5",
+                "Item495Slash45_R22Period5",
+                "Item525Slash65_R20Period5",
+                "Item11Period00_R16",
+                "Item6Period00_R9",
+                "Item205Slash65_R17Period5",
+                "Item225Slash75_R16C",
+                "Item255Slash100_R16",
+                "Item255Slash60_R19Period5",
+                "Item265Slash55_R19Period5",
+                "Item275Slash60_R19Period5",
+                "Item275Slash80_R20",
+                "Item285Slash65_R16C",
+                "Item295Slash75_R22Period5",
+                "Item325Slash85_R16",
+                "Item435Slash50_R19Period5",
+                "Item435Slash50_R22Period5",
+                "Item445Slash40_R22Period5",
+                "Item445Slash45_R19Period5",
+                "Item445Slash65_R22Period5",
+                "Item445Slash75_R22Period5",
+                "Item455Slash40_R22Period5",
+                "Item455Slash45_R22Period5",
+                "Item475Slash80_R20",
+                "Item7Period00_R16C",
+                "Item7Period50_R15",
+                "Item7Period50_R16",
+                "Item7Period50_R16C",
+                "Item8Period25_R15",
+                "Item8Period25_R16C",
+                "Item8Period5_R17Period5",
+                "Item8_R17Period5",
+                "LT265Slash75_R16",
+                "Item385Slash55_R19Period5",
+                "Item24_R21",
+                "Item205Slash70_R15C",
+                "Item215Slash70_R15C",
+                "Item225Slash70_R15C",
+                "Item185Slash75_R16C",
+                "Item195Slash65_R16C",
+                "Item195Slash75_R16C",
+                "Item205Slash65_R16C",
+                "Item205Slash75_R16C",
+                "Item215Slash65_R16C",
+                "Item215Slash75_R16C",
+                "Item225Slash65_R16C",
+                "Item235Slash65_R16C",
+                "Item215Slash60_R17C",
+                "Item235Slash60_R17C"
+              ]
+            },
+            "RRCDeclared": {
+              "description": "P046 - [-]",
+              "type": "number"
+            },
+            "FzISO": {
+              "description": "P047 - [N]",
+              "type": "integer"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "TyreDataDeclarationType_v2_0"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "Dimension",
+            "RRCDeclared",
+            "FzISO",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "TyreDataDeclarationType_v2_2",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P230 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P231 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P267 - [-]",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P233 - [-]",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P234 - [-]",
+              "type": "string",
+              "minLength": 5
+            },
+            "Dimension": {
+              "description": "P108 - enum",
+              "type": "string",
+              "enum": [
+                "Item9_R22Period5",
+                "Item9Period00_R20",
+                "Item9Period5_R17Period5",
+                "Item10_R17Period5",
+                "Item10_R22Period5",
+                "Item10Period00_R20",
+                "Item11_R22Period5",
+                "Item11Period00_R20",
+                "Item12_R22Period5",
+                "Item12Period00_R20",
+                "Item12Period00_R24",
+                "Item12Period5_R20",
+                "Item13_R22Period5",
+                "Item14Period00_R20",
+                "Item14Period5_R20",
+                "Item16Period00_R20",
+                "Item205Slash75_R17Period5",
+                "Item215Slash75_R17Period5",
+                "Item225Slash70_R17Period5",
+                "Item225Slash75_R17Period5",
+                "Item235Slash75_R17Period5",
+                "Item245Slash70_R17Period5",
+                "Item245Slash70_R19Period5",
+                "Item255Slash70_R22Period5",
+                "Item265Slash70_R17Period5",
+                "Item265Slash70_R19Period5",
+                "Item275Slash70_R22Period5",
+                "Item275Slash80_R22Period5",
+                "Item285Slash60_R22Period5",
+                "Item285Slash70_R19Period5",
+                "Item295Slash55_R22Period5",
+                "Item295Slash60_R22Period5",
+                "Item295Slash80_R22Period5",
+                "Item305Slash60_R22Period5",
+                "Item305Slash70_R19Period5",
+                "Item305Slash70_R22Period5",
+                "Item305Slash75_R24Period5",
+                "Item315Slash45_R22Period5",
+                "Item315Slash60_R22Period5",
+                "Item315Slash70_R22Period5",
+                "Item315Slash80_R22Period5",
+                "Item325Slash95_R24",
+                "Item335Slash80_R20",
+                "Item355Slash50_R22Period5",
+                "Item365Slash70_R22Period5",
+                "Item365Slash80_R20",
+                "Item365Slash85_R20",
+                "Item375Slash45_R22Period5",
+                "Item375Slash50_R22Period5",
+                "Item375Slash90_R22Period5",
+                "Item385Slash55_R22Period5",
+                "Item385Slash65_R22Period5",
+                "Item395Slash85_R20",
+                "Item425Slash65_R22Period5",
+                "Item495Slash45_R22Period5",
+                "Item525Slash65_R20Period5",
+                "Item11Period00_R16",
+                "Item6Period00_R9",
+                "Item205Slash65_R17Period5",
+                "Item225Slash75_R16C",
+                "Item255Slash100_R16",
+                "Item255Slash60_R19Period5",
+                "Item265Slash55_R19Period5",
+                "Item275Slash60_R19Period5",
+                "Item275Slash80_R20",
+                "Item285Slash65_R16C",
+                "Item295Slash75_R22Period5",
+                "Item325Slash85_R16",
+                "Item435Slash50_R19Period5",
+                "Item435Slash50_R22Period5",
+                "Item445Slash40_R22Period5",
+                "Item445Slash45_R19Period5",
+                "Item445Slash65_R22Period5",
+                "Item445Slash75_R22Period5",
+                "Item455Slash40_R22Period5",
+                "Item455Slash45_R22Period5",
+                "Item475Slash80_R20",
+                "Item7Period00_R16C",
+                "Item7Period50_R15",
+                "Item7Period50_R16",
+                "Item7Period50_R16C",
+                "Item8Period25_R15",
+                "Item8Period25_R16C",
+                "Item8Period5_R17Period5",
+                "Item8_R17Period5",
+                "LT265Slash75_R16",
+                "Item385Slash55_R19Period5",
+                "Item24_R21",
+                "Item205Slash70_R15C",
+                "Item215Slash70_R15C",
+                "Item225Slash70_R15C",
+                "Item185Slash75_R16C",
+                "Item195Slash65_R16C",
+                "Item195Slash75_R16C",
+                "Item205Slash65_R16C",
+                "Item205Slash75_R16C",
+                "Item215Slash65_R16C",
+                "Item215Slash75_R16C",
+                "Item225Slash65_R16C",
+                "Item235Slash65_R16C",
+                "Item215Slash60_R17C",
+                "Item235Slash60_R17C"
+              ]
+            },
+            "RRCDeclared": {
+              "description": "P046 - [-]",
+              "type": "number"
+            },
+            "FzISO": {
+              "description": "P047 - [N]",
+              "type": "integer"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "TyreDataDeclarationType_v2_2"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "Dimension",
+            "RRCDeclared",
+            "FzISO",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "TyreDataDeclarationType_v2_3",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P230 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P231 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P267 - [-]",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P233 - [-]",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P234 - [-]",
+              "type": "string",
+              "minLength": 5
+            },
+            "Dimension": {
+              "description": "P108 - enum",
+              "type": "string",
+              "enum": [
+                "Item9_R22Period5",
+                "Item9Period00_R20",
+                "Item9Period5_R17Period5",
+                "Item10_R17Period5",
+                "Item10_R22Period5",
+                "Item10Period00_R20",
+                "Item11_R22Period5",
+                "Item11Period00_R20",
+                "Item12_R22Period5",
+                "Item12Period00_R20",
+                "Item12Period00_R24",
+                "Item12Period5_R20",
+                "Item13_R22Period5",
+                "Item14Period00_R20",
+                "Item14Period5_R20",
+                "Item16Period00_R20",
+                "Item205Slash75_R17Period5",
+                "Item215Slash75_R17Period5",
+                "Item225Slash70_R17Period5",
+                "Item225Slash75_R17Period5",
+                "Item235Slash75_R17Period5",
+                "Item245Slash70_R17Period5",
+                "Item245Slash70_R19Period5",
+                "Item255Slash70_R22Period5",
+                "Item265Slash70_R17Period5",
+                "Item265Slash70_R19Period5",
+                "Item275Slash70_R22Period5",
+                "Item275Slash80_R22Period5",
+                "Item285Slash60_R22Period5",
+                "Item285Slash70_R19Period5",
+                "Item295Slash55_R22Period5",
+                "Item295Slash60_R22Period5",
+                "Item295Slash80_R22Period5",
+                "Item305Slash60_R22Period5",
+                "Item305Slash70_R19Period5",
+                "Item305Slash70_R22Period5",
+                "Item305Slash75_R24Period5",
+                "Item315Slash45_R22Period5",
+                "Item315Slash60_R22Period5",
+                "Item315Slash70_R22Period5",
+                "Item315Slash80_R22Period5",
+                "Item325Slash95_R24",
+                "Item335Slash80_R20",
+                "Item355Slash50_R22Period5",
+                "Item365Slash70_R22Period5",
+                "Item365Slash80_R20",
+                "Item365Slash85_R20",
+                "Item375Slash45_R22Period5",
+                "Item375Slash50_R22Period5",
+                "Item375Slash90_R22Period5",
+                "Item385Slash55_R22Period5",
+                "Item385Slash65_R22Period5",
+                "Item395Slash85_R20",
+                "Item425Slash65_R22Period5",
+                "Item495Slash45_R22Period5",
+                "Item525Slash65_R20Period5",
+                "Item11Period00_R16",
+                "Item6Period00_R9",
+                "Item205Slash65_R17Period5",
+                "Item225Slash75_R16C",
+                "Item255Slash100_R16",
+                "Item255Slash60_R19Period5",
+                "Item265Slash55_R19Period5",
+                "Item275Slash60_R19Period5",
+                "Item275Slash80_R20",
+                "Item285Slash65_R16C",
+                "Item295Slash75_R22Period5",
+                "Item325Slash85_R16",
+                "Item435Slash50_R19Period5",
+                "Item435Slash50_R22Period5",
+                "Item445Slash40_R22Period5",
+                "Item445Slash45_R19Period5",
+                "Item445Slash65_R22Period5",
+                "Item445Slash75_R22Period5",
+                "Item455Slash40_R22Period5",
+                "Item455Slash45_R22Period5",
+                "Item475Slash80_R20",
+                "Item7Period00_R16C",
+                "Item7Period50_R15",
+                "Item7Period50_R16",
+                "Item7Period50_R16C",
+                "Item8Period25_R15",
+                "Item8Period25_R16C",
+                "Item8Period5_R17Period5",
+                "Item8_R17Period5",
+                "LT265Slash75_R16",
+                "Item385Slash55_R19Period5",
+                "Item24_R21",
+                "Item205Slash70_R15C",
+                "Item215Slash70_R15C",
+                "Item225Slash70_R15C",
+                "Item185Slash75_R16C",
+                "Item195Slash65_R16C",
+                "Item195Slash75_R16C",
+                "Item205Slash65_R16C",
+                "Item205Slash75_R16C",
+                "Item215Slash65_R16C",
+                "Item215Slash75_R16C",
+                "Item225Slash65_R16C",
+                "Item235Slash65_R16C",
+                "Item215Slash60_R17C",
+                "Item235Slash60_R17C",
+                "Item425Slash55_R19Period5",
+                "Item205Slash80_R15",
+                "Item205Slash70_R15",
+                "Item205Slash70_R17C",
+                "Item285Slash55_R16C"
+              ]
+            },
+            "TyreClass": {
+              "description": "P370 - enum",
+              "type": "string",
+              "enum": [
+                "C1",
+                "C2",
+                "C3",
+                "NSlashA"
+              ]
+            },
+            "FuelEfficiencyClass": {
+              "description": "P371 - enum",
+              "type": "string",
+              "enum": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "NSlashA"
+              ]
+            },
+            "RRCDeclared": {
+              "description": "P046 - [-]",
+              "type": "number"
+            },
+            "FzISO": {
+              "description": "P047 - [N]",
+              "type": "integer"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "TyreDataDeclarationType_v2_3"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "Dimension",
+            "TyreClass",
+            "FuelEfficiencyClass",
+            "RRCDeclared",
+            "FzISO",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "TyreDataDeclarationType_v2_5",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P230 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P231 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P267 - [-]",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P233 - [-]",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P234 - [-]",
+              "type": "string",
+              "minLength": 5
+            },
+            "Dimension": {
+              "description": "P108 - enum",
+              "type": "string"
+            },
+            "TyreClass": {
+              "description": "P370 - enum",
+              "type": "string",
+              "enum": [
+                "C1",
+                "C2",
+                "C3",
+                "NSlashA"
+              ]
+            },
+            "FuelEfficiencyClass": {
+              "description": "P371 - enum",
+              "type": "string",
+              "enum": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "NSlashA"
+              ]
+            },
+            "RRCDeclared": {
+              "description": "P046 - [-]",
+              "type": "number"
+            },
+            "FzISO": {
+              "description": "P047 - [N]",
+              "type": "integer"
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "TyreDataDeclarationType_v2_5"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "Dimension",
+            "TyreClass",
+            "FuelEfficiencyClass",
+            "RRCDeclared",
+            "FzISO",
+            "id",
+            "$type"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "Data"
+  ]
+}

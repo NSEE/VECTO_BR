@@ -1,0 +1,16 @@
+{
+  "$schema": "https://code.europa.eu/vecto/guests/vecto-sim-harry/-/raw/vectoinputmanager/VectoInputManager/ComponentSchemas/AirDragComponentDeclarationType_v2_0.schema.json",
+  "$type": "AirDragComponentDeclarationType_v2_0",
+  "Data": {
+    "$type": "AirDragDataDeclarationType_v2_0",
+    "Manufacturer": "Generic Manufacturer",
+    "Model": "Generic Model",
+    "CertificationNumber": "e12*0815/8051*2017/05E0000*00",
+    "Date": "2017-03-24T15:00:00Z",
+    "AppVersion": "Vecto AirDrag x.y",
+    "CdxA_0": 4.31,
+    "TransferredCdxA": 4.31,
+    "DeclaredCdxA": 4.31,
+    "id": "CabinX23h"
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "$schema": "https://code.europa.eu/vecto/guests/vecto-sim-harry/-/raw/vectoinputmanager/VectoInputManager/InputSchemas/IEPC.schema.json",
+  "Component": "IEPC",
+  "Gearbox": {
+    "Tmaxin": 10000.0,
+    "DirectGear": true,
+    "MoreThan2FrictionClutches": true,
+    "ExternalExternalGearMeshes": 1,
+    "ExternalInternalGearMeshes": 0,
+    "AngleDriveGearMeshes": 0
+  },
+  "Axle": {
+    "Ratio": 3.5,
+    "GearMeshType": "Bevel",
+    "ExternalExternalGearMeshes": 1,
+    "ExternalInternalGearMeshes": 0,
+    "AngleDriveGearMeshes": 0,
+    "BevelGearMeshes": 0
+  },
+  "ElectricMachineType": "PSM",
+  "R85RatedPower": 120000,
+  "RotationalInertia": 0.12,
+  "DifferentialIncluded": true,
+  "DesignTypeWheelMotor": false,
+  "NrOfDesignTypeWheelMotorMeasured": null,
+  "DisengagementClutch": true,
+  "ContinuousTorque": 1273.0,
+  "TestSpeedContinuousTorque": 2100.0,
+  "OverloadTorque": 1885.13,
+  "TestSpeedOverloadTorque": 1793.75,
+  "OverloadDuration": 7.5,
+  "SpeedSetpoints": [
+    0.0,
+    1000.0
+  ],
+  "TorqueSetpoints": [
+    400.0,
+    800.0
+  ],
+  "Gears": [
+    {
+      "Number": 1,
+      "Ratio": 21.938,
+      "MaxOutShaftSpeed": 600,
+      "MaxOutShaftTorque": 45000
+    },
+    {
+      "Number": 2,
+      "Ratio": 12.276,
+      "MaxOutShaftSpeed": 1100,
+      "MaxOutShaftTorque": 25000
+    },
+    {
+      "Number": 3,
+      "Ratio": 7.234,
+      "MaxOutShaftSpeed": 1800,
+      "MaxOutShaftTorque": 15000
+    },
+    {
+      "Number": 4,
+      "Ratio": 3.0,
+      "MaxOutShaftSpeed": 4400,
+      "MaxOutShaftTorque": 6000
+    }
+  ],
+  "MaxTorqueCurve": [
+    {
+      "OutShaftSpeed": 0.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 300.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 500.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 700.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 900.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 1100.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 1300.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 1400.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 1500.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 1600.0,
+      "MaxTorque": 2094.0,
+      "MinTorque": -2094.0
+    },
+    {
+      "OutShaftSpeed": 1700.0,
+      "MaxTorque": 1964.0,
+      "MinTorque": -1964.0
+    },
+    {
+      "OutShaftSpeed": 1800.0,
+      "MaxTorque": 1855.0,
+      "MinTorque": -1855.0
+    },
+    {
+      "OutShaftSpeed": 2000.0,
+      "MaxTorque": 1630.0,
+      "MinTorque": -1630.0
+    },
+    {
+      "OutShaftSpeed": 2100.0,
+      "MaxTorque": 1583.0,
+      "MinTorque": -1583.0
+    },
+    {
+      "OutShaftSpeed": 2250.0,
+      "MaxTorque": 1481.0,
+      "MinTorque": -1481.0
+    }
+  ],
+  "Manufacturer": "Example Manufacturer",
+  "Model": "Example Model",
+  "CertificationNumber": "EX1234567890"
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="2.0" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v3.0">
+  <Vehicle xsi:type="Vehicle_Exempted_HeavyLorryDeclarationType" id="Conventional_HeavyLorry" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7">
+    <Manufacturer>TU Graz</Manufacturer>
+    <ManufacturerAddress>Inffeldgasse 19</ManufacturerAddress>
+    <Model>HEV Heavy Lorry Px</Model>
+    <VIN>1234</VIN>
+    <Date>2017-01-01T00:00:00Z</Date>
+    <SimulationToolLicenseNumber>x</SimulationToolLicenseNumber>
+    <LegislativeCategory>N3</LegislativeCategory>
+    <ChassisConfiguration>Rigid Lorry</ChassisConfiguration>
+    <AxleConfiguration>4x2</AxleConfiguration>
+    <CorrectedActualMass>6000</CorrectedActualMass>
+    <TechnicalPermissibleMaximumLadenMass>12000</TechnicalPermissibleMaximumLadenMass>
+    <ZeroEmissionVehicle>true</ZeroEmissionVehicle>
+    <SleeperCab>false</SleeperCab>
+    <SumNetPower>400000</SumNetPower>
+    <Technology>In-motion charging Article 9 exempted</Technology>
+  </Vehicle>
+</VectoInputDeclaration>

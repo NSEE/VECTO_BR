@@ -1,0 +1,16 @@
+{
+  "$schema": "https://code.europa.eu/vecto/guests/vecto-sim-harry/-/raw/vectoinputmanager/VectoInputManager/ComponentSchemas/TyreComponentDeclarationType_v2_0.schema.json",
+  "$type": "TyreComponentDeclarationType_v2_0",
+  "Data": {
+    "$type": "TyreDataDeclarationType_v2_0",
+    "Manufacturer": "Generic Wheels Manufacturer",
+    "Model": "Generic Wheel",
+    "CertificationNumber": "e12*0815/8051*2017/05E0000*00",
+    "Date": "2017-01-11T14:00:00Z",
+    "AppVersion": "Tyre Generation App 1.0",
+    "Dimension": "Item265Slash70_R19Period5",
+    "RRCDeclared": 0.0065,
+    "FzISO": 20850,
+    "id": "WHL-5432198760-315-70-R22.5"
+  }
+}

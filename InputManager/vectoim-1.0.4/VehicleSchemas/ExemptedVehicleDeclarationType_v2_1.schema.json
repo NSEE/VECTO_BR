@@ -1,0 +1,99 @@
+{
+  "$id": "ExemptedVehicleDeclarationType_v2_1",
+  "type": "object",
+  "properties": {
+    "Manufacturer": {
+      "description": "P235",
+      "type": "string",
+      "minLength": 1
+    },
+    "ManufacturerAddress": {
+      "description": "P252",
+      "type": "string"
+    },
+    "Model": {
+      "description": "P236",
+      "type": "string",
+      "minLength": 1
+    },
+    "VIN": {
+      "description": "P238",
+      "type": "string",
+      "minLength": 1
+    },
+    "Date": {
+      "description": "P239",
+      "type": "string",
+      "pattern": ".+T.+Z",
+      "format": "date-time"
+    },
+    "LegislativeClass": {
+      "description": "P251 - enum",
+      "type": "string",
+      "enum": [
+        "N2",
+        "N3"
+      ]
+    },
+    "VehicleCategory": {
+      "description": "P036 - enum",
+      "type": "string",
+      "enum": [
+        "Rigid_Truck",
+        "Tractor",
+        "City_Bus",
+        "Interurban_Bus",
+        "Coach",
+        "Rigid_Lorry"
+      ]
+    },
+    "CurbMassChassis": {
+      "description": "P038 - [kg]",
+      "type": "integer"
+    },
+    "GrossVehicleMass": {
+      "description": "P041 - [kg]",
+      "type": "integer"
+    },
+    "ZeroEmissionVehicle": {
+      "type": "boolean"
+    },
+    "MaxNetPower1": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "MaxNetPower2": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "HybridElectricHDV": {
+      "type": "boolean"
+    },
+    "DualFuelVehicle": {
+      "type": "boolean"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "Manufacturer",
+    "ManufacturerAddress",
+    "Model",
+    "VIN",
+    "Date",
+    "LegislativeClass",
+    "VehicleCategory",
+    "CurbMassChassis",
+    "GrossVehicleMass",
+    "ZeroEmissionVehicle",
+    "HybridElectricHDV",
+    "DualFuelVehicle",
+    "id"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "$id": "AirDragComponentDeclarationType_v1_0",
+  "type": "object",
+  "properties": {
+    "Data": {
+      "$id": "AirDragDataDeclarationType_v1_0",
+      "type": "object",
+      "properties": {
+        "Manufacturer": {
+          "description": "P240",
+          "type": "string",
+          "minLength": 1
+        },
+        "Model": {
+          "description": "P241",
+          "type": "string",
+          "minLength": 1
+        },
+        "CertificationNumber": {
+          "description": "P268",
+          "type": "string"
+        },
+        "Date": {
+          "description": "P243",
+          "type": "string",
+          "pattern": ".+T.+Z",
+          "format": "date-time"
+        },
+        "AppVersion": {
+          "description": "P244",
+          "type": "string",
+          "minLength": 5
+        },
+        "CdxA_0": {
+          "description": "P245 - [m²]",
+          "type": "number"
+        },
+        "TransferredCdxA": {
+          "description": "P246 - [m²]",
+          "type": "number"
+        },
+        "DeclaredCdxA": {
+          "description": "P146 - [m²] Drag coefficient * Cross Sectional Area (Truck &amp; Trailer)",
+          "type": "number"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "Manufacturer",
+        "Model",
+        "CertificationNumber",
+        "Date",
+        "AppVersion",
+        "CdxA_0",
+        "TransferredCdxA",
+        "DeclaredCdxA",
+        "id"
+      ]
+    }
+  },
+  "required": [
+    "Data"
+  ]
+}

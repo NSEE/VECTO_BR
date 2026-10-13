@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<PackageId>VectoObjects</PackageId>
+		<Version>1.0.0</Version>
+		<Authors>Harry Kakoulidis</Authors>
+		<Product>VectoObjects</Product>
+		<Description>A library for serializing and deserializing VECTO XML Vehicle Job files.</Description>
+		<PackageTags>vecto;xml;vehicles;simulation</PackageTags>
+		<PackageProjectUrl>https://code.europa.eu/vecto/guests/vecto-sim-harry</PackageProjectUrl>
+		<RepositoryUrl>https://code.europa.eu/vecto/guests/vecto-sim-harry</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseExpression>EUPL-1.2</PackageLicenseExpression>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+	</ItemGroup>
+
+</Project>

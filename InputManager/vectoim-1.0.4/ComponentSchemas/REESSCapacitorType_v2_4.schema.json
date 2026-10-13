@@ -1,0 +1,204 @@
+{
+  "$id": "REESSCapacitorType_v2_4",
+  "type": "object",
+  "properties": {
+    "Data": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$id": "CapacitorSystemDataType_v2_3",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P532 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P533 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P534 - [-]",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P535 - [-]",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P536 - [-]",
+              "type": "string",
+              "minLength": 5
+            },
+            "CertificationMethod": {
+              "description": "P538 - enum",
+              "type": "string",
+              "enum": [
+                "Measured",
+                "Standard_values"
+              ]
+            },
+            "Capacitance": {
+              "description": "P539 - [F]",
+              "type": "number"
+            },
+            "InternalResistance": {
+              "description": "P540 - [Ohm]",
+              "type": "number"
+            },
+            "MinVoltage": {
+              "description": "P541 - [V]",
+              "type": "number"
+            },
+            "MaxVoltage": {
+              "description": "P542 - [V]",
+              "type": "number"
+            },
+            "MaxChargingCurrent": {
+              "description": "P543 - [A]",
+              "type": "number"
+            },
+            "MaxDischargingCurrent": {
+              "description": "P544 - [A]",
+              "type": "number"
+            },
+            "TestingTemperature": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "CapacitorSystemDataType_v2_3"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "CertificationMethod",
+            "Capacitance",
+            "InternalResistance",
+            "MinVoltage",
+            "MaxVoltage",
+            "MaxChargingCurrent",
+            "MaxDischargingCurrent",
+            "id",
+            "$type"
+          ]
+        },
+        {
+          "$id": "CapacitorSystemDataType_v2_6",
+          "type": "object",
+          "properties": {
+            "Manufacturer": {
+              "description": "P532 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "Model": {
+              "description": "P533 - [-]",
+              "type": "string",
+              "minLength": 1
+            },
+            "CertificationNumber": {
+              "description": "P534 - [-]",
+              "type": "string"
+            },
+            "Date": {
+              "description": "P535 - [-]",
+              "type": "string",
+              "pattern": ".+T.+Z",
+              "format": "date-time"
+            },
+            "AppVersion": {
+              "description": "P536 - [-]",
+              "type": "string",
+              "minLength": 5
+            },
+            "CertificationMethod": {
+              "description": "P538 - enum",
+              "type": "string",
+              "enum": [
+                "Measured",
+                "Standard_values"
+              ]
+            },
+            "Capacitance": {
+              "description": "P539 - [F]",
+              "type": "number"
+            },
+            "InternalResistance": {
+              "description": "P540 - [mOhm]",
+              "type": "number"
+            },
+            "MinVoltage": {
+              "description": "P541 - [V]",
+              "type": "number"
+            },
+            "MaxVoltage": {
+              "description": "P542 - [V]",
+              "type": "number"
+            },
+            "MaxChargingCurrent": {
+              "description": "P543 - [A]",
+              "type": "number"
+            },
+            "MaxDischargingCurrent": {
+              "description": "P544 - [A]",
+              "type": "number"
+            },
+            "TestingTemperature": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "CapacitorSystemDataType_v2_6"
+              ]
+            }
+          },
+          "required": [
+            "Manufacturer",
+            "Model",
+            "CertificationNumber",
+            "Date",
+            "AppVersion",
+            "CertificationMethod",
+            "Capacitance",
+            "InternalResistance",
+            "MinVoltage",
+            "MaxVoltage",
+            "MaxChargingCurrent",
+            "MaxDischargingCurrent",
+            "id",
+            "$type"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "Data"
+  ]
+}

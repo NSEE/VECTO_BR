@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema
+  xmlns="urn:tugraz:ivt:VectoAPI:MonitoringOutput:Trailer:v1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0"
+  xmlns:mrfTrl="urn:tugraz:ivt:VectoAPI:DeclarationOutput:Trailer:v1.0" 
+  targetNamespace="urn:tugraz:ivt:VectoAPI:MonitoringOutput:Trailer:v1.0"
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified"
+  >
+
+  <xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationOutput:Trailer:v1.0" schemaLocation="VectoOutputManufacturer.Trailer.1.0.xsd"/>
+  <xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" schemaLocation="VectoDeclarationDefinitions.1.0.xsd"/>
+
+  <xs:element name="VectoMonitoring" type="VectoMonitoringOutputType"/>
+
+  <xs:complexType name="VectoMonitoringOutputType" abstract="true">
+    <xs:attribute name="schemaVersion" type="xs:string" use="required"/>
+  </xs:complexType>
+  
+  <xs:complexType name="TrailerDataType">
+    <xs:complexContent>
+      <xs:extension base="VectoMonitoringOutputType">
+        <xs:sequence>
+          <xs:element name="ManufacturerRecord">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Data" type="mrfTrl:VectoOutputDataType"/>
+                <xs:element name="Signature" type="v1.0:SignatureType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="AdditionalData" type="Trailer_DataType"></xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="Trailer_DataType">
+    <xs:sequence>
+      <xs:group ref="BaseTrailerData"/>
+      <xs:group ref="NoEngineNoGearboxConventionalComponents"/>
+      <xs:element name="AerodynamicComponent" type="AerodynamicDataType"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:group name="NoEngineNoGearboxConventionalComponents">
+    <xs:sequence>
+      <xs:element name="Axlegear" type="AxlegearDataType"/>
+      <xs:element name="AxleWheels" type="AxleWheelsDataType"/>
+    </xs:sequence>
+  </xs:group>
+
+  <xs:group name="BaseTrailerData">
+    <xs:sequence>
+      <xs:element name="VectoLicenseNbr" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>#72</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Trailer" type="TrailerMakeDataType"/>
+	  <xs:element name="RefrigerationUnit" type="RefrigerationUnitDataType" minOccurs="0" />
+    </xs:sequence>
+  </xs:group>
+
+  <xs:complexType name="TrailerMakeDataType">
+    <xs:sequence>
+      <xs:element name="Make" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="RefrigerationUnitDataType">
+	<xs:sequence>
+	  <xs:element name="Make" type="xs:string"/>
+	  <xs:element name="PowerSource" type="xs:string"/>
+	  <xs:element name="NetPower" type="NetPowerDataType"/>
+	</xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="NetPowerDataType">
+	<xs:simpleContent>
+	  <xs:extension base="xs:double">
+	    <xs:attribute name="unit" use="required">
+		  <xs:simpleType>
+	        <xs:restriction base="xs:string">
+			  <xs:enumeration value="kW"/>
+			</xs:restriction>
+		  </xs:simpleType>
+		</xs:attribute>
+	  </xs:extension>
+	</xs:simpleContent>
+  </xs:complexType>
+  
+  <xs:complexType name="AxlegearDataType">
+    <xs:sequence>
+      <xs:element name="Manufacturer" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>#32</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ManufacturerAddress" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>#32</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Make" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>#33</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AerodynamicDataType">
+    <xs:sequence>
+      <xs:element name="Manufacturer" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>#32</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ManufacturerAddress" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>#32</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Make" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>#33</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AxleWheelsDataType">
+    <xs:sequence>
+      <xs:element name="Axle" minOccurs="1" maxOccurs="4">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Tyre">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="Manufacturer" type="xs:string">
+                    <xs:annotation>
+                      <xs:documentation>#39</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="ManufacturerAddress" type="xs:string">
+                    <xs:annotation>
+                      <xs:documentation>#39</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="Make" type="xs:string">
+                    <xs:annotation>
+                      <xs:documentation>#40</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="axleNumber" use="required">
+            <xs:simpleType>
+              <xs:restriction base="xs:int">
+                <xs:minInclusive value="1"/>
+                <xs:maxInclusive value="4"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

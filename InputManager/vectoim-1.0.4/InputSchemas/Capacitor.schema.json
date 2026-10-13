@@ -1,0 +1,52 @@
+{
+  "type": "object",
+  "properties": {
+    "Component": {
+      "type": "string",
+      "enum": [
+        "Capacitor"
+      ]
+    },
+    "MaxVoltage": {
+      "description": "Maximum voltage [V]",
+      "type": "number",
+      "minimum": 0.5,
+      "maximum": 5.0
+    },
+    "Capacitance": {
+      "description": "Capacitance [F]",
+      "type": "number",
+      "minimum": 1.0,
+      "maximum": 10000.0
+    },
+    "CellNumberInSeries": {
+      "description": "Number of cells in series",
+      "type": "integer",
+      "minimum": 1.0,
+      "maximum": 500.0
+    },
+    "Manufacturer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "Model": {
+      "type": "string",
+      "minLength": 1
+    },
+    "CertificationNumber": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "Component",
+    "MaxVoltage",
+    "Capacitance",
+    "CellNumberInSeries",
+    "Manufacturer",
+    "Model",
+    "CertificationNumber"
+  ]
+}

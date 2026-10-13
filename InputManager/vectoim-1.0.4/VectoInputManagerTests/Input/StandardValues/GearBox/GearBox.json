@@ -1,0 +1,37 @@
+{
+  "Component": "GearBox",
+  "TMaxIn": 10000.0,
+  "TransmissionType": "AMT",
+  "ContainsAngleDrive": true,
+  "SpeedPoints": [
+    0.0,
+    1000.0
+  ],
+  "TorquePoints": [
+    -10000.0,
+    -1000.0,
+    1000.0,
+    0.0
+  ],
+  "Gear": [
+    {
+      "Number": 1,
+      "Ratio": 4.0,
+      "DirectGear": false
+    },
+    {
+      "Number": 2,
+      "Ratio": 2.0,
+      "DirectGear": false
+    },
+    {
+      "Number": 3,
+      "Ratio": 1.0,
+      "DirectGear": true
+    }
+  ],
+  "Manufacturer": "Example Manufacturer",
+  "Model": "Example Model",
+  "CertificationNumber": "EX1234567890",
+  "$schema": "https://code.europa.eu/vecto/guests/vecto-sim-harry/-/raw/vectoinputmanager/VectoInputManager/Schemas/GearBox.schema.json"
+}

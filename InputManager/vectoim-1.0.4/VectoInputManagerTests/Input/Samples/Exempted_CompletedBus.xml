@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="2.0" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v3.0">
+  <Vehicle xsi:type="Vehicle_Exempted_CompletedBusDeclarationType" id="VEH-1234567890" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.7">
+    <Manufacturer>Some Manufacturer</Manufacturer>
+    <ManufacturerAddress>Infinite Loop</ManufacturerAddress>
+    <VIN>VEH-1234567891</VIN>
+    <Date>2021-01-09T11:00:00Z</Date>
+    <SimulationToolLicenseNumber>x</SimulationToolLicenseNumber>
+    <Model>Sample Bus Model 2</Model>
+    <LegislativeCategory>M3</LegislativeCategory>
+    <CorrectedActualMass>7000</CorrectedActualMass>
+    <TechnicalPermissibleMaximumLadenMass>10000</TechnicalPermissibleMaximumLadenMass>
+    <ClassBus>A</ClassBus>
+    <NumberPassengerSeatsLowerDeck>10</NumberPassengerSeatsLowerDeck>
+    <NumberPassengersStandingLowerDeck>42</NumberPassengersStandingLowerDeck>
+    <NumberPassengerSeatsUpperDeck>20</NumberPassengerSeatsUpperDeck>
+    <NumberPassengersStandingUpperDeck>13</NumberPassengersStandingUpperDeck>
+    <BodyworkCode>CE</BodyworkCode>
+    <LowEntry>true</LowEntry>
+    <HeightIntegratedBody>2500</HeightIntegratedBody>
+    <MonitoringData>
+      <VectoLicenseNbr>##VECTO_LICENSE_NUMBER##</VectoLicenseNbr>
+      <Vehicle>
+        <Make>##VEHICLE_MAKE##</Make>
+      </Vehicle>
+    </MonitoringData>
+  </Vehicle>
+</VectoInputDeclaration>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration
+	xmlns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.2"
+	xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0"
+	xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3"
+	xmlns:v2.6="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.6"
+	xmlns:di="http://www.w3.org/2000/09/xmldsig#"
+	schemaVersion="2.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
+	<Engine>
+		<v2.0:Data id="ENG-gooZah3D" xsi:type="v2.6:EngineDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+			<v2.6:Manufacturer>TU Graz, IVT</v2.6:Manufacturer>
+			<v2.6:Model>325kW 12.7l Engine</v2.6:Model>
+			<v2.6:CertificationNumber>ENG-325kW 12.7l Engine</v2.6:CertificationNumber>
+			<v2.6:Date>2019-12-03T08:33:49.5491703Z</v2.6:Date>
+			<v2.6:AppVersion>VectoCore</v2.6:AppVersion>
+			<v2.6:Displacement>12740</v2.6:Displacement>
+			<v2.6:RatedSpeed>1736</v2.6:RatedSpeed>
+			<v2.6:RatedPower>325032</v2.6:RatedPower>
+			<v2.6:MaxEngineTorque>2134</v2.6:MaxEngineTorque>
+			<v2.6:WHRType>
+				<v2.6:MechanicalOutputICE>false</v2.6:MechanicalOutputICE>
+				<v2.6:MechanicalOutputDrivetrain>false</v2.6:MechanicalOutputDrivetrain>
+				<v2.6:ElectricalOutput>false</v2.6:ElectricalOutput>
+			</v2.6:WHRType>
+			<v2.6:Mode>
+				<v2.6:IdlingSpeed>600</v2.6:IdlingSpeed>
+				<v2.6:FullLoadAndDragCurve>
+					<v2.6:Entry engineSpeed="600.00" maxTorque="1188.00" dragTorque="-138.00" />
+					<v2.6:Entry engineSpeed="608.00" maxTorque="1206.92" dragTorque="-138.20" />
+					<v2.6:Entry engineSpeed="616.00" maxTorque="1225.84" dragTorque="-138.40" />
+					<v2.6:Entry engineSpeed="624.00" maxTorque="1244.76" dragTorque="-138.60" />
+				</v2.6:FullLoadAndDragCurve>
+				<v2.6:Fuel type="Diesel B100 CI">
+					<v2.6:WHTCUrban>1.0400</v2.6:WHTCUrban>
+					<v2.6:WHTCRural>1.0100</v2.6:WHTCRural>
+					<v2.6:WHTCMotorway>1.0000</v2.6:WHTCMotorway>
+					<v2.6:BFColdHot>1.0000</v2.6:BFColdHot>
+					<v2.6:CFRegPer>1.0000</v2.6:CFRegPer>
+					<v2.6:CFNCV>1.0000</v2.6:CFNCV>
+					<v2.6:FuelConsumptionMap>
+						<v2.6:Entry engineSpeed="500.00" torque="-235.50" fuelConsumption="0.00" />
+						<v2.6:Entry engineSpeed="500.00" torque="-135.50" fuelConsumption="0.00" />
+						<v2.6:Entry engineSpeed="500.00" torque="0.00" fuelConsumption="1355.00" />
+						<v2.6:Entry engineSpeed="500.00" torque="213.40" fuelConsumption="3412.29" />
+						<v2.6:Entry engineSpeed="500.00" torque="426.80" fuelConsumption="5830.10" />
+						<v2.6:Entry engineSpeed="500.00" torque="640.20" fuelConsumption="8316.43" />
+						<v2.6:Entry engineSpeed="500.00" torque="853.60" fuelConsumption="10439.87" />
+						<v2.6:Entry engineSpeed="500.00" torque="1067.00" fuelConsumption="12823.69" />
+						<v2.6:Entry engineSpeed="500.00" torque="1188.00" fuelConsumption="14228.79" />
+						<v2.6:Entry engineSpeed="500.00" torque="1401.40" fuelConsumption="16628.66" />
+					</v2.6:FuelConsumptionMap>
+				</v2.6:Fuel>
+			</v2.6:Mode>
+       </v2.0:Data>
+    </Engine>
+</VectoInputDeclaration>

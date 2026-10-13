@@ -1,0 +1,122 @@
+{
+  "$schema": "https://code.europa.eu/vecto/guests/vecto-sim-harry/-/raw/vectoinputmanager/VectoInputManager/VehicleSchemas/Vehicle_Conventional_HeavyLorryDeclarationType_v2_7.schema.json",
+  "$type": "Vehicle_Conventional_HeavyLorryDeclarationType_v2_7",
+  "Manufacturer": "TUWWQWFQWQWFQWF Graz",
+  "ManufacturerAddress": "Inffeldgasse 19",
+  "Model": "HEV Heavy Lorry Px",
+  "VIN": "1234",
+  "Date": "2017-01-01T00:00:00Z",
+  "SimulationToolLicenseNumber": "x",
+  "LegislativeCategory": "N3",
+  "ChassisConfiguration": "Tractor",
+  "AxleConfiguration": "Item4x2",
+  "CorrectedActualMass": 6995,
+  "TechnicalPermissibleMaximumLadenMass": 18000,
+  "IdlingSpeed": 600,
+  "RetarderType": "Transmission_Input_Retarder",
+  "RetarderRatio": 1.0,
+  "AngledriveType": "Separate_Angledrive",
+  "PTO": {
+    "$type": "PTOType_v2_7",
+    "PTOShaftsGearWheels": "only_the_drive_shaft_of_the_PTO",
+    "PTOOtherElements": "multi_disc_clutch"
+  },
+  "ZeroEmissionVehicle": true,
+  "VocationalVehicle": true,
+  "NgTankSystem": "Compressed",
+  "SleeperCab": true,
+  "VehicleTypeApprovalNumber": "ASDF",
+  "ADAS": {
+    "$type": "ADAS_Conventional_Type_v2_7",
+    "EngineStopStart": true,
+    "EcoRollWithoutEngineStop": false,
+    "EcoRollWithEngineStop": true,
+    "PredictiveCruiseControl": "Item1Comma2Comma3"
+  },
+  "TorqueLimits": {
+    "$type": "[TorqueLimitsEntryType_v2_0]",
+    "$values": [
+      {
+        "$type": "TorqueLimitsEntryType_v2_0",
+        "gear": 9,
+        "maxTorque": 2000
+      }
+    ]
+  },
+  "Components": {
+    "$type": "Components_Conventional_LorryType_v2_7",
+    "Engine": null,
+    "Gearbox": null,
+    "TorqueConverter": null,
+    "Angledrive": null,
+    "Retarder": null,
+    "Axlegear": null,
+    "AxleWheels": {
+      "$type": "AxleWheelsComponentDeclarationType_v2_0",
+      "Data": {
+        "$type": "AxleWheelsDataDeclarationType_v2_7",
+        "Axles": {
+          "$type": "[AxleDataDeclarationType_v2_7]",
+          "$values": [
+            {
+              "$type": "AxleDataDeclarationType_v2_7",
+              "AxleType": "VehicleNonDriven",
+              "TwinTyres": false,
+              "Steered": true,
+              "Tyre": null,
+              "WheelEnd": {
+                "$type": "WheelEndType_v2_7",
+                "WheelEndFriction": 3.2,
+                "CertificationNumber": "ASDF"
+              },
+              "axleNumber": 1
+            },
+            {
+              "$type": "AxleDataDeclarationType_v2_7",
+              "AxleType": "VehicleDriven",
+              "TwinTyres": true,
+              "Steered": false,
+              "Tyre": null,
+              "WheelEnd": null,
+              "axleNumber": 2
+            }
+          ]
+        }
+      }
+    },
+    "Auxiliaries": {
+      "$type": "AUX_Component_Conventional_Lorry_Type_v2_7",
+      "Data": {
+        "$type": "AUX_Conventional_LorryDataType_v2_7",
+        "Fan": {
+          "$type": "AUX_Conventional_LorryDataTypeFan_v2_7",
+          "Technology": "Crankshaft_mounted_Electronically_controlled_visco_clutch"
+        },
+        "SteeringPump": {
+          "$type": "[AUX_Conventional_LorryDataTypeSteeringPumpTechnology_v2_7]",
+          "$values": [
+            {
+              "$type": "AUX_Conventional_LorryDataTypeSteeringPumpTechnology_v2_7",
+              "Value": "Variable_displacement_mechPeriod_controlled",
+              "axleNumber": 1
+            }
+          ]
+        },
+        "ElectricSystem": {
+          "$type": "AUX_Conventional_LorryDataTypeElectricSystem_v2_7",
+          "Technology": "Standard_technology"
+        },
+        "PneumaticSystem": {
+          "$type": "AUX_Conventional_LorryDataTypePneumaticSystem_v2_7",
+          "Technology": "Medium_Supply_1_stage_Plus_mechPeriod_clutch_Plus_AMS"
+        },
+        "HVAC": {
+          "$type": "AUX_Conventional_LorryDataTypeHVAC_v2_7",
+          "Technology": "Default"
+        }
+      }
+    },
+    "AirDrag": null
+  },
+  "id": "Group5_Conv_ES_Standard"
+}

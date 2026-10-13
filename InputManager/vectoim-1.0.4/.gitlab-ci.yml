@@ -1,0 +1,22 @@
+# This job generates the documentation using a custom Docker image (see folder DocumentationGenerator).
+docs:      
+  image: code.europa.eu:4567/vecto/guests/vecto-sim-harry/vecto-docs:1.1.0
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "vectoinputmanager"
+  stage: deploy
+  pages: true
+  script:
+    # Prepare the workspace by copying necessary files to the location expected by Doxygen/Doxyfile
+    - mkdir -p /workspace/VectoInputManager /workspace/VectoInputManagerCore /workspace/VectoObjects /workspace/VectoInputManagerTests
+    - cp     VectoInputManager/Doxyfile  /workspace/
+    - cp     VectoInputManager/README.md  /workspace/
+    - cp -r  VectoInputManager/VectoInputManager/*  /workspace/VectoInputManager/
+    - cp -r  VectoInputManager/VectoInputManagerCore/*  /workspace/VectoInputManagerCore/
+    - cp -r  VectoInputManager/VectoObjects/*  /workspace/VectoObjects/
+    - cp     VectoInputManager/VectoInputManagerTests/README.md  /workspace/VectoInputManagerTests/
+    - cd /workspace
+    # Run Doxygen to generate the documentation
+    - doxygen
+    - ls -la /workspace
+    # Copy the generated HTML documentation to the public directory for GitLab Pages
+    - cp -r /workspace/html /builds/vecto/guests/vecto-sim-harry/public

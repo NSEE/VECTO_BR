@@ -1,0 +1,1035 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VectoInputDeclaration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="2.2" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.2">
+  <ElectricMachineSystem>
+    <Data xsi:type="ElectricMachineSystemStandardValuesDataDeclarationType" id="ems-7" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+      <Manufacturer>Example Manufacturer</Manufacturer>
+      <Model>Example Model</Model>
+      <CertificationNumber>EX1234567890</CertificationNumber>
+      <Date>2026-01-18T14:59:21Z</Date>
+      <AppVersion>vectoim-0.9.3</AppVersion>
+      <ElectricMachineType>PSM</ElectricMachineType>
+      <CertificationMethod>Standard values</CertificationMethod>
+      <R85RatedPower>50000</R85RatedPower>
+      <RotationalInertia>0.10</RotationalInertia>
+      <DcDcConverterIncluded>true</DcDcConverterIncluded>
+      <IHPCType>None</IHPCType>
+      <VoltageLevel>
+        <ContinuousTorque>1273.00</ContinuousTorque>
+        <TestSpeedContinuousTorque>2100.00</TestSpeedContinuousTorque>
+        <OverloadTorque>1885.13</OverloadTorque>
+        <TestSpeedOverloadTorque>1793.75</TestSpeedOverloadTorque>
+        <OverloadDuration>7.50</OverloadDuration>
+        <MaxTorqueCurve>
+          <Entry outShaftSpeed="0.00" maxTorque="2237.00" minTorque="-2237.00" />
+          <Entry outShaftSpeed="300.00" maxTorque="2237.00" minTorque="-2237.00" />
+          <Entry outShaftSpeed="500.00" maxTorque="2237.00" minTorque="-2237.00" />
+          <Entry outShaftSpeed="700.00" maxTorque="2237.00" minTorque="-2237.00" />
+          <Entry outShaftSpeed="900.00" maxTorque="2237.00" minTorque="-2237.00" />
+          <Entry outShaftSpeed="1100.00" maxTorque="2237.00" minTorque="-2237.00" />
+          <Entry outShaftSpeed="1300.00" maxTorque="2237.00" minTorque="-2237.00" />
+          <Entry outShaftSpeed="1400.00" maxTorque="2237.00" minTorque="-2237.00" />
+          <Entry outShaftSpeed="1500.00" maxTorque="2237.00" minTorque="-2237.00" />
+          <Entry outShaftSpeed="1600.00" maxTorque="2094.00" minTorque="-2094.00" />
+          <Entry outShaftSpeed="1700.00" maxTorque="1964.00" minTorque="-1964.00" />
+          <Entry outShaftSpeed="1800.00" maxTorque="1855.00" minTorque="-1855.00" />
+          <Entry outShaftSpeed="2000.00" maxTorque="1630.00" minTorque="-1630.00" />
+          <Entry outShaftSpeed="2100.00" maxTorque="1583.00" minTorque="-1583.00" />
+          <Entry outShaftSpeed="2250.00" maxTorque="1481.00" minTorque="-1481.00" />
+        </MaxTorqueCurve>
+        <PowerMap>
+          <Entry outShaftSpeed="35.88" torque="-1885.13" electricPower="0.00" />
+          <Entry outShaftSpeed="35.88" torque="-1790.87" electricPower="0.00" />
+          <Entry outShaftSpeed="35.88" torque="-1696.62" electricPower="0.00" />
+          <Entry outShaftSpeed="35.88" torque="-1602.36" electricPower="0.00" />
+          <Entry outShaftSpeed="35.88" torque="-1508.10" electricPower="0.00" />
+          <Entry outShaftSpeed="35.88" torque="-1413.85" electricPower="0.00" />
+          <Entry outShaftSpeed="35.88" torque="-1319.59" electricPower="-126.90" />
+          <Entry outShaftSpeed="35.88" torque="-1225.33" electricPower="-314.60" />
+          <Entry outShaftSpeed="35.88" torque="-1131.08" electricPower="-471.65" />
+          <Entry outShaftSpeed="35.88" torque="-1036.82" electricPower="-598.06" />
+          <Entry outShaftSpeed="35.88" torque="-942.57" electricPower="-693.81" />
+          <Entry outShaftSpeed="35.88" torque="-848.31" electricPower="-758.92" />
+          <Entry outShaftSpeed="35.88" torque="-754.05" electricPower="-793.37" />
+          <Entry outShaftSpeed="35.88" torque="-659.80" electricPower="-797.18" />
+          <Entry outShaftSpeed="35.88" torque="-565.54" electricPower="-770.34" />
+          <Entry outShaftSpeed="35.88" torque="-471.28" electricPower="-712.85" />
+          <Entry outShaftSpeed="35.88" torque="-377.03" electricPower="-624.71" />
+          <Entry outShaftSpeed="35.88" torque="-282.77" electricPower="-505.92" />
+          <Entry outShaftSpeed="35.88" torque="-188.51" electricPower="-356.48" />
+          <Entry outShaftSpeed="35.88" torque="-94.26" electricPower="-176.39" />
+          <Entry outShaftSpeed="35.88" torque="-18.85" electricPower="-10.26" />
+          <Entry outShaftSpeed="35.88" torque="18.85" electricPower="104.87" />
+          <Entry outShaftSpeed="35.88" torque="94.26" electricPower="478.69" />
+          <Entry outShaftSpeed="35.88" torque="188.51" electricPower="955.69" />
+          <Entry outShaftSpeed="35.88" torque="282.77" electricPower="1446.52" />
+          <Entry outShaftSpeed="35.88" torque="377.03" electricPower="1950.21" />
+          <Entry outShaftSpeed="35.88" torque="471.28" electricPower="2465.70" />
+          <Entry outShaftSpeed="35.88" torque="565.54" electricPower="2992.02" />
+          <Entry outShaftSpeed="35.88" torque="659.80" electricPower="3528.28" />
+          <Entry outShaftSpeed="35.88" torque="754.05" electricPower="4073.70" />
+          <Entry outShaftSpeed="35.88" torque="848.31" electricPower="4627.56" />
+          <Entry outShaftSpeed="35.88" torque="942.57" electricPower="5189.23" />
+          <Entry outShaftSpeed="35.88" torque="1036.82" electricPower="5758.12" />
+          <Entry outShaftSpeed="35.88" torque="1131.08" electricPower="6333.72" />
+          <Entry outShaftSpeed="35.88" torque="1225.33" electricPower="6915.56" />
+          <Entry outShaftSpeed="35.88" torque="1319.59" electricPower="7503.20" />
+          <Entry outShaftSpeed="35.88" torque="1413.85" electricPower="8096.25" />
+          <Entry outShaftSpeed="35.88" torque="1508.10" electricPower="8694.36" />
+          <Entry outShaftSpeed="35.88" torque="1602.36" electricPower="9297.20" />
+          <Entry outShaftSpeed="35.88" torque="1696.62" electricPower="9904.47" />
+          <Entry outShaftSpeed="35.88" torque="1790.87" electricPower="10515.91" />
+          <Entry outShaftSpeed="35.88" torque="1885.13" electricPower="11131.24" />
+          <Entry outShaftSpeed="358.75" torque="-1885.13" electricPower="-58733.58" />
+          <Entry outShaftSpeed="358.75" torque="-1790.87" electricPower="-56091.05" />
+          <Entry outShaftSpeed="358.75" torque="-1696.62" electricPower="-53415.55" />
+          <Entry outShaftSpeed="358.75" torque="-1602.36" electricPower="-50707.07" />
+          <Entry outShaftSpeed="358.75" torque="-1508.10" electricPower="-47965.62" />
+          <Entry outShaftSpeed="358.75" torque="-1413.85" electricPower="-45191.20" />
+          <Entry outShaftSpeed="358.75" torque="-1319.59" electricPower="-42383.80" />
+          <Entry outShaftSpeed="358.75" torque="-1225.33" electricPower="-39543.42" />
+          <Entry outShaftSpeed="358.75" torque="-1131.08" electricPower="-36670.08" />
+          <Entry outShaftSpeed="358.75" torque="-1036.82" electricPower="-33763.75" />
+          <Entry outShaftSpeed="358.75" torque="-942.57" electricPower="-30824.46" />
+          <Entry outShaftSpeed="358.75" torque="-848.31" electricPower="-27852.19" />
+          <Entry outShaftSpeed="358.75" torque="-754.05" electricPower="-24846.94" />
+          <Entry outShaftSpeed="358.75" torque="-659.80" electricPower="-21808.72" />
+          <Entry outShaftSpeed="358.75" torque="-565.54" electricPower="-18737.53" />
+          <Entry outShaftSpeed="358.75" torque="-471.28" electricPower="-15633.36" />
+          <Entry outShaftSpeed="358.75" torque="-377.03" electricPower="-12496.22" />
+          <Entry outShaftSpeed="358.75" torque="-282.77" electricPower="-9326.10" />
+          <Entry outShaftSpeed="358.75" torque="-188.51" electricPower="-6123.01" />
+          <Entry outShaftSpeed="358.75" torque="-94.26" electricPower="-2886.95" />
+          <Entry outShaftSpeed="358.75" torque="-18.85" electricPower="-274.35" />
+          <Entry outShaftSpeed="358.75" torque="18.85" electricPower="990.55" />
+          <Entry outShaftSpeed="358.75" torque="94.26" electricPower="4128.02" />
+          <Entry outShaftSpeed="358.75" torque="188.51" electricPower="7980.08" />
+          <Entry outShaftSpeed="358.75" torque="282.77" electricPower="11851.48" />
+          <Entry outShaftSpeed="358.75" torque="377.03" electricPower="15749.64" />
+          <Entry outShaftSpeed="358.75" torque="471.28" electricPower="19675.84" />
+          <Entry outShaftSpeed="358.75" torque="565.54" electricPower="23630.27" />
+          <Entry outShaftSpeed="358.75" torque="659.80" electricPower="27612.80" />
+          <Entry outShaftSpeed="358.75" torque="754.05" electricPower="31623.17" />
+          <Entry outShaftSpeed="358.75" torque="848.31" electricPower="35661.07" />
+          <Entry outShaftSpeed="358.75" torque="942.57" electricPower="39726.18" />
+          <Entry outShaftSpeed="358.75" torque="1036.82" electricPower="43818.15" />
+          <Entry outShaftSpeed="358.75" torque="1131.08" electricPower="47936.65" />
+          <Entry outShaftSpeed="358.75" torque="1225.33" electricPower="52081.34" />
+          <Entry outShaftSpeed="358.75" torque="1319.59" electricPower="56251.87" />
+          <Entry outShaftSpeed="358.75" torque="1413.85" electricPower="60447.92" />
+          <Entry outShaftSpeed="358.75" torque="1508.10" electricPower="64669.16" />
+          <Entry outShaftSpeed="358.75" torque="1602.36" electricPower="68915.26" />
+          <Entry outShaftSpeed="358.75" torque="1696.62" electricPower="73185.90" />
+          <Entry outShaftSpeed="358.75" torque="1790.87" electricPower="77480.76" />
+          <Entry outShaftSpeed="358.75" torque="1885.13" electricPower="81799.55" />
+          <Entry outShaftSpeed="717.50" torque="-1885.13" electricPower="-124930.90" />
+          <Entry outShaftSpeed="717.50" torque="-1790.87" electricPower="-119014.91" />
+          <Entry outShaftSpeed="717.50" torque="-1696.62" electricPower="-113059.49" />
+          <Entry outShaftSpeed="717.50" torque="-1602.36" electricPower="-107064.64" />
+          <Entry outShaftSpeed="717.50" torque="-1508.10" electricPower="-101030.35" />
+          <Entry outShaftSpeed="717.50" torque="-1413.85" electricPower="-94956.63" />
+          <Entry outShaftSpeed="717.50" torque="-1319.59" electricPower="-88843.48" />
+          <Entry outShaftSpeed="717.50" torque="-1225.33" electricPower="-82690.90" />
+          <Entry outShaftSpeed="717.50" torque="-1131.08" electricPower="-76498.88" />
+          <Entry outShaftSpeed="717.50" torque="-1036.82" electricPower="-70267.43" />
+          <Entry outShaftSpeed="717.50" torque="-942.57" electricPower="-63996.54" />
+          <Entry outShaftSpeed="717.50" torque="-848.31" electricPower="-57686.22" />
+          <Entry outShaftSpeed="717.50" torque="-754.05" electricPower="-51336.47" />
+          <Entry outShaftSpeed="717.50" torque="-659.80" electricPower="-44947.29" />
+          <Entry outShaftSpeed="717.50" torque="-565.54" electricPower="-38518.67" />
+          <Entry outShaftSpeed="717.50" torque="-471.28" electricPower="-32050.62" />
+          <Entry outShaftSpeed="717.50" torque="-377.03" electricPower="-25543.14" />
+          <Entry outShaftSpeed="717.50" torque="-282.77" electricPower="-18996.22" />
+          <Entry outShaftSpeed="717.50" torque="-188.51" electricPower="-12409.87" />
+          <Entry outShaftSpeed="717.50" torque="-94.26" electricPower="-5784.09" />
+          <Entry outShaftSpeed="717.50" torque="-18.85" electricPower="-455.07" />
+          <Entry outShaftSpeed="717.50" torque="18.85" electricPower="2016.33" />
+          <Entry outShaftSpeed="717.50" torque="94.26" electricPower="8248.32" />
+          <Entry outShaftSpeed="717.50" torque="188.51" electricPower="15823.10" />
+          <Entry outShaftSpeed="717.50" torque="282.77" electricPower="23406.41" />
+          <Entry outShaftSpeed="717.50" torque="377.03" electricPower="31019.01" />
+          <Entry outShaftSpeed="717.50" torque="471.28" electricPower="38665.24" />
+          <Entry outShaftSpeed="717.50" torque="565.54" electricPower="46346.39" />
+          <Entry outShaftSpeed="717.50" torque="659.80" electricPower="54062.86" />
+          <Entry outShaftSpeed="717.50" torque="754.05" electricPower="61814.70" />
+          <Entry outShaftSpeed="717.50" torque="848.31" electricPower="69601.82" />
+          <Entry outShaftSpeed="717.50" torque="942.57" electricPower="77424.03" />
+          <Entry outShaftSpeed="717.50" torque="1036.82" electricPower="85281.14" />
+          <Entry outShaftSpeed="717.50" torque="1131.08" electricPower="93172.88" />
+          <Entry outShaftSpeed="717.50" torque="1225.33" electricPower="101099.02" />
+          <Entry outShaftSpeed="717.50" torque="1319.59" electricPower="109059.30" />
+          <Entry outShaftSpeed="717.50" torque="1413.85" electricPower="117053.46" />
+          <Entry outShaftSpeed="717.50" torque="1508.10" electricPower="125081.23" />
+          <Entry outShaftSpeed="717.50" torque="1602.36" electricPower="133142.34" />
+          <Entry outShaftSpeed="717.50" torque="1696.62" electricPower="141236.54" />
+          <Entry outShaftSpeed="717.50" torque="1790.87" electricPower="149363.56" />
+          <Entry outShaftSpeed="717.50" torque="1885.13" electricPower="157523.15" />
+          <Entry outShaftSpeed="1076.25" torque="-1885.13" electricPower="-190146.47" />
+          <Entry outShaftSpeed="1076.25" torque="-1790.87" electricPower="-181036.57" />
+          <Entry outShaftSpeed="1076.25" torque="-1696.62" electricPower="-171876.70" />
+          <Entry outShaftSpeed="1076.25" torque="-1602.36" electricPower="-162666.86" />
+          <Entry outShaftSpeed="1076.25" torque="-1508.10" electricPower="-153407.05" />
+          <Entry outShaftSpeed="1076.25" torque="-1413.85" electricPower="-144097.26" />
+          <Entry outShaftSpeed="1076.25" torque="-1319.59" electricPower="-134737.51" />
+          <Entry outShaftSpeed="1076.25" torque="-1225.33" electricPower="-125327.78" />
+          <Entry outShaftSpeed="1076.25" torque="-1131.08" electricPower="-115868.08" />
+          <Entry outShaftSpeed="1076.25" torque="-1036.82" electricPower="-106358.41" />
+          <Entry outShaftSpeed="1076.25" torque="-942.57" electricPower="-96798.77" />
+          <Entry outShaftSpeed="1076.25" torque="-848.31" electricPower="-87189.16" />
+          <Entry outShaftSpeed="1076.25" torque="-754.05" electricPower="-77529.58" />
+          <Entry outShaftSpeed="1076.25" torque="-659.80" electricPower="-67820.02" />
+          <Entry outShaftSpeed="1076.25" torque="-565.54" electricPower="-58060.50" />
+          <Entry outShaftSpeed="1076.25" torque="-471.28" electricPower="-48251.00" />
+          <Entry outShaftSpeed="1076.25" torque="-377.03" electricPower="-38391.53" />
+          <Entry outShaftSpeed="1076.25" torque="-282.77" electricPower="-28482.10" />
+          <Entry outShaftSpeed="1076.25" torque="-188.51" electricPower="-18522.68" />
+          <Entry outShaftSpeed="1076.25" torque="-94.26" electricPower="-8513.30" />
+          <Entry outShaftSpeed="1076.25" torque="-18.85" electricPower="-469.82" />
+          <Entry outShaftSpeed="1076.25" torque="18.85" electricPower="3096.69" />
+          <Entry outShaftSpeed="1076.25" torque="94.26" electricPower="12494.08" />
+          <Entry outShaftSpeed="1076.25" torque="188.51" electricPower="23812.24" />
+          <Entry outShaftSpeed="1076.25" torque="282.77" electricPower="35120.32" />
+          <Entry outShaftSpeed="1076.25" torque="377.03" electricPower="46460.12" />
+          <Entry outShaftSpeed="1076.25" torque="471.28" electricPower="57840.71" />
+          <Entry outShaftSpeed="1076.25" torque="565.54" electricPower="69265.03" />
+          <Entry outShaftSpeed="1076.25" torque="659.80" electricPower="80734.20" />
+          <Entry outShaftSpeed="1076.25" torque="754.05" electricPower="92248.63" />
+          <Entry outShaftSpeed="1076.25" torque="848.31" electricPower="103808.39" />
+          <Entry outShaftSpeed="1076.25" torque="942.57" electricPower="115413.41" />
+          <Entry outShaftSpeed="1076.25" torque="1036.82" electricPower="127063.52" />
+          <Entry outShaftSpeed="1076.25" torque="1131.08" electricPower="138758.52" />
+          <Entry outShaftSpeed="1076.25" torque="1225.33" electricPower="150498.16" />
+          <Entry outShaftSpeed="1076.25" torque="1319.59" electricPower="162282.18" />
+          <Entry outShaftSpeed="1076.25" torque="1413.85" electricPower="174110.30" />
+          <Entry outShaftSpeed="1076.25" torque="1508.10" electricPower="185982.25" />
+          <Entry outShaftSpeed="1076.25" torque="1602.36" electricPower="197897.74" />
+          <Entry outShaftSpeed="1076.25" torque="1696.62" electricPower="209856.49" />
+          <Entry outShaftSpeed="1076.25" torque="1790.87" electricPower="221858.20" />
+          <Entry outShaftSpeed="1076.25" torque="1885.13" electricPower="233902.59" />
+          <Entry outShaftSpeed="1435.00" torque="-1885.13" electricPower="-254331.34" />
+          <Entry outShaftSpeed="1435.00" torque="-1790.87" electricPower="-242107.07" />
+          <Entry outShaftSpeed="1435.00" torque="-1696.62" electricPower="-229818.22" />
+          <Entry outShaftSpeed="1435.00" torque="-1602.36" electricPower="-217464.78" />
+          <Entry outShaftSpeed="1435.00" torque="-1508.10" electricPower="-205046.75" />
+          <Entry outShaftSpeed="1435.00" torque="-1413.85" electricPower="-192564.13" />
+          <Entry outShaftSpeed="1435.00" torque="-1319.59" electricPower="-180016.92" />
+          <Entry outShaftSpeed="1435.00" torque="-1225.33" electricPower="-167405.12" />
+          <Entry outShaftSpeed="1435.00" torque="-1131.08" electricPower="-154728.74" />
+          <Entry outShaftSpeed="1435.00" torque="-1036.82" electricPower="-141987.76" />
+          <Entry outShaftSpeed="1435.00" torque="-942.57" electricPower="-129182.20" />
+          <Entry outShaftSpeed="1435.00" torque="-848.31" electricPower="-116312.04" />
+          <Entry outShaftSpeed="1435.00" torque="-754.05" electricPower="-103377.30" />
+          <Entry outShaftSpeed="1435.00" torque="-659.80" electricPower="-90377.97" />
+          <Entry outShaftSpeed="1435.00" torque="-565.54" electricPower="-77314.06" />
+          <Entry outShaftSpeed="1435.00" torque="-471.28" electricPower="-64185.55" />
+          <Entry outShaftSpeed="1435.00" torque="-377.03" electricPower="-50992.45" />
+          <Entry outShaftSpeed="1435.00" torque="-282.77" electricPower="-37734.77" />
+          <Entry outShaftSpeed="1435.00" torque="-188.51" electricPower="-24412.50" />
+          <Entry outShaftSpeed="1435.00" torque="-94.26" electricPower="-11025.63" />
+          <Entry outShaftSpeed="1435.00" torque="-18.85" electricPower="-269.64" />
+          <Entry outShaftSpeed="1435.00" torque="18.85" electricPower="4234.99" />
+          <Entry outShaftSpeed="1435.00" torque="94.26" electricPower="16893.64" />
+          <Entry outShaftSpeed="1435.00" torque="188.51" electricPower="31985.96" />
+          <Entry outShaftSpeed="1435.00" torque="282.77" electricPower="47037.12" />
+          <Entry outShaftSpeed="1435.00" torque="377.03" electricPower="62121.28" />
+          <Entry outShaftSpeed="1435.00" torque="471.28" electricPower="77254.97" />
+          <Entry outShaftSpeed="1435.00" torque="565.54" electricPower="92443.73" />
+          <Entry outShaftSpeed="1435.00" torque="659.80" electricPower="107689.78" />
+          <Entry outShaftSpeed="1435.00" torque="754.05" electricPower="122994.05" />
+          <Entry outShaftSpeed="1435.00" torque="848.31" electricPower="138356.89" />
+          <Entry outShaftSpeed="1435.00" torque="942.57" electricPower="153778.35" />
+          <Entry outShaftSpeed="1435.00" torque="1036.82" electricPower="169258.30" />
+          <Entry outShaftSpeed="1435.00" torque="1131.08" electricPower="184796.54" />
+          <Entry outShaftSpeed="1435.00" torque="1225.33" electricPower="200392.81" />
+          <Entry outShaftSpeed="1435.00" torque="1319.59" electricPower="216046.80" />
+          <Entry outShaftSpeed="1435.00" torque="1413.85" electricPower="231758.19" />
+          <Entry outShaftSpeed="1435.00" torque="1508.10" electricPower="247526.64" />
+          <Entry outShaftSpeed="1435.00" torque="1602.36" electricPower="263351.82" />
+          <Entry outShaftSpeed="1435.00" torque="1696.62" electricPower="279233.35" />
+          <Entry outShaftSpeed="1435.00" torque="1790.87" electricPower="295170.89" />
+          <Entry outShaftSpeed="1435.00" torque="1885.13" electricPower="311164.09" />
+          <Entry outShaftSpeed="1793.75" torque="-1885.13" electricPower="-317436.56" />
+          <Entry outShaftSpeed="1793.75" torque="-1790.87" electricPower="-302177.47" />
+          <Entry outShaftSpeed="1793.75" torque="-1696.62" electricPower="-286835.10" />
+          <Entry outShaftSpeed="1793.75" torque="-1602.36" electricPower="-271409.45" />
+          <Entry outShaftSpeed="1793.75" torque="-1508.10" electricPower="-255900.50" />
+          <Entry outShaftSpeed="1793.75" torque="-1413.85" electricPower="-240308.28" />
+          <Entry outShaftSpeed="1793.75" torque="-1319.59" electricPower="-224632.77" />
+          <Entry outShaftSpeed="1793.75" torque="-1225.33" electricPower="-208873.97" />
+          <Entry outShaftSpeed="1793.75" torque="-1131.08" electricPower="-193031.89" />
+          <Entry outShaftSpeed="1793.75" torque="-1036.82" electricPower="-177106.52" />
+          <Entry outShaftSpeed="1793.75" torque="-942.57" electricPower="-161097.86" />
+          <Entry outShaftSpeed="1793.75" torque="-848.31" electricPower="-145005.92" />
+          <Entry outShaftSpeed="1793.75" torque="-754.05" electricPower="-128830.70" />
+          <Entry outShaftSpeed="1793.75" torque="-659.80" electricPower="-112572.19" />
+          <Entry outShaftSpeed="1793.75" torque="-565.54" electricPower="-96230.39" />
+          <Entry outShaftSpeed="1793.75" torque="-471.28" electricPower="-79805.31" />
+          <Entry outShaftSpeed="1793.75" torque="-377.03" electricPower="-63296.94" />
+          <Entry outShaftSpeed="1793.75" torque="-282.77" electricPower="-46705.29" />
+          <Entry outShaftSpeed="1793.75" torque="-188.51" electricPower="-30030.35" />
+          <Entry outShaftSpeed="1793.75" torque="-94.26" electricPower="-13272.13" />
+          <Entry outShaftSpeed="1793.75" torque="-18.85" electricPower="0.00" />
+          <Entry outShaftSpeed="1793.75" torque="18.85" electricPower="5429.65" />
+          <Entry outShaftSpeed="1793.75" torque="94.26" electricPower="21468.78" />
+          <Entry outShaftSpeed="1793.75" torque="188.51" electricPower="40376.70" />
+          <Entry outShaftSpeed="1793.75" torque="282.77" electricPower="59193.86" />
+          <Entry outShaftSpeed="1793.75" torque="377.03" electricPower="78042.18" />
+          <Entry outShaftSpeed="1793.75" torque="471.28" electricPower="96949.52" />
+          <Entry outShaftSpeed="1793.75" torque="565.54" electricPower="115925.42" />
+          <Entry outShaftSpeed="1793.75" torque="659.80" electricPower="134973.80" />
+          <Entry outShaftSpeed="1793.75" torque="754.05" electricPower="154096.41" />
+          <Entry outShaftSpeed="1793.75" torque="848.31" electricPower="173293.99" />
+          <Entry outShaftSpeed="1793.75" torque="942.57" electricPower="192566.79" />
+          <Entry outShaftSpeed="1793.75" torque="1036.82" electricPower="211914.77" />
+          <Entry outShaftSpeed="1793.75" torque="1131.08" electricPower="231337.73" />
+          <Entry outShaftSpeed="1793.75" torque="1225.33" electricPower="250835.36" />
+          <Entry outShaftSpeed="1793.75" torque="1319.59" electricPower="270407.32" />
+          <Entry outShaftSpeed="1793.75" torque="1413.85" electricPower="290053.19" />
+          <Entry outShaftSpeed="1793.75" torque="1508.10" electricPower="309772.54" />
+          <Entry outShaftSpeed="1793.75" torque="1602.36" electricPower="329564.95" />
+          <Entry outShaftSpeed="1793.75" torque="1696.62" electricPower="349429.93" />
+          <Entry outShaftSpeed="1793.75" torque="1790.87" electricPower="369367.04" />
+          <Entry outShaftSpeed="1793.75" torque="1885.13" electricPower="389375.81" />
+          <Entry outShaftSpeed="2152.50" torque="-1885.13" electricPower="-379413.17" />
+          <Entry outShaftSpeed="2152.50" torque="-1790.87" electricPower="-361198.81" />
+          <Entry outShaftSpeed="2152.50" torque="-1696.62" electricPower="-342878.39" />
+          <Entry outShaftSpeed="2152.50" torque="-1602.36" electricPower="-324451.91" />
+          <Entry outShaftSpeed="2152.50" torque="-1508.10" electricPower="-305919.37" />
+          <Entry outShaftSpeed="2152.50" torque="-1413.85" electricPower="-287280.76" />
+          <Entry outShaftSpeed="2152.50" torque="-1319.59" electricPower="-268536.10" />
+          <Entry outShaftSpeed="2152.50" torque="-1225.33" electricPower="-249685.37" />
+          <Entry outShaftSpeed="2152.50" torque="-1131.08" electricPower="-230728.58" />
+          <Entry outShaftSpeed="2152.50" torque="-1036.82" electricPower="-211665.73" />
+          <Entry outShaftSpeed="2152.50" torque="-942.57" electricPower="-192496.82" />
+          <Entry outShaftSpeed="2152.50" torque="-848.31" electricPower="-173221.85" />
+          <Entry outShaftSpeed="2152.50" torque="-754.05" electricPower="-153840.81" />
+          <Entry outShaftSpeed="2152.50" torque="-659.80" electricPower="-134353.71" />
+          <Entry outShaftSpeed="2152.50" torque="-565.54" electricPower="-114760.56" />
+          <Entry outShaftSpeed="2152.50" torque="-471.28" electricPower="-95061.34" />
+          <Entry outShaftSpeed="2152.50" torque="-377.03" electricPower="-75256.06" />
+          <Entry outShaftSpeed="2152.50" torque="-282.77" electricPower="-55344.71" />
+          <Entry outShaftSpeed="2152.50" torque="-188.51" electricPower="-35327.31" />
+          <Entry outShaftSpeed="2152.50" torque="-94.26" electricPower="-15203.84" />
+          <Entry outShaftSpeed="2152.50" torque="-18.85" electricPower="0.00" />
+          <Entry outShaftSpeed="2152.50" torque="18.85" electricPower="6675.86" />
+          <Entry outShaftSpeed="2152.50" torque="94.26" electricPower="26235.04" />
+          <Entry outShaftSpeed="2152.50" torque="188.51" electricPower="49012.07" />
+          <Entry outShaftSpeed="2152.50" torque="282.77" electricPower="71623.44" />
+          <Entry outShaftSpeed="2152.50" torque="377.03" electricPower="94258.53" />
+          <Entry outShaftSpeed="2152.50" torque="471.28" electricPower="116961.73" />
+          <Entry outShaftSpeed="2152.50" torque="565.54" electricPower="139748.48" />
+          <Entry outShaftSpeed="2152.50" torque="659.80" electricPower="162625.28" />
+          <Entry outShaftSpeed="2152.50" torque="754.05" electricPower="185595.12" />
+          <Entry outShaftSpeed="2152.50" torque="848.31" electricPower="208659.35" />
+          <Entry outShaftSpeed="2152.50" torque="942.57" electricPower="231818.54" />
+          <Entry outShaftSpeed="2152.50" torque="1036.82" electricPower="255072.77" />
+          <Entry outShaftSpeed="2152.50" torque="1131.08" electricPower="278421.87" />
+          <Entry outShaftSpeed="2152.50" torque="1225.33" electricPower="301865.51" />
+          <Entry outShaftSpeed="2152.50" torque="1319.59" electricPower="325403.25" />
+          <Entry outShaftSpeed="2152.50" torque="1413.85" electricPower="349034.59" />
+          <Entry outShaftSpeed="2152.50" torque="1508.10" electricPower="372758.99" />
+          <Entry outShaftSpeed="2152.50" torque="1602.36" electricPower="396575.86" />
+          <Entry outShaftSpeed="2152.50" torque="1696.62" electricPower="420484.60" />
+          <Entry outShaftSpeed="2152.50" torque="1790.87" electricPower="444484.62" />
+          <Entry outShaftSpeed="2152.50" torque="1885.13" electricPower="468575.30" />
+          <Entry outShaftSpeed="2511.25" torque="-1885.13" electricPower="-440212.23" />
+          <Entry outShaftSpeed="2511.25" torque="-1790.87" electricPower="-419122.15" />
+          <Entry outShaftSpeed="2511.25" torque="-1696.62" electricPower="-397899.14" />
+          <Entry outShaftSpeed="2511.25" torque="-1602.36" electricPower="-376543.22" />
+          <Entry outShaftSpeed="2511.25" torque="-1508.10" electricPower="-355054.39" />
+          <Entry outShaftSpeed="2511.25" torque="-1413.85" electricPower="-333432.63" />
+          <Entry outShaftSpeed="2511.25" torque="-1319.59" electricPower="-311677.96" />
+          <Entry outShaftSpeed="2511.25" torque="-1225.33" electricPower="-289790.38" />
+          <Entry outShaftSpeed="2511.25" torque="-1131.08" electricPower="-267769.87" />
+          <Entry outShaftSpeed="2511.25" torque="-1036.82" electricPower="-245616.45" />
+          <Entry outShaftSpeed="2511.25" torque="-942.57" electricPower="-223330.11" />
+          <Entry outShaftSpeed="2511.25" torque="-848.31" electricPower="-200910.86" />
+          <Entry outShaftSpeed="2511.25" torque="-754.05" electricPower="-178358.69" />
+          <Entry outShaftSpeed="2511.25" torque="-659.80" electricPower="-155673.60" />
+          <Entry outShaftSpeed="2511.25" torque="-565.54" electricPower="-132855.60" />
+          <Entry outShaftSpeed="2511.25" torque="-471.28" electricPower="-109904.67" />
+          <Entry outShaftSpeed="2511.25" torque="-377.03" electricPower="-86820.84" />
+          <Entry outShaftSpeed="2511.25" torque="-282.77" electricPower="-63604.08" />
+          <Entry outShaftSpeed="2511.25" torque="-188.51" electricPower="-40254.41" />
+          <Entry outShaftSpeed="2511.25" torque="-94.26" electricPower="-16771.82" />
+          <Entry outShaftSpeed="2511.25" torque="-18.85" electricPower="0.00" />
+          <Entry outShaftSpeed="2511.25" torque="18.85" electricPower="7967.13" />
+          <Entry outShaftSpeed="2511.25" torque="94.26" electricPower="31202.04" />
+          <Entry outShaftSpeed="2511.25" torque="188.51" electricPower="57914.84" />
+          <Entry outShaftSpeed="2511.25" torque="282.77" electricPower="84354.74" />
+          <Entry outShaftSpeed="2511.25" torque="377.03" electricPower="110802.49" />
+          <Entry outShaftSpeed="2511.25" torque="471.28" electricPower="137325.63" />
+          <Entry outShaftSpeed="2511.25" torque="565.54" electricPower="163948.06" />
+          <Entry outShaftSpeed="2511.25" torque="659.80" electricPower="190679.98" />
+          <Entry outShaftSpeed="2511.25" torque="754.05" electricPower="217526.20" />
+          <Entry outShaftSpeed="2511.25" torque="848.31" electricPower="244489.02" />
+          <Entry outShaftSpeed="2511.25" torque="942.57" electricPower="271569.45" />
+          <Entry outShaftSpeed="2511.25" torque="1036.82" electricPower="298767.81" />
+          <Entry outShaftSpeed="2511.25" torque="1131.08" electricPower="326084.00" />
+          <Entry outShaftSpeed="2511.25" torque="1225.33" electricPower="353517.67" />
+          <Entry outShaftSpeed="2511.25" torque="1319.59" electricPower="381068.30" />
+          <Entry outShaftSpeed="2511.25" torque="1413.85" electricPower="408735.27" />
+          <Entry outShaftSpeed="2511.25" torque="1508.10" electricPower="436517.88" />
+          <Entry outShaftSpeed="2511.25" torque="1602.36" electricPower="464415.39" />
+          <Entry outShaftSpeed="2511.25" torque="1696.62" electricPower="492427.03" />
+          <Entry outShaftSpeed="2511.25" torque="1790.87" electricPower="520552.02" />
+          <Entry outShaftSpeed="2511.25" torque="1885.13" electricPower="548789.53" />
+          <Entry outShaftSpeed="2870.00" torque="-1885.13" electricPower="-499784.79" />
+          <Entry outShaftSpeed="2870.00" torque="-1790.87" electricPower="-475898.52" />
+          <Entry outShaftSpeed="2870.00" torque="-1696.62" electricPower="-451848.40" />
+          <Entry outShaftSpeed="2870.00" torque="-1602.36" electricPower="-427634.43" />
+          <Entry outShaftSpeed="2870.00" torque="-1508.10" electricPower="-403256.61" />
+          <Entry outShaftSpeed="2870.00" torque="-1413.85" electricPower="-378714.93" />
+          <Entry outShaftSpeed="2870.00" torque="-1319.59" electricPower="-354009.41" />
+          <Entry outShaftSpeed="2870.00" torque="-1225.33" electricPower="-329140.03" />
+          <Entry outShaftSpeed="2870.00" torque="-1131.08" electricPower="-304106.80" />
+          <Entry outShaftSpeed="2870.00" torque="-1036.82" electricPower="-278909.73" />
+          <Entry outShaftSpeed="2870.00" torque="-942.57" electricPower="-253548.80" />
+          <Entry outShaftSpeed="2870.00" torque="-848.31" electricPower="-228024.01" />
+          <Entry outShaftSpeed="2870.00" torque="-754.05" electricPower="-202335.38" />
+          <Entry outShaftSpeed="2870.00" torque="-659.80" electricPower="-176482.90" />
+          <Entry outShaftSpeed="2870.00" torque="-565.54" electricPower="-150466.56" />
+          <Entry outShaftSpeed="2870.00" torque="-471.28" electricPower="-124286.37" />
+          <Entry outShaftSpeed="2870.00" torque="-377.03" electricPower="-97942.33" />
+          <Entry outShaftSpeed="2870.00" torque="-282.77" electricPower="-71434.44" />
+          <Entry outShaftSpeed="2870.00" torque="-188.51" electricPower="-44762.70" />
+          <Entry outShaftSpeed="2870.00" torque="-94.26" electricPower="-17927.11" />
+          <Entry outShaftSpeed="2870.00" torque="-18.85" electricPower="0.00" />
+          <Entry outShaftSpeed="2870.00" torque="18.85" electricPower="9296.38" />
+          <Entry outShaftSpeed="2870.00" torque="94.26" electricPower="36373.92" />
+          <Entry outShaftSpeed="2870.00" torque="188.51" electricPower="67102.90" />
+          <Entry outShaftSpeed="2870.00" torque="282.77" electricPower="97412.56" />
+          <Entry outShaftSpeed="2870.00" torque="377.03" electricPower="127702.67" />
+          <Entry outShaftSpeed="2870.00" torque="471.28" electricPower="158072.06" />
+          <Entry outShaftSpeed="2870.00" torque="565.54" electricPower="188556.29" />
+          <Entry outShaftSpeed="2870.00" torque="659.80" electricPower="219170.75" />
+          <Entry outShaftSpeed="2870.00" torque="754.05" electricPower="249922.82" />
+          <Entry outShaftSpeed="2870.00" torque="848.31" electricPower="280816.14" />
+          <Entry outShaftSpeed="2870.00" torque="942.57" electricPower="311852.43" />
+          <Entry outShaftSpeed="2870.00" torque="1036.82" electricPower="343032.36" />
+          <Entry outShaftSpeed="2870.00" torque="1131.08" electricPower="374355.98" />
+          <Entry outShaftSpeed="2870.00" torque="1225.33" electricPower="405822.93" />
+          <Entry outShaftSpeed="2870.00" torque="1319.59" electricPower="437432.62" />
+          <Entry outShaftSpeed="2870.00" torque="1413.85" electricPower="469184.30" />
+          <Entry outShaftSpeed="2870.00" torque="1508.10" electricPower="501077.10" />
+          <Entry outShaftSpeed="2870.00" torque="1602.36" electricPower="533110.10" />
+          <Entry outShaftSpeed="2870.00" torque="1696.62" electricPower="565282.30" />
+          <Entry outShaftSpeed="2870.00" torque="1790.87" electricPower="597592.70" />
+          <Entry outShaftSpeed="2870.00" torque="1885.13" electricPower="630040.24" />
+          <Entry outShaftSpeed="3228.75" torque="-1885.13" electricPower="-558081.89" />
+          <Entry outShaftSpeed="3228.75" torque="-1790.87" electricPower="-531478.98" />
+          <Entry outShaftSpeed="3228.75" torque="-1696.62" electricPower="-504677.21" />
+          <Entry outShaftSpeed="3228.75" torque="-1602.36" electricPower="-477676.58" />
+          <Entry outShaftSpeed="3228.75" torque="-1508.10" electricPower="-450477.08" />
+          <Entry outShaftSpeed="3228.75" torque="-1413.85" electricPower="-423078.72" />
+          <Entry outShaftSpeed="3228.75" torque="-1319.59" electricPower="-395481.49" />
+          <Entry outShaftSpeed="3228.75" torque="-1225.33" electricPower="-367685.39" />
+          <Entry outShaftSpeed="3228.75" torque="-1131.08" electricPower="-339690.43" />
+          <Entry outShaftSpeed="3228.75" torque="-1036.82" electricPower="-311496.60" />
+          <Entry outShaftSpeed="3228.75" torque="-942.57" electricPower="-283103.91" />
+          <Entry outShaftSpeed="3228.75" torque="-848.31" electricPower="-254512.36" />
+          <Entry outShaftSpeed="3228.75" torque="-754.05" electricPower="-225721.94" />
+          <Entry outShaftSpeed="3228.75" torque="-659.80" electricPower="-196732.65" />
+          <Entry outShaftSpeed="3228.75" torque="-565.54" electricPower="-167544.50" />
+          <Entry outShaftSpeed="3228.75" torque="-471.28" electricPower="-138157.48" />
+          <Entry outShaftSpeed="3228.75" torque="-377.03" electricPower="-108571.60" />
+          <Entry outShaftSpeed="3228.75" torque="-282.77" electricPower="-78786.85" />
+          <Entry outShaftSpeed="3228.75" torque="-188.51" electricPower="-48803.24" />
+          <Entry outShaftSpeed="3228.75" torque="-94.26" electricPower="-18620.76" />
+          <Entry outShaftSpeed="3228.75" torque="-18.85" electricPower="0.00" />
+          <Entry outShaftSpeed="3228.75" torque="18.85" electricPower="10656.81" />
+          <Entry outShaftSpeed="3228.75" torque="94.26" electricPower="41750.03" />
+          <Entry outShaftSpeed="3228.75" torque="188.51" electricPower="76589.36" />
+          <Entry outShaftSpeed="3228.75" torque="282.77" electricPower="110817.58" />
+          <Entry outShaftSpeed="3228.75" torque="377.03" electricPower="144984.06" />
+          <Entry outShaftSpeed="3228.75" torque="471.28" electricPower="179228.62" />
+          <Entry outShaftSpeed="3228.75" torque="565.54" electricPower="213602.33" />
+          <Entry outShaftSpeed="3228.75" torque="659.80" electricPower="248127.62" />
+          <Entry outShaftSpeed="3228.75" torque="754.05" electricPower="282815.41" />
+          <Entry outShaftSpeed="3228.75" torque="848.31" electricPower="317671.21" />
+          <Entry outShaftSpeed="3228.75" torque="942.57" electricPower="352697.77" />
+          <Entry outShaftSpeed="3228.75" torque="1036.82" electricPower="387896.27" />
+          <Entry outShaftSpeed="3228.75" torque="1131.08" electricPower="423266.99" />
+          <Entry outShaftSpeed="3228.75" torque="1225.33" electricPower="458809.64" />
+          <Entry outShaftSpeed="3228.75" torque="1319.59" electricPower="494523.58" />
+          <Entry outShaftSpeed="3228.75" torque="1413.85" electricPower="530407.92" />
+          <Entry outShaftSpeed="3228.75" torque="1508.10" electricPower="566461.60" />
+          <Entry outShaftSpeed="3228.75" torque="1602.36" electricPower="602683.47" />
+          <Entry outShaftSpeed="3228.75" torque="1696.62" electricPower="639072.31" />
+          <Entry outShaftSpeed="3228.75" torque="1790.87" electricPower="675626.82" />
+          <Entry outShaftSpeed="3228.75" torque="1885.13" electricPower="712345.71" />
+          <Entry outShaftSpeed="3587.50" torque="-1885.13" electricPower="-615054.57" />
+          <Entry outShaftSpeed="3587.50" torque="-1790.87" electricPower="-585814.58" />
+          <Entry outShaftSpeed="3587.50" torque="-1696.62" electricPower="-556336.63" />
+          <Entry outShaftSpeed="3587.50" torque="-1602.36" electricPower="-526620.72" />
+          <Entry outShaftSpeed="3587.50" torque="-1508.10" electricPower="-496666.85" />
+          <Entry outShaftSpeed="3587.50" torque="-1413.85" electricPower="-466475.03" />
+          <Entry outShaftSpeed="3587.50" torque="-1319.59" electricPower="-436045.24" />
+          <Entry outShaftSpeed="3587.50" torque="-1225.33" electricPower="-405377.50" />
+          <Entry outShaftSpeed="3587.50" torque="-1131.08" electricPower="-374471.79" />
+          <Entry outShaftSpeed="3587.50" torque="-1036.82" electricPower="-343328.13" />
+          <Entry outShaftSpeed="3587.50" torque="-942.57" electricPower="-311946.52" />
+          <Entry outShaftSpeed="3587.50" torque="-848.31" electricPower="-280326.94" />
+          <Entry outShaftSpeed="3587.50" torque="-754.05" electricPower="-248469.40" />
+          <Entry outShaftSpeed="3587.50" torque="-659.80" electricPower="-216373.91" />
+          <Entry outShaftSpeed="3587.50" torque="-565.54" electricPower="-184040.46" />
+          <Entry outShaftSpeed="3587.50" torque="-471.28" electricPower="-151469.04" />
+          <Entry outShaftSpeed="3587.50" torque="-377.03" electricPower="-118659.67" />
+          <Entry outShaftSpeed="3587.50" torque="-282.77" electricPower="-85612.35" />
+          <Entry outShaftSpeed="3587.50" torque="-188.51" electricPower="-52327.06" />
+          <Entry outShaftSpeed="3587.50" torque="-94.26" electricPower="-18803.82" />
+          <Entry outShaftSpeed="3587.50" torque="-18.85" electricPower="0.00" />
+          <Entry outShaftSpeed="3587.50" torque="18.85" electricPower="12042.25" />
+          <Entry outShaftSpeed="3587.50" torque="94.26" electricPower="47325.74" />
+          <Entry outShaftSpeed="3587.50" torque="188.51" electricPower="86382.75" />
+          <Entry outShaftSpeed="3587.50" torque="282.77" electricPower="124586.35" />
+          <Entry outShaftSpeed="3587.50" torque="377.03" electricPower="162668.03" />
+          <Entry outShaftSpeed="3587.50" torque="471.28" electricPower="200819.60" />
+          <Entry outShaftSpeed="3587.50" torque="565.54" electricPower="239112.29" />
+          <Entry outShaftSpeed="3587.50" torque="659.80" electricPower="277577.79" />
+          <Entry outShaftSpeed="3587.50" torque="754.05" electricPower="316231.72" />
+          <Entry outShaftSpeed="3587.50" torque="848.31" electricPower="355082.15" />
+          <Entry outShaftSpeed="3587.50" torque="942.57" electricPower="394133.21" />
+          <Entry outShaftSpeed="3587.50" torque="1036.82" electricPower="433386.85" />
+          <Entry outShaftSpeed="3587.50" torque="1131.08" electricPower="472843.74" />
+          <Entry outShaftSpeed="3587.50" torque="1225.33" electricPower="512503.71" />
+          <Entry outShaftSpeed="3587.50" torque="1319.59" electricPower="552366.08" />
+          <Entry outShaftSpeed="3587.50" torque="1413.85" electricPower="592429.85" />
+          <Entry outShaftSpeed="3587.50" torque="1508.10" electricPower="632693.78" />
+          <Entry outShaftSpeed="3587.50" torque="1602.36" electricPower="673156.45" />
+          <Entry outShaftSpeed="3587.50" torque="1696.62" electricPower="713816.36" />
+          <Entry outShaftSpeed="3587.50" torque="1790.87" electricPower="754671.94" />
+          <Entry outShaftSpeed="3587.50" torque="1885.13" electricPower="795721.55" />
+          <Entry outShaftSpeed="3946.25" torque="-1885.13" electricPower="-670653.90" />
+          <Entry outShaftSpeed="3946.25" torque="-1790.87" electricPower="-638856.37" />
+          <Entry outShaftSpeed="3946.25" torque="-1696.62" electricPower="-606777.70" />
+          <Entry outShaftSpeed="3946.25" torque="-1602.36" electricPower="-574417.90" />
+          <Entry outShaftSpeed="3946.25" torque="-1508.10" electricPower="-541776.97" />
+          <Entry outShaftSpeed="3946.25" torque="-1413.85" electricPower="-508854.91" />
+          <Entry outShaftSpeed="3946.25" torque="-1319.59" electricPower="-475651.72" />
+          <Entry outShaftSpeed="3946.25" torque="-1225.33" electricPower="-442167.40" />
+          <Entry outShaftSpeed="3946.25" torque="-1131.08" electricPower="-408401.95" />
+          <Entry outShaftSpeed="3946.25" torque="-1036.82" electricPower="-374355.37" />
+          <Entry outShaftSpeed="3946.25" torque="-942.57" electricPower="-340027.65" />
+          <Entry outShaftSpeed="3946.25" torque="-848.31" electricPower="-305418.81" />
+          <Entry outShaftSpeed="3946.25" torque="-754.05" electricPower="-270528.83" />
+          <Entry outShaftSpeed="3946.25" torque="-659.80" electricPower="-235357.72" />
+          <Entry outShaftSpeed="3946.25" torque="-565.54" electricPower="-199905.48" />
+          <Entry outShaftSpeed="3946.25" torque="-471.28" electricPower="-164172.12" />
+          <Entry outShaftSpeed="3946.25" torque="-377.03" electricPower="-128157.62" />
+          <Entry outShaftSpeed="3946.25" torque="-282.77" electricPower="-91861.99" />
+          <Entry outShaftSpeed="3946.25" torque="-188.51" electricPower="-55285.22" />
+          <Entry outShaftSpeed="3946.25" torque="-94.26" electricPower="-18427.33" />
+          <Entry outShaftSpeed="3946.25" torque="-18.85" electricPower="0.00" />
+          <Entry outShaftSpeed="3946.25" torque="18.85" electricPower="13447.38" />
+          <Entry outShaftSpeed="3946.25" torque="94.26" electricPower="53093.24" />
+          <Entry outShaftSpeed="3946.25" torque="188.51" electricPower="96487.36" />
+          <Entry outShaftSpeed="3946.25" torque="282.77" electricPower="138731.41" />
+          <Entry outShaftSpeed="3946.25" torque="377.03" electricPower="180772.27" />
+          <Entry outShaftSpeed="3946.25" torque="471.28" electricPower="222865.99" />
+          <Entry outShaftSpeed="3946.25" torque="565.54" electricPower="265109.24" />
+          <Entry outShaftSpeed="3946.25" torque="659.80" electricPower="307545.60" />
+          <Entry outShaftSpeed="3946.25" torque="754.05" electricPower="350196.79" />
+          <Entry outShaftSpeed="3946.25" torque="848.31" electricPower="393074.25" />
+          <Entry outShaftSpeed="3946.25" torque="942.57" electricPower="436184.00" />
+          <Entry outShaftSpeed="3946.25" torque="1036.82" electricPower="479529.03" />
+          <Entry outShaftSpeed="3946.25" torque="1131.08" electricPower="523110.56" />
+          <Entry outShaftSpeed="3946.25" torque="1225.33" electricPower="566928.66" />
+          <Entry outShaftSpeed="3946.25" torque="1319.59" electricPower="610982.69" />
+          <Entry outShaftSpeed="3946.25" torque="1413.85" electricPower="655271.53" />
+          <Entry outShaftSpeed="3946.25" torque="1508.10" electricPower="699793.74" />
+          <Entry outShaftSpeed="3946.25" torque="1602.36" electricPower="744547.67" />
+          <Entry outShaftSpeed="3946.25" torque="1696.62" electricPower="789531.49" />
+          <Entry outShaftSpeed="3946.25" torque="1790.87" electricPower="834743.29" />
+          <Entry outShaftSpeed="3946.25" torque="1885.13" electricPower="880181.10" />
+          <Entry outShaftSpeed="4305.00" torque="-1885.13" electricPower="-724830.92" />
+          <Entry outShaftSpeed="4305.00" torque="-1790.87" electricPower="-690555.39" />
+          <Entry outShaftSpeed="4305.00" torque="-1696.62" electricPower="-655951.47" />
+          <Entry outShaftSpeed="4305.00" torque="-1602.36" electricPower="-621019.17" />
+          <Entry outShaftSpeed="4305.00" torque="-1508.10" electricPower="-585758.49" />
+          <Entry outShaftSpeed="4305.00" torque="-1413.85" electricPower="-550169.43" />
+          <Entry outShaftSpeed="4305.00" torque="-1319.59" electricPower="-514251.98" />
+          <Entry outShaftSpeed="4305.00" torque="-1225.33" electricPower="-478006.15" />
+          <Entry outShaftSpeed="4305.00" torque="-1131.08" electricPower="-441431.94" />
+          <Entry outShaftSpeed="4305.00" torque="-1036.82" electricPower="-404529.35" />
+          <Entry outShaftSpeed="4305.00" torque="-942.57" electricPower="-367298.37" />
+          <Entry outShaftSpeed="4305.00" torque="-848.31" electricPower="-329739.01" />
+          <Entry outShaftSpeed="4305.00" torque="-754.05" electricPower="-291851.27" />
+          <Entry outShaftSpeed="4305.00" torque="-659.80" electricPower="-253635.14" />
+          <Entry outShaftSpeed="4305.00" torque="-565.54" electricPower="-215090.63" />
+          <Entry outShaftSpeed="4305.00" torque="-471.28" electricPower="-176217.74" />
+          <Entry outShaftSpeed="4305.00" torque="-377.03" electricPower="-137016.47" />
+          <Entry outShaftSpeed="4305.00" torque="-282.77" electricPower="-97486.81" />
+          <Entry outShaftSpeed="4305.00" torque="-188.51" electricPower="-57628.77" />
+          <Entry outShaftSpeed="4305.00" torque="-94.26" electricPower="-17442.35" />
+          <Entry outShaftSpeed="4305.00" torque="-18.85" electricPower="0.00" />
+          <Entry outShaftSpeed="4305.00" torque="18.85" electricPower="14867.74" />
+          <Entry outShaftSpeed="4305.00" torque="94.26" electricPower="59042.37" />
+          <Entry outShaftSpeed="4305.00" torque="188.51" electricPower="106903.58" />
+          <Entry outShaftSpeed="4305.00" torque="282.77" electricPower="153261.41" />
+          <Entry outShaftSpeed="4305.00" torque="377.03" electricPower="199310.90" />
+          <Entry outShaftSpeed="4305.00" torque="471.28" electricPower="245385.47" />
+          <Entry outShaftSpeed="4305.00" torque="565.54" electricPower="291613.19" />
+          <Entry outShaftSpeed="4305.00" torque="659.80" electricPower="338052.52" />
+          <Entry outShaftSpeed="4305.00" torque="754.05" electricPower="384732.97" />
+          <Entry outShaftSpeed="4305.00" torque="848.31" electricPower="431670.26" />
+          <Entry outShaftSpeed="4305.00" torque="942.57" electricPower="478872.91" />
+          <Entry outShaftSpeed="4305.00" torque="1036.82" electricPower="526345.31" />
+          <Entry outShaftSpeed="4305.00" torque="1131.08" electricPower="574089.44" />
+          <Entry outShaftSpeed="4305.00" torque="1225.33" electricPower="622105.76" />
+          <Entry outShaftSpeed="4305.00" torque="1319.59" electricPower="670393.73" />
+          <Entry outShaftSpeed="4305.00" torque="1413.85" electricPower="718952.16" />
+          <Entry outShaftSpeed="4305.00" torque="1508.10" electricPower="767779.43" />
+          <Entry outShaftSpeed="4305.00" torque="1602.36" electricPower="816873.62" />
+          <Entry outShaftSpeed="4305.00" torque="1696.62" electricPower="866232.58" />
+          <Entry outShaftSpeed="4305.00" torque="1790.87" electricPower="915854.04" />
+          <Entry outShaftSpeed="4305.00" torque="1885.13" electricPower="965735.61" />
+          <Entry outShaftSpeed="4663.75" torque="-1885.13" electricPower="-777536.68" />
+          <Entry outShaftSpeed="4663.75" torque="-1790.87" electricPower="-740862.69" />
+          <Entry outShaftSpeed="4663.75" torque="-1696.62" electricPower="-703808.99" />
+          <Entry outShaftSpeed="4663.75" torque="-1602.36" electricPower="-666375.58" />
+          <Entry outShaftSpeed="4663.75" torque="-1508.10" electricPower="-628562.46" />
+          <Entry outShaftSpeed="4663.75" torque="-1413.85" electricPower="-590369.62" />
+          <Entry outShaftSpeed="4663.75" torque="-1319.59" electricPower="-551797.06" />
+          <Entry outShaftSpeed="4663.75" torque="-1225.33" electricPower="-512844.80" />
+          <Entry outShaftSpeed="4663.75" torque="-1131.08" electricPower="-473512.82" />
+          <Entry outShaftSpeed="4663.75" torque="-1036.82" electricPower="-433801.12" />
+          <Entry outShaftSpeed="4663.75" torque="-942.57" electricPower="-393709.71" />
+          <Entry outShaftSpeed="4663.75" torque="-848.31" electricPower="-353238.59" />
+          <Entry outShaftSpeed="4663.75" torque="-754.05" electricPower="-312387.76" />
+          <Entry outShaftSpeed="4663.75" torque="-659.80" electricPower="-271157.21" />
+          <Entry outShaftSpeed="4663.75" torque="-565.54" electricPower="-229546.95" />
+          <Entry outShaftSpeed="4663.75" torque="-471.28" electricPower="-187556.97" />
+          <Entry outShaftSpeed="4663.75" torque="-377.03" electricPower="-145187.28" />
+          <Entry outShaftSpeed="4663.75" torque="-282.77" electricPower="-102437.88" />
+          <Entry outShaftSpeed="4663.75" torque="-188.51" electricPower="-59308.76" />
+          <Entry outShaftSpeed="4663.75" torque="-94.26" electricPower="-15799.93" />
+          <Entry outShaftSpeed="4663.75" torque="-18.85" electricPower="0.00" />
+          <Entry outShaftSpeed="4663.75" torque="18.85" electricPower="16299.71" />
+          <Entry outShaftSpeed="4663.75" torque="94.26" electricPower="65161.31" />
+          <Entry outShaftSpeed="4663.75" torque="188.51" electricPower="117628.40" />
+          <Entry outShaftSpeed="4663.75" torque="282.77" electricPower="168181.40" />
+          <Entry outShaftSpeed="4663.75" torque="377.03" electricPower="218294.55" />
+          <Entry outShaftSpeed="4663.75" torque="471.28" electricPower="268392.48" />
+          <Entry outShaftSpeed="4663.75" torque="565.54" electricPower="318641.12" />
+          <Entry outShaftSpeed="4663.75" torque="659.80" electricPower="369117.20" />
+          <Entry outShaftSpeed="4663.75" torque="754.05" electricPower="419859.89" />
+          <Entry outShaftSpeed="4663.75" torque="848.31" electricPower="470890.36" />
+          <Entry outShaftSpeed="4663.75" torque="942.57" electricPower="522220.25" />
+          <Entry outShaftSpeed="4663.75" torque="1036.82" electricPower="573855.81" />
+          <Entry outShaftSpeed="4663.75" torque="1131.08" electricPower="625800.08" />
+          <Entry outShaftSpeed="4663.75" torque="1225.33" electricPower="678054.02" />
+          <Entry outShaftSpeed="4663.75" torque="1319.59" electricPower="730617.33" />
+          <Entry outShaftSpeed="4663.75" torque="1413.85" electricPower="783488.82" />
+          <Entry outShaftSpeed="4663.75" torque="1508.10" electricPower="836666.68" />
+          <Entry outShaftSpeed="4663.75" torque="1602.36" electricPower="890148.75" />
+          <Entry outShaftSpeed="4663.75" torque="1696.62" electricPower="943932.53" />
+          <Entry outShaftSpeed="4663.75" torque="1790.87" electricPower="998015.35" />
+          <Entry outShaftSpeed="4663.75" torque="1885.13" electricPower="1052394.41" />
+          <Entry outShaftSpeed="5022.50" torque="-1885.13" electricPower="-828722.22" />
+          <Entry outShaftSpeed="5022.50" torque="-1790.87" electricPower="-789729.33" />
+          <Entry outShaftSpeed="5022.50" torque="-1696.62" electricPower="-750301.31" />
+          <Entry outShaftSpeed="5022.50" torque="-1602.36" electricPower="-710438.18" />
+          <Entry outShaftSpeed="5022.50" torque="-1508.10" electricPower="-670139.91" />
+          <Entry outShaftSpeed="5022.50" torque="-1413.85" electricPower="-629406.53" />
+          <Entry outShaftSpeed="5022.50" torque="-1319.59" electricPower="-588238.02" />
+          <Entry outShaftSpeed="5022.50" torque="-1225.33" electricPower="-546634.39" />
+          <Entry outShaftSpeed="5022.50" torque="-1131.08" electricPower="-504595.63" />
+          <Entry outShaftSpeed="5022.50" torque="-1036.82" electricPower="-462121.75" />
+          <Entry outShaftSpeed="5022.50" torque="-942.57" electricPower="-419212.74" />
+          <Entry outShaftSpeed="5022.50" torque="-848.31" electricPower="-375868.61" />
+          <Entry outShaftSpeed="5022.50" torque="-754.05" electricPower="-332089.36" />
+          <Entry outShaftSpeed="5022.50" torque="-659.80" electricPower="-287874.98" />
+          <Entry outShaftSpeed="5022.50" torque="-565.54" electricPower="-243225.48" />
+          <Entry outShaftSpeed="5022.50" torque="-471.28" electricPower="-198140.85" />
+          <Entry outShaftSpeed="5022.50" torque="-377.03" electricPower="-152621.10" />
+          <Entry outShaftSpeed="5022.50" torque="-282.77" electricPower="-106666.23" />
+          <Entry outShaftSpeed="5022.50" torque="-188.51" electricPower="-60276.23" />
+          <Entry outShaftSpeed="5022.50" torque="-94.26" electricPower="-13451.11" />
+          <Entry outShaftSpeed="5022.50" torque="-18.85" electricPower="0.00" />
+          <Entry outShaftSpeed="5022.50" torque="18.85" electricPower="17740.36" />
+          <Entry outShaftSpeed="5022.50" torque="94.26" electricPower="71437.30" />
+          <Entry outShaftSpeed="5022.50" torque="188.51" electricPower="128655.84" />
+          <Entry outShaftSpeed="5022.50" torque="282.77" electricPower="183493.02" />
+          <Entry outShaftSpeed="5022.50" torque="377.03" electricPower="237730.54" />
+          <Entry outShaftSpeed="5022.50" torque="471.28" electricPower="291898.27" />
+          <Entry outShaftSpeed="5022.50" torque="565.54" electricPower="346207.02" />
+          <Entry outShaftSpeed="5022.50" torque="659.80" electricPower="400755.46" />
+          <Entry outShaftSpeed="5022.50" torque="754.05" electricPower="455594.55" />
+          <Entry outShaftSpeed="5022.50" torque="848.31" electricPower="510752.16" />
+          <Entry outShaftSpeed="5022.50" torque="942.57" electricPower="566243.89" />
+          <Entry outShaftSpeed="5022.50" torque="1036.82" electricPower="622078.33" />
+          <Entry outShaftSpeed="5022.50" torque="1131.08" electricPower="678259.88" />
+          <Entry outShaftSpeed="5022.50" torque="1225.33" electricPower="734790.26" />
+          <Entry outShaftSpeed="5022.50" torque="1319.59" electricPower="791669.51" />
+          <Entry outShaftSpeed="5022.50" torque="1413.85" electricPower="848896.49" />
+          <Entry outShaftSpeed="5022.50" torque="1508.10" electricPower="906469.31" />
+          <Entry outShaftSpeed="5022.50" torque="1602.36" electricPower="964385.52" />
+          <Entry outShaftSpeed="5022.50" torque="1696.62" electricPower="1022642.29" />
+          <Entry outShaftSpeed="5022.50" torque="1790.87" electricPower="1081236.55" />
+          <Entry outShaftSpeed="5022.50" torque="1885.13" electricPower="1140165.03" />
+          <Entry outShaftSpeed="5381.25" torque="-1885.13" electricPower="-878338.59" />
+          <Entry outShaftSpeed="5381.25" torque="-1790.87" electricPower="-837106.34" />
+          <Entry outShaftSpeed="5381.25" torque="-1696.62" electricPower="-795379.48" />
+          <Entry outShaftSpeed="5381.25" torque="-1602.36" electricPower="-753158.00" />
+          <Entry outShaftSpeed="5381.25" torque="-1508.10" electricPower="-710441.91" />
+          <Entry outShaftSpeed="5381.25" torque="-1413.85" electricPower="-667231.21" />
+          <Entry outShaftSpeed="5381.25" torque="-1319.59" electricPower="-623525.90" />
+          <Entry outShaftSpeed="5381.25" torque="-1225.33" electricPower="-579325.97" />
+          <Entry outShaftSpeed="5381.25" torque="-1131.08" electricPower="-534631.42" />
+          <Entry outShaftSpeed="5381.25" torque="-1036.82" electricPower="-489442.26" />
+          <Entry outShaftSpeed="5381.25" torque="-942.57" electricPower="-443758.49" />
+          <Entry outShaftSpeed="5381.25" torque="-848.31" electricPower="-397580.11" />
+          <Entry outShaftSpeed="5381.25" torque="-754.05" electricPower="-350907.11" />
+          <Entry outShaftSpeed="5381.25" torque="-659.80" electricPower="-303739.50" />
+          <Entry outShaftSpeed="5381.25" torque="-565.54" electricPower="-256077.27" />
+          <Entry outShaftSpeed="5381.25" torque="-471.28" electricPower="-207920.43" />
+          <Entry outShaftSpeed="5381.25" torque="-377.03" electricPower="-159268.98" />
+          <Entry outShaftSpeed="5381.25" torque="-282.77" electricPower="-110122.92" />
+          <Entry outShaftSpeed="5381.25" torque="-188.51" electricPower="-60482.24" />
+          <Entry outShaftSpeed="5381.25" torque="-94.26" electricPower="-10346.94" />
+          <Entry outShaftSpeed="5381.25" torque="-18.85" electricPower="0.00" />
+          <Entry outShaftSpeed="5381.25" torque="18.85" electricPower="19187.38" />
+          <Entry outShaftSpeed="5381.25" torque="94.26" electricPower="77857.08" />
+          <Entry outShaftSpeed="5381.25" torque="188.51" electricPower="139977.45" />
+          <Entry outShaftSpeed="5381.25" torque="282.77" electricPower="199194.85" />
+          <Entry outShaftSpeed="5381.25" torque="377.03" electricPower="257623.02" />
+          <Entry outShaftSpeed="5381.25" torque="471.28" electricPower="315911.08" />
+          <Entry outShaftSpeed="5381.25" torque="565.54" electricPower="374321.98" />
+          <Entry outShaftSpeed="5381.25" torque="659.80" electricPower="432980.36" />
+          <Entry outShaftSpeed="5381.25" torque="754.05" electricPower="491951.31" />
+          <Entry outShaftSpeed="5381.25" torque="848.31" electricPower="551270.81" />
+          <Entry outShaftSpeed="5381.25" torque="942.57" electricPower="610959.32" />
+          <Entry outShaftSpeed="5381.25" torque="1036.82" electricPower="671028.36" />
+          <Entry outShaftSpeed="5381.25" torque="1131.08" electricPower="731484.05" />
+          <Entry outShaftSpeed="5381.25" torque="1225.33" electricPower="792329.15" />
+          <Entry outShaftSpeed="5381.25" torque="1319.59" electricPower="853564.17" />
+          <Entry outShaftSpeed="5381.25" torque="1413.85" electricPower="915188.17" />
+          <Entry outShaftSpeed="5381.25" torque="1508.10" electricPower="977199.16" />
+          <Entry outShaftSpeed="5381.25" torque="1602.36" electricPower="1039594.49" />
+          <Entry outShaftSpeed="5381.25" torque="1696.62" electricPower="1102370.98" />
+          <Entry outShaftSpeed="5381.25" torque="1790.87" electricPower="1165525.15" />
+          <Entry outShaftSpeed="5381.25" torque="1885.13" electricPower="1229053.23" />
+          <Entry outShaftSpeed="5740.00" torque="-1885.13" electricPower="-926336.85" />
+          <Entry outShaftSpeed="5740.00" torque="-1790.87" electricPower="-882944.79" />
+          <Entry outShaftSpeed="5740.00" torque="-1696.62" electricPower="-838994.54" />
+          <Entry outShaftSpeed="5740.00" torque="-1602.36" electricPower="-794486.12" />
+          <Entry outShaftSpeed="5740.00" torque="-1508.10" electricPower="-749419.51" />
+          <Entry outShaftSpeed="5740.00" torque="-1413.85" electricPower="-703794.72" />
+          <Entry outShaftSpeed="5740.00" torque="-1319.59" electricPower="-657611.74" />
+          <Entry outShaftSpeed="5740.00" torque="-1225.33" electricPower="-610870.59" />
+          <Entry outShaftSpeed="5740.00" torque="-1131.08" electricPower="-563571.25" />
+          <Entry outShaftSpeed="5740.00" torque="-1036.82" electricPower="-515713.73" />
+          <Entry outShaftSpeed="5740.00" torque="-942.57" electricPower="-467298.02" />
+          <Entry outShaftSpeed="5740.00" torque="-848.31" electricPower="-418324.14" />
+          <Entry outShaftSpeed="5740.00" torque="-754.05" electricPower="-368792.07" />
+          <Entry outShaftSpeed="5740.00" torque="-659.80" electricPower="-318701.82" />
+          <Entry outShaftSpeed="5740.00" torque="-565.54" electricPower="-268053.38" />
+          <Entry outShaftSpeed="5740.00" torque="-471.28" electricPower="-216846.77" />
+          <Entry outShaftSpeed="5740.00" torque="-377.03" electricPower="-165081.97" />
+          <Entry outShaftSpeed="5740.00" torque="-282.77" electricPower="-112758.99" />
+          <Entry outShaftSpeed="5740.00" torque="-188.51" electricPower="-59877.82" />
+          <Entry outShaftSpeed="5740.00" torque="-94.26" electricPower="-6438.48" />
+          <Entry outShaftSpeed="5740.00" torque="-18.85" electricPower="0.00" />
+          <Entry outShaftSpeed="5740.00" torque="18.85" electricPower="20638.92" />
+          <Entry outShaftSpeed="5740.00" torque="94.26" electricPower="84407.41" />
+          <Entry outShaftSpeed="5740.00" torque="188.51" electricPower="151582.74" />
+          <Entry outShaftSpeed="5740.00" torque="282.77" electricPower="215282.71" />
+          <Entry outShaftSpeed="5740.00" torque="377.03" electricPower="277973.22" />
+          <Entry outShaftSpeed="5740.00" torque="471.28" electricPower="340436.23" />
+          <Entry outShaftSpeed="5740.00" torque="565.54" electricPower="402994.30" />
+          <Entry outShaftSpeed="5740.00" torque="659.80" electricPower="465802.30" />
+          <Entry outShaftSpeed="5740.00" torque="754.05" electricPower="528941.97" />
+          <Entry outShaftSpeed="5740.00" torque="848.31" electricPower="592459.00" />
+          <Entry outShaftSpeed="5740.00" torque="942.57" electricPower="656379.68" />
+          <Entry outShaftSpeed="5740.00" torque="1036.82" electricPower="720719.11" />
+          <Entry outShaftSpeed="5740.00" torque="1131.08" electricPower="785485.63" />
+          <Entry outShaftSpeed="5740.00" torque="1225.33" electricPower="850683.26" />
+          <Entry outShaftSpeed="5740.00" torque="1319.59" electricPower="916313.22" />
+          <Entry outShaftSpeed="5740.00" torque="1413.85" electricPower="982374.85" />
+          <Entry outShaftSpeed="5740.00" torque="1508.10" electricPower="1048866.19" />
+          <Entry outShaftSpeed="5740.00" torque="1602.36" electricPower="1115784.38" />
+          <Entry outShaftSpeed="5740.00" torque="1696.62" electricPower="1183125.95" />
+          <Entry outShaftSpeed="5740.00" torque="1790.87" electricPower="1250886.95" />
+          <Entry outShaftSpeed="5740.00" torque="1885.13" electricPower="1319063.16" />
+          <Entry outShaftSpeed="6098.75" torque="-1885.13" electricPower="-972668.03" />
+          <Entry outShaftSpeed="6098.75" torque="-1790.87" electricPower="-927195.71" />
+          <Entry outShaftSpeed="6098.75" torque="-1696.62" electricPower="-881097.55" />
+          <Entry outShaftSpeed="6098.75" torque="-1602.36" electricPower="-834373.56" />
+          <Entry outShaftSpeed="6098.75" torque="-1508.10" electricPower="-787023.74" />
+          <Entry outShaftSpeed="6098.75" torque="-1413.85" electricPower="-739048.09" />
+          <Entry outShaftSpeed="6098.75" torque="-1319.59" electricPower="-690446.61" />
+          <Entry outShaftSpeed="6098.75" torque="-1225.33" electricPower="-641219.29" />
+          <Entry outShaftSpeed="6098.75" torque="-1131.08" electricPower="-591366.15" />
+          <Entry outShaftSpeed="6098.75" torque="-1036.82" electricPower="-540887.18" />
+          <Entry outShaftSpeed="6098.75" torque="-942.57" electricPower="-489782.37" />
+          <Entry outShaftSpeed="6098.75" torque="-848.31" electricPower="-438051.74" />
+          <Entry outShaftSpeed="6098.75" torque="-754.05" electricPower="-385695.27" />
+          <Entry outShaftSpeed="6098.75" torque="-659.80" electricPower="-332712.98" />
+          <Entry outShaftSpeed="6098.75" torque="-565.54" electricPower="-279104.85" />
+          <Entry outShaftSpeed="6098.75" torque="-471.28" electricPower="-224870.89" />
+          <Entry outShaftSpeed="6098.75" torque="-377.03" electricPower="-170011.11" />
+          <Entry outShaftSpeed="6098.75" torque="-282.77" electricPower="-114525.49" />
+          <Entry outShaftSpeed="6098.75" torque="-188.51" electricPower="-58414.04" />
+          <Entry outShaftSpeed="6098.75" torque="-94.26" electricPower="-1676.76" />
+          <Entry outShaftSpeed="6098.75" torque="-18.85" electricPower="0.00" />
+          <Entry outShaftSpeed="6098.75" torque="18.85" electricPower="22093.58" />
+          <Entry outShaftSpeed="6098.75" torque="94.26" electricPower="91075.33" />
+          <Entry outShaftSpeed="6098.75" torque="188.51" electricPower="163459.67" />
+          <Entry outShaftSpeed="6098.75" torque="282.77" electricPower="231749.99" />
+          <Entry outShaftSpeed="6098.75" torque="377.03" electricPower="298779.67" />
+          <Entry outShaftSpeed="6098.75" torque="471.28" electricPower="365476.29" />
+          <Entry outShaftSpeed="6098.75" torque="565.54" electricPower="432229.59" />
+          <Entry outShaftSpeed="6098.75" torque="659.80" electricPower="499229.08" />
+          <Entry outShaftSpeed="6098.75" torque="754.05" electricPower="566575.86" />
+          <Entry outShaftSpeed="6098.75" torque="848.31" electricPower="634327.02" />
+          <Entry outShaftSpeed="6098.75" torque="942.57" electricPower="702515.80" />
+          <Entry outShaftSpeed="6098.75" torque="1036.82" electricPower="771161.64" />
+          <Entry outShaftSpeed="6098.75" torque="1131.08" electricPower="840275.53" />
+          <Entry outShaftSpeed="6098.75" torque="1225.33" electricPower="909863.13" />
+          <Entry outShaftSpeed="6098.75" torque="1319.59" electricPower="979926.58" />
+          <Entry outShaftSpeed="6098.75" torque="1413.85" electricPower="1050465.65" />
+          <Entry outShaftSpeed="6098.75" torque="1508.10" electricPower="1121478.50" />
+          <Entry outShaftSpeed="6098.75" torque="1602.36" electricPower="1192962.15" />
+          <Entry outShaftSpeed="6098.75" torque="1696.62" electricPower="1264912.80" />
+          <Entry outShaftSpeed="6098.75" torque="1790.87" electricPower="1337326.12" />
+          <Entry outShaftSpeed="6098.75" torque="1885.13" electricPower="1410197.36" />
+          <Entry outShaftSpeed="6457.50" torque="-1885.13" electricPower="-1017283.20" />
+          <Entry outShaftSpeed="6457.50" torque="-1790.87" electricPower="-969810.15" />
+          <Entry outShaftSpeed="6457.50" torque="-1696.62" electricPower="-921639.55" />
+          <Entry outShaftSpeed="6457.50" torque="-1602.36" electricPower="-872771.38" />
+          <Entry outShaftSpeed="6457.50" torque="-1508.10" electricPower="-823205.66" />
+          <Entry outShaftSpeed="6457.50" torque="-1413.85" electricPower="-772942.38" />
+          <Entry outShaftSpeed="6457.50" torque="-1319.59" electricPower="-721981.54" />
+          <Entry outShaftSpeed="6457.50" torque="-1225.33" electricPower="-670323.14" />
+          <Entry outShaftSpeed="6457.50" torque="-1131.08" electricPower="-617967.19" />
+          <Entry outShaftSpeed="6457.50" torque="-1036.82" electricPower="-564913.67" />
+          <Entry outShaftSpeed="6457.50" torque="-942.57" electricPower="-511162.60" />
+          <Entry outShaftSpeed="6457.50" torque="-848.31" electricPower="-456713.97" />
+          <Entry outShaftSpeed="6457.50" torque="-754.05" electricPower="-401567.78" />
+          <Entry outShaftSpeed="6457.50" torque="-659.80" electricPower="-345724.04" />
+          <Entry outShaftSpeed="6457.50" torque="-565.54" electricPower="-289182.73" />
+          <Entry outShaftSpeed="6457.50" torque="-471.28" electricPower="-231943.87" />
+          <Entry outShaftSpeed="6457.50" torque="-377.03" electricPower="-174007.45" />
+          <Entry outShaftSpeed="6457.50" torque="-282.77" electricPower="-115373.47" />
+          <Entry outShaftSpeed="6457.50" torque="-188.51" electricPower="-56041.93" />
+          <Entry outShaftSpeed="6457.50" torque="-94.26" electricPower="0.00" />
+          <Entry outShaftSpeed="6457.50" torque="-18.85" electricPower="0.00" />
+          <Entry outShaftSpeed="6457.50" torque="18.85" electricPower="23550.25" />
+          <Entry outShaftSpeed="6457.50" torque="94.26" electricPower="97848.42" />
+          <Entry outShaftSpeed="6457.50" torque="188.51" electricPower="175595.04" />
+          <Entry outShaftSpeed="6457.50" torque="282.77" electricPower="248588.01" />
+          <Entry outShaftSpeed="6457.50" torque="377.03" electricPower="320038.44" />
+          <Entry outShaftSpeed="6457.50" torque="471.28" electricPower="391031.30" />
+          <Entry outShaftSpeed="6457.50" torque="565.54" electricPower="462030.92" />
+          <Entry outShaftSpeed="6457.50" torque="659.80" electricPower="533266.03" />
+          <Entry outShaftSpeed="6457.50" torque="754.05" electricPower="604859.91" />
+          <Entry outShaftSpeed="6457.50" torque="848.31" electricPower="676882.87" />
+          <Entry outShaftSpeed="6457.50" torque="942.57" electricPower="749376.32" />
+          <Entry outShaftSpeed="6457.50" torque="1036.82" electricPower="822364.82" />
+          <Entry outShaftSpeed="6457.50" torque="1131.08" electricPower="895862.59" />
+          <Entry outShaftSpeed="6457.50" torque="1225.33" electricPower="969877.29" />
+          <Entry outShaftSpeed="6457.50" torque="1319.59" electricPower="1044412.24" />
+          <Entry outShaftSpeed="6457.50" torque="1413.85" electricPower="1119467.83" />
+          <Entry outShaftSpeed="6457.50" torque="1508.10" electricPower="1195042.44" />
+          <Entry outShaftSpeed="6457.50" torque="1602.36" electricPower="1271133.02" />
+          <Entry outShaftSpeed="6457.50" torque="1696.62" electricPower="1347735.53" />
+          <Entry outShaftSpeed="6457.50" torque="1790.87" electricPower="1424845.24" />
+          <Entry outShaftSpeed="6457.50" torque="1885.13" electricPower="1502456.89" />
+          <Entry outShaftSpeed="6816.25" torque="-1885.13" electricPower="-1060133.40" />
+          <Entry outShaftSpeed="6816.25" torque="-1790.87" electricPower="-1010739.17" />
+          <Entry outShaftSpeed="6816.25" torque="-1696.62" electricPower="-960571.59" />
+          <Entry outShaftSpeed="6816.25" torque="-1602.36" electricPower="-909630.63" />
+          <Entry outShaftSpeed="6816.25" torque="-1508.10" electricPower="-857916.32" />
+          <Entry outShaftSpeed="6816.25" torque="-1413.85" electricPower="-805428.63" />
+          <Entry outShaftSpeed="6816.25" torque="-1319.59" electricPower="-752167.59" />
+          <Entry outShaftSpeed="6816.25" torque="-1225.33" electricPower="-698133.17" />
+          <Entry outShaftSpeed="6816.25" torque="-1131.08" electricPower="-643325.40" />
+          <Entry outShaftSpeed="6816.25" torque="-1036.82" electricPower="-587744.25" />
+          <Entry outShaftSpeed="6816.25" torque="-942.57" electricPower="-531389.75" />
+          <Entry outShaftSpeed="6816.25" torque="-848.31" electricPower="-474261.88" />
+          <Entry outShaftSpeed="6816.25" torque="-754.05" electricPower="-416360.64" />
+          <Entry outShaftSpeed="6816.25" torque="-659.80" electricPower="-357686.04" />
+          <Entry outShaftSpeed="6816.25" torque="-565.54" electricPower="-298238.07" />
+          <Entry outShaftSpeed="6816.25" torque="-471.28" electricPower="-238016.74" />
+          <Entry outShaftSpeed="6816.25" torque="-377.03" electricPower="-177022.04" />
+          <Entry outShaftSpeed="6816.25" torque="-282.77" electricPower="-115253.98" />
+          <Entry outShaftSpeed="6816.25" torque="-188.51" electricPower="-52712.55" />
+          <Entry outShaftSpeed="6816.25" torque="-94.26" electricPower="0.00" />
+          <Entry outShaftSpeed="6816.25" torque="-18.85" electricPower="0.00" />
+          <Entry outShaftSpeed="6816.25" torque="18.85" electricPower="25008.09" />
+          <Entry outShaftSpeed="6816.25" torque="94.26" electricPower="104714.99" />
+          <Entry outShaftSpeed="6816.25" torque="188.51" electricPower="187974.84" />
+          <Entry outShaftSpeed="6816.25" torque="282.77" electricPower="265786.32" />
+          <Entry outShaftSpeed="6816.25" torque="377.03" electricPower="341743.43" />
+          <Entry outShaftSpeed="6816.25" torque="471.28" electricPower="417098.93" />
+          <Entry outShaftSpeed="6816.25" torque="565.54" electricPower="492398.98" />
+          <Entry outShaftSpeed="6816.25" torque="659.80" electricPower="567916.12" />
+          <Entry outShaftSpeed="6816.25" torque="754.05" electricPower="643798.75" />
+          <Entry outShaftSpeed="6816.25" torque="848.31" electricPower="720132.34" />
+          <Entry outShaftSpeed="6816.25" torque="942.57" electricPower="796967.73" />
+          <Entry outShaftSpeed="6816.25" torque="1036.82" electricPower="874335.49" />
+          <Entry outShaftSpeed="6816.25" torque="1131.08" electricPower="952253.68" />
+          <Entry outShaftSpeed="6816.25" torque="1225.33" electricPower="1030732.38" />
+          <Entry outShaftSpeed="6816.25" torque="1319.59" electricPower="1109776.38" />
+          <Entry outShaftSpeed="6816.25" torque="1413.85" electricPower="1189386.88" />
+          <Entry outShaftSpeed="6816.25" torque="1508.10" electricPower="1269562.62" />
+          <Entry outShaftSpeed="6816.25" torque="1602.36" electricPower="1350300.59" />
+          <Entry outShaftSpeed="6816.25" torque="1696.62" electricPower="1431596.55" />
+          <Entry outShaftSpeed="6816.25" torque="1790.87" electricPower="1513445.39" />
+          <Entry outShaftSpeed="6816.25" torque="1885.13" electricPower="1595841.35" />
+          <Entry outShaftSpeed="7175.00" torque="-1885.13" electricPower="-1101169.67" />
+          <Entry outShaftSpeed="7175.00" torque="-1790.87" electricPower="-1049933.82" />
+          <Entry outShaftSpeed="7175.00" torque="-1696.62" electricPower="-997844.72" />
+          <Entry outShaftSpeed="7175.00" torque="-1602.36" electricPower="-944902.36" />
+          <Entry outShaftSpeed="7175.00" torque="-1508.10" electricPower="-891106.76" />
+          <Entry outShaftSpeed="7175.00" torque="-1413.85" electricPower="-836457.90" />
+          <Entry outShaftSpeed="7175.00" torque="-1319.59" electricPower="-780955.80" />
+          <Entry outShaftSpeed="7175.00" torque="-1225.33" electricPower="-724600.44" />
+          <Entry outShaftSpeed="7175.00" torque="-1131.08" electricPower="-667391.83" />
+          <Entry outShaftSpeed="7175.00" torque="-1036.82" electricPower="-609329.97" />
+          <Entry outShaftSpeed="7175.00" torque="-942.57" electricPower="-550414.86" />
+          <Entry outShaftSpeed="7175.00" torque="-848.31" electricPower="-490646.50" />
+          <Entry outShaftSpeed="7175.00" torque="-754.05" electricPower="-430024.89" />
+          <Entry outShaftSpeed="7175.00" torque="-659.80" electricPower="-368550.03" />
+          <Entry outShaftSpeed="7175.00" torque="-565.54" electricPower="-306221.92" />
+          <Entry outShaftSpeed="7175.00" torque="-471.28" electricPower="-243040.55" />
+          <Entry outShaftSpeed="7175.00" torque="-377.03" electricPower="-179005.93" />
+          <Entry outShaftSpeed="7175.00" torque="-282.77" electricPower="-114118.07" />
+          <Entry outShaftSpeed="7175.00" torque="-188.51" electricPower="-48376.95" />
+          <Entry outShaftSpeed="7175.00" torque="-94.26" electricPower="0.00" />
+          <Entry outShaftSpeed="7175.00" torque="-18.85" electricPower="0.00" />
+          <Entry outShaftSpeed="7175.00" torque="18.85" electricPower="26466.44" />
+          <Entry outShaftSpeed="7175.00" torque="94.26" electricPower="111664.14" />
+          <Entry outShaftSpeed="7175.00" torque="188.51" electricPower="200584.56" />
+          <Entry outShaftSpeed="7175.00" torque="282.77" electricPower="283333.02" />
+          <Entry outShaftSpeed="7175.00" torque="377.03" electricPower="363886.56" />
+          <Entry outShaftSpeed="7175.00" torque="471.28" electricPower="443674.70" />
+          <Entry outShaftSpeed="7175.00" torque="565.54" electricPower="523332.24" />
+          <Entry outShaftSpeed="7175.00" torque="659.80" electricPower="603180.11" />
+          <Entry outShaftSpeed="7175.00" torque="754.05" electricPower="683394.85" />
+          <Entry outShaftSpeed="7175.00" torque="848.31" electricPower="764079.08" />
+          <Entry outShaftSpeed="7175.00" torque="942.57" electricPower="845294.47" />
+          <Entry outShaftSpeed="7175.00" torque="1036.82" electricPower="927078.50" />
+          <Entry outShaftSpeed="7175.00" torque="1131.08" electricPower="1009453.76" />
+          <Entry outShaftSpeed="7175.00" torque="1225.33" electricPower="1092433.19" />
+          <Entry outShaftSpeed="7175.00" torque="1319.59" electricPower="1176023.37" />
+          <Entry outShaftSpeed="7175.00" torque="1413.85" electricPower="1260226.58" />
+          <Entry outShaftSpeed="7175.00" torque="1508.10" electricPower="1345042.04" />
+          <Entry outShaftSpeed="7175.00" torque="1602.36" electricPower="1430466.89" />
+          <Entry outShaftSpeed="7175.00" torque="1696.62" electricPower="1516496.76" />
+          <Entry outShaftSpeed="7175.00" torque="1790.87" electricPower="1603126.21" />
+          <Entry outShaftSpeed="7175.00" torque="1885.13" electricPower="1690349.00" />
+        </PowerMap>
+      </VoltageLevel>
+      <DragCurve>
+        <Entry outShaftSpeed="0.00" dragTorque="-128.84" />
+        <Entry outShaftSpeed="1793.75" dragTorque="-187.77" />
+        <Entry outShaftSpeed="7175.00" dragTorque="-364.58" />
+      </DragCurve>
+    </Data>
+    <Signature xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+      <Reference URI="#ems-7" xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <Transforms>
+          <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <DigestValue>ycCLitldpb72CLJmjtfWgXRPy0MS6WPgfcuqf7ETv3k=</DigestValue>
+      </Reference>
+    </Signature>
+  </ElectricMachineSystem>
+</VectoInputDeclaration>
+<!-- Input data:
+{
+  "Component": "EMS",
+  "ElectricMachineType": "PSM",
+  "R85RatedPower": 50000,
+  "RotationalInertia": 0.1,
+  "DcDcConverterIncluded": true,
+  "ContinuousTorque": 1273.0,
+  "TestSpeedContinuousTorque": 2100.0,
+  "OverloadTorque": 1885.13,
+  "TestSpeedOverloadTorque": 1793.75,
+  "OverloadDuration": 7.5,
+  "MaxTorqueCurve": [
+    {
+      "OutShaftSpeed": 0.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 300.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 500.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 700.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 900.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 1100.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 1300.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 1400.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 1500.0,
+      "MaxTorque": 2237.0,
+      "MinTorque": -2237.0
+    },
+    {
+      "OutShaftSpeed": 1600.0,
+      "MaxTorque": 2094.0,
+      "MinTorque": -2094.0
+    },
+    {
+      "OutShaftSpeed": 1700.0,
+      "MaxTorque": 1964.0,
+      "MinTorque": -1964.0
+    },
+    {
+      "OutShaftSpeed": 1800.0,
+      "MaxTorque": 1855.0,
+      "MinTorque": -1855.0
+    },
+    {
+      "OutShaftSpeed": 2000.0,
+      "MaxTorque": 1630.0,
+      "MinTorque": -1630.0
+    },
+    {
+      "OutShaftSpeed": 2100.0,
+      "MaxTorque": 1583.0,
+      "MinTorque": -1583.0
+    },
+    {
+      "OutShaftSpeed": 2250.0,
+      "MaxTorque": 1481.0,
+      "MinTorque": -1481.0
+    }
+  ],
+  "Manufacturer": "Example Manufacturer",
+  "Model": "Example Model",
+  "CertificationNumber": "EX1234567890"
+}
+-->

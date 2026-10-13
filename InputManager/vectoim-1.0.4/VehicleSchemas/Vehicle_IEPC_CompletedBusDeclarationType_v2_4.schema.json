@@ -1,0 +1,733 @@
+{
+  "$id": "Vehicle_IEPC_CompletedBusDeclarationType_v2_4",
+  "description": "Vehicle stage input parts",
+  "type": "object",
+  "properties": {
+    "Manufacturer": {
+      "description": "P235 - [-]",
+      "type": "string",
+      "minLength": 1
+    },
+    "ManufacturerAddress": {
+      "description": "P252 - [-]",
+      "type": "string"
+    },
+    "VIN": {
+      "description": "P238 - [-]",
+      "type": "string",
+      "minLength": 1
+    },
+    "Date": {
+      "description": "P239 - [-]",
+      "type": "string",
+      "pattern": ".+T.+Z",
+      "format": "date-time"
+    },
+    "Model": {
+      "description": "P236 - [-]",
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "LegislativeCategory": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "M3"
+      ]
+    },
+    "CorrectedActualMass": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "TechnicalPermissibleMaximumLadenMass": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "AirdragModifiedMultistep": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "ClassBus": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "I",
+        "II",
+        "III",
+        "A",
+        "B",
+        "IPlusII",
+        "IIPlusIII"
+      ]
+    },
+    "NumberPassengerSeatsLowerDeck": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "NumberPassengersStandingLowerDeck": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "NumberPassengerSeatsUpperDeck": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "NumberPassengersStandingUpperDeck": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "BodyworkCode": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "CA",
+        "CB",
+        "CC",
+        "CD",
+        "CE",
+        "CF",
+        "CG",
+        "CH",
+        "CI",
+        "CJ"
+      ]
+    },
+    "LowEntry": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "HeightIntegratedBody": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "VehicleLength": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "VehicleWidth": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "EntranceHeight": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "DoorDriveTechnology": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "electric",
+        "pneumatic",
+        "mixed"
+      ]
+    },
+    "VehicleDeclarationType": {
+      "description": "P293 - enum",
+      "type": "string",
+      "enum": [
+        "interim",
+        "final"
+      ]
+    },
+    "VehicleTypeApprovalNumber": {
+      "description": "P352 - [-]",
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "ADAS": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$id": "ADAS_IEPC_Type_v2_4",
+          "type": "object",
+          "properties": {
+            "PredictiveCruiseControl": {
+              "description": "P274 - [-]",
+              "type": "string",
+              "enum": [
+                "none",
+                "Item1Comma2",
+                "Item1Comma2Comma3"
+              ]
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "ADAS_IEPC_Type_v2_4"
+              ]
+            }
+          },
+          "required": [
+            "PredictiveCruiseControl",
+            "$type"
+          ]
+        }
+      ]
+    },
+    "Components": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$id": "Components_xEV_CompletedBusType_v2_4",
+          "type": "object",
+          "properties": {
+            "AirDrag": {
+              "$id": "AirDragComponentDeclarationType_v2_0",
+              "type": [
+                "object",
+                "null"
+              ],
+              "properties": {
+                "Data": {
+                  "type": "object",
+                  "oneOf": [
+                    {
+                      "$id": "AirDragDataDeclarationType_v1_0",
+                      "type": "object",
+                      "properties": {
+                        "Manufacturer": {
+                          "description": "P240",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "Model": {
+                          "description": "P241",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "CertificationNumber": {
+                          "description": "P268",
+                          "type": "string"
+                        },
+                        "Date": {
+                          "description": "P243",
+                          "type": "string",
+                          "pattern": ".+T.+Z",
+                          "format": "date-time"
+                        },
+                        "AppVersion": {
+                          "description": "P244",
+                          "type": "string",
+                          "minLength": 5
+                        },
+                        "CdxA_0": {
+                          "description": "P245 - [m²]",
+                          "type": "number"
+                        },
+                        "TransferredCdxA": {
+                          "description": "P246 - [m²]",
+                          "type": "number"
+                        },
+                        "DeclaredCdxA": {
+                          "description": "P146 - [m²] Drag coefficient * Cross Sectional Area (Truck &amp; Trailer)",
+                          "type": "number"
+                        },
+                        "id": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "$type": {
+                          "type": "string",
+                          "enum": [
+                            "AirDragDataDeclarationType_v1_0"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "Manufacturer",
+                        "Model",
+                        "CertificationNumber",
+                        "Date",
+                        "AppVersion",
+                        "CdxA_0",
+                        "TransferredCdxA",
+                        "DeclaredCdxA",
+                        "id",
+                        "$type"
+                      ]
+                    },
+                    {
+                      "$id": "AirDragDataDeclarationType_v2_0",
+                      "type": "object",
+                      "properties": {
+                        "Manufacturer": {
+                          "description": "P240",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "Model": {
+                          "description": "P241",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "CertificationNumber": {
+                          "description": "P268",
+                          "type": "string"
+                        },
+                        "Date": {
+                          "description": "P243",
+                          "type": "string",
+                          "pattern": ".+T.+Z",
+                          "format": "date-time"
+                        },
+                        "AppVersion": {
+                          "description": "P244",
+                          "type": "string",
+                          "minLength": 5
+                        },
+                        "CdxA_0": {
+                          "description": "P245 - [m²]",
+                          "type": "number"
+                        },
+                        "TransferredCdxA": {
+                          "description": "P246 - [m²]",
+                          "type": "number"
+                        },
+                        "DeclaredCdxA": {
+                          "description": "P146 - [m²] Drag coefficient * Cross Sectional Area (Truck &amp; Trailer)",
+                          "type": "number"
+                        },
+                        "id": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "$type": {
+                          "type": "string",
+                          "enum": [
+                            "AirDragDataDeclarationType_v2_0"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "Manufacturer",
+                        "Model",
+                        "CertificationNumber",
+                        "Date",
+                        "AppVersion",
+                        "CdxA_0",
+                        "TransferredCdxA",
+                        "DeclaredCdxA",
+                        "id",
+                        "$type"
+                      ]
+                    },
+                    {
+                      "$id": "AirDragDataDeclarationType_v2_6",
+                      "type": "object",
+                      "properties": {
+                        "Manufacturer": {
+                          "description": "P240",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "Model": {
+                          "description": "P241",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "CertificationNumber": {
+                          "description": "P268",
+                          "type": "string"
+                        },
+                        "Date": {
+                          "description": "P243",
+                          "type": "string",
+                          "pattern": ".+T.+Z",
+                          "format": "date-time"
+                        },
+                        "AppVersion": {
+                          "description": "P244",
+                          "type": "string",
+                          "minLength": 5
+                        },
+                        "CdxA_0": {
+                          "description": "P245 - [m²]",
+                          "type": "number"
+                        },
+                        "DeltaCdxA_CFD": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        },
+                        "LicenseNumberCFDMethod": {
+                          "description": "P562",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "DeltaCdxA_declared": {
+                          "description": "P563 - [m²]",
+                          "type": "number"
+                        },
+                        "DeltaTransferredCdxA": {
+                          "description": "P564 - [m²]",
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "$type": {
+                          "type": "string",
+                          "enum": [
+                            "AirDragDataDeclarationType_v2_6"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "Manufacturer",
+                        "Model",
+                        "CertificationNumber",
+                        "Date",
+                        "AppVersion",
+                        "CdxA_0",
+                        "LicenseNumberCFDMethod",
+                        "DeltaCdxA_declared",
+                        "DeltaTransferredCdxA",
+                        "id",
+                        "$type"
+                      ]
+                    },
+                    {
+                      "$id": "AirDragModifiedUseStandardValueType_v2_4",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "$type": {
+                          "type": "string",
+                          "enum": [
+                            "AirDragModifiedUseStandardValueType_v2_4"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "$type"
+                      ]
+                    },
+                    {
+                      "$id": "AirDragModifiedUseStandardValueType_v2_7",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "$type": {
+                          "type": "string",
+                          "enum": [
+                            "AirDragModifiedUseStandardValueType_v2_7"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "$type"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "Data"
+              ]
+            },
+            "Auxiliaries": {
+              "$id": "Components_xEV_CompletedBusTypeAuxiliaries_v2_4",
+              "type": [
+                "object",
+                "null"
+              ],
+              "properties": {
+                "Data": {
+                  "type": "object",
+                  "oneOf": [
+                    {
+                      "$id": "AUX_xEV_CompletedBusType_v2_4",
+                      "type": "object",
+                      "properties": {
+                        "ElectricSystem": {
+                          "$id": "AUX_xEV_CompletedBusTypeElectricSystem_v2_4",
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "properties": {
+                            "LEDLights": {
+                              "$id": "BusAuxElectricSystemLightsGroupLEDLights_v2_4",
+                              "type": "object",
+                              "properties": {
+                                "Interiorlights": {
+                                  "type": [
+                                    "boolean",
+                                    "null"
+                                  ]
+                                },
+                                "Dayrunninglights": {
+                                  "type": [
+                                    "boolean",
+                                    "null"
+                                  ]
+                                },
+                                "Positionlights": {
+                                  "type": [
+                                    "boolean",
+                                    "null"
+                                  ]
+                                },
+                                "Brakelights": {
+                                  "type": [
+                                    "boolean",
+                                    "null"
+                                  ]
+                                },
+                                "Headlights": {
+                                  "type": [
+                                    "boolean",
+                                    "null"
+                                  ]
+                                }
+                              }
+                            }
+                          },
+                          "required": [
+                            "LEDLights"
+                          ]
+                        },
+                        "HVAC": {
+                          "$id": "AUX_xEV_CompletedBusTypeHVAC_v2_4",
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "properties": {
+                            "SystemConfiguration": {
+                              "type": [
+                                "integer",
+                                "null"
+                              ]
+                            },
+                            "HeatPumpTypeDriverCompartment": {
+                              "$id": "BusAuxHVACConventionalSequenceGroupHeatPumpTypeDriverCompartment_v2_4",
+                              "type": [
+                                "object",
+                                "null"
+                              ],
+                              "properties": {
+                                "Cooling": {
+                                  "description": "P318 - enum",
+                                  "type": "string",
+                                  "enum": [
+                                    "none",
+                                    "not_applicable",
+                                    "R_744",
+                                    "non_R_744_2_stage",
+                                    "non_R_744_3_stage",
+                                    "non_R_744_4_stage",
+                                    "non_R_744_continuous"
+                                  ]
+                                },
+                                "Heating": {
+                                  "description": "P319 - enum",
+                                  "type": "string",
+                                  "enum": [
+                                    "none",
+                                    "not_applicable",
+                                    "R_744",
+                                    "non_R_744_2_stage",
+                                    "non_R_744_3_stage",
+                                    "non_R_744_4_stage",
+                                    "non_R_744_continuous"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "Cooling",
+                                "Heating"
+                              ]
+                            },
+                            "HeatPumpTypePassengerCompartment": {
+                              "$id": "BusAuxHVACConventionalSequenceGroupHeatPumpTypePassengerCompartment_v2_4",
+                              "type": [
+                                "object",
+                                "null"
+                              ],
+                              "properties": {
+                                "Cooling": {
+                                  "description": "P320 - enum",
+                                  "type": "string",
+                                  "enum": [
+                                    "none",
+                                    "R_744",
+                                    "non_R_744_2_stage",
+                                    "non_R_744_3_stage",
+                                    "non_R_744_4_stage",
+                                    "non_R_744_continuous"
+                                  ]
+                                },
+                                "Heating": {
+                                  "description": "P321 - enum",
+                                  "type": "string",
+                                  "enum": [
+                                    "none",
+                                    "R_744",
+                                    "non_R_744_2_stage",
+                                    "non_R_744_3_stage",
+                                    "non_R_744_4_stage",
+                                    "non_R_744_continuous"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "Cooling",
+                                "Heating"
+                              ]
+                            },
+                            "AuxiliaryHeaterPower": {
+                              "type": [
+                                "integer",
+                                "null"
+                              ]
+                            },
+                            "DoubleGlazing": {
+                              "type": [
+                                "boolean",
+                                "null"
+                              ]
+                            },
+                            "AdjustableAuxiliaryHeater": {
+                              "type": [
+                                "boolean",
+                                "null"
+                              ]
+                            },
+                            "SeparateAirDistributionDucts": {
+                              "type": [
+                                "boolean",
+                                "null"
+                              ]
+                            },
+                            "WaterElectricHeater": {
+                              "type": [
+                                "boolean",
+                                "null"
+                              ]
+                            },
+                            "AirElectricHeater": {
+                              "type": [
+                                "boolean",
+                                "null"
+                              ]
+                            },
+                            "OtherHeatingTechnology": {
+                              "type": [
+                                "boolean",
+                                "null"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "HeatPumpTypeDriverCompartment",
+                            "HeatPumpTypePassengerCompartment"
+                          ]
+                        },
+                        "$type": {
+                          "type": "string",
+                          "enum": [
+                            "AUX_xEV_CompletedBusType_v2_4"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "ElectricSystem",
+                        "HVAC",
+                        "$type"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "Data"
+              ]
+            },
+            "$type": {
+              "type": "string",
+              "enum": [
+                "Components_xEV_CompletedBusType_v2_4"
+              ]
+            }
+          },
+          "required": [
+            "AirDrag",
+            "Auxiliaries",
+            "$type"
+          ]
+        }
+      ]
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "Manufacturer",
+    "ManufacturerAddress",
+    "VIN",
+    "Date",
+    "Model",
+    "VehicleDeclarationType",
+    "VehicleTypeApprovalNumber",
+    "ADAS",
+    "Components",
+    "id"
+  ]
+}

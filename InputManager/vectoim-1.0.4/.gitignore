@@ -1,0 +1,16 @@
+.cr
+.github
+Demo/??-*
+Demo/Demo*
+Showcase/Showcase?_*
+Showcase/Showcase??_*
+html/
+latex/
+VectoInputManagerTests/Output/
+TestUtils2.cs
+release/
+msbuild.binlog
+Tools/
+Work/
+VectoInputManager.sln
+settings.local.json
