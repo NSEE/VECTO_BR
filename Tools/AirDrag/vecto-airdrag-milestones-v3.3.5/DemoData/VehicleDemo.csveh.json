@@ -1,0 +1,27 @@
+{
+  "Header": {
+    "Title": "VECTO-Air Drag VEHICLE",
+    "FileVersion": "1.0.2",
+    "AppVersion": "3.0.0",
+    "ModifiedDate": "2022.01.26 14:36:59",
+    "Strict": true,
+    "BodySchema": null,
+  },
+  "Body": {
+        "classCode":                    "4",
+        "configuration with trailer":   "no",
+        "TPMLM":                        16000,
+        "vVehMax":                      85,
+        "vehHeight":                    3.85,
+        "anemometerHeight":             4.55,
+        "testMass":                     25000,
+        "gearRatio_low":                "2.500",
+        "gearRatio_high":               "1.000",
+        "axleRatio":                    "3.600",
+        "fixedTransmission":            "yes",
+        "tqDriftLeft":                  "17",
+        "tqDriftRight":                 "-12.4",
+        "tDriftZero":                   "44000",
+        "tDriftCheck":                  "48000",
+   }
+}
