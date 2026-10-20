@@ -1,8 +1,0 @@
-# trigger used (1=yes; 0=no),,,,,,,,
-0,,,,,,,,
-meas. section ID,direction ID,lenght,heading,lat start ,long start ,lat end ,long end ,altitude file
-# [id],[id],[m],[°],[mm.mm],[mm.mm],[mm.mm],[mm.mm],[-]
-1,1,250.64,45,2873.939000,456.856000,2874.026500,457.010000,TrackDemo_1_1.csalt
-2,1,250.64,45,2874.026500,457.010000,2874.114000,457.164000,TrackDemo_2_1.csalt
-2,2,250.64,225,2874.114000,457.164000,2874.026500,457.010000,TrackDemo_2_2.csalt
-1,2,250.64,225,2874.026500,457.010000,2873.939000,456.856000,TrackDemo_1_2.csalt
