@@ -345,7 +345,7 @@ namespace TUGraz.VectoCore.Configuration
 			public static readonly Kilogram MaximumGrossVehicleMass = 90000.SI<Kilogram>();
 			public static readonly Kilogram MaximumGrossVehicleMassOVCHev_NaturalGas = 41000.SI<Kilogram>();
 			public static readonly Kilogram MaximumGrossVehicleMassPEV = 42000.SI<Kilogram>();
-			public static readonly Kilogram MaximumGrossVehicleMassEMS = 60000.SI<Kilogram>();
+			public static readonly Kilogram MaximumGrossVehicleMassEMS = 74000.SI<Kilogram>(); // Brazil: 74t (EU original: 60t)
 			public static readonly Kilogram MaximumGrossVehicleMassEMS_OVCHev_NaturalGas = 61000.SI<Kilogram>();
 			public static readonly Kilogram MaximumGrossVehicleMassEMS_PEV = 62000.SI<Kilogram>();
 

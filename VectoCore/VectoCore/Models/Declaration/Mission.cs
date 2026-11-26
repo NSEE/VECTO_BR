@@ -208,6 +208,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		T1,
 		T2,
 		ST1,
+		ST2,
 		Dolly,
 		STT1,
 		STT2
